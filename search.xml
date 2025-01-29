@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title></title>
+    <url>/posts/1.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>DC8靶场复盘</title>
+    <url>/posts/51727.html</url>
+    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC9靶场复盘</title>
+    <url>/posts/14257.html</url>
+    <content><![CDATA[<p>vulnhub-DC9靶场复盘</p>
+<span id="more"></span>
+
+<h1 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h1><p>先nmap扫描本机 发现靶机的地址  (这里虚拟机的网络都要用桥接模式，扫描本机网段)<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/28311c0ca1354b2e.png" alt="|450"><br>靶机一般是最后数字大的 192.168.240.171<br>接着扫描靶机 发现有两个端口 22 和 80   22还是被防火墙过滤的<br>用dirsearch -u [ip]  扫描目录     –&gt; 最后什么都没有扫到</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>发现有一个登录界面 用户名是admin 用bp爆破无法得到正确的密码<br>并且search有一个输入框<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/f81f33ccbd3d01ca.png" alt="|425"><img src="https://s3.bmp.ovh/imgs/2025/01/29/7a426990d44cebb4.png" alt="|475"><br>这个搜索框是一个post请求  在这里可以使用sqlmap进行sql注入<br>在这里我们使用-u 和 –data “search&#x3D;1” 这里是post类型注入 自动画操作再加上–batch<br>查询之后 在上一条指令后面加上–dbs就可以查到数据库<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/f9bc162ab156b944.png" alt="|525"><br>一步一步扫描 刚才是数据库 现在就是指定数据库 查表 后面就是查列<br>-D users –tables  - T *** –columns<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/158b8293575e9909.png" alt="|400"><br>现在要查询用户名和密码字段 用-C “username,password” –dump<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/340563e3e3b4f104.png" alt="|350"><br>找到一系列用户名和密码<br>然后我们定位到csv文件里 用awk 做一个分割  分别存进user.txt pass.txt<br>现在这里没有类似admin之类的用户 我们现在去另外一个数据库里继续查询<br>然后可以发现一个admin用户  将md5放在网站中破解<br>得到密码之后 可以登录网站的manager界面 在添加记录这里尝试添加’ # 看看有没有报错<br>发现在邮箱这边确实会出现报错<br><img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b1.png"><br> 同时还可以看到不存在 –&gt; 文件包含漏洞<br> <img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b2.png"><br> <mark>下一步就要用web登录到服务器</mark><br> 我们在url这里输入?file&#x3D; ..&#x2F;..&#x2F;etc&#x2F;passwd 一直尝试相对路径<br> 接着用bp来获取他的真实路径   在bp浏览器中登录管理员账户<br> <img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b3.png"><br> 在bp包中把file&#x3D;后面加上$  然后在payload里面加上相对路径<br> <img src="https://pic1.imgdb.cn/item/6799dc7ed0e0a243d4f870b4.png" alt="|500"><br> 根据返回的长度就可以得到真实路径<br> <img src="https://pic1.imgdb.cn/item/6799dc7ed0e0a243d4f870b5.png" alt="|500"><br> 然后我们到真实的路径下面 因为知道有ssh服务 所以可以查看ssh配置文件  发现不允许root登录 listen也没有配置<br> 因为之前我们知道22端口被防火墙过滤了 我们猜测有knockd服务 在&#x2F;proc&#x2F;sched_debug 里面可以看到所以配置的服务<br> <img src="https://pic1.imgdb.cn/item/6799dce1d0e0a243d4f870ba.png" alt="|475"><br> 把这些信息都放到kali a.txt 用正则表达式过滤 cat a.txt | egrep ‘[a-zA-z]+’ 这样子可以搜索服务 -o输出匹配内容 在sort排序 （还可以uniq去重） 发现有knockd这个服务<br> 然后访问etc&#x2F;knockd.conf<br> <img src="https://pic1.imgdb.cn/item/6799dce1d0e0a243d4f870bb.png"><br> 可以看到knock服务的访问顺序是 9842 8475 7469   然后用nc或者kali自带的knock(注意没有d来访问<br> 然后我们就发现这个22端口现在已经开放了<br> 现在用刚才的user 和 pass文件  用hydra爆破<br> hydra -L user.txt -P pass.txt ssh:&#x2F;&#x2F;192.168.240.171</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>然后拿到一些普通用户 我们进去看看有什么文件<br><img src="https://pic1.imgdb.cn/item/6799ddc3d0e0a243d4f870cc.png" alt="|475"><br>登录之后没有发现什么任何文件<br><img src="https://pic1.imgdb.cn/item/6799ddc3d0e0a243d4f870cd.png" alt="|450"><br>我们要输入<mark>sudo -l</mark> 查看是否有什么文件夹有root权限 发现这个用户什么都没有<br>登录到最后一个账户里面发现有一个新的文件 里面有新的密码<br><img src="https://pic1.imgdb.cn/item/6799dce5d0e0a243d4f870bd.png" alt="|475"><br>把这些密码放到pass.txt 中 再用hydra 跑一遍<br>登入到新的用户<br>输入root -l 之后发现有一个root组的文件<br><img src="https://pic1.imgdb.cn/item/6799dce4d0e0a243d4f870bc.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/6799dce6d0e0a243d4f870be.png" alt="|375"><br>这个脚本接受两个参数 读第一个文件的内容 然后添加到第二个文件里<br>我们现在就加到etc&#x2F;sudoers 添加权限   现在就新建一个文件夹 然后添加root的权限(ALL&#x3D;(ALL:ALL) ALL)<br>这里我们要在主文件夹下面写这个文件  因为刚才test脚本在的地方是有root权限的<br>然后用刚才的脚本把a.txt 写入 etc&#x2F;sudoers<br>输入sudo su -<br><img src="https://pic1.imgdb.cn/item/6799dd8bd0e0a243d4f870c9.png" alt="|400"><br>解决！！</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">codeblock</span></span><br></pre></td></tr></table></figure></div>]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC7靶场复盘</title>
+    <url>/posts/51728.html</url>
+    <content><![CDATA[<p>vulnhub-DC7靶场复盘</p>
+<span id="more"></span>
+<p>最难的是最开始的信息收集 ！！！ 根据网站提示的到外部找信息 一下下面的D7user 去github找到&#x3D;&#x3D;敏感信息泄漏&#x3D;&#x3D;</p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a17c7d0e0a243d4f87577.png" alt="|250"><br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87578.png" alt="|400"><br>nmap -A扫描之后发现80端口下面的目录结构 并且看到http是用Drupal 这个软件支持的 （后面回用到</p>
+<h2 id="web-探测-信息收集"><a href="#web-探测-信息收集" class="headerlink" title="web 探测 + 信息收集"></a>web 探测 + 信息收集</h2><p>用dirsearch跑一下目录 也没有发现什么有用的网页<br>页面上有一个搜索框 用sqlmap尝试发现没有注入点<br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87579.png"><br>网站首页提示了用目录爆破不会成功 去外面找信息 –&gt; github<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757a.png" alt="|425"><br>在github成功找到了这个用户<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757b.png" alt="|450"><br>在config.php 中找到了用户名和密码 尝试在网站登录  失败  我们就登录ssh  拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
+<p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   &#x3D;&#x3D;用drush&#x3D;&#x3D;<br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+</search>
