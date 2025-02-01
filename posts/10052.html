@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879fe.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879ff.png">
 <meta property="article:published_time" content="2025-01-29T14:06:58.000Z">
-<meta property="article:modified_time" content="2025-01-29T16:19:53.679Z">
+<meta property="article:modified_time" content="2025-02-01T13:47:16.293Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="渗透">
 <meta property="article:tag" content="HMV">
@@ -231,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-01-30 00:19:53" itemprop="dateModified" datetime="2025-01-30T00:19:53+08:00">2025-01-30</time>
+                <time title="修改时间：2025-02-01 21:47:16" itemprop="dateModified" datetime="2025-02-01T21:47:16+08:00">2025-02-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -279,6 +279,29 @@
 <h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>用suid提权<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879ff.png" alt="|500"><br>这里使用gdb提权<br>在<a target="_blank" rel="noopener" href="https://gtfobins.github.io/gtfobins/gdb/">gtfobins</a> 中找到提权方案</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">/usr/bin/gdb</span> <span class="operator">-</span>nx <span class="operator">-</span>ex &#x27;python <span class="built_in">import</span> os; os.execl(<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-p&quot;</span>)&#x27; <span class="operator">-</span>ex quit</span><br></pre></td></tr></table></figure></div>
 <p>拿到root权限<br>分别在&#x2F;root 和&#x2F;home&#x2F;connection 中找到flag</p>
+<h3 id="解释-gdb-命令"><a href="#解释-gdb-命令" class="headerlink" title="解释 gdb 命令"></a>解释 <code>gdb</code> 命令</h3><h2 id="1-usr-bin-gdb"><a href="#1-usr-bin-gdb" class="headerlink" title="1. /usr/bin/gdb"></a>1. <code>/usr/bin/gdb</code></h2><ul>
+<li><strong>作用</strong>：这是 <code>gdb</code> 命令的完整路径，表示调用的是系统中的 GNU 调试器（GDB）。<code>gdb</code> 是一个强大的调试工具，通常用于调试程序，也能执行低级操作，如调用系统命令或执行特定代码。</li>
+</ul>
+<h2 id="2-nx"><a href="#2-nx" class="headerlink" title="2. -nx"></a>2. <code>-nx</code></h2><ul>
+<li><strong><code>-n</code></strong>：启动时不执行任何初始化文件（如 <code>.gdbinit</code>），避免加载默认设置或用户配置文件。</li>
+<li><strong><code>-x</code></strong>：指定 <code>gdb</code> 执行的脚本文件，但在此命令中使用 <code>-ex</code> 代替，执行内联命令。</li>
+</ul>
+<h2 id="3-ex-python-import-os-os-execl-bin-bash-bash-p"><a href="#3-ex-python-import-os-os-execl-bin-bash-bash-p" class="headerlink" title="3. -ex &#39;python import os; os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)&#39;"></a>3. <code>-ex &#39;python import os; os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)&#39;</code></h2><ul>
+<li><strong><code>-ex</code></strong>：用于执行 <code>gdb</code> 启动时要运行的命令，支持多次使用。</li>
+<li><strong>Python 脚本</strong>：<ul>
+<li><strong><code>import os</code></strong>：导入 <code>os</code> 模块，用于与操作系统交互。</li>
+<li><strong><code>os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)</code></strong>：用 <code>execl</code> 替换当前进程（<code>gdb</code>）为新的进程，即启动 <code>bash</code> shell。<ul>
+<li><strong><code>/bin/bash</code></strong>：指定执行的程序，即 <code>bash</code> shell。</li>
+<li><strong><code>&quot;bash&quot;</code></strong>：传递给 <code>bash</code> 的参数，第一个参数通常是执行命令本身。</li>
+<li><strong><code>&quot;-p&quot;</code></strong>：让 <code>bash</code> 保持 <code>root</code> 权限，如果 <code>gdb</code> 以 <code>root</code> 权限运行，新启动的 <code>bash</code> shell 也会保持 <code>root</code> 权限。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-ex-quit"><a href="#4-ex-quit" class="headerlink" title="4. -ex quit"></a>4. <code>-ex quit</code></h2><ul>
+<li><strong>作用</strong>：在执行完上述 Python 脚本后，立即退出 <code>gdb</code>。<code>gdb</code> 执行完命令后会退出，但新启动的 <code>bash</code> shell 会继续运行。</li>
+</ul>
 
     </div>
 
@@ -363,7 +386,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Connection"><span class="nav-text">Connection</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Connection"><span class="nav-text">Connection</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%87%8A-gdb-%E5%91%BD%E4%BB%A4"><span class="nav-text">解释 gdb 命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-usr-bin-gdb"><span class="nav-text">1. &#x2F;usr&#x2F;bin&#x2F;gdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-nx"><span class="nav-text">2. -nx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-ex-python-import-os-os-execl-bin-bash-bash-p"><span class="nav-text">3. -ex &#39;python import os; os.execl(&quot;&#x2F;bin&#x2F;bash&quot;, &quot;bash&quot;, &quot;-p&quot;)&#39;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-ex-quit"><span class="nav-text">4. -ex quit</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
