@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/679b3f5ed0e0a243d4f8ac2d.png">
 <meta property="article:published_time" content="2025-01-30T08:22:34.000Z">
-<meta property="article:modified_time" content="2025-02-02T06:37:42.755Z">
+<meta property="article:modified_time" content="2025-02-02T13:22:09.576Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="操作系统">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-02 14:37:42" itemprop="dateModified" datetime="2025-02-02T14:37:42+08:00">2025-02-02</time>
+                <time title="修改时间：2025-02-02 21:22:09" itemprop="dateModified" datetime="2025-02-02T21:22:09+08:00">2025-02-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -539,6 +539,69 @@
 <li><strong>漏洞检测</strong>：检测 SQL 注入、XSS、命令注入等安全漏洞。</li>
 <li><strong>HTTP 请求自定义</strong>：允许用户灵活自定义 HTTP 请求，实现高级模糊测试。<br><strong><code>-u/--url</code></strong>   指定目标 URL，并在其中插入 <code>FUZZ</code> 占位符，WFuzz 会用字典内容替换 <code>FUZZ</code> 进行请求。<br><code>wfuzz -u http://example.com/FUZZ</code><br>默认自带呢位置在&#x2F;usr&#x2F;share&#x2F;wfuzz&#x2F;wordlist</li>
 </ol>
+<h3 id="常见的-z-选项："><a href="#常见的-z-选项：" class="headerlink" title="常见的 -z 选项："></a>常见的 <code>-z</code> 选项：</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>file,文件路径</code></td>
+<td>从字典文件加载数据</td>
+</tr>
+<tr>
+<td><code>range,1-100</code></td>
+<td>生成 1 到 100 的数字进行测试</td>
+</tr>
+<tr>
+<td><code>hex,4</code></td>
+<td>生成 4 位的十六进制数</td>
+</tr>
+<tr>
+<td><code>alphanum,6</code></td>
+<td>生成 6 位的字母 + 数字字符串</td>
+</tr>
+<tr>
+<td><code>random,10</code></td>
+<td>生成 10 位随机字符</td>
+</tr>
+</tbody></table>
+<h3 id="过滤无效响应"><a href="#过滤无效响应" class="headerlink" title="过滤无效响应"></a><strong>过滤无效响应</strong></h3><p><code>WFuzz</code> 可能会返回大量无效的 404 响应，可以使用以下参数进行过滤：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--hc 404</code></td>
+<td>隐藏 HTTP 状态码为 404 的响应</td>
+</tr>
+<tr>
+<td><code>--hl 10</code></td>
+<td>隐藏行数等于 10 的响应</td>
+</tr>
+<tr>
+<td><code>--hw 5</code></td>
+<td>隐藏单词数等于 5 的响应</td>
+</tr>
+<tr>
+<td><code>--hh 200</code></td>
+<td>隐藏字节数等于 200 的响应</td>
+</tr>
+<tr>
+<td>（看过的一个用法是 –hc 404 –hl 3 –hw 1</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-d</code> 可以同时多个FUZZ位置</td>
+<td></td>
+</tr>
+</tbody></table>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSHARP"><figure class="iseeu highlight /csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wfuzz -z <span class="keyword">file</span>,users.txt -z <span class="keyword">file</span>,passwords.txt -d <span class="string">&quot;username=FUZZ&amp;password=FUZ2Z&quot;</span> <span class="string">&#x27;http://example.com/login&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
 <h2 id="binwalk"><a href="#binwalk" class="headerlink" title="binwalk"></a>binwalk</h2><p>Binwalk 是一个用于分析文件的工具，常用于隐写分析。</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk -e &lt;文件&gt; <span class="attribute">--run-as</span>=root</span><br></pre></td></tr></table></figure></div>
 
@@ -833,7 +896,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nmap"><span class="nav-text">nmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlmap"><span class="nav-text">sqlmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#John-the-Ripper"><span class="nav-text">John the Ripper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wpscan"><span class="nav-text">wpscan</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wfuzz"><span class="nav-text">wfuzz</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#binwalk"><span class="nav-text">binwalk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dos2Unix"><span class="nav-text">Dos2Unix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SearchSploit"><span class="nav-text">SearchSploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Metasploit-msfconsole"><span class="nav-text">Metasploit (msfconsole)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cewl"><span class="nav-text">Cewl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fcrackzip"><span class="nav-text">fcrackzip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hydra"><span class="nav-text">hydra</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gobuster"><span class="nav-text">gobuster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enum4Linux"><span class="nav-text">Enum4Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stegseek"><span class="nav-text">stegseek</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nmap"><span class="nav-text">nmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlmap"><span class="nav-text">sqlmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#John-the-Ripper"><span class="nav-text">John the Ripper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wpscan"><span class="nav-text">wpscan</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wfuzz"><span class="nav-text">wfuzz</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-z-%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="nav-text">常见的 -z 选项：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E6%97%A0%E6%95%88%E5%93%8D%E5%BA%94"><span class="nav-text">过滤无效响应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#binwalk"><span class="nav-text">binwalk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dos2Unix"><span class="nav-text">Dos2Unix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SearchSploit"><span class="nav-text">SearchSploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Metasploit-msfconsole"><span class="nav-text">Metasploit (msfconsole)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cewl"><span class="nav-text">Cewl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fcrackzip"><span class="nav-text">fcrackzip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hydra"><span class="nav-text">hydra</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gobuster"><span class="nav-text">gobuster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enum4Linux"><span class="nav-text">Enum4Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stegseek"><span class="nav-text">stegseek</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
