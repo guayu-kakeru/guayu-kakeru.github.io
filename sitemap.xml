@@ -367,6 +367,13 @@
   </url>
   
   <url>
+    <loc>https://guayu-kakeru.github.io/tags/shell/</loc>
+    <lastmod>2025-02-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://guayu-kakeru.github.io/tags/kali/</loc>
     <lastmod>2025-02-11</lastmod>
     <changefreq>weekly</changefreq>
@@ -375,13 +382,6 @@
   
   <url>
     <loc>https://guayu-kakeru.github.io/tags/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2025-02-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://guayu-kakeru.github.io/tags/shell/</loc>
     <lastmod>2025-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
