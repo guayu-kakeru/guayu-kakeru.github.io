@@ -406,6 +406,20 @@
   </url>
   
   <url>
+    <loc>https://guayu-kakeru.github.io/tags/CTF/</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://guayu-kakeru.github.io/tags/web/</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://guayu-kakeru.github.io/tags/%E6%B8%97%E9%80%8F/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -433,20 +447,6 @@
     <priority>0.2</priority>
   </url>
   
-  <url>
-    <loc>https://guayu-kakeru.github.io/tags/CTF/</loc>
-    <lastmod>2025-02-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://guayu-kakeru.github.io/tags/web/</loc>
-    <lastmod>2025-02-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
 
   
   <url>
@@ -457,7 +457,7 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/</loc>
+    <loc>https://guayu-kakeru.github.io/categories/CTF/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -471,7 +471,14 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/categories/CTF/</loc>
+    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://guayu-kakeru.github.io/categories/CTF/web/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -486,13 +493,6 @@
   
   <url>
     <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/hmv/</loc>
-    <lastmod>2025-02-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://guayu-kakeru.github.io/categories/CTF/web/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
