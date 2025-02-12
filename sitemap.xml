@@ -413,7 +413,7 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/tags/HMV/</loc>
+    <loc>https://guayu-kakeru.github.io/tags/vulnhub/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -427,7 +427,7 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/tags/vulnhub/</loc>
+    <loc>https://guayu-kakeru.github.io/tags/HMV/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -471,6 +471,13 @@
   </url>
   
   <url>
+    <loc>https://guayu-kakeru.github.io/categories/CTF/</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/vulnhub/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -485,21 +492,14 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/%E9%9D%B6%E5%9C%BA%E9%85%8D%E7%BD%AE/</loc>
-    <lastmod>2025-02-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://guayu-kakeru.github.io/categories/CTF/</loc>
-    <lastmod>2025-02-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://guayu-kakeru.github.io/categories/CTF/web/</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/%E9%9D%B6%E5%9C%BA%E9%85%8D%E7%BD%AE/</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
