@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="SWPUCTF_2021新生赛wp">
+  <meta name="description" content="SWPUCTF_2021新生赛web方向wp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SWPUCTF_2021新生赛(web)WP">
 <meta property="og:url" content="https://guayu-kakeru.github.io/posts/25446.html">
 <meta property="og:site_name" content="guayu-kakeru">
-<meta property="og:description" content="SWPUCTF_2021新生赛wp">
+<meta property="og:description" content="SWPUCTF_2021新生赛web方向wp">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67ae0589d0e0a243d4fef380.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67ae07b9d0e0a243d4fef3cf.png">
@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67af360ad0e0a243d4ff45f0.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67af38c8d0e0a243d4ff47de.png">
 <meta property="article:published_time" content="2025-02-13T14:37:59.000Z">
-<meta property="article:modified_time" content="2025-02-14T13:03:00.706Z">
+<meta property="article:modified_time" content="2025-02-14T13:05:42.001Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="web">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-14 21:03:00" itemprop="dateModified" datetime="2025-02-14T21:03:00+08:00">2025-02-14</time>
+                <time title="修改时间：2025-02-14 21:05:42" itemprop="dateModified" datetime="2025-02-14T21:05:42+08:00">2025-02-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
       
       
       
-        <p>SWPUCTF_2021新生赛wp</p>
+        <p>SWPUCTF_2021新生赛web方向wp</p>
 <span id="more"></span>
 <p>做题平台:<a target="_blank" rel="noopener" href="https://www.nssctf.cn/problem">nssctf</a></p>
 <h1 id="gift-F12"><a href="#gift-F12" class="headerlink" title="gift_F12"></a>gift_F12</h1><p>打开题目后，查看源代码就有flag</p>
@@ -286,7 +286,7 @@
 <p>根据代码中的逻辑，如果POST请求的<code>id</code>参数是<code>wllmNB</code>，并且以GET请求的json参数的x的值是<code>wllm</code>的时候输出flag，所以用hackbar修改<br><img src="https://pic1.imgdb.cn/item/67ae0589d0e0a243d4fef380.png"></p>
 <h1 id="easy-md5"><a href="#easy-md5" class="headerlink" title="easy_md5"></a>easy_md5</h1><p>题目：</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"> <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> <span class="keyword">include</span> <span class="string">&#x27;flag2.php&#x27;</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;name&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$name</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">    <span class="variable">$password</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$name</span> != <span class="variable">$password</span> &amp;&amp; <span class="title function_ invoke__">md5</span>(<span class="variable">$name</span>) == <span class="title function_ invoke__">md5</span>(<span class="variable">$password</span>))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;wrong!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;wrong!&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">wrong!</span><br></pre></td></tr></table></figure></div>
-<p>这里用GET请求接受<code>name</code>,POST请求接受<code>password</code>，如果这两个的值不一样，但是md5一样，就输出flag。<br>在php中，数据如果以<code>0e</code>开头会被视为是科学计数法，而且是0 * 10 <sup>n<sup> &#x3D; 0, 所以<mark>只要是md5值以0e开头就会被当作md5相等<marked>，这里给出几个常见的md5开头是0e的字符串。有的题目还会多一层限制，比如一个是纯数字等。</p>
+<p>这里用GET请求接受<code>name</code>,POST请求接受<code>password</code>，如果这两个的值不一样，但是md5一样，就输出flag。<br>在php中，数据如果以<code>0e</code>开头会被视为是科学计数法，而且是0 * 10 <sup>n</sup> &#x3D; 0, 所以<mark>只要是md5值以0e开头就会被当作md5相等<marked>，这里给出几个常见的md5开头是0e的字符串。有的题目还会多一层限制，比如一个是纯数字等。</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;240610708&#x27;</span>) = <span class="number">0</span>e462097431906509019562988736854</span><br><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;QNKCDZO&#x27;</span>) = <span class="number">0</span>e830400451993494058024219903391</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabg7XSs&#x27;</span>)</span></span> = <span class="number">0</span>e087386482136013740957780965295</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabC9RqS&#x27;</span>)</span></span> = <span class="number">0</span>e260421314791580664869894734725  </span><br></pre></td></tr></table></figure></div>
 <p>用hackbar上传，得到flag<br><img src="https://pic1.imgdb.cn/item/67ae07b9d0e0a243d4fef3cf.png"></p>
 <h1 id="include"><a href="#include" class="headerlink" title="include"></a>include</h1><p>题目： </p>
