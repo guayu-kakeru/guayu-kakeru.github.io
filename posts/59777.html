@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="个人web小白题刷题笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF-web笔记">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/59777.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="个人web小白题刷题笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-23T12:20:33.000Z">
+<meta property="article:modified_time" content="2025-02-23T14:12:30.288Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/59777.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CTF-web笔记 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/59777.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CTF-web笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-23 20:20:33 / 修改时间：22:12:30" itemprop="dateCreated datePublished" datetime="2025-02-23T20:20:33+08:00">2025-02-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/web/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67bb2c37d0e0a243d402b557.png" class="img-topic">
+        </div>
+      
+      
+        <p>个人web小白题刷题笔记</p>
+<span id="more"></span>
+
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><ul>
+<li>在修改请求头的时候考虑加上X-Forwarded-For: 127.0.0.1<br>X-Forwarded-For（XFF）是一个HTTP请求头字段，通常用于标识客户端的真实IP地址，即使请求经过了多个代理或负载均衡服务器。<br>在流量包（网络抓包）中，<strong>Referer</strong>（有时写作 <code>Refer</code>）是 HTTP 请求头字段之一，主要用于指示当前请求是从哪个页面跳转过来的。它的作用是告诉服务器，用户是从哪个 URL 访问当前资源的。</li>
+<li>浏览器内部使用 32 位带符号的整数，来储存推迟执行的时间。这意味着 setTimeout 最多只能推迟执行 2147483647 毫秒（24.8 天）超过这个时间会发生溢出。如果溢出了之后，相当于从 0 开始，整数上溢</li>
+<li><code>#</code>的url编码是%23 <code>&#39;</code>的是%27 <code>\n</code>是%0a <code>\t</code>是%09 </li>
+<li>在 PHP 中，<code>$_REQUEST</code> 是一个超全局变量，用于获取通过多种方式（如 <code>GET</code>、<code>POST</code>、<code>COOKIE</code>）发送到脚本的数据。</li>
+<li><code>alert()</code>函数可以再控制台调用</li>
+</ul>
+<h2 id="md5"><a href="#md5" class="headerlink" title="md5"></a>md5</h2><ul>
+<li>md5相同但是字符串不同：<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;240610708&#x27;</span>) = <span class="number">0</span>e462097431906509019562988736854</span><br><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;QNKCDZO&#x27;</span>) = <span class="number">0</span>e830400451993494058024219903391</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabg7XSs&#x27;</span>)</span></span> = <span class="number">0</span>e087386482136013740957780965295</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabC9RqS&#x27;</span>)</span></span> = <span class="number">0</span>e260421314791580664869894734725</span><br><span class="line">   <span class="number">314282422</span>    QLTHNDT   EEIZDOI</span><br></pre></td></tr></table></figure></div></li>
+<li>md5($str, false) 这是md5的默认情况 返回32位16进制数   如果是 md5($str, true)就返回16位二进制数<br>ffifdyop 是true参数时候的漏洞  md5 (‘ffifdyop’,true)&#x3D;’or’6xxxxxx 也就是or了一个true</li>
+<li>在 PHP 中，如果 <code>md5()</code> 作用于一个<strong>数组</strong>，它不会计算哈希，而是返回 <code>NULL</code>，但<strong>不会报错</strong>（因为 <code>error_reporting(0);</code> 关闭了错误输出）。<br>  所以可以用数组来绕过md5验证  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOIT"><figure class="iseeu highlight /autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用到场景：</span><br><span class="line">$a !== $b &amp;&amp; md5($a) === md5($b)</span><br></pre></td></tr></table></figure></div>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>!=</code></td>
+<td><strong>不等于</strong>（只比较值，允许类型转换）</td>
+</tr>
+<tr>
+<td><code>!==</code></td>
+<td><strong>全不等</strong>（值或类型不同都算不等）</td>
+</tr>
+</tbody></table>
+</li>
+<li><code>$md5[0]==md5($md5[0])</code> 绕过可以使用 <code>0e215962017</code>，因为这个值的md5也是0e开头的</li>
+</ul>
+<h2 id="php知识"><a href="#php知识" class="headerlink" title="php知识"></a>php知识</h2><ul>
+<li><p>php函数<code>glob(&#39;*&#39;);</code>查看当前目录中的文件 配合 <code>highlight_file(&#39;$filename&#39;)</code>查看</p>
+</li>
+<li><p>php中<code>&lt;?php</code>等价于<code>&lt;?=</code> 可以减少字符数</p>
+</li>
+<li><p>在 php 中，使用 <code>Content-Type: multipart/form-data;</code> 上传文件时，会将它保存在临时文件中，在 php 的配置中 <code>upload_tmp_dir</code> 参数为保存临时文件的路经，linux 下面默认为 <code>/tmp</code>。也就是说只要 php 接收上传请求，就会生成一个临时文件。如果具有上传功能，那么会将这个文件拷走储存。无论如何在执行结束后这个文件会被删除。并且 php 每次创建的临时文件名都有固定的格式，为 phpXXXX.tmp（Windows 中）、php**.tmp（Linux 中）。我们可以发送一个上传文件的 post 包，此时 php 会将我们上传的文件保存在临时文件夹下，默认的文件名是 &#x2F;tmp&#x2F;phpxxxxxx，文件名最后 6 个字符是随机的大小写字母。如 &#x2F;tmp&#x2F;php123abc</p>
+</li>
+<li><p><code>forward_static_call_array()</code> 是 PHP 中的一个内置函数，它允许在运行时动态地调用一个静态方法。其作用类似于 <code>call_user_func_array()</code>，但专门用于静态方法调用</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SMALI"><figure class="iseeu highlight /smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">forward_static_call_array([&#x27;类名&#x27;, &#x27;静态方法名&#x27;], 参数数组);</span><br><span class="line">forward_static_call_array( callable $function ,<span class="built_in"> array </span>$parameters )</span><br></pre></td></tr></table></figure></div>
+<p>&emsp;与 <code>call_user_func_array()</code> 的区别:<code>call_user_func_array()</code> 也可以用于调用静态方法：但 <code>forward_static_call_array()</code> 主要用于静态上下文，特别是在继承场景下，确保调用的是当前类或子类的方法，而不是基类的方法。<br>在 PHP 中，默认命名空间为 <code>\</code>，因此调用静态方法时可以使用<strong>绝对路径</strong>：</p>
+</li>
+<li><p>在 php 当中默认命名空间是 \，所有原生函数和类都在这个命名空间中。<br>普通调用一个函数，如果直接写函数名 function_name () 调用，调用的时候其实相当于写了一个相对路径；<br>而如果写 \function_name () 这样调用函数，则其实是写了一个绝对路径。如果你在其他 namespace 里调用系统类，就必须写绝对路径这种写法。<br>举例：</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">MyNamespace</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">strlen</span>(<span class="params"><span class="variable">$string</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Custom strlen function in MyNamespace&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">strlen</span>(<span class="string">&quot;Hello, World!&quot;</span>);  <span class="comment">// 调用的是当前命名空间中的 strlen()</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果你想调用 PHP 原生的 strlen 函数，应该使用绝对路径</span></span><br><span class="line"><span class="keyword">echo</span> \<span class="title function_ invoke__">strlen</span>(<span class="string">&quot;Hello, World!&quot;</span>);  <span class="comment">// 调用全局的 strlen()</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div></li>
+<li><p>PHP 中的 <code>call_user_func()</code>函数：<br>call_user_func() 是 PHP 的一个回调函数调用方法，它可以用于 动态调用函数 或 类的方法，即在运行时决定要执行哪个函数，而不是在代码编写时就固定。</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    static function sayHello(<span class="variable">$name</span>) &#123;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello, <span class="variable">$name</span>!&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">echo call_user_func([<span class="string">&quot;Demo&quot;</span>, <span class="string">&quot;sayHello&quot;</span>], <span class="string">&quot;Alice&quot;</span>);</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>php伪协议：</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STATA"><figure class="iseeu highlight /stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1）<span class="keyword">file</span>:<span class="comment">// 访问本地文件系统</span></span><br><span class="line">2）http:<span class="comment">// 访问 HTTP (S) 网址</span></span><br><span class="line">3）ftp:<span class="comment">// 访问 FTP (S) URL</span></span><br><span class="line">4) php:<span class="comment">// 访问各个输出输入流</span></span><br><span class="line">5) zlib:<span class="comment">// 处理压缩流</span></span><br><span class="line">6) data:<span class="comment">// 读取数据</span></span><br><span class="line">7) <span class="keyword">glob</span>:<span class="comment">// 查找匹配的文件路径模式</span></span><br><span class="line">8) phar:<span class="comment">// PHP 归档</span></span><br><span class="line">9) rar:<span class="comment">// RAR 数据压缩</span></span><br></pre></td></tr></table></figure></div>
+<p>用data伪协议也可以读文件data:&#x2F;&#x2F;text&#x2F;plain;base64,<code>[base64]</code></p>
+</li>
+<li><p><code>file_get_contents()</code> 是 PHP 读取文件内容的函数，它可以：</p>
+</li>
+</ul>
+<p>&emsp;读取本地文件 (<code>file://</code>)<br>&emsp;读取远程文件 (<code>http://</code> &#x2F; <code>https://</code>)<br>&emsp;读取特殊流 (<code>php://input</code>, <code>data://</code> 等)<br>&emsp;读取压缩文件 (<code>compress.zlib://</code>)<br> <mark><code>enctype=&quot;multipart/form-data&quot;</code> 的时候 <code>php://input</code> 是无效的</marked></p>
+<ul>
+<li><code>data://</code> 伪协议允许在 URL 直接存储数据，而不需要实际文件。</li>
+<li><code>intval()</code> 是 PHP 的一个函数，它用于将变量转换为整数（integer）。它的基本用法如下：  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">intval</span>(<span class="keyword">mixed</span> <span class="variable">$value</span>, <span class="keyword">int</span> <span class="variable">$base</span> = <span class="number">10</span>): <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$value</span>（必需）：要转换的值，可以是字符串、浮点数、布尔值等。</span><br><span class="line"><span class="variable">$base</span>（可选）：进制，默认为 <span class="number">10</span>。仅当 <span class="variable">$value</span> 是字符串时有效，可用于转换不同进制的数字（如二进制、十六进制）。</span><br></pre></td></tr></table></figure></div>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SCSS"><figure class="iseeu highlight /scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="built_in">intval</span>(&quot;<span class="number">42</span>&quot;); <span class="comment">// 输出: 42 </span></span><br><span class="line">echo <span class="built_in">intval</span>(&quot;<span class="number">42</span>abc&quot;); <span class="comment">// 输出: 42（遇到非数字字符停止转换） </span></span><br><span class="line">echo <span class="built_in">intval</span>(&quot;abc42&quot;); <span class="comment">// 输出: 0（无法转换则返回 0）</span></span><br><span class="line">echo <span class="built_in">intval</span>(<span class="number">4.9</span>); <span class="comment">// 输出: 4（直接取整，不是四舍五入） </span></span><br><span class="line">echo <span class="built_in">intval</span>(-<span class="number">4.9</span>); <span class="comment">// 输出: -4</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h2 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h2><ul>
+<li>sql注入单引号被过滤的时候用双引号</li>
+<li>常见sql注入过滤  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOHOTKEY"><figure class="iseeu highlight /autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">空格过滤 → 用 `/**/`、`%<span class="number">0</span>a`、`%<span class="number">0</span>d` 代替。</span><br><span class="line">引号过滤 → 用 `Hex` 编码或字符串函数（如 `CHAR(<span class="number">97</span>)`）。</span><br><span class="line">关键词过滤  → 尝试大小写、内联注释（`SEL<span class="comment">/*!*/</span>ECT`）、冗余语法（`UNION ALL SELECT`）。</span><br><span class="line">逗号过滤  → 使用 `JOIN` 代替 `UNION SELECT <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>`。</span><br><span class="line">等号过滤  → 用 `LIKE` 或 `IN` 绕过，例如 `WHERE id LIKE <span class="number">1</span>`。</span><br></pre></td></tr></table></figure></div></li>
+<li>数据库查询长度超出待查询的字符串后会返回特殊字符 NULL 或者 ！等</li>
+<li>mysql中的反引号是为了区分 MYSQL 的保留字与普通字符，所以没有过滤反引号就可以用反引号来绕过 保留字比如user</li>
+<li>mysql可以用load_file()函数读取文件union select load_file(‘path_to_file’) 目录可以选&#x2F;var&#x2F;www&#x2F;html&#x2F;</li>
+<li>在 MySQL 中，<code>WHERE</code> 子句在比较字符串时会忽略字符串末尾的空格。例如，当执行 <code>SELECT * FROM table WHERE column = &#39;cs &#39;;</code> 时，MySQL 会将其视为 <code>&#39;cs&#39;</code> 进行比较，只要 <code>column</code> 列的值为 <code>&#39;cs&#39;</code> 就会匹配成功。这一特性可以用于绕过一些输入过滤机制。</li>
+<li><strong>CHAR 和 VARCHAR 列有最大长度限制</strong>：当给 <code>CHAR</code> 或 <code>VARCHAR</code> 列赋值时，如果值的长度超过了列的最大长度，就会对值进行裁剪以使其适合列的长  度。<br>&emsp;<strong>严格 SQL 模式的影响</strong>：<br>&emsp;<strong>严格模式下</strong>：如果被裁掉的字符不是空格，会产生错误并禁用值的插入。<br>&emsp;<strong>非严格模式下</strong>：不管被裁掉的字符是什么，都会直接截断值，不会产生错误。<br>(用法举例，在严格模式下，已知有个admin账号，可以创建一个用户，admin然后很多空格后面在随便加什么，然后会截断，再根据上一条，where中查询空格不会被计算)</li>
+<li><code>extractvalue (1,concat (0x7e,database ()))</code> 根据错误信息爆库名的时候用到<br>EXTRACTVALUE() 是 MySQL 的一个 XML 处理函数，它用于从 XML 数据中提取特定的值.但如果传入 非 XML 结构 的 XPath，会报错，并在错误信息中泄露数据.CONCAT() 用于拼接字符串。0x7e 是 十六进制的 ~（波浪号）用于报错信息可以回显  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">id</span>：<span class="number">1</span>&#x27; union select <span class="number">1</span>,<span class="number">2</span>,extractvalue(<span class="number">1</span>,concat(<span class="number">0</span>x7e,database()))#</span><br><span class="line"></span><br><span class="line"><span class="attribute">XPATH</span> syntax error: &#x27;~test_db&#x27;</span><br></pre></td></tr></table></figure></div></li>
+<li>sql注入中可以用<code>substring</code>函数来绕过字符长度限制  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">id</span>：-<span class="number">1</span>&#x27; union select <span class="number">1</span>,<span class="number">2</span>,extractvalue(<span class="number">0</span>x7e,(select substring(group_concat(flag),<span class="number">25</span>,<span class="number">32</span>) from test_tb)) #</span><br><span class="line"></span><br><span class="line"><span class="attribute">XPATH</span> syntax error: &#x27;a-ff5d9638a322&#125;&#x27;</span><br></pre></td></tr></table></figure></div></li>
+<li>sql中 <code>LIMIT</code> 主要用于 <strong>限制查询结果的数量</strong>，通常用于分页、提高查询效率等。<br>  <code>SELECT * FROM table_name LIMIT 偏移量，数量;</code>，就是在你确定sql语句没错的时候，返回的内容没错但是不是想要的，可以在后面加上limit 1,1试试</li>
+<li>sql注入中最后知道列名查值的时候，1，group_concat(),3这里括号中的名字不要引号，最后的from也不用。在爆表的时候要在库名和列名要在后面的库名或者表名加引号</li>
+</ul>
+<h2 id="ctf中的linux"><a href="#ctf中的linux" class="headerlink" title="ctf中的linux"></a>ctf中的linux</h2><ul>
+<li>nl 命令在 <a target="_blank" rel="noopener" href="http://codex.wordpress.org.cn/Linux">linux</a> 系统中用来计算文件中行号。nl 可以将输出的文件内容自动的加上行号！其默认的结果与 cat -n 有点不太一样， nl 可以将行号做比较多的显示设计，包括位数与是否自动补齐 0 等等的功能。（一般对输入字符有限制的时候用</li>
+<li>linux中<code>*</code>会把目录中的第一个匹配到的文件名当作命令 剩下的文件名当作参数执行</li>
+<li>在大多数 Linux 系统中，PHP 默认会将 Session 数据存储在 <code>/tmp</code> 目录下，文件名通常以 <code>sess_</code> 为前缀，后跟 Session ID。</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/tmp/</span>sess_abc123def456</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>在单引号字符串中插入单引号的办法<code>&#39;&quot;&#39;&quot;&#39;</code><br>&emsp;原理： <strong>将字符串拆分成多段</strong>，通过交替使用单引号 <code>&#39;</code> 和双引号 <code>&quot;</code>，间接插入单引号字符。其实就是一种拼接的形式  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOIT"><figure class="iseeu highlight /autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 错误示例，会导致解析错误 echo <span class="string">&#x27;This is a &#x27;</span>test<span class="string">&#x27; string.&#x27;</span> </span></span><br><span class="line">    <span class="meta"># 正确示例 echo <span class="string">&#x27;This is a &#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;test&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27; string.&#x27;</span></span></span><br><span class="line">    <span class="meta">#等效于</span></span><br><span class="line">    <span class="string">&#x27;&lt;?php system (&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;cat fl*&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;);?&gt;&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
+<li><code>$IFS</code>（Internal Field Separator）是 Bash 里的内部字段分隔符，默认是空格。</li>
+<li>在linux中命令中间有分隔符，单引号双引号反斜杠反引号也可以照样执行命令比如<code>l&#39;&#39;s l&quot;&quot;s l\s l``s</code></li>
+</ul>
+<h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><ul>
+<li><code>php3，php5，pht，phtml，phps</code> 都是 php 可运行的文件扩展名</li>
+<li><code>.htaccess</code> 是一个纯文本文件，它里面存放着 Apache 服务器配置相关的指令。<br> .htaccess 主要的作用有：URL 重写、自定义错误页面、MIME 类型配置以及访问权限控制等。主要体现在伪静态的应用、图片防盗链、自定义 404 错误页面、阻止 &#x2F; 允许特定 IP&#x2F;IP 段、目录浏览与主页、禁止访问指定文件类型、文件密码保护等。<br> .htaccess 的用途范围主要针对当前目录。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment"># jpg文件解析成php文件</span></span><br><span class="line">   <span class="section">&lt;FilesMatch <span class="string">&quot;\.jpg$&quot;</span>&gt;</span></span><br><span class="line"><span class="attribute">SetHandler</span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure></div></li>
+<li>在 php 中 <code>&quot;.user.ini&quot;</code> 有如下解释：php 会在每个目录下搜寻文件名，如果设定为空字符串则 php 不会搜寻，也就是在 “.user.ini” 中如果设置了文件    名，那么任意一个页面都将该文件中的内容包含进去。有两种方法：<br> auto_prepend_file: 在页面顶部加载文件<br> auto_append_file: 在页面底部加载文件<br> 而且这种方式解析的文件都会被当作php文件执行，在一些文件上传题目也会碰到</li>
+<li>在文件内容的开头输入 <code>GIF89a</code> 主要用于绕过 <strong>MIME 类型检测</strong> 和 <strong>Web 服务器的文件格式验证</strong>，在有检测上传文件类型的题目中可以在修改成jpg文件的前面加上这句</li>
+<li>文件上传的题目如果对文件的类型有检测就要修改<code>MIME</code>就是content-type 比如<code>image/jpeg</code></li>
+<li>如果是文件上传题对图片的宽和高有要求，尝试在木马文件上面自己定义宽和高  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CPP"><figure class="iseeu highlight /cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> height 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> width 1</span></span><br></pre></td></tr></table></figure></div></li>
+<li>Apache 解析漏洞主要是因为 Apache 默认一个文件可以有多个用。分割得后缀，当最右边的后缀无法识别（mime.types 文件中的为合法后缀）则继续向左看，直到碰到合法后缀才进行解析（以最后一个合法后缀为准） 在一些文件上传问题中可能出现这个问题  所以如果黑名单比较简单，后缀名只看从第一个.开始，就可以上传类似1.php.aaa这样的文件</li>
+</ul>
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><ul>
+<li>php 的特性，当序列化后对象的参数列表中成员个数和实际个数不符合时会绕过 __weakup ();  PHP5 &lt; 5.6.25、PHP7 &lt; 7.0.10</li>
+<li>如果 PHP 代码使用了 <code>__autoload()</code> 或 <code>spl_autoload_register()</code>，那么在 <code>unserialize()</code> 时，PHP 会尝试自动加载不存在的类。攻击者可能通过控制 <code>autoload</code> 机制，使其加载恶意代码。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   spl_autoload_register(function(<span class="variable">$class</span>) &#123;</span><br><span class="line">    include <span class="string">&quot;/tmp/<span class="variable">$class</span>.php&quot;</span>; <span class="regexp">//</span> 如果 <span class="class"><span class="keyword">class</span> 不存在，会自动尝试加载</span></span><br><span class="line"><span class="class">&#125;)</span>;</span><br><span class="line"></span><br><span class="line">unserialize(<span class="string">&#x27;O:8:&quot;Malicious&quot;:0:&#123;&#125;&#x27;</span>); <span class="regexp">//</span>假设类 Malicious 不存在，PHP 会通过已注册的自动加载函数尝试加载 /tmp/Malicious.php 文件</span><br></pre></td></tr></table></figure></div></li>
+<li>php序列化中的表示<code>O:&lt;类名长度&gt;:&quot;&lt;类名&gt;&quot;:&lt;成员数量&gt;:&#123;&lt;成员&gt;&#125;</code></li>
+<li><code>die</code>函数也能调用<code>__toString()</code>方法</li>
+<li>两个变量同时指向<code>同一个内存地址</code>也可以绕过<code>wakeup</code>,因为这样就是修改另一个变量从而修改被修改的变量的值</li>
+<li>当你试图访问一个<strong>不存在</strong>或<strong>不可访问</strong>（如 <code>private</code>）的属性时，<code>__get()</code> 方法会被自动调用。</li>
+<li>在 PHP 中，<code>__call()</code> 是一个 <strong>魔法方法</strong>，当调用<strong>未定义</strong>或<strong>不可访问</strong>（如 <code>private</code>）的方法时，它会被自动触发。</li>
+</ul>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><ul>
+<li><p>得到信息没有flag字样的时候想想是不是base64等编码</p>
+</li>
+<li><p>php伪协议无法使用就用日志注入 蚁剑中的https证书忽略打开  做过一题限制了显示个数 所以不能尝试太多</p>
+</li>
+<li><p>写入的 <code>session</code> 马上又会被删除，使用我们利用 bp 不断的发包</p>
+</li>
+<li><p>url在字符前加<code>~</code>就是取反，可以用于字母绕过,因为取反的之后的字符大部分都是不可见字符</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">urlencode</span>(~<span class="string">&#x27;system&#x27;</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div></li>
+<li><p>php中的<code> $str = preg_replace(&#39;/NSSCTF/&#39;,&quot;&quot;,$_GET[&#39;str&#39;]);</code>如果是将敏感词置换为空，就可以用双写置换，这里就是<code>NSSNSSCTFCTF</code></p>
+</li>
+<li><p>只能写三个字符但是比一个很大的数字大可以用<code>科学计数法</code>9e9</p>
+</li>
+<li><p><code>%09</code>的url解码是&#x2F;t（制表符）有时候空格绕过${IFS}也不行的时候用这个</p>
+</li>
+<li><p>一些题目中如果过滤了?或者php。又要上传一句话木马，可以上传<code>script版本</code>的</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span><span class="language-javascript">@<span class="built_in">eval</span>($_POST[<span class="string">&#x27;a&#x27;</span>]);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div></li>
+<li><p>都是两个数字一组的加密字符串，不一定是hex，还有可能是<code>tapcode</code>敲击码</p>
+</li>
+<li><p>sql注入中，如果<code>or</code>或者union这种关键字被过滤尝试双写绕过,而且比如or被过滤那information里面含or也会被过滤</p>
+</li>
+<li><p>蚁剑成功连接之后如果无法看到里面的文件，试试<code>虚拟终端</code>中查看</p>
+</li>
+<li><p>如果cat无法查看，尝试<code>tac</code></p>
+</li>
+<li><p><code>mt_srand (seed)</code> 用于 初始化随机数生成器，其中 seed 是随机数种子。影响：如果使用相同的 seed，那么后续调用 mt_rand () 生成的随机数 始终相同。</p>
+</li>
+<li><p>有时<code>页面源代码</code>中有可以访问的源代码文件</p>
+</li>
+</ul>
+<h2 id="其他语言知识"><a href="#其他语言知识" class="headerlink" title="其他语言知识"></a>其他语言知识</h2><ul>
+<li>在 Python 正则表达式中，”.” 表示匹配除了换行符之外的任意单个字符，”<em>“ 表示匹配前面的字符零次或多次。因此，”.</em>“ 表示匹配任意长度的字符序列，这也被称为贪婪匹配 (greedy matching)。 注意到这个除了换行符以外，所以可以用<code>%a</code>绕过一些正则匹配，前面是换行就匹配不到</li>
+<li>参数传递是大括号的时候，考虑原型链污染，使用的是<code>__proto__</code>这个私有属性,用这个修改原型的属性，当再创建一个实例的时候，就会继承被修改过的原型的属性</li>
+<li>python中：<br>  <code>__class__</code> 获取对象的类。<br>  <code>__init__</code> 获取类的构造方法。<br>  <code>__globals__</code> 获取该类<strong>定义时的全局变量</strong>。<br>  示例  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f1ag = request.<span class="keyword">args</span>.<span class="built_in">get</span>(<span class="string">&#x27;f1ag&#x27;</span>) <span class="built_in">or</span> <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="built_in">exp</span> = request.<span class="keyword">args</span>.<span class="built_in">get</span>(<span class="string">&#x27;exp&#x27;</span>) <span class="built_in">or</span> <span class="string">&quot;&quot;</span></span><br><span class="line">message = <span class="string">&quot;Your flag is &#123;0&#125;&quot;</span> + <span class="built_in">exp</span></span><br><span class="line"></span><br><span class="line">?flag=<span class="number">1</span>&amp;<span class="built_in">exp</span>=&#123;<span class="number">0</span>.__class__.__init__.__globals__&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/59777.html" title="CTF-web笔记">https://guayu-kakeru.github.io/posts/59777.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/35880.html" rel="prev" title="MoeCTF_2022web">
+      <i class="fa fa-chevron-left"></i> MoeCTF_2022web
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-text">http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#md5"><span class="nav-text">md5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php%E7%9F%A5%E8%AF%86"><span class="nav-text">php知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ctf%E4%B8%AD%E7%9A%84linux"><span class="nav-text">ctf中的linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-text">细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86"><span class="nav-text">其他语言知识</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/59777.html" title="posts&#x2F;59777.html">CTF-web笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/35880.html" title="posts&#x2F;35880.html">MoeCTF_2022web</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/51240.html" title="posts&#x2F;51240.html">MoeCTF_2021web</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/32688.html" title="posts&#x2F;32688.html">HMV-light</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62580.html" title="posts&#x2F;62580.html">群友靶机Flower</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
