@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67bab1d9d0e0a243d4026ef0.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67bab445d0e0a243d4026f61.png">
 <meta property="article:published_time" content="2025-02-23T03:06:02.000Z">
-<meta property="article:modified_time" content="2025-02-23T07:18:56.735Z">
+<meta property="article:modified_time" content="2025-02-23T07:19:25.689Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="web">
@@ -229,7 +229,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-02-23 11:06:02 / 修改时间：15:18:56" itemprop="dateCreated datePublished" datetime="2025-02-23T11:06:02+08:00">2025-02-23</time>
+              <time title="创建时间：2025-02-23 11:06:02 / 修改时间：15:19:25" itemprop="dateCreated datePublished" datetime="2025-02-23T11:06:02+08:00">2025-02-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -301,6 +301,7 @@
 <p>这是字符串拼接的形式<br><code>/callback</code>里面接受到data进行hash检验，然后将订单的<code>status</code>修改成我们传入的值</p>
 <p>所以总的思路就是构建订单，然后对data数据做更改，把status改成0（success） 让balance满足条件<br>比如现在的原始data数据是</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">id</span>    user   amount   status   desc </span><br><span class="line"><span class="attribute">aaa</span>   bbb     <span class="number">1000</span>      <span class="number">2</span>       <span class="number">1234</span> </span><br></pre></td></tr></table></figure></div>
+
 <p>我们要把status改成0而且要data的总的字符串不变  为 aaabbb100021234<br>修改之后的data为</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">id</span>    user   amount   status   desc </span><br><span class="line"><span class="attribute">aaa</span>   bbb     <span class="number">100</span>      <span class="number">0</span>       <span class="number">21234</span> </span><br></pre></td></tr></table></figure></div>
 <p>拼接之后还是aaabbb100021234</p>
