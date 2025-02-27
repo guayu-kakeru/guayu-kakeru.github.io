@@ -557,13 +557,6 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/tags/shell/</loc>
-    <lastmod>2025-02-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://guayu-kakeru.github.io/tags/kali/</loc>
     <lastmod>2025-02-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -578,6 +571,13 @@
   </url>
   
   <url>
+    <loc>https://guayu-kakeru.github.io/tags/shell/</loc>
+    <lastmod>2025-02-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://guayu-kakeru.github.io/tags/%E6%B8%97%E9%80%8F/</loc>
     <lastmod>2025-02-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -585,7 +585,7 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/tags/vulnhub/</loc>
+    <loc>https://guayu-kakeru.github.io/tags/HMV/</loc>
     <lastmod>2025-02-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -599,7 +599,7 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/tags/HMV/</loc>
+    <loc>https://guayu-kakeru.github.io/tags/vulnhub/</loc>
     <lastmod>2025-02-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -657,14 +657,14 @@
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/vulnhub/</loc>
+    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/hmv/</loc>
     <lastmod>2025-02-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/hmv/</loc>
+    <loc>https://guayu-kakeru.github.io/categories/%E9%9D%B6%E5%9C%BA/vulnhub/</loc>
     <lastmod>2025-02-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
