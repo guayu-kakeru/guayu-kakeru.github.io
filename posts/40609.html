@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="bp实验室的CSRF漏洞学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSRF漏洞学习笔记">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/40609.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="bp实验室的CSRF漏洞学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c45dc0d0e0a243d40a2b00.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c47c75d0e0a243d40a34fa.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c47d5bd0e0a243d40a352c.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c47d66d0e0a243d40a3532.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c580f2d0e0a243d40ac717.png">
+<meta property="article:published_time" content="2025-03-02T13:13:33.000Z">
+<meta property="article:modified_time" content="2025-03-03T12:58:32.151Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="漏洞">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67c45dc0d0e0a243d40a2b00.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/40609.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CSRF漏洞学习笔记 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">57</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/40609.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSRF漏洞学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-02 21:13:33" itemprop="dateCreated datePublished" datetime="2025-03-02T21:13:33+08:00">2025-03-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-03 20:58:32" itemprop="dateModified" datetime="2025-03-03T20:58:32+08:00">2025-03-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/" itemprop="url" rel="index"><span itemprop="name">漏洞</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67c45957d0e0a243d40a27fc.png" class="img-topic">
+        </div>
+      
+      
+        <p>bp实验室的CSRF漏洞学习笔记</p>
+<span id="more"></span>
+<h2 id="什么是CSRF（跨站请求伪造）漏洞"><a href="#什么是CSRF（跨站请求伪造）漏洞" class="headerlink" title="什么是CSRF（跨站请求伪造）漏洞"></a>什么是CSRF（跨站请求伪造）漏洞</h2><p>攻击者可以利用这漏洞来执行他们不被预期的命令。它允许攻击者部分规避同源策略，该策略旨在防止不同网站相互干扰。</p>
+<p>在成功的 CSRF 攻击中，攻击者会导致受害用户无意中执行操作。例如，这可能是更改其帐户上的电子邮件地址、更改其密码或进行资金转账。根据操作的性质，攻击者可能能够完全控制用户的帐户。如果受感染的用户在应用程序中拥有特权角色，那么攻击者可能能够完全控制应用程序的所有数据和功能。</p>
+<h2 id="CSRF是如何起效的"><a href="#CSRF是如何起效的" class="headerlink" title="CSRF是如何起效的"></a>CSRF是如何起效的</h2><p>想要触发CSRF就要满足下面的三个条件</p>
+<ul>
+<li><strong>相关操作</strong>。应用程序中存在攻击者有理由诱发的操作。这可能是特权操作（例如修改其他用户的权限）或针对用户特定数据的任何操作（例如更改用户自己的密码）。</li>
+<li><strong>基于 Cookie 的会话处理</strong>。执行操作涉及发出一个或多个 HTTP 请求，应用程序仅依靠会话 cookie 来识别发出请求的用户。没有其他机制来跟踪会话或验证用户请求。</li>
+<li><strong>没有不可预测的请求参数</strong>。执行操作的请求不包含任何攻击者无法确定或猜测其值的参数。例如，当导致用户更改密码时，如果攻击者需要知道现有密码的值，则该功能不会受到攻击。</li>
+</ul>
+<p>比如某个网页有修改邮箱密码的功能，当用户执行这个操作的时候，他们就会发送下面的请求</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/email/change</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>30</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>session=yvthwsztyeQkAPzeQ5gHgTvlyxHfsAfE</span><br><span class="line"></span><br><span class="line"><span class="language-ini"><span class="attr">email</span>=wiener@normal-user.com</span></span><br></pre></td></tr></table></figure></div>
+<p>这就满足了相关操作 cookie认证 以及参数可以预知的要求，所以存在csrf漏洞。<br>攻击者可以创建一个html网页</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://vulnerable-website.com/email/change&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;pwned@evil-user.net&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">document</span>.<span class="property">forms</span>[<span class="number">0</span>].<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript">        </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>当用户访问这个网页的时候，攻击者的页面将触发对存在漏洞的网站的 HTTP 请求。如果用户登录之后，他们的浏览器将自动在请求中包含他们的会话 cookie。<br>存在漏洞的网站将以正常方式处理该请求，将其视为受害者用户发出的请求，并更改其电子邮件地址。</p>
+<h2 id="如何构造CSRF"><a href="#如何构造CSRF" class="headerlink" title="如何构造CSRF"></a>如何构造CSRF</h2><p>可以使用bp自带的CSRF poc生成器<br>比如这个网页有一个修改邮箱的功能，在登录自己的账户之后，抓包<br><img src="https://pic1.imgdb.cn/item/67c45dc0d0e0a243d40a2b00.png"><br>在这个页面用bp自带的CSRF poc生成器，然后点击regenerate 把这个poc放在我们的服务器上，<br>这样子用户在点击这个请求的时候，浏览器就会发送请求给修改邮箱的界面，因为浏览器中存着用户的cookie，就分不清是用户还是攻击者的恶意请求</p>
+<h2 id="怎么传播CSRF"><a href="#怎么传播CSRF" class="headerlink" title="怎么传播CSRF"></a>怎么传播CSRF</h2><p>上面说了CSRF怎么构建，现在要怎么让用户来触发这个漏洞呢。通常，攻击者会将恶意 HTML 放到他们控制的网站上，然后诱使受害者访问该网站。这可能通过向用户提供该网站的链接（通过电子邮件或社交媒体消息）来实现。</p>
+<p>一些简单的CSRF漏洞利用了GET方法，并且可以完全独立于易受攻击的网站上的单个 URL。攻击者可以直接向受害者提供易受攻击的域上的恶意 URL。在前面的示例中，如果可以使用 GET 方法执行更改电子邮件地址的请求，那么自包含攻击将如下所示：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img <span class="attribute">src</span>=<span class="string">&quot;https://vulnerable-website.com/email/change?email=pwned@evil-user.net&quot;</span>&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="CSRF常见的防护措施"><a href="#CSRF常见的防护措施" class="headerlink" title="CSRF常见的防护措施"></a>CSRF常见的防护措施</h2><h3 id="CSRF-tokens"><a href="#CSRF-tokens" class="headerlink" title="CSRF-tokens"></a>CSRF-tokens</h3><p>由服务器端应用程序生成并与客户端共享的唯一、秘密且不可预测的值。当尝试执行敏感操作（例如提交表单）时，客户端必须在请求中包含正确的CSRF-tokens.这使得攻击者很难代表受害者构建有效的请求。</p>
+<p>与客户端共享 CSRF tokens的常见方法是将它们作为隐藏参数包含在 HTML 表单中，例如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;form <span class="type">name</span>=&quot;change-email-form&quot; action=&quot;/my-account/change-email&quot; <span class="keyword">method</span>=&quot;POST&quot;&gt;</span><br><span class="line">    &lt;label&gt;Email&lt;/label&gt;</span><br><span class="line">    &lt;<span class="keyword">input</span> required <span class="keyword">type</span>=&quot;email&quot; <span class="type">name</span>=&quot;email&quot; <span class="keyword">value</span>=&quot;example@normal-website.com&quot;&gt;</span><br><span class="line">    &lt;<span class="keyword">input</span> required <span class="keyword">type</span>=&quot;hidden&quot; <span class="type">name</span>=&quot;csrf&quot; <span class="keyword">value</span>=&quot;50FaWgdOhi9M9wyna8taR1k3ODOR8d6u&quot;&gt;</span><br><span class="line">    &lt;button <span class="keyword">class</span>=<span class="string">&#x27;button&#x27;</span> <span class="keyword">type</span>=<span class="string">&#x27;submit&#x27;</span>&gt; <span class="keyword">Update</span> email &lt;/button&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>常见缺陷：</p>
+<ul>
+<li>1、当请求使用 POST 方法时，某些应用程序会正确验证tokens，但使用 GET 方法时则会跳过验证。在这种情况下，攻击者可以切换到 GET 方法来绕过验证并发起 CSRF 攻击：</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/email/change?email=pwned@evil-user.net</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>session=2yQIDcpia41WrATfjPqvm9tOkDvkMvLm</span><br></pre></td></tr></table></figure></div>
+<p>在bp请求中右键切换请求方式就可以了</p>
+<ul>
+<li><p>2、当tokens存在时，某些应用程序会正确验证tokens，但如果省略tokens，则会跳过验证。</p>
+</li>
+<li><p>3、一些应用程序确实将 CSRF  tokens绑定到 Cookie，但不会绑定到用于跟踪会话的同一 Cookie<br>比如我有两个用户，我在a用户的cookie和csrf在b用户上也能用</p>
+</li>
+</ul>
+<p>Cookie 设置行为甚至不需要存在于与 CSRF 漏洞相同的 Web 应用程序中。如果受控 Cookie 具有合适的范围，则同一整体 DNS 域中的任何其他应用程序都可能被利用来在目标应用程序中设置 Cookie。例如，可以利用 staging.demo.normal-website.com 上的 Cookie 设置函数来放置提交给 secure.normal-website.com Cookie。</p>
+<ul>
+<li>4、 CSRF token 只是在 cookie 中复制<br>在这种情况下，如果网站包含任何 cookie 设置功能，攻击者可以再次执行 CSRF 攻击。此时，攻击者无需获取自己的有效 tokens。他们只需发明一个 tokens（如果经过检查，可能是所需的格式），利用 cookie 设置行为将其 cookie 放入受害者的浏览器中，然后在 CSRF 攻击中将其 tokens提供给受害者。</li>
+</ul>
+<h3 id="SameSite-Cookie"><a href="#SameSite-Cookie" class="headerlink" title="SameSite Cookie"></a>SameSite Cookie</h3><p>SameSite 是一种浏览器安全机制，用于确定何时将网站的 Cookie 包含在来自其他网站的请求中。由于执行敏感操作的请求通常需要经过身份验证的会话 Cookie，因此适当的 SameSite 限制可能会阻止攻击者跨站点触发这些操作。</p>
+<p>在 SameSite Cookie 环境中，站点是什么？</p>
+<p>在 SameSite Cookie 限制的上下文中，站点被定义为顶级域名 (TLD)，通常为.com 或.net ，加上域名的附加一级。这通常称为 TLD+1。<br><img src="https://pic1.imgdb.cn/item/67c47c75d0e0a243d40a34fa.png"><br>在确定请求是否为同站请求时，还会考虑 URL 方案。这意味着从 <a target="_blank" rel="noopener" href="http://app.example.com/">http://app.example.com</a> 到 <a target="_blank" rel="noopener" href="https://app.example.com/">https://app.example.com</a> 的链接被大多数浏览器视为跨站请求。</p>
+<p>另外用两幅图来区分site和oringin<br><img src="https://pic1.imgdb.cn/item/67c47d5bd0e0a243d40a352c.png"><br><img src="https://pic1.imgdb.cn/item/67c47d66d0e0a243d40a3532.png">\</p>
+<p>Samesite的工作方式<br>在引入 SameSite 机制之前，浏览器会在每个请求中向发出请求的域发送 Cookie，即使请求是由不相关的第三方网站触发的。SameSite 的工作原理是让浏览器和网站所有者限制哪些跨站点请求（如果有）应包含特定 Cookie。这有助于减少用户受到 CSRF 攻击的风险，这种攻击会诱使受害者的浏览器发出触发易受攻击的网站的有害操作的请求。由于这些请求通常需要与受害者的经过身份验证的会话相关联的 Cookie，因此如果浏览器不包含此 Cookie，攻击就会失败。<br>所有主流浏览器目前都支持以下 SameSite 限制级别：</p>
+<p>Strict<br>Lax<br>None</p>
+<p>开发人员可以手动配置他们设置的每个 Cookie 的限制级别，从而更好地控制何时使用这些 Cookie。为此，他们只需在 Set-Cookie 响应标头中包含 SameSite 属性及其首选值：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: <span class="attribute">session</span>=0F8tgdOhi9ynR1M9wa3ODa; <span class="attribute">SameSite</span>=Strict</span><br></pre></td></tr></table></figure></div>
+<p>如果发布 Cookie 的网站未明确设置 SameSite 属性，Chrome 会默认自动应用 Lax 限制。这意味着 Cookie 仅在符合特定条件的跨站点请求中发送，即使开发人员从未配置此行为。</p>
+<p>Strict:<br>如果 Cookie 设置了 SameSite&#x3D;Strict 属性，浏览器将不会在任何跨站点请求中发送该 Cookie。简单来说，这意味着如果请求的目标站点与浏览器地址栏中当前显示的站点不匹配，则不会包含该 Cookie。<br>虽然这是最安全的选择，但在需要跨站点功能的情况下，它可能会对用户体验产生负面影响。</p>
+<p>Lac:<br>Lax SameSite 限制意味着浏览器将在跨站点请求中发送 cookie，但前提是满足以下两个条件：</p>
+<ul>
+<li>请求使用 GET 方法。</li>
+<li>该请求源自用户的顶级导航，例如单击链接。</li>
+</ul>
+<p>这意味着 cookie 不包含在跨站点 POST 请求中。由于 POST 请求通常用于执行修改数据或状态的操作（至少根据最佳实践），因此它们更有可能成为 CSRF 攻击的目标。</p>
+<p>当使用 SameSite&#x3D;None 设置 cookie 时，网站还必须包含 Secure 属性，以确保 cookie 仅通过 HTTPS 以加密消息形式发送。否则，浏览器将拒绝该 cookie 并且不会设置。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: <span class="attribute">trackingId</span>=0F8tgdOhi9ynR1M9wa3ODa; <span class="attribute">SameSite</span>=None; Secure</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="使用-GET-请求绕过-SameSite-Lax-限制"><a href="#使用-GET-请求绕过-SameSite-Lax-限制" class="headerlink" title="使用 GET 请求绕过 SameSite Lax 限制"></a>使用 GET 请求绕过 SameSite Lax 限制</h4><p>实际上，服务器并不总是对它们是否接收对给定端点的 GET 或 POST 请求很挑剔，即使是那些期望表单提交的服务器。如果他们也对其会话 cookie 使用 Lax 限制（无论是明确还是由于浏览器默认）， 仍然可以通过从受害者的浏览器引出 GET 请求来执行 CSRF 攻击。<br>只要请求涉及顶级导航，浏览器仍将包含受害者的会话 cookie。以下是发起此类攻击的最简单方法之一：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="property">location</span> = <span class="string">&#x27;https://vulnerable-website.com/account/transfer-payment?recipient=hacker&amp;amount=1000000&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>即使不允许普通的 GET 请求，某些框架也提供了覆盖请求行中指定的方法。例如，Symfony 在表单中支持_method 参数，该参数在路由方面优先于普通方法：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ABNF"><figure class="iseeu highlight /abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action<span class="operator">=</span><span class="string">&quot;https://vulnerable-website.com/account/transfer-payment&quot;</span> method<span class="operator">=</span><span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line">    &lt;input type<span class="operator">=</span><span class="string">&quot;hidden&quot;</span> name<span class="operator">=</span><span class="string">&quot;_method&quot;</span> value<span class="operator">=</span><span class="string">&quot;GET&quot;</span>&gt;</span><br><span class="line">    &lt;input type<span class="operator">=</span><span class="string">&quot;hidden&quot;</span> name<span class="operator">=</span><span class="string">&quot;recipient&quot;</span> value<span class="operator">=</span><span class="string">&quot;hacker&quot;</span>&gt;</span><br><span class="line">    &lt;input type<span class="operator">=</span><span class="string">&quot;hidden&quot;</span> name<span class="operator">=</span><span class="string">&quot;amount&quot;</span> value<span class="operator">=</span><span class="string">&quot;1000000&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>比如现在goole使用的POST请求会在两分钟内才能成功验证cookie，我们想绕过这个限制，就可以使用<code>_method</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ACCESSLOG"><figure class="iseeu highlight /accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=<span class="string">&quot;https://0a04001c0438b910819c76f500230087.web-security-academy.net/my-account/change-email&quot;</span> method=<span class="string">&quot;<span class="keyword">GET</span>&quot;</span>&gt;</span><br><span class="line">     &lt;input  type=<span class="string">&quot;hidden&quot;</span> name=<span class="string">&quot;_method&quot;</span> value=<span class="string">&quot;<span class="keyword">POST</span>&quot;</span>/&gt;</span><br></pre></td></tr></table></figure></div>
+<p>先发送一个GET请求的表单，但是用<code>_method</code>覆盖成POST</p>
+<p>有些时候要注意观察网页一些小脚本，小工具。比如在这个网页用户发送一个评论之后，后重定向到blog界面，观察到是调用了一个js<br><img src="https://pic1.imgdb.cn/item/67c580f2d0e0a243d40ac717.png"><br>找到这个js的逻辑只是拼接之后就可以用路径逃逸，像这样<code>/post/comment/confirmation?postId=1/../../my-account</code><br>所以可以利用这个界面生成csrf poc，（前提是发现修改邮箱也可以通过get请求实现）</p>
+<p>无论 是在测试其他人的网站还是尝试保护 自己的网站，请务必记住，即使是跨源发出的请求仍然可以是同一站点的。</p>
+<h4 id="用新发布的cookie绕过-SameSite-Lax-限制"><a href="#用新发布的cookie绕过-SameSite-Lax-限制" class="headerlink" title="用新发布的cookie绕过 SameSite Lax 限制"></a>用新发布的cookie绕过 SameSite Lax 限制</h4><p>具有 Lax SameSite 限制的 Cookie 通常不会在任何跨站点 POST 请求中发送，但也有一些例外。<br>如果网站在设置 Cookie 时未包含 SameSite 属性，Chrome 会默认自动应用 Lax 限制。但是，为了避免破坏单点登录 (SSO) 机制，它实际上不会在顶级 POST 请求的前 120 秒内强制执行这些限制。因此，在两分钟的时间内，用户可能容易受到跨站点攻击。（此两分钟窗口不适用于使用 SameSite&#x3D;Lax 属性明确设置的 cookie）<br>但是尝试将攻击时间安排在这么短的时间范围内有点不切实际。另一方面，如果你能在网站上找到一个可以强制向受害者发出新会话 cookie 的小工具，那么你可以在进行主要攻击之前先刷新他们的 cookie。例如，完成基于 OAuth 的登录流程可能会导致每次都产生新会话，因为 OAuth 服务不一定知道用户是否仍登录到目标网站。<br>为了触发 cookie 刷新而无需受害者再次手动登录， 需要使用顶级导航，以确保包含与其当前 OAuth 会话相关的 cookie。这带来了额外的挑战，因为 需要将用户重定向回 的网站，以便发起 CSRF 攻击。<br>或者， 可以从新选项卡触发 cookie 刷新，这样浏览器就不会在 能够发起最终攻击之前离开页面。这种方法的一个小问题是，除非通过手动交互打开弹出选项卡，否则浏览器会阻止它们。例如，以下弹出窗口将默认被浏览器阻止：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">window</span>.<span class="keyword">open</span>(<span class="string">&#x27;https://vulnerable-website.com/login/sso&#x27;</span>);</span><br></pre></td></tr></table></figure></div>
+<p>为了解决这个问题， 可以将语句包装在 onclick 事件处理程序中，如下所示：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="COFFEESCRIPT"><figure class="iseeu highlight /coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">window.onclick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    window.open(<span class="string">&#x27;https://vulnerable-website.com/login/sso&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>这样，仅当用户点击页面上的某个位置时，才会调用 window.open() 方法。</p>
+<h3 id="基于-Referer-的验证"><a href="#基于-Referer-的验证" class="headerlink" title="基于 Referer 的验证"></a>基于 Referer 的验证</h3><p>一些应用程序利用 HTTP Referer 标头来尝试防御 CSRF 攻击，通常是通过验证请求是否来自应用程序自己的域。这通常比 CSRF tokens验证效果差。</p>
+<p>HTTP Referer 标头是一个可选的请求标头，其中包含链接到所请求资源的网页的 URL。它通常在用户触发 HTTP 请求时由浏览器自动添加，包括通过点击链接或提交表单。存在各种方法允许链接页面保留或修改 Referer 标头的值。这通常是出于隐私原因。</p>
+<ul>
+<li>当请求中存在 Referer 标头时，某些应用程序会验证该标头，但如果省略该标头，则会跳过验证。在这种情况下，攻击者可以精心设计 CSRF 漏洞，让受害用户的浏览器在生成的请求中丢弃 Referer 标头。有多种方法可以实现此目的，但最简单的方法是在承载 CSRF 攻击的 HTML 页面中使用 META 标记：</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="attribute">name</span>=<span class="string">&quot;referrer&quot;</span> <span class="attribute">content</span>=<span class="string">&quot;never&quot;</span>&gt;</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>某些应用程序以一种可以被绕过的简单方式验证 Referer 标头。例如，如果应用程序验证 Referer 中的域以预期值开头，则攻击者可以将其作为自己域的子域：</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DTS"><figure class="iseeu highlight /dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//attacker-website.com/csrf-attack?vulnerable-website.com</span></span><br></pre></td></tr></table></figure></div>
+<p>虽然 可以使用 Burp 识别此行为，但当 在浏览器中测试概念验证时， 经常会发现这种方法不再有效。为了降低以这种方式泄露敏感数据的风险，许多浏览器现在默认从 Referer 标头中删除查询字符串。</p>
+<p>因为许多浏览器现在默认从 Referer 标头中删除查询字符串作为安全措施。要覆盖此行为并确保请求中包含完整的 URL，请返回漏洞服务器并将以下标头添加到 “Head” 部分：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CMAKE"><figure class="iseeu highlight /cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referrer-<span class="keyword">Policy</span>: unsafe-url</span><br></pre></td></tr></table></figure></div>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/40609.html" title="CSRF漏洞学习笔记">https://guayu-kakeru.github.io/posts/40609.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+              <a href="/tags/%E6%BC%8F%E6%B4%9E/" rel="tag"># 漏洞</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/26924.html" rel="prev" title="HMV-Forbidden">
+      <i class="fa fa-chevron-left"></i> HMV-Forbidden
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCSRF%EF%BC%88%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0%EF%BC%89%E6%BC%8F%E6%B4%9E"><span class="nav-text">什么是CSRF（跨站请求伪造）漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF%E6%98%AF%E5%A6%82%E4%BD%95%E8%B5%B7%E6%95%88%E7%9A%84"><span class="nav-text">CSRF是如何起效的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9E%84%E9%80%A0CSRF"><span class="nav-text">如何构造CSRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E4%BC%A0%E6%92%ADCSRF"><span class="nav-text">怎么传播CSRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF%E5%B8%B8%E8%A7%81%E7%9A%84%E9%98%B2%E6%8A%A4%E6%8E%AA%E6%96%BD"><span class="nav-text">CSRF常见的防护措施</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CSRF-tokens"><span class="nav-text">CSRF-tokens</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SameSite-Cookie"><span class="nav-text">SameSite Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-GET-%E8%AF%B7%E6%B1%82%E7%BB%95%E8%BF%87-SameSite-Lax-%E9%99%90%E5%88%B6"><span class="nav-text">使用 GET 请求绕过 SameSite Lax 限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%96%B0%E5%8F%91%E5%B8%83%E7%9A%84cookie%E7%BB%95%E8%BF%87-SameSite-Lax-%E9%99%90%E5%88%B6"><span class="nav-text">用新发布的cookie绕过 SameSite Lax 限制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-Referer-%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-text">基于 Referer 的验证</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/40609.html" title="posts&#x2F;40609.html">CSRF漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/26924.html" title="posts&#x2F;26924.html">HMV-Forbidden</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/37808.html" title="posts&#x2F;37808.html">SSRF漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/11248.html" title="posts&#x2F;11248.html">XXE漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/963.html" title="posts&#x2F;963.html">HMV-Learn2Code</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
