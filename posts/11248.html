@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67c1338bd0e0a243d407bfff.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67c133f0d0e0a243d407c014.png">
 <meta property="article:published_time" content="2025-02-27T15:07:38.708Z">
-<meta property="article:modified_time" content="2025-02-28T04:05:25.711Z">
+<meta property="article:modified_time" content="2025-03-05T08:33:25.259Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="web">
@@ -151,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">58</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">59</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -239,7 +239,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-28 12:05:25" itemprop="dateModified" datetime="2025-02-28T12:05:25+08:00">2025-02-28</time>
+                <time title="修改时间：2025-03-05 16:33:25" itemprop="dateModified" datetime="2025-03-05T16:33:25+08:00">2025-03-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -318,7 +318,7 @@
 <p>示例<br><img src="https://pic1.imgdb.cn/item/67c11fc8d0e0a243d4079e0c.png"><br>在服务器上先写入恶意dtd文件<br>然后用内部实体给服务器的恶意dtd地址发送请求，<br><img src="https://pic1.imgdb.cn/item/67c11fd8d0e0a243d4079e4e.png"><br>就可以在服务器上的accesslog上面看到hostname了<br><img src="https://pic1.imgdb.cn/item/67c11ff7d0e0a243d4079eb0.png"></p>
 <p>说完了用外部服务器利用盲xxe，现在再来看看用报错利用xxe</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MOJOLICIOUS"><figure class="iseeu highlight /mojolicious"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml"><span class="meta">&lt;!ENTITY % <span class="keyword">file</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="meta">&lt;!ENTITY % <span class="keyword">eval</span> <span class="string">&quot;&lt;!ENTITY &amp;#x25; error SYSTEM &#x27;file:///nonexistent/%file;&#x27;&gt;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span><span class="language-perl"><span class="variable">%eval</span>;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="language-perl"><span class="variable">%error</span>;</span></span><br></pre></td></tr></table></figure></div>
-<p>总体的结构和刚才很想，这里是通过访问一个不存在的文件，让xml报错，这个名称就是<code>%file</code>的内容了<br>也是现在服务器上先放上这个恶意dtd文件<br><img src="https://pic1.imgdb.cn/item/67c12110d0e0a243d407a193.png"><br>当我们去访问我们服务器上的这个dtd文件的时候，因为没有这个文件地址，所以有报错，根据报错信息，就能得到&#x2F;etc&#x2F;passwd了<br><img src="https://pic1.imgdb.cn/item/67c12181d0e0a243d407a2ae.png"></p>
+<p>总体的结构和刚才很像，这里是通过访问一个不存在的文件，让xml报错，这个名称就是<code>%file</code>的内容了<br>也是现在服务器上先放上这个恶意dtd文件<br><img src="https://pic1.imgdb.cn/item/67c12110d0e0a243d407a193.png"><br>当我们去访问我们服务器上的这个dtd文件的时候，因为没有这个文件地址，所以有报错，根据报错信息，就能得到&#x2F;etc&#x2F;passwd了<br><img src="https://pic1.imgdb.cn/item/67c12181d0e0a243d407a2ae.png"></p>
 <h4 id="通过重新利用本地-DTD-来利用盲-XXE"><a href="#通过重新利用本地-DTD-来利用盲-XXE" class="headerlink" title="通过重新利用本地 DTD 来利用盲 XXE"></a>通过重新利用本地 DTD 来利用盲 XXE</h4><p>上述技术适用于外部 DTD，但通常不适用于 DOCTYPE 元素中完全指定的内部 DTD。这是因为该技术涉及在另一个参数实体的定义中使用 XML 参数实体。根据 XML 规范，这在外部 DTD 中是允许的，但在内部 DTD 中是不允许的。（有些解析器可能会容忍这种情况，但许多解析器则不会。）</p>
 <p>那么，当带外交互被阻止时，盲 XXE 漏洞会怎样呢？无法通过带外连接泄露数据，也无法从远程服务器加载外部 DTD。</p>
 <p>如果文档的 DTD 使用内部和外部 DTD 声明的混合，则内部 DTD 可以重新定义在外部 DTD 中声明的实体。发生这种情况时，在另一个参数实体的定义中使用 XML 参数实体的限制会放宽。</p>
@@ -356,7 +356,7 @@
 <p>测试了常见 DTD 文件列表以找到存在的文件后，需要获取该文件的副本并查看它以找到可以重新定义的实体。由于许多包含 DTD 文件的常见系统都是开源的，因此通常可以通过互联网搜索快速获取文件副本。</p>
 <p>比如使用GNOME 桌面环境的系统通常有一个 DTD &#x2F;usr&#x2F;share&#x2F;yelp&#x2F;dtd&#x2F;docbookx.dtd 包含一个名为 ISOamso.<br><img src="https://pic1.imgdb.cn/item/67c12c9ad0e0a243d407b5af.png"></p>
 <h3 id="寻找-XXE-注入的隐藏攻击面"><a href="#寻找-XXE-注入的隐藏攻击面" class="headerlink" title="寻找 XXE 注入的隐藏攻击面"></a>寻找 XXE 注入的隐藏攻击面</h3><p>在许多情况下，XXE 注入漏洞的攻击面很明显，因为应用程序的正常 HTTP 流量包括包含 XML 格式数据的请求。在其他情况下，攻击面不太明显。但是，如果你在正确的地方寻找，你会在不包含任何 XML 的请求中找到 XXE 攻击面。</p>
-<h4 id="XInclude-attacks-XInclude-攻击"><a href="#XInclude-attacks-XInclude-攻击" class="headerlink" title="XInclude attacks  XInclude 攻击"></a>XInclude attacks  XInclude 攻击</h4><p>一些应用程序接收客户端提交的数据，在服务器端将其嵌入 XML 文档，然后解析该文档。例如，客户端提交的数据被放入后端 SOAP 请求中，然后由后端 SOAP 服务进行处理。<br>在这种情况下，您无法进行经典的 XXE 攻击，因为您无法控制整个 XML 文档， XInclude 无法定义或修改 DOCTYPE 元素。但是，您可能能够改用 XInclude 是 XML 规范的一部分，允许从子文档构建 XML 文档。您可以在 XML 文档中的任何数据值中放置 XInclude 攻击，因此可以在您仅控制放置在服务器端 XML 文档中的单个数据项的情况下执行攻击。<br>要执行 XInclude 攻击，您需要引用 XInclude 命名空间并提供要包含的文件的路径。例如：</p>
+<h4 id="XInclude-attacks-XInclude-攻击"><a href="#XInclude-attacks-XInclude-攻击" class="headerlink" title="XInclude attacks  XInclude 攻击"></a>XInclude attacks  XInclude 攻击</h4><p>一些应用程序接收客户端提交的数据，在服务器端将其嵌入 XML 文档，然后解析该文档。例如，客户端提交的数据被放入后端 SOAP 请求中，然后由后端 SOAP 服务进行处理。<br>在这种情况下， 无法进行经典的 XXE 攻击，因为 无法控制整个 XML 文档， XInclude 无法定义或修改 DOCTYPE 元素。但是， 可能能够改用 XInclude 是 XML 规范的一部分，允许从子文档构建 XML 文档。 可以在 XML 文档中的任何数据值中放置 XInclude 攻击，因此可以在 仅控制放置在服务器端 XML 文档中的单个数据项的情况下执行攻击。<br>要执行 XInclude 攻击， 需要引用 XInclude 命名空间并提供要包含的文件的路径。例如：</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;foo xmlns:<span class="attribute">xi</span>=<span class="string">&quot;http://www.w3.org/2001/XInclude&quot;</span>&gt;</span><br><span class="line">&lt;xi:include <span class="attribute">parse</span>=<span class="string">&quot;text&quot;</span> <span class="attribute">href</span>=<span class="string">&quot;file:///etc/passwd&quot;</span>/&gt;&lt;/foo&gt;</span><br></pre></td></tr></table></figure></div>
 <p>XInclude 是 W3C 标准，允许 XML 文档包含其他资源（本地文件、远程 URL 等）的内容。<br>parse&#x3D;”text”：将目标资源内容视为纯文本（而非 XML），直接嵌入当前文档。<br>href：指定要包含的资源路径（如 file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd）。<br><img src="https://pic1.imgdb.cn/item/67c13026d0e0a243d407bbed.png"><br>比如这里用户可以输入的是productId，就在这里插入XInclude，默认情况下， XInclude 会尝试将包含的文档解析为 XML。由于 &#x2F;etc&#x2F;passwd 不是有效的 XML，因此需要向 XInclude 指令添加额外的属性来更改此行为。这里就是指定<code>parse=&quot;text&quot;</code>将目标文件视为纯文本而非 XML</p>
 <h4 id="通过文件上传进行-XXE-攻击"><a href="#通过文件上传进行-XXE-攻击" class="headerlink" title="通过文件上传进行 XXE 攻击"></a>通过文件上传进行 XXE 攻击</h4><p>一些应用程序允许用户上传文件，然后在服务器端进行处理。一些常见的文件格式使用 XML 或包含 XML 子组件。基于 XML 的格式的示例包括办公文档格式（如 DOCX）和图像格式（如 SVG）。</p>
@@ -488,7 +488,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -524,6 +524,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/posts/21833.html" title="posts&#x2F;21833.html">SQL漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/posts/23894.html" title="posts&#x2F;23894.html">HMV-SuidyRevenge</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -534,9 +537,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/37808.html" title="posts&#x2F;37808.html">SSRF漏洞学习笔记</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/11248.html" title="posts&#x2F;11248.html">XXE漏洞学习笔记</a>
         </li>
     </ul>
   </div>

