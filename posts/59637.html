@@ -32,8 +32,8 @@
 <meta property="article:modified_time" content="2025-02-04T12:58:37.086Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="渗透">
-<meta property="article:tag" content="HMV">
 <meta property="article:tag" content="靶场">
+<meta property="article:tag" content="HMV">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://pic1.imgdb.cn/item/67a1fe35d0e0a243d4fbcf9f.png">
 
@@ -140,7 +140,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">65</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -264,7 +264,7 @@
 <p>找到ssh私钥的地址 但是不是id_rsa是id_ed25519，而且这个目录在root目录下面，不是ssh目录，就觉得为什么有私钥还登录不上root，hhhhh</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">jan:~$ .<span class="regexp">/m.sh /</span>etc<span class="regexp">/ssh/</span>ssh_config</span><br><span class="line">removed</span><br><span class="line"><span class="string">&#x27;backup/hi&#x27;</span> -&gt; <span class="string">&#x27;/etc/ssh/ssh_config&#x27;</span></span><br><span class="line"><span class="comment">#	$OpenBSD: ssh_config,v 1.36 2023/08/02 23:04:38 djm Exp $</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is the ssh client system-wide configuration file.  See</span></span><br><span class="line"><span class="comment"># ssh_config(5) for more information.  This file provides defaults for</span></span><br><span class="line"><span class="comment"># users, and the values can be changed in per-user configuration files</span></span><br><span class="line"><span class="comment"># or on the command line.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration data is parsed as follows:</span></span><br><span class="line"><span class="comment">#  1. command line options</span></span><br><span class="line"><span class="comment">#  2. user-specific file</span></span><br><span class="line"><span class="comment">#  3. system-wide file</span></span><br><span class="line"><span class="comment"># Any configuration value is only changed the first time it is set.</span></span><br><span class="line"><span class="comment"># Thus, host-specific definitions should be at the beginning of the</span></span><br><span class="line"><span class="comment"># configuration file, and defaults at the end.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Site-wide defaults for some commonly used options.  For a comprehensive</span></span><br><span class="line"><span class="comment"># list of available options, their meanings and defaults, please see the</span></span><br><span class="line"><span class="comment"># ssh_config(5) man page.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include configuration snippets before processing this file to allow the</span></span><br><span class="line"><span class="comment"># snippets to override directives set in this file.</span></span><br><span class="line"><span class="comment">#Include /etc/ssh/ssh_config.d/*.conf</span></span><br><span class="line"><span class="comment">#Banner /etc/shadow</span></span><br><span class="line"><span class="comment"># Host *</span></span><br><span class="line"><span class="comment">#   ForwardAgent no</span></span><br><span class="line"><span class="comment">#   ForwardX11 no</span></span><br><span class="line"><span class="comment">#   PasswordAuthentication yes</span></span><br><span class="line"><span class="comment">#   HostbasedAuthentication no</span></span><br><span class="line"><span class="comment">#   GSSAPIAuthentication no</span></span><br><span class="line"><span class="comment">#   GSSAPIDelegateCredentials no</span></span><br><span class="line"><span class="comment">#   BatchMode no</span></span><br><span class="line"><span class="comment">#   CheckHostIP no</span></span><br><span class="line"><span class="comment">#   AddressFamily any</span></span><br><span class="line"><span class="comment">#   ConnectTimeout 0</span></span><br><span class="line"><span class="comment">#   StrictHostKeyChecking ask</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_rsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_dsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_ecdsa</span></span><br><span class="line"><span class="comment">#   IdentityFile ~/.ssh/id_ed25519</span></span><br><span class="line"><span class="comment">#   Port 22</span></span><br><span class="line"><span class="comment">#   Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc</span></span><br><span class="line"><span class="comment">#   MACs hmac-md5,hmac-sha1,umac-64@openssh.com</span></span><br><span class="line"><span class="comment">#   EscapeChar ~</span></span><br><span class="line"><span class="comment">#   Tunnel no</span></span><br><span class="line"><span class="comment">#   TunnelDevice any:any</span></span><br><span class="line"><span class="comment">#   PermitLocalCommand no</span></span><br><span class="line"><span class="comment">#   VisualHostKey no</span></span><br><span class="line"><span class="comment">#   ProxyCommand ssh -q -W %h:%p gateway.example.com</span></span><br><span class="line"><span class="comment">#   RekeyLimit 1G 1h</span></span><br><span class="line"><span class="comment">#   UserKnownHostsFile ~/.ssh/known_hosts.d/%k</span></span><br></pre></td></tr></table></figure></div>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jan:~$ .<span class="regexp">/m.sh /</span>root<span class="regexp">/.ssh/i</span>d_ed25519</span><br></pre></td></tr></table></figure></div>
-<p>vi id_rsa<br>chmod 600 id_rsa<br>ssh <a href="mailto:&#114;&#111;&#111;&#116;&#x40;&#49;&#57;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#x32;&#x34;&#x30;&#x2e;&#49;&#53;">root@192.168.240.15</a> -i id_rsa</p>
+<p>vi id_rsa<br>chmod 600 id_rsa<br>ssh <a href="mailto:&#x72;&#x6f;&#111;&#116;&#x40;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#x38;&#46;&#50;&#x34;&#48;&#x2e;&#x31;&#x35;">root@192.168.240.15</a> -i id_rsa</p>
 <pre><code>登录root了
 
 
@@ -296,8 +296,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
-              <a href="/tags/HMV/" rel="tag"># HMV</a>
               <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
           </div>
 
         
@@ -387,7 +387,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -423,6 +423,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/posts/57863.html" title="posts&#x2F;57863.html">HMV-Driftingblues3</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/posts/53614.html" title="posts&#x2F;53614.html">flask框架&&ssti学习笔记</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -433,9 +436,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/50762.html" title="posts&#x2F;50762.html">HMV-Driftingblues</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/6117.html" title="posts&#x2F;6117.html">HMV-family3</a>
         </li>
     </ul>
   </div>
