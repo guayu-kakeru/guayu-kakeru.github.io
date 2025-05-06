@@ -20,30 +20,36 @@
     var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一年过后，你会希望从今天就开始行动。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="guayu-kakeru">
-<meta property="og:url" content="https://guayu-kakeru.github.io/index.html">
+  <meta name="description" content="端口扫描12345678910111213──(root㉿kakeru)-[~&#x2F;tmp]└─# nmap 192.168.176.228 -p- Starting Nmap 7.95 ( https:&#x2F;&#x2F;nmap.org ) at 2025-05-06 23:05 CSTNmap scan report for bogon (192.168.176.228)Host is up (0.0081s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="群友靶机-LingMj复盘">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/51954.html">
 <meta property="og:site_name" content="guayu-kakeru">
-<meta property="og:description" content="一年过后，你会希望从今天就开始行动。">
+<meta property="og:description" content="端口扫描12345678910111213──(root㉿kakeru)-[~&#x2F;tmp]└─# nmap 192.168.176.228 -p- Starting Nmap 7.95 ( https:&#x2F;&#x2F;nmap.org ) at 2025-05-06 23:05 CSTNmap scan report for bogon (192.168.176.228)Host is up (0.0081s">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/681a265258cb8da5c8e1339c.png">
+<meta property="article:published_time" content="2025-05-06T15:05:42.000Z">
+<meta property="article:modified_time" content="2025-05-06T16:12:33.686Z">
 <meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="靶场">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/681a265258cb8da5c8e1339c.png">
 
-<link rel="canonical" href="https://guayu-kakeru.github.io/">
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/51954.html">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>guayu-kakeru</title>
+  <title>群友靶机-LingMj复盘 | guayu-kakeru</title>
   
 
 
@@ -184,52 +190,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-  <div class="tag-cloud">
-	  <div class="tag-cloud-tags" id="tags">
-		<a href="/tags/CTF/" style="font-size: 16px; color: #fff">CTF</a> <a href="/tags/HMV/" style="font-size: 16px; color: #fff">HMV</a> <a href="/tags/kali/" style="font-size: 16px; color: #fff">kali</a> <a href="/tags/linux/" style="font-size: 16px; color: #fff">linux</a> <a href="/tags/shell/" style="font-size: 16px; color: #fff">shell</a> <a href="/tags/vulnhub/" style="font-size: 16px; color: #fff">vulnhub</a> <a href="/tags/web/" style="font-size: 16px; color: #fff">web</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 16px; color: #fff">工具</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 16px; color: #fff">操作系统</a> <a href="/tags/%E6%B8%97%E9%80%8F/" style="font-size: 16px; color: #fff">渗透</a> <a href="/tags/%E6%BC%8F%E6%B4%9E/" style="font-size: 16px; color: #fff">漏洞</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16px; color: #fff">生活</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 16px; color: #fff">笔记</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 16px; color: #fff">靶场</a>
-	  </div>
-	</div>
-	<br>
-	
-	<script type="text/javascript">
-     var alltags = document.getElementsByClassName('tag-cloud-tags');
-     var tags = alltags[0].getElementsByTagName('a');
-     for (var i = tags.length - 1; i >= 0; i--) {
-       var r=Math.floor(Math.random()*75+130);
-       var g=Math.floor(Math.random()*75+100);
-       var b=Math.floor(Math.random()*75+80);
-       tags[i].style.background = "rgb("+r+","+g+","+b+")";
-     }
-</script>
 
-<style>
-  .tag-cloud-tags{
-    /*font-family: Helvetica, Tahoma, Arial;*/
-    /*font-weight: 100;*/
-    text-align: center;
-    counter-reset: tags;
-  }
-  .tag-cloud-tags a{
-    border-radius: 6px;
-    padding-right: 5px;
-    padding-left: 5px;
-    margin: 8px 5px 0px 0px;
-  }
-  .tag-cloud-tags a:before{
-    content: "";
-  }
-
-  .tag-cloud-tags a:hover{
-     box-shadow: 0px 5px 15px 0px rgba(0,0,0,.4);
-     transform: scale(1.1);
-     /*box-shadow: 10px 10px 15px 2px rgba(0,0,0,.12), 0 0 6px 0 rgba(104, 104, 105, 0.1);*/
-     transition-duration: 0.15s;
-  }
-</style>
-
-      
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -245,10 +209,9 @@
       <meta itemprop="name" content="guayu-kakeru">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/51954.html" class="post-title-link" itemprop="url">群友靶机-LingMj复盘</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          群友靶机-LingMj复盘
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -292,7 +255,7 @@
       
       
       
-          <h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># nmap 192.168.176.228 -p- </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( <span class="keyword">https</span>://nmap.org ) <span class="keyword">at</span> <span class="number">2025</span><span class="number">-05</span><span class="number">-06</span> <span class="number">23</span>:<span class="number">05</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span><span class="number">.176</span><span class="number">.228</span>)</span><br><span class="line">Host is up (<span class="number">0.0081</span>s latency).</span><br><span class="line">Not shown: <span class="number">65532</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line"><span class="number">22</span>/tcp   <span class="built_in">open</span>  ssh</span><br><span class="line"><span class="number">80</span>/tcp   <span class="built_in">open</span>  <span class="keyword">http</span></span><br><span class="line"><span class="number">1883</span>/tcp <span class="built_in">open</span>  mqtt</span><br><span class="line">MAC Address: C8:<span class="number">21</span>:<span class="number">58</span>:<span class="number">16</span>:CF:C4 (Intel Corporate)</span><br><span class="line"></span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">11.34</span> <span class="built_in">seconds</span></span><br></pre></td></tr></table></figure></div>
+        <h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># nmap 192.168.176.228 -p- </span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( <span class="keyword">https</span>://nmap.org ) <span class="keyword">at</span> <span class="number">2025</span><span class="number">-05</span><span class="number">-06</span> <span class="number">23</span>:<span class="number">05</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span><span class="number">.176</span><span class="number">.228</span>)</span><br><span class="line">Host is up (<span class="number">0.0081</span>s latency).</span><br><span class="line">Not shown: <span class="number">65532</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line"><span class="number">22</span>/tcp   <span class="built_in">open</span>  ssh</span><br><span class="line"><span class="number">80</span>/tcp   <span class="built_in">open</span>  <span class="keyword">http</span></span><br><span class="line"><span class="number">1883</span>/tcp <span class="built_in">open</span>  mqtt</span><br><span class="line">MAC Address: C8:<span class="number">21</span>:<span class="number">58</span>:<span class="number">16</span>:CF:C4 (Intel Corporate)</span><br><span class="line"></span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">11.34</span> <span class="built_in">seconds</span></span><br></pre></td></tr></table></figure></div>
 <p>发现有一个奇怪的端口mqtt</p>
 <h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>先去hacktricks看看有没有1883端口mqtt的什么信息或者利用手段<br>了解到这是一个发布&#x2F;订阅消息传递协议<br><img src="https://pic1.imgdb.cn/item/681a265258cb8da5c8e1339c.png"><br>然后让gpt写一个建议的接受信息的脚本 运行之后得到登录凭证</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> paho.mqtt.client <span class="keyword">as</span> mqtt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">on_message</span>(<span class="params">client, userdata, message</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Topic: <span class="subst">&#123;message.topic&#125;</span>, Message: <span class="subst">&#123;message.payload.decode()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">client = mqtt.Client()</span><br><span class="line">client.on_message = on_message</span><br><span class="line">client.connect(<span class="string">&quot;192.168.176.228&quot;</span>, <span class="number">1883</span>, <span class="number">60</span>)</span><br><span class="line">client.subscribe(<span class="string">&quot;#&quot;</span>)</span><br><span class="line">client.loop_forever()</span><br></pre></td></tr></table></figure></div>
@@ -328,526 +291,52 @@
 <li>学习写入&#x2F;etc&#x2F;passwd的方法，用户:哈希:用户标号:组标号:注释:主文件夹:用的shell</li>
 </ul>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/28847.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="guayu-kakeru">
-      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="guayu-kakeru">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/28847.html" class="post-title-link" itemprop="url">群友靶机-Noport复盘</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-04-24 19:34:26" itemprop="dateCreated datePublished" datetime="2025-04-24T19:34:26+08:00">2025-04-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-06 23:02:22" itemprop="dateModified" datetime="2025-05-06T23:02:22+08:00">2025-05-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/%E7%BE%A4%E5%8F%8B%E9%9D%B6%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">群友靶机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-      
-      
-      
-          <p>做了一天没做出来，看了wp复盘总结一下</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/28847.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/51954.html" title="群友靶机-LingMj复盘">https://guayu-kakeru.github.io/posts/51954.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/7589.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="guayu-kakeru">
-      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="guayu-kakeru">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/7589.html" class="post-title-link" itemprop="url">SQL注入专题(更新中)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-04-08 10:02:24" itemprop="dateCreated datePublished" datetime="2025-04-08T10:02:24+08:00">2025-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-19 12:24:07" itemprop="dateModified" datetime="2025-04-19T12:24:07+08:00">2025-04-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-      
-      
-      
-          <p>ctf中的sql注入专题研究，学习一些常见的sql注入题型，碰到新的类型也加进来</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/7589.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/57479.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="guayu-kakeru">
-      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="guayu-kakeru">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/57479.html" class="post-title-link" itemprop="url">HMV-Driftingblues5</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-04-06 18:46:52 / 修改时间：20:52:12" itemprop="dateCreated datePublished" datetime="2025-04-06T18:46:52+08:00">2025-04-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-      
-        <div class="out-img-topic">
-          <img src="https://pic1.imgdb.cn/item/67f25bd40ba3d5a1d7eec745.png" class="img-topic">
-        </div>
-      
-      
-          <p>HMV-Driftingblues5靶场复盘</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/57479.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/28847.html" rel="prev" title="群友靶机-Noport复盘">
+      <i class="fa fa-chevron-left"></i> 群友靶机-Noport复盘
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/36480.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="guayu-kakeru">
-      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="guayu-kakeru">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/36480.html" class="post-title-link" itemprop="url">HMV-Newbee</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-03-30 20:45:09 / 修改时间：22:15:56" itemprop="dateCreated datePublished" datetime="2025-03-30T20:45:09+08:00">2025-03-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-      
-        <div class="out-img-topic">
-          <img src="https://pic1.imgdb.cn/item/67e93e470ba3d5a1d7e6c9bc.png" class="img-topic">
-        </div>
-      
-      
-          <p>HMV-Newbee靶机复盘</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/36480.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/46850.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="guayu-kakeru">
-      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="guayu-kakeru">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/46850.html" class="post-title-link" itemprop="url">HMV-Chromee WP复现及复盘</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-03-29 15:15:57 / 修改时间：17:14:12" itemprop="dateCreated datePublished" datetime="2025-03-29T15:15:57+08:00">2025-03-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-      
-        <div class="out-img-topic">
-          <img src="https://pic1.imgdb.cn/item/67e79e200ba3d5a1d7e5f029.png" class="img-topic">
-        </div>
-      
-      
-          <p>又是新靶机没做出来系列。。。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/46850.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/37991.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="guayu-kakeru">
-      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="guayu-kakeru">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/37991.html" class="post-title-link" itemprop="url">NSSRound#28web方向wp</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-03-24 22:31:28 / 修改时间：23:20:17" itemprop="dateCreated datePublished" datetime="2025-03-24T22:31:28+08:00">2025-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-      
-      
-      
-          <p>上周末打的nss的比赛，一共就4道web题，最后一题不会用fenjing没做出来。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/37991.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -899,6 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
