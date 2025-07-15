@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67c1338bd0e0a243d407bfff.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/67c133f0d0e0a243d407c014.png">
 <meta property="article:published_time" content="2025-02-27T15:07:38.708Z">
-<meta property="article:modified_time" content="2025-03-05T08:33:25.259Z">
+<meta property="article:modified_time" content="2025-07-14T03:17:02.326Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="web">
@@ -239,7 +239,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-05 16:33:25" itemprop="dateModified" datetime="2025-03-05T16:33:25+08:00">2025-03-05</time>
+                <time title="修改时间：2025-07-14 11:17:02" itemprop="dateModified" datetime="2025-07-14T11:17:02+08:00">2025-07-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -279,7 +279,7 @@
 <p><strong>XML自定义实体</strong>：<br>XML 允许在 DTD 中定义自定义实体。</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">foo</span> [ <span class="meta">&lt;!ENTITY <span class="keyword">myentity</span> <span class="string">&quot;my entity value&quot;</span> &gt;</span> ]&gt;</span></span><br></pre></td></tr></table></figure></div>
 <p>此定义意味着 XML 文档中任何对实体引用 &myentity; 的使用都将被替换为定义的值：“ my entity value ”。</p>
-<p><strong>XML自定义实体</strong>：<br>XML 外部实体是一种自定义实体，其定义位于声明它们的 DTD 之外。<br>外部实体的声明使用 SYSTEM 关键字，并且必须指定应从中加载实体值的 URL。URL也可以用php伪协议，file协议等等,如</p>
+<p><strong>XML外部实体</strong>：<br>XML 外部实体是一种自定义实体，其定义位于声明它们的 DTD 之外。<br>外部实体的声明使用 SYSTEM 关键字，并且必须指定应从中加载实体值的 URL。URL也可以用php伪协议，file协议等等,如</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">foo</span> [ <span class="meta">&lt;!ENTITY <span class="keyword">ext</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///path/to/file&quot;</span> &gt;</span> ]&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <h2 id="什么是xxe漏洞-如何出现"><a href="#什么是xxe漏洞-如何出现" class="headerlink" title="什么是xxe漏洞 如何出现"></a>什么是xxe漏洞 如何出现</h2><p>允许攻击者干扰应用程序对 XML 数据的处理。它通常允许攻击者在应用程序服务器文件系统上查看文件，并与应用程序本身可以访问的任何后端或外部系统进行交互。</p>
