@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68a6d50a58cb8da5c840d1a9.png">
 <meta property="article:published_time" content="2025-08-21T08:01:56.000Z">
-<meta property="article:modified_time" content="2025-08-21T08:13:19.399Z">
+<meta property="article:modified_time" content="2025-08-21T09:51:47.817Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="cisp-pte">
 <meta property="article:tag" content="渗透">
@@ -221,7 +221,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-08-21 16:01:56 / 修改时间：16:13:19" itemprop="dateCreated datePublished" datetime="2025-08-21T16:01:56+08:00">2025-08-21</time>
+              <time title="创建时间：2025-08-21 16:01:56 / 修改时间：17:51:47" itemprop="dateCreated datePublished" datetime="2025-08-21T16:01:56+08:00">2025-08-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -551,6 +551,220 @@
 </li>
 <li>网络物理隔离是指<strong>两个网络间链路层、网络层在任何时刻都不能直接通讯</strong></li>
 </ol>
+<h2 id="第三份"><a href="#第三份" class="headerlink" title="第三份"></a>第三份</h2><ol>
+<li>Windows中的- <strong>SAM（Security Accounts Manager）</strong> 是 <strong>Windows 操作系统中的一个数据库</strong>，主要用于存储本地用户账户信息和安全描述符。它包含了 <strong>用户名、密码哈希（NTLM Hash）、组成员信息</strong> 等敏感数据。 存放位置<code>C:\Windows\System32\config\SAM</code><ul>
+<li>A: <code>%SystemRoot%\system32\config\sam</code> 是SAM数据库的物理文件路径。</li>
+<li>B: SAM文件本身就是一个注册表配置单元（Hive），它在系统启动时被加载到注册表的 HKEY_LOCAL_MACHINE\SAM 键下。</li>
+<li>D: 这准确地描述了SAM的功能和访问机制。</li>
+<li><strong>C 是错误的</strong>。SAM文件受到了极其严格的保护。在Windows系统正常运行时，该文件被<strong>LSASS (Local Security Authority Subsystem Service)</strong> 进程独占锁定。<strong>任何用户，包括Administrator</strong>，都无法直接读取或写入这个文件。只有拥有 SYSTEM 权限的LSASS进程才能对其进行操作。这也是为什么黑客需要使用mimikatz等工具从LSASS进程的内存中转储密码哈希，而不是直接去读取SAM文件。</li>
+</ul>
+</li>
+<li>完整性检查和控制是为了防止<strong>不合语义的数据、不正确的数据</strong>进入数据库</li>
+<li>当今任何一个标准的、实际运行的Apache环境中，httpd.conf 是服务器的<strong>主配置文件</strong>，它包含了或引用了所有的配置，当然也包括访问控制规则。<br>在 Apache 早期版本中，配置被清晰地分成了三个文件：<ul>
+<li>httpd.conf: 包含核心的服务器指令。</li>
+<li>srm.conf (Server Resource Map): 包含资源相关的配置，如 DocumentRoot。 </li>
+<li>access.conf: <strong>专门用于存放访问控制规则</strong>，例如 <code>&lt;Directory&gt; 和 &lt;Location&gt;</code> 块中的 Allow, Deny 等指令。</li>
+<li>inetd.conf 是 Linux&#x2F;Unix 系统中 inetd 超级守护进程的配置文件，与 Apache 无关。</li>
+</ul>
+</li>
+<li>与数据库的安全有直接关系的是<strong>访问控制的粒度</strong><ul>
+<li><strong>访问控制的粒度 (Granularity)</strong> 指的是权限控制可以精确到什么程度。例如，是只能控制到表级别，还是可以控制到列级别，甚至是行级别（行级安全）。粒度越细，安全策略就能制定得越精确，能更好地遵循<strong>最小权限原则</strong>。这直接关系到数据库的安全性。</li>
+</ul>
+</li>
+<li><strong>审计系统一般包含三个部分：日志记录、日志分析和日志报告</strong></li>
+<li>在Unix系统中，&#x2F;etc&#x2F;service文件<strong>记录一些常用的接口及其所提供的服务的对应关系</strong><ul>
+<li>&#x2F;etc&#x2F;inetd.conf： 决定inetd启动网络服务时，启动那些服务</li>
+<li>&#x2F;etc&#x2F;inittab：定义了系统缺省运行级别，系统进入新运行级别需要做什么</li>
+<li>&#x2F;etc&#x2F;init.d&#x2F;或 &#x2F;etc&#x2F;rc.d&#x2F;： 包含了系统的一些启动脚本</li>
+</ul>
+</li>
+<li><strong>windows系统是采用SID(安全标识符)来标识用户对文件或文件夹的权限</strong><ul>
+<li>在 Windows NT 内核中，每个用户、组或计算机都有一个唯一的<strong>安全标识符 (SID)</strong>。系统内部的所有访问控制（如文件系统的ACL）都是基于 SID 来判断的，而不是基于可变的用户名。</li>
+<li>用户名只是SID的一个方便人们记忆的一个别名</li>
+<li>winddows默认账户是 Administrator 和 Guest。它们都<strong>可以被重命名</strong>，但<strong>不能被删除</strong></li>
+</ul>
+</li>
+<li>数据库管理员应向DBMS提出一组完整性规则来检查数据库中的数据，数据库的完整性控制机制通常包括<ol>
+<li><strong>完整性约束条件 (Constraint):</strong> 定义什么是“合法”的数据。例如，PRIMARY KEY, FOREIGN KEY, CHECK。</li>
+<li><strong>完整性检查机制 (Check):</strong> 在执行 INSERT, UPDATE, DELETE 等操作时，DBMS 会自动触发检查机制，判断该操作是否会违反约束条件。</li>
+<li><strong>违约处理机制 (Action):</strong> 如果检查发现操作违反了约束，DBMS 会执行预定义的处理动作，最常见的动作就是<strong>拒绝 (REJECT)</strong> 该操作并报错。其他动作还包括级联删除（CASCADE）等。</li>
+</ol>
+<ul>
+<li><strong>完整性修复机制</strong>不是一个标准的组成部分。DBMS 的职责是<strong>防止</strong>坏数据进入，而不是自动去<strong>修复</strong>已经存在的坏数据。数据修复通常需要 DBA 手动进行。</li>
+</ul>
+</li>
+<li>数据库事务日志的用途是<strong>数据恢复</strong></li>
+<li><strong>Cookie欺骗</strong>指的是攻击者通过某种方式（如XSS、网络嗅探）<strong>窃取</strong>了合法用户的Cookie，然后使用这个Cookie来冒充该用户，从而绕过身份验证<br>而不是通过cookie提交精妙构造的移动代码，绕过身份验证的攻击叫做cookie欺骗<ul>
+<li><strong>最普遍、最标准的将会话ID（Session ID）传递给浏览器的方式，就是通过设置一个Cookie！</strong> 浏览器收到的 Set-Cookie 头里会包含类似 PHPSESSID&#x3D;a1b2c3d4e5f6… 这样的内容。</li>
+<li>因此，“Session验证”<strong>并没有取代</strong>“Cookie验证”，<strong>它依赖于Cookie</strong>来传递身份凭证（Session ID）。</li>
+</ul>
+</li>
+<li>Java安全模型(JSM)是在设计虚拟机(JVN)时，引入沙箱(sandbox)机制，其主要目的是<strong>为服务器提供针对恶意客户端代码的保护</strong><ul>
+<li>沙箱为来自网络的、不可信的代码提供一个<strong>受限制的运行环境</strong>，严格限制它访问本地系统资源的能力（如读写文件、打开网络连接等）。</li>
+</ul>
+</li>
+<li>在典型的web应用站点的层次结构中，“中间件”是在哪里运行的 – <strong>应用服务器</strong><br>在经典的三层&#x2F;N层架构中：<ul>
+<li><strong>Web服务器 (如 Apache, Nginx):</strong> 负责处理静态内容和接受HTTP请求，然后将动态请求转发给应用服务器。</li>
+<li><strong>应用服务器 (Application Server):</strong> 这是运行<strong>业务逻辑</strong>的地方。<strong>中间件</strong>（如 Tomcat, JBoss, WebLogic, ASP.NET Core运行时）就是应用服务器的核心，它负责解释和执行后端代码（Java, C#, PHP等），处理业务流程，并与数据库交互。</li>
+<li><strong>数据库服务器 (如 MySQL, Oracle):</strong> 负责数据的存储和检索。</li>
+</ul>
+</li>
+<li>病毒的特性： <strong>可感染、依附性</strong><ul>
+<li>与之相对的是<strong>蠕虫 (Worm)</strong>，蠕虫是<strong>独立</strong>的程序，它通过网络自主传播，不需要依附于宿主文件。</li>
+</ul>
+</li>
+<li>杀毒软件报告发现病毒Macro.Melissa,由该病毒名称可以推断出病毒类型是<strong>宏病毒</strong><ul>
+<li>病毒软件厂商的病毒命名通常遵循一定格式：病毒类型.病毒家族名.变种。</li>
+</ul>
+</li>
+<li>信息安全数据的载体有<ul>
+<li><strong>网络协议 (如IPsec, TLS):</strong> 提供了传输过程中的加密和认证机制。</li>
+<li><strong>操作系统 (如Linux, Windows):</strong> 提供了访问控制、身份认证、日志审计等基础安全功能。</li>
+<li><strong>应用系统 (如OA, ERP):</strong> 实现了应用层面的权限控制和业务逻辑安全。</li>
+</ul>
+</li>
+<li>有效的缓冲区溢出的防护措施 ^id2<ul>
+<li>B. 严格验证输入字符串长度</li>
+<li>C. 过滤不合规则的字符</li>
+<li>D. 使用第三方安全的字符串库操作<br><strong>标准C语言</strong>中的许多字符串处理函数（如 strcpy, strcat, gets, sprintf）是<strong>不进行边界检查</strong>的，它们是导致缓冲区溢出漏洞的<strong>主要元凶</strong>。</li>
+</ul>
+</li>
+<li>蜜罐的功能：<ul>
+<li>可以吸引或转移攻击者的注意力，延缓他们对真正目标的攻击</li>
+<li>吸引入侵者来嗅探、攻击，同时不被觉察地将入侵者的活动记录下来</li>
+<li>可以对攻击活动进行监视、检测和分析</li>
+<li>蜜网的三大关键技术是<strong>数据捕获、数据控制和数据分析</strong><br>“攻击检测和实时报警”是典型的<strong>入侵检测系统 (IDS)</strong> 或<strong>入侵防御系统 (IPS)</strong> 的功能。不是蜜罐的功能</li>
+</ul>
+</li>
+<li>下列关于计算机病毒感染能力的说法不正确的是 – <strong>能将自身代码注入文本文件中并执行</strong><ul>
+<li>B 能将自身代码注入到文档或模板的宏中代码: <strong>宏病毒</strong>就是感染Office文档的宏代码。正确。</li>
+<li>C 能将自身代码注入到引导区: <strong>引导区病毒</strong>就是感染硬盘的主引导记录(MBR)或分区引导记录(DBR)。正确。</li>
+<li>D 能将自身代码注入到扇区中的文件镜像: <strong>文件型病毒</strong>就是感染可执行文件（如.exe, .com）。这个描述虽然不精确，但意指感染文件。正确。</li>
+</ul>
+</li>
+<li><strong>代码注入</strong>： 用户输入的数据被一个解释器当作命令或查询语句的一部分执行</li>
+<li>某服务器感染了一个木马，安全管理员通过进程分析找到木马进程为s.exe,位置是c:\s.exe文件，但当安全管理员终止该进程后，到c盘查找该文件却看不到这个文件，安全管理员给出了四种木马病毒隐藏自身的方式分析，其中哪一种分析方式是<strong>错误</strong>的? – <strong>D 木马通过设置自身属性为系统、隐藏文件，从而实现在系统中隐藏</strong><ul>
+<li>A 木马采用DLL注入方式伪造进程名称，在进程分析中看起来是在C盘根目录下，实际不在此目录</li>
+<li>C s.exe是木马在运行起来后生成的，每次退出后会将自身删除，所以在C盘无法查询此病毒</li>
+<li>D 如果木马只是用了这种初级方法，<strong>安全管理员是一定能够看到这个文件的</strong>。</li>
+<li>B 木马利用hook技术获取用户查询才做的消息，然后将自身从内存中的文件结构中删除，使自己实际在C盘，但是在查询时无法看到</li>
+</ul>
+</li>
+<li>通过向被攻击者发送大量的ICMP回应请求，消耗被攻击者的资源来进行响应，直至被攻击者再也无法处理有效的网络信息流时，这种攻击称之为<strong>ICMP Flood</strong><ul>
+<li>Smurf攻击是一种<strong>放大型</strong>的ICMP洪水攻击，它向网络的广播地址发送伪造源IP的ping请求，导致网络中大量主机同时向受害者回应。</li>
+<li>Ping of Death 是发送一个超大的、畸形的ICMP包来使旧系统崩溃。</li>
+<li>Land攻击是TCP SYN攻击。 攻击者使用伪造的SYN包，包的源地址和目标地址都被设置成被攻击方的地址，这样被攻击方会给自己发送SYN-ACK消息并发回ACK消息，创建一个空连接，每一个这样的连接都将保持到超时为止，这样过多的空连接会耗尽被攻击方的资源，导致拒绝服务。</li>
+</ul>
+</li>
+<li>安全审计的作用：<ul>
+<li>辅助辨识和分析未经授权的活动或攻击</li>
+<li>对与已建立的安全策略的一致性进行核查</li>
+<li>发现需要改进的安全控制措施</li>
+</ul>
+</li>
+<li>HTTP工作的架构模式是<strong>客户端-服务端模式</strong></li>
+<li>HTTP响应头信息中，allow允许哪种请求方式 – <strong>GET POST OPTIONS</strong><ul>
+<li>Allow 是一个<strong>响应头 (Response Header)</strong>，它用于<strong>响应</strong>一个 OPTIONS 请求。</li>
+<li><strong>OPTIONS</strong> 是一个<strong>请求方法 (Request Method)</strong>，客户端使用 OPTIONS 方法来询问服务器，某个URL资源支持哪些HTTP请求方法（如GET, POST, PUT, DELETE等）。</li>
+<li>服务器收到 OPTIONS 请求后，会在响应头中加入 Allow: GET, POST, HEAD 这样的字段来回答。因此，Allow 头与 OPTIONS 方法是直接对应的。</li>
+</ul>
+</li>
+<li>OSI七层网络模型 1-7：<strong>物理层 数据链路层 网络层 传输层 会话层 表示层 应用层</strong></li>
+<li>计算机取证的合法原则是<strong>计算机取证在任何时候都必须保证符合相关法律法规</strong></li>
+</ol>
+<h2 id="第四份"><a href="#第四份" class="headerlink" title="第四份"></a>第四份</h2><ol>
+<li>要在oracle下执行java存储过程，需要具备<strong>javasyspriv</strong><ul>
+<li>在 Oracle 数据库中，为了安全起见，对 Java 的权限进行了严格的划分。</li>
+<li>connect 和 resource 是最基本的用户角色，分别用于连接和创建对象，权限很低。</li>
+<li>dba 是数据库管理员，拥有最高权限，当然可以执行 Java 存储过程。但这不是执行该操作所需的<strong>最小</strong>和<strong>最特定</strong>的角色。</li>
+<li><strong>javasyspriv</strong> 是一个专门设计的角色，它的全称是 “Java System Privilege”。这个角色授予用户在数据库内部的 Java 虚拟机(JVM)中执行一些系统级操作的权限，例如访问文件系统、执行操作系统命令等。加载和执行 Java 存储过程通常需要这个特定的权限。</li>
+</ul>
+</li>
+<li>系统疑似被入侵，查看系统登录日志wtmp,正确的命令是<code>last-f wtmp</code><ul>
+<li>wtmp 文件（通常位于 &#x2F;var&#x2F;log&#x2F;wtmp）是一个<strong>二进制</strong>文件，记录了用户的登录和注销历史。</li>
+<li><strong>last</strong> 命令是专门用来解析和显示 wtmp 文件内容的工具。-f 参数允许你指定要查看的日志文件，而不是使用默认的 &#x2F;var&#x2F;log&#x2F;wtmp</li>
+</ul>
+</li>
+<li>在linux安装应用，哪个命令不需要 –  <strong>.&#x2F;install</strong><ul>
+<li>在 Linux 下从源代码编译安装软件，标准的 <strong>GNU Autotools</strong> 流程是三部曲：<ol>
+<li><strong>.&#x2F;configure</strong>: 检查系统环境，生成 Makefile 配置文件。</li>
+<li><strong>make</strong>: 根据 Makefile 文件，编译源代码，生成可执行文件。</li>
+<li><strong>make install</strong>: 将编译好的文件和相关资源复制到系统的标准目录中。</li>
+</ol>
+</li>
+<li>.&#x2F;install 或 .&#x2F;install.sh 不是这个标准流程的一部分。它是一些软件开发者为了简化安装过程而自己编写的<strong>自定义安装脚本</strong>，并非通用或必需的命令。</li>
+</ul>
+</li>
+<li>下面哪个类型的rootkit是调用系统级函数来隐藏自己 –  <strong>内核层</strong><ul>
+<li><strong>内核层 Rootkit (Kernel-level Rootkit)</strong> 是最强大、最隐蔽的一类。它通过修改操作系统的<strong>内核</strong>代码或关键数据结构（如系统调用表、中断描述符表）来隐藏自身。当上层应用（如任务管理器、ls 命令）通过<strong>系统调用</strong>来查询进程、文件等信息时，被修改过的内核会拦截这些调用，并将关于 Rootkit 自身的信息从返回结果中过滤掉。</li>
+<li>应用层和运行库层 Rootkit 的隐藏能力较弱，更容易被检测。</li>
+</ul>
+</li>
+<li>以下不属于实现数据库安全性的主要技术和方法 –  <strong>出入机房等记或加锁</strong><br>数据库<strong>系统内部</strong>提供的安全技术：<ul>
+<li><strong>存取控制 (Access Control):</strong> 通过 GRANT&#x2F;REVOKE 实现用户权限管理</li>
+<li><strong>视图 (View):</strong> 通过创建视图，可以向用户隐藏某些行或列，实现更细粒度的访问控制。</li>
+<li><strong>审计 (Auditing):</strong> 记录对数据库的操作，用于事后追溯。</li>
+</ul>
+</li>
+<li>全国首例计算机入侵银行系统是通过<strong>安装无限MODEM进行攻击</strong></li>
+<li>黑客造成的主要安全隐患包括 <strong>破坏系统、窃取信息及伪造信息</strong></li>
+<li>江泽民主席指出信息战的主要形式是<strong>电子战和计算机网络战</strong></li>
+<li>在制定任何备份策略之前，第一步永远是<strong>识别和定义备份的范围</strong></li>
+<li>为了防御网络监听，最常用的方法是 <strong>信息加密</strong></li>
+<li>最小特权原则： <strong>一个人有且仅有其执行岗位所足够的许可和权限</strong></li>
+</ol>
+<ul>
+<li><strong>岗位轮换</strong>  组织机构内的敏感岗位不能由一个人长期负责</li>
+<li><strong>职责分离</strong>  对重要的工作进行分解，分自己给不同人员完成</li>
+</ul>
+<ol start="12">
+<li>我国的计算机年犯罪率的增长是</li>
+<li>信息安全风险缺口是指 <strong>IT的发展与安全投入，安全意识和安全手段的不平衡</strong></li>
+<li>应急小组的简称 <strong>CERT</strong>。CERT (Computer Emergency Response Team)</li>
+<li>下面对访问控制技术描述最准确的是 – <strong>防止对系统资源的非授权访问</strong><ul>
+<li>访问控制技术通过一系列机制（如身份认证、授权和审计，即AAA模型）来确保只有合法的用户（主体）才能以被允许的方式访问特定的资源（客体）。其根本目的就是<strong>防止未经授权的访问和使用</strong>。</li>
+<li>可靠性、可追查性、可信性都是安全的目标，但“防止非授权访问”是访问控制这一<strong>技术手段</strong>最直接、最准确的描述。</li>
+</ul>
+</li>
+<li>完整性机制可以防范以下哪种攻击  – <strong>数据传输中被篡改或破坏</strong></li>
+<li>通常一个三个字符的口令破解需要</li>
+<li>通过口令使用习惯调查发现有大约___%的人使用长度低于5个字符的口令</li>
+<li><strong>1999年6月24日星期四</strong>。这指的是国内早期的“中华黑客”攻击美国网站的事件 被称为<strong>黑色星期四</strong> </li>
+<li><strong>数据所有者</strong> 负有决定信息分类级别的责任<ul>
+<li>用户 (User): 数据的最终使用者。</li>
+<li>审计员 (Auditor): 负责检查安全策略的执行情况。</li>
+<li>安全员 (Security Officer): 负责提供安全建议、实施和维护安全控制措施，但最终的定级决策权在所有者手中。</li>
+</ul>
+</li>
+<li>网络安全在多网合一时代的脆弱性体现在<strong>应用的脆弱性</strong></li>
+<li>操作系统打补丁和系统升级是以下哪种风险控制措施 <strong>降低风险</strong><ul>
+<li><strong>降低风险 (Risk Mitigation&#x2F;Reduction):</strong> 采取措施来减少漏洞或减小攻击成功后的影响。打补丁修复了已知的漏洞，直接降低了系统被利用的可能性，这是最典型的降低风险措施。</li>
+<li>规避风险：停止使用该系统或功能。</li>
+<li>转移风险：购买网络安全保险。</li>
+<li>接受风险：已知风险但决定不采取任何措施。</li>
+</ul>
+</li>
+<li>关于信息保障：</li>
+</ol>
+<ul>
+<li>A 信息安全保障是一个客观到主观的过程，即通过采取技术、管理、工程等手段，对信息资源的保密性、完整性、可用性提供保护，从而给信息系统所有者以信心 </li>
+<li>信息安全保障的需求是由信息安全策略所决定的，是自上而下的一个过程，在这个过程中，决策者的能力和决心非常重要</li>
+<li>信息系统安全并不追求万无一失，而是要根据资金预算，做到量力而行</li>
+</ul>
+<ol start="24">
+<li>WindowsNT提供的分布式安全环境又被称为<strong>域(Domain)</strong><ul>
+<li><strong>域 (Domain)</strong> 是 Windows Server (源于 NT) 提供的一种<strong>集中式</strong>管理模型。在一个域中，所有的用户账户、计算机账户和安全策略都存储在名为<strong>活动目录 (Active Directory)</strong> 的中央数据库中。这使得管理员可以对整个网络进行统一的、分布式的安全管理。</li>
+<li>工作组 (Workgroup) 是一种对等的、<strong>非集中式</strong>的管理模型，每台计算机各自管理自己的账户。</li>
+</ul>
+</li>
+<li> Apache解析规则<strong>从右向左</strong></li>
+<li>会话固定形成的原因是<strong>成功注册后，会话ID没有轮转</strong><ul>
+<li><strong>会话固定 (Session Fixation)</strong> 攻击的核心是：攻击者在用户登录<strong>之前</strong>，就强制用户使用一个攻击者已知的 Session ID。当用户用这个 Session ID 成功登录后，攻击者就可以利用这个 ID 来冒充用户。</li>
+<li>这个漏洞的<strong>根本原因</strong>是，Web应用在用户成功认证（登录）后，<strong>没有废弃旧的会话ID，并重新生成一个新的、安全的会话ID</strong>。这个行为被称为<strong>会话ID轮转 (Session ID Regeneration)</strong></li>
+</ul>
+</li>
+<li> IIS PUT漏洞存在  <strong>IIS5.0</strong> (也包括IIS 4.0)</li>
+</ol>
 
     </div>
 
@@ -649,7 +863,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%BB%BD"><span class="nav-text">第一份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%BB%BD"><span class="nav-text">第二份</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%BB%BD"><span class="nav-text">第一份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%BB%BD"><span class="nav-text">第二份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E4%BB%BD"><span class="nav-text">第三份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E4%BB%BD"><span class="nav-text">第四份</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
