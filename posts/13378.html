@@ -29,10 +29,10 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68a6d50a58cb8da5c840d1a9.png">
 <meta property="article:published_time" content="2025-08-21T08:01:56.000Z">
-<meta property="article:modified_time" content="2025-08-21T09:59:29.921Z">
+<meta property="article:modified_time" content="2025-08-22T03:18:53.565Z">
 <meta property="article:author" content="guayu-kakeru">
-<meta property="article:tag" content="渗透">
 <meta property="article:tag" content="cisp-pte">
+<meta property="article:tag" content="渗透">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://pic1.imgdb.cn/item/68a6d50a58cb8da5c840d1a9.png">
 
@@ -219,10 +219,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-08-21 16:01:56 / 修改时间：17:59:29" itemprop="dateCreated datePublished" datetime="2025-08-21T16:01:56+08:00">2025-08-21</time>
+              <time title="创建时间：2025-08-21 16:01:56" itemprop="dateCreated datePublished" datetime="2025-08-21T16:01:56+08:00">2025-08-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-22 11:18:53" itemprop="dateModified" datetime="2025-08-22T11:18:53+08:00">2025-08-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -764,6 +770,136 @@
 <li> IIS PUT漏洞存在  <strong>IIS6.0</strong></li>
 </ol>
 <p> </p>
+<h2 id="第五份"><a href="#第五份" class="headerlink" title="第五份"></a>第五份</h2><ol>
+<li>哪个关键字可在CREATE TABLE语句中使用 – <strong>UNIQUE</strong><ul>
+<li>CREATE TABLE 是一个DDL语句，用于定义表的结构和约束。<strong>UNIQUE</strong> 是一个约束，用于确保列中的所有值都是唯一的。它可以在 CREATE TABLE 语句中定义列时使用（例如 email VARCHAR(255) UNIQUE）。</li>
+<li><strong>DISTINCT, GROUP BY, 和 ORDER BY</strong> 都是DQL (SELECT 语句)中使用的关键字，分别用于去重、分组和排序，不能用在 CREATE TABLE 语句中。</li>
+</ul>
+</li>
+<li> 中间件未出现过以下哪个漏洞 – <strong>序列化</strong> （序列化不是一个漏洞）</li>
+<li>IIS没有出现过反序列化漏洞</li>
+<li>在渗透测试弱口令检查中，<strong>weblogic, guest, system</strong> 都是在Oracle产品线（包括Weblogic和Oracle数据库）中非常常见的默认或内置用户名。其中 weblogic&#x2F;weblogic 是最著名的Weblogic默认管理员账号密码。</li>
+<li>数字取证的首要原则是<strong>保持证据的原始性</strong>和<strong>最小化对现场的改变</strong> <ul>
+<li>打开计算机、登录系统、运行程序等任何交互操作都会<strong>大量修改</strong>系统状态（文件访问时间、注册表、日志、内存），严重污染甚至破坏原始证据。</li>
+<li>正确的做法是先对硬盘进行完整的位对位镜像（Imaging），然后在镜像副本上进行分析。</li>
+</ul>
+</li>
+<li><strong>计算哈希值是取证镜像工具最核心、最基本的功能之一</strong></li>
+<li><strong>MAC地址 (Media Access Control Address)</strong>，又称物理地址，是烧录在网卡(NIC)上的全球唯一的地址。它由<strong>48位</strong>二进制数组成，通常表示为12位的十六进制数（如 00-1A-2B-3C-4D-5E）。</li>
+<li>硬盘的第一扇区”0扇区”是<strong>主引导记录</strong>  MBR<ul>
+<li>第一个扇区： <strong>系统引导记录</strong> DBR</li>
+<li>第二、三个扇区： 分区数据</li>
+</ul>
+</li>
+<li>在计算机取证调查的方法步骤中<strong>获取数据</strong>会对电子证据进行MD5校验</li>
+<li>下列哪个陈述与在犯罪现场获取电子证据有关 – 通过警告标语，组织给入侵者清晰和明确的通知，同意进入该系统并接受该系统监测</li>
+<li><strong>nbtstat -n</strong>用来显示NetBIOS名称表<ul>
+<li>-n: 显示<strong>本地</strong>机器的 NetBIOS 名称表。</li>
+<li>-c: 显示 NetBIOS 名称缓存。</li>
+<li>-r: 显示通过广播和 WINS 解析的名称统计信息。</li>
+<li>-S: 显示远程机器的会话表。</li>
+</ul>
+</li>
+<li>图像的<strong>位深度</strong>属性显示了图像中每个像素可用的颜色数</li>
+<li>NTP (Network Time Protocol) 是一个分层结构。<ul>
+<li><strong>Stratum 0</strong>: 权威时间源，如原子钟、GPS。它们<strong>不</strong>在网络上。</li>
+<li><strong>Stratum 1</strong>: 直接连接到Stratum 0的服务器，是网络上最精确的时间源。</li>
+<li><strong>Stratum 2</strong>: 通过网络从Stratum 1获取时间的服务器。</li>
+<li><strong>Stratum n</strong>: 通过网络从Stratum n-1获取时间的服务器</li>
+</ul>
+</li>
+<li>net session (或 net sessions) 命令用于列出或断开本地计算机与网络上其他计算机之间的会话。当在服务器上执行时，它会显示哪些用户（以及他们的IP地址、客户端类型）当前正连接到该服务器。</li>
+<li>Ntldr读取Boot.ini文件且加载Ntoskrnl.exe.Bootvid.dll，Hal.dll,并且开机启动设备驱动程序</li>
+<li><strong>公开源代码隐写</strong>隐藏的秘密信息在一个专门设计的模式，对普通读者是不清楚的</li>
+<li>Metasploit Framework 强烈推荐连接数据库（通常是PostgreSQL）来管理工作空间、主机信息、漏洞数据等<ul>
+<li>db_status 用于查看当前的数据库连接状态。</li>
+<li>db_connect 用于手动连接到一个已经配置好的数据库。</li>
+<li>db_import 用于导入外部扫描器的报告（如Nmap XML）。</li>
+</ul>
+</li>
+<li>Nmap常见的参数总结：<br>-sn：ping扫描，只探测主机是否存活。 -Pn：跳过主机发现  -sS：半开扫描  -sT：TCP Connect扫描  -sU：UDP扫描  -sA：ACK扫描（探测防火墙规则） -p：指定端口范围  -sV：探测服务版本  -O：操作系统指纹识别 -sC：相当于–script&#x3D;default，执行默认脚本  -T0~T5：速度，T5也最容易被发现  -f：分片扫描，规避防火墙 <code>-D &lt;decoy&gt;</code>：使用诱饵 IP 混淆真实扫描源  <code>-S &lt;IP&gt;</code> ：伪造源 IP</li>
+<li>Linux文件权限一共10位长度，分成四段<ul>
+<li>第一段 (第1位): 文件类型 (- 为文件, d 为目录)</li>
+<li>第二段 (第2-4位): <strong>文件所有者 (Owner)</strong> 的权限 (rwx)</li>
+<li>第三段 (第5-7位): <strong>文件所属组 (Group)</strong> 的权限 (r-x)</li>
+<li>第四段 (第8-10位): <strong>其他用户 (Others)</strong> 的权限 (r-x)</li>
+</ul>
+</li>
+<li>Linux系统修改账号密码生命周期的配置文件是 <strong>&#x2F;etc&#x2F;login.defs</strong></li>
+<li>kill-1955是指<strong>重新启动pid 955这个进程</strong><ul>
+<li>-1 是信号 <strong>SIGHUP</strong> (Hangup)。对于守护进程(daemon)，收到 SIGHUP 信号的<strong>约定俗成</strong>的行为是<strong>重新加载其配置文件并重启服务</strong>，而不是终止。</li>
+<li>-9 (SIGKILL) 是强制终止。</li>
+<li>-15 (SIGTERM) 是默认的、优雅的终止信号。</li>
+</ul>
+</li>
+<li>当空格被过滤时，攻击者会使用其他空白字符来绕过。这些都是常见的替代品<ul>
+<li>%09: Tab (水平制表符)</li>
+<li>%0A: Line Feed (换行)</li>
+<li>%0D: Carriage Return (回车)</li>
+<li>%0B: Vertical Tab (垂直制表符)</li>
+<li>在URL编码中，+ 也可以替代空格。</li>
+<li>在MySQL中，还可以使用注释 /**/ 来替代空格。</li>
+</ul>
+</li>
+<li>在MySQL中，所有的用户信息（包括用户名和密码哈希）都存储在名为 <strong>mysql</strong> 的系统数据库中，具体的表是 <strong>user</strong> 表</li>
+<li><strong>nslookup</strong> (Name Server Lookup) 是一个用于查询DNS（域名系统）的命令行工具。</li>
+<li>在谷歌搜索引擎中，可以使用<strong>intext:to parent</strong>搜索到一些存在目录遍历的网站</li>
+</ol>
+<h2 id="第六份"><a href="#第六份" class="headerlink" title="第六份"></a>第六份</h2><ol>
+<li>当今IT的发展与安全投入，安全意识和安全手段之间形成<strong>安全风险缺口</strong></li>
+<li>信息发送者使用<strong>己方的私钥</strong>进行数字签名</li>
+<li>根据《网络安全法》和相关的国家标准（如《国家网络安全事件应急预案》），网络安全事件的分级主要依据两个维度：<strong>影响范围</strong> 、造成的<strong>危害程度</strong>或<strong>严重后果</strong></li>
+<li>DDOS攻击时利用<strong>中间代理</strong>进行攻击</li>
+<li>以下不属于TCP端口扫描方式的是 –  <strong>ICMP扫描</strong><ul>
+<li><strong>NULL扫描 (-sN):</strong> 发送不含任何标志位的TCP包    </li>
+<li><strong>ACK扫描 (-sA):</strong> 发送ACK包，主要用于探测防火墙规则。</li>
+<li><strong>Xmas扫描 (-sX):</strong> 发送设置了FIN, PSH, URG标志位的TCP包。</li>
+<li><strong>ICMP扫描</strong>（如 nmap -sn -PE）是使用<strong>ICMP协议</strong>（ping）来进行<strong>主机发现</strong>，而不是TCP端口扫描。</li>
+</ul>
+</li>
+<li>TCP协议三次握手的第一步是发送一个<strong>SYN包</strong><ol>
+<li><strong>第一步:</strong> 客户端向服务器发送一个 <strong>SYN</strong> (Synchronize) 包，请求建立连接。</li>
+<li><strong>第二步:</strong> 服务器回复一个 <strong>SYN&#x2F;ACK</strong> (Synchronize&#x2F;Acknowledge) 包，表示同意建立连接。</li>
+<li><strong>第三步:</strong> 客户端回复一个 <strong>ACK</strong> (Acknowledge) 包，表示确认收到，连接建立。</li>
+</ol>
+</li>
+<li> 永恒之蓝漏洞利用 <strong>445</strong>端口</li>
+<li><strong>MSSQL端口</strong>是1433</li>
+<li>浏览器的同源策略 (Same-origin Policy) 要求两个URL的<strong>协议、域名、端口</strong>三者完全一致，才算作同源。</li>
+<li>ASPX的网站配置文件一般存放在哪个文件里 – <strong>web.config</strong><ul>
+<li>ASPX 是 <strong>ASP.NET</strong> 技术的页面文件扩展名。</li>
+<li>在整个.NET Web应用框架中（包括ASP.NET），所有站点的核心配置，如数据库连接字符串、应用设置、模块配置、URL重写规则等，都统一存放在名为 <strong>web.config</strong> 的XML格式的配置文件中。</li>
+</ul>
+</li>
+<li><strong>eval()</strong> 函数是一个<strong>语言内部</strong>的构造。它会将传入的字符串当作<strong>PHP代码</strong>来执行，而不是<strong>操作系统命令 (系统程序)</strong>。这是一个非常重要的区别，eval() 导致的是代码注入漏洞，而 system(), exec() 等导致的是命令注入漏洞。</li>
+<li>使用 SELECT … INTO OUTFILE ‘…’ 语句将内容写入文件，需要满足几个关键条件：<ul>
+<li>数据库用户必须拥有 <strong>FILE 权限</strong>。</li>
+<li>必须知道一个服务器上<strong>可写目录的绝对路径</strong>。Web目录的绝对路径是首选。</li>
+<li>注入点必须允许执行完整的 SELECT 语句，最常见的方式就是通过 <strong>UNION SELECT (联合查询)</strong> 来构造。</li>
+</ul>
+</li>
+<li>APT攻击常见手段：<ul>
+<li><strong>鱼叉攻击 (Spear Phishing):</strong> 精心构造的、针对特定个人或组织的高度定制化钓鱼邮件。</li>
+<li><strong>水坑攻击 (Watering Hole):</strong> 攻击目标群体经常访问的网站，植入恶意代码，守株待兔。</li>
+<li><strong>社会工程学 (Social Engineering):</strong> 是鱼叉攻击和多种渗透手段的基础。</li>
+</ul>
+</li>
+<li>Apache 服务器默认会生成两个主要的日志文件 分别是 <strong>access.log</strong> <strong>error.log</strong></li>
+<li><strong>隧道协议</strong>是一种网络协议，它通过封装另一种网络协议的数据包，在两个网络之间创建一个逻辑上的通道（隧道）<strong>PPTP  L2TP  IPSec</strong></li>
+<li>我司在安全区域划分中DMZ区通常用做<strong>对外服务区</strong> <ul>
+<li><strong>DMZ (Demilitarized Zone)</strong>，即“隔离区”或“非军事区”，是位于内部私有网络和外部公共网络之间的一个中间网络。</li>
+</ul>
+</li>
+<li><strong>Smurf攻击</strong>是一种经典的<strong>放大型</strong>DDoS攻击。其核心手法是：<ol>
+<li>攻击者伪造ICMP Echo Request（ping请求）包的<strong>源IP地址为受害者的IP</strong>。</li>
+<li>攻击者将这个伪造的包发送到一个网络的<strong>广播地址</strong>。</li>
+<li>网络中的所有主机会收到这个广播包，并向<strong>伪造的源IP</strong>（即受害者）回复ICMP Echo Reply。</li>
+<li>这样，攻击者只发送了一个包，却引发了网络中成百上千台主机的回应，流量被放大，最终淹没受害者</li>
+</ol>
+</li>
+<li>关闭allow_url_include可以防止<strong>远程文件包含</strong></li>
+<li>RDP的端口是<strong>3389</strong></li>
+</ol>
 
     </div>
 
@@ -790,8 +926,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
               <a href="/tags/cisp-pte/" rel="tag"># cisp-pte</a>
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
           </div>
 
         
@@ -862,7 +998,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%BB%BD"><span class="nav-text">第一份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%BB%BD"><span class="nav-text">第二份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E4%BB%BD"><span class="nav-text">第三份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E4%BB%BD"><span class="nav-text">第四份</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%BB%BD"><span class="nav-text">第一份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%BB%BD"><span class="nav-text">第二份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E4%BB%BD"><span class="nav-text">第三份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E4%BB%BD"><span class="nav-text">第四份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E4%BB%BD"><span class="nav-text">第五份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E4%BB%BD"><span class="nav-text">第六份</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
