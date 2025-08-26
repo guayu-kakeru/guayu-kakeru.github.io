@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68a6d50a58cb8da5c840d1a9.png">
 <meta property="article:published_time" content="2025-08-21T08:01:56.000Z">
-<meta property="article:modified_time" content="2025-08-22T03:18:53.565Z">
+<meta property="article:modified_time" content="2025-08-26T12:41:03.033Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="cisp-pte">
 <meta property="article:tag" content="渗透">
@@ -227,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-22 11:18:53" itemprop="dateModified" datetime="2025-08-22T11:18:53+08:00">2025-08-22</time>
+                <time title="修改时间：2025-08-26 20:41:03" itemprop="dateModified" datetime="2025-08-26T20:41:03+08:00">2025-08-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -900,6 +900,141 @@
 <li>关闭allow_url_include可以防止<strong>远程文件包含</strong></li>
 <li>RDP的端口是<strong>3389</strong></li>
 </ol>
+<h2 id="第七份"><a href="#第七份" class="headerlink" title="第七份"></a>第七份</h2><ol>
+<li>进行网络安全需求分析需要的意识：<strong>集成意识、权衡意识、风险意识</strong></li>
+<li>下列网络安全技术中，能够对内部攻击、外部攻击和误操作进行实时保护的是 –<strong>杀毒软件</strong><ul>
+<li><strong>保护 (Protection)</strong> 意味着<strong>防御和阻止</strong>，而不仅仅是<strong>检测 (Detection)</strong>。</li>
+<li><strong>入侵检测系统 (IDS)</strong> 的核心功能是<strong>检测</strong>和<strong>报警</strong>，它本身不具备阻断能力。能够阻断的是入侵防御系统(IPS)。因此，选项B不完全满足“保护”的要求。</li>
+<li><strong>防火墙</strong> 主要在网络边界进行工作，它能有效防御<strong>外部网络攻击</strong>，但对内部主机之间的攻击以及主机上的用户<strong>误操作</strong>（如运行本地的恶意脚本）无能为力。</li>
+<li><strong>杀毒软件 (Anti-Virus)</strong>，特别是现代的终端防护平台(EPP)，提供了多层次的<strong>实时保护</strong>：<ul>
+<li><strong>外部攻击：</strong> 能够实时扫描和拦截通过网络下载、邮件附件等方式进入主机的恶意软件。</li>
+<li><strong>内部攻击：</strong> 能够阻止通过内部网络共享、USB设备等方式传播的恶意代码。</li>
+<li><strong>误操作：</strong> 这是最关键的一点。当用户试图打开一个带毒文件，或执行一个恶意脚本时，杀毒软件的实时监控会立即介入并<strong>阻止</strong>这个操作，从而直接对用户的<strong>误操作</strong>提供了<strong>保护</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>依据OSI安全体系结构，数据链路层能提供 – <strong>数据完整性服务</strong><ul>
+<li>OSI安全体系 &#x3D; 安全服务（做什么） + 安全机制（怎么做） + 攻击类型（为什么要做）</li>
+</ul>
+</li>
+<li>在以下的认证方式中，最不安全的是 –  <strong>PAP</strong><ul>
+<li><strong>PAP (Password Authentication Protocol)</strong> 是最基础、最不安全的认证协议。它的致命弱点是<strong>以明文形式</strong>在网络上传输用户名和密码。任何能够嗅探网络流量的攻击者都可以直接窃取到凭证。</li>
+<li><strong>CHAP、MS-CHAP和SPAP</strong>都采用了不同形式的挑战-响应机制或混淆，虽然它们也存在各自的弱点，但都比PAP的明文传输要安全。</li>
+</ul>
+</li>
+<li>TCP SYN泛洪攻击的原理是利用了<strong>TCP三次握手过程</strong><ul>
+<li>SYN Flood 攻击利用了TCP三次握手机制中的一个缺陷。攻击者发送大量的伪造源IP地址的<strong>SYN</strong>请求包给服务器。</li>
+<li>服务器收到SYN后，会分配资源并回复<strong>SYN&#x2F;ACK</strong>，然后等待客户端的最后一个<strong>ACK</strong>包。</li>
+<li>由于源IP是伪造的，服务器永远也等不到这个ACK，导致大量的连接处于“半开放”状态，最终耗尽服务器的连接资源，使其无法响应正常用户的请求。****</li>
+</ul>
+</li>
+<li>ARP欺骗的<strong>最终目的</strong>通常是实施<strong>中间人攻击</strong></li>
+<li>ARP欺骗的实质是<strong>提供虚拟的MAC与IP地址的组合</strong></li>
+<li>信息安全老三样是<strong>防火墙、入侵检测、杀毒</strong></li>
+<li>常规端口扫描和半开放式扫描的区别是 <strong>没有完成三次握手，缺少ACK过程</strong></li>
+<li>Linux中，什么命令可以控制口令的存活时间 – <strong>chage</strong></li>
+<li>在一台计算机上向<a target="_blank" rel="noopener" href="http://www.baidu.com发起trasert时,返回信息“请求超时”,表示的意思是/">www.baidu.com发起trasert时，返回信息“请求超时”,表示的意思是</a> <strong>ICMP数据包被过滤</strong><ul>
+<li>tracert (Windows) 或 traceroute (Linux) 的工作原理是发送TTL值递增的数据包。当数据包的TTL在某个路由器上减为0时，该路由器会回复一个ICMP “Time Exceeded” 消息。</li>
+<li>如果某一跳显示“请求超时”，最常见的原因是该路由器上的<strong>防火墙</strong>配置为<strong>不允许</strong>发送出站的ICMP “Time Exceeded” 消息。它并不一定意味着网络不通，只是那一跳的路由器“沉默”了。</li>
+</ul>
+</li>
+<li>设置IP地址MAC绑定的目的是<strong>防止非法接入，保护内网安全</strong></li>
+<li>Windows Server中默认的密码最长使用时间是<strong>42天</strong></li>
+<li>WannaCry勒索病毒利用的是以下哪个系统漏洞<strong>MS17-010</strong> <ul>
+<li>2017年席卷全球的WannaCry勒索蠕虫，其传播机制是利用了被NSA泄露的、名为“<strong>永恒之蓝 (EternalBlue)</strong>”的漏洞利用工具。</li>
+<li>“永恒之蓝”所利用的Windows SMB协议漏洞，微软发布的安全公告编号正是 <strong>MS17-010</strong>。</li>
+<li>MS08-067是著名的“震荡波”蠕虫利用的漏洞；CVE-2019-0708是“BlueKeep”RDP漏洞。</li>
+</ul>
+</li>
+<li>在Windows的安全事件日志中，常见的登录相关事件ID包括<ul>
+<li><strong>4624:</strong> An account was successfully logged on (账户成功登录)。</li>
+<li><strong>4625:</strong> An account failed to log on (账户登录失败)。</li>
+<li>4776: The domain controller attempted to validate the credentials for an account (凭据验证，常见于域环境)。</li>
+<li>4672: Special privileges assigned to new logon (为新登录分配了特殊权限)。</li>
+</ul>
+</li>
+<li>应急方法学定义了安全事件处理的流程，这个流程的顺序是 <strong>准备-检测-遏制-根除-恢复-跟进</strong></li>
+<li>带VPN的防火墙的基本原理流程是<strong>先进行流量检查</strong><ul>
+<li>当一个加密的VPN数据包到达防火墙时，防火墙的<strong>第一步</strong>是根据其访问控制策略（ACL）对这个<strong>加密的、外部的</strong>数据包进行检查。例如，判断其源&#x2F;目的IP、端口（如UDP 500&#x2F;4500 for IPSec）是否允许通过。</li>
+<li><strong>如果</strong>允许通过，数据包会进入VPN模块进行<strong>解密</strong>。</li>
+<li><strong>解密后</strong>，防火墙会再对<strong>内部的、明文的</strong>数据包进行<strong>第二次</strong>流量检查，应用针对内网资源的访问控制策略。</li>
+</ul>
+</li>
+<li>Google Hacking语法<ul>
+<li>intext:: 搜索正文中包含特定关键字的页面。</li>
+<li>intitle:: 搜索标题中包含特定关键字的页面。</li>
+<li>site:: 将搜索范围限定在特定网站。</li>
+<li><strong>filetype:</strong>: 搜索特定文件类型的文档，例如 filetype:pdf “security” 会搜索所有包含”security”关键字的PDF文件。</li>
+</ul>
+</li>
+<li>反向连接后门区别于普通后门的地方在于<strong>主动连接控制端、防火墙配置不严格时可以穿透防火墙</strong><ul>
+<li><strong>普通后门 (正向连接):</strong> 在受害机上监听一个端口，等待攻击者从外部<strong>连接进来</strong>。这种方式容易被边界防火墙拦截。</li>
+<li><strong>反向连接后门 (Reverse Shell):</strong> 不在本地监听，而是<strong>主动从受害机向外连接</strong>到攻击者在公网上的监听主机。</li>
+<li>由于大多数防火墙策略是“禁止外部发起，允许内部发起”，这种<strong>由内向外</strong>的连接请求很容易<strong>穿透防火墙</strong>，从而建立控制通道。</li>
+</ul>
+</li>
+<li>SQL杀手蠕虫病毒发作的特征是<strong>大量消耗网络带宽</strong></li>
+<li>网络攻击的发展趋势是攻击工具日益先进</li>
+</ol>
+<h2 id="第八份"><a href="#第八份" class="headerlink" title="第八份"></a>第八份</h2><ol>
+<li><strong>IDS</strong> 的全称是<strong>入侵检测系统 (Intrusion Detection System)</strong>。它的核心功能是<strong>检测 (Detection)</strong> 和<strong>分析 (Analysis)</strong>。</li>
+<li>根据我国信息安全管理体系，党政机关信息网络的安全保卫任务由下列哪个单位负责 – <strong>公安机关</strong></li>
+<li>我国的信息安全等级保护制度（等保）将信息系统从低到高划分为<strong>五个安全保护等级</strong>：<ul>
+<li>第一级：自主保护级</li>
+<li>第二级：指导保护级</li>
+<li>第三级：监督保护级</li>
+<li>第四级：强制保护级</li>
+<li>第五级：专控保护级</li>
+</ul>
+</li>
+<li> 口令是验证用户身份的最常用手段，以下哪一种口令的潜在风险影响范围最大 –<strong>设备供应商提供的默认口令</strong></li>
+<li>文件型病毒的特点有： <ul>
+<li>病毒以某种形式隐藏在主程序中，并不修改主程序</li>
+<li>文件型病毒可以通过检查主程序长度来判断其存在</li>
+<li>文件型病毒通常在运行主程序时进入内存</li>
+</ul>
+</li>
+<li>网络攻击与防御处于不对称状态是因为<strong>网络软、硬件的复杂性</strong></li>
+<li>防火墙通常采用哪两种核心技术 – <strong>包过滤和应用代理</strong><ul>
+<li><strong>包过滤 (Packet Filtering):</strong> 第一代防火墙，工作在网络层，根据IP和端口进行过滤，速度快但功能简单。</li>
+<li><strong>应用代理 (Application Proxy):</strong> 第二代防火墙，工作在应用层，对特定应用协议进行深度解析和代理，安全性高但性能差。</li>
+<li>现代的<strong>状态检测防火墙</strong>正是结合了这两者优点的产物。</li>
+</ul>
+</li>
+<li>2014年2月，我国成立了<strong>中央网络安全和信息化领导小组</strong></li>
+<li><strong>网络安全法实施日期</strong>是<strong>2017年6月1日</strong></li>
+<li>《网络安全法》明确规定<strong>国家网信部门</strong>（即国家互联网信息办公室）负责统筹协调网络安全工作和相关监督管理工作。</li>
+<li>Linux系统的运行日志存储的目录是**/var/log**</li>
+<li>推荐的IIS安全加固措施：<ul>
+<li>A: 避免Web目录和系统目录在同一分区，防止Web漏洞影响操作系统。</li>
+<li>B: IUSR_MachineName 是默认的匿名访问账户，重命名可以增加攻击者猜测的难度。</li>
+<li>D: 为不同的网站创建独立的应用程序池，可以实现进程隔离，防止一个网站的漏洞影响到其他网站。</li>
+</ul>
+</li>
+<li>SQL语句中，彻底删除一个表的命令是 <strong>drop</strong><ul>
+<li>DELETE FROM table_name WHERE …: 删除表中的<strong>数据行</strong>（DML操作），表结构依然存在。</li>
+<li><strong>DROP TABLE table_name</strong>: 彻底删除整个表，包括其<strong>结构和所有数据</strong>（DDL操作）。</li>
+</ul>
+</li>
+<li>SQL Server默认的具有DBA权限的账号是<strong>sa</strong></li>
+<li>有关DOMXSS和平常的XSS下列说法正确的是 – <strong>DOMxss不是服务端代码造成的，而平常XSS是</strong><ul>
+<li><strong>平常的XSS (反射型和存储型):</strong> 漏洞的根源在于<strong>服务端代码</strong>没有对用户的输入进行充分的过滤和编码，就将其<strong>输出到HTML页面</strong>中。</li>
+<li><strong>DOM XSS:</strong> 漏洞的根源在于<strong>客户端的JavaScript代码</strong>。它从URL的片段标识符 (#)、document.location 等DOM对象中获取数据，并在没有进行安全处理的情况下，动态地修改页面DOM（例如，使用 innerHTML 或 document.write），从而导致了恶意脚本的执行。整个过程可能完全不与服务器交互，或者服务器端看到的只是正常的请求。</li>
+</ul>
+</li>
+<li>Windows SID (安全标识符)的最后一部分，称为<strong>相对标识符 (RID)</strong>，用于标识域或本地计算机内的特定账户和组。<ul>
+<li>有一些RID是系统预留的、众所周知的：<ul>
+<li><strong>500</strong>: 内置的 <strong>Administrator</strong> 账户。</li>
+<li><strong>501</strong>: 内置的 <strong>Guest</strong> 账户。</li>
+<li><strong>1000及以上</strong>: 通常是普通用户账户。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>以下最有效的防范上传漏洞 – 不做任何验证，上传文件名自动系统修正以字符串加图片后缀形式</li>
+<li>网络安全技术可以分为主动防御技术、被动防御技术两大类，以下属于主动防御技术的是 –<strong>蜜罐技术</strong></li>
+</ol>
 
     </div>
 
@@ -998,7 +1133,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%BB%BD"><span class="nav-text">第一份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%BB%BD"><span class="nav-text">第二份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E4%BB%BD"><span class="nav-text">第三份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E4%BB%BD"><span class="nav-text">第四份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E4%BB%BD"><span class="nav-text">第五份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E4%BB%BD"><span class="nav-text">第六份</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%BB%BD"><span class="nav-text">第一份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%BB%BD"><span class="nav-text">第二份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E4%BB%BD"><span class="nav-text">第三份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E4%BB%BD"><span class="nav-text">第四份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E4%BB%BD"><span class="nav-text">第五份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E4%BB%BD"><span class="nav-text">第六份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E4%BB%BD"><span class="nav-text">第七份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AB%E4%BB%BD"><span class="nav-text">第八份</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
