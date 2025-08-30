@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="cisp中的综合题笔记，用的都是win7攻击机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CISP-PTE综合题做题笔记">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/59614.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="cisp中的综合题笔记，用的都是win7攻击机">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b28f58cb8da5c86418fa.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b2f858cb8da5c8641ab4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b3dc58cb8da5c86422ef.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b42b58cb8da5c86424fd.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b49058cb8da5c86427d1.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b4f358cb8da5c86427ed.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b5c858cb8da5c8642844.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2b97f58cb8da5c86429b6.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2bbd958cb8da5c864381a.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2bc1858cb8da5c8643874.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2bce758cb8da5c86438f1.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2be0458cb8da5c8643942.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2bea358cb8da5c8643987.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2bf5958cb8da5c86439d9.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2c08158cb8da5c8643a37.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2c79f58cb8da5c86469b9.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2c82758cb8da5c86469ed.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2c8b558cb8da5c8646a04.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2c92158cb8da5c8646a31.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2c98358cb8da5c8646a56.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2ca8c58cb8da5c8646aa8.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2ccb758cb8da5c8646b75.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2ce8c58cb8da5c8646be4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2d17758cb8da5c8647698.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68b2d24358cb8da5c8647960.png">
+<meta property="article:published_time" content="2025-08-30T07:55:07.000Z">
+<meta property="article:modified_time" content="2025-08-30T10:29:07.393Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="cisp-pte">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/68b2b28f58cb8da5c86418fa.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/59614.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CISP-PTE综合题做题笔记 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">15</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">15</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">81</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/59614.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CISP-PTE综合题做题笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-30 15:55:07 / 修改时间：18:29:07" itemprop="dateCreated datePublished" datetime="2025-08-30T15:55:07+08:00">2025-08-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/cisp-pte/" itemprop="url" rel="index"><span itemprop="name">cisp-pte</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>cisp中的综合题笔记，用的都是win7攻击机</p>
+<span id="more"></span>
+<h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><h3 id="flag1"><a href="#flag1" class="headerlink" title="flag1"></a>flag1</h3><p>flag1在数据库中<br>先用nmap进行信息收集<br><img src="https://pic1.imgdb.cn/item/68b2b28f58cb8da5c86418fa.png"><br>这里用了all tcp ports 扫描 发现有21 22 80 111 3306 6721端口<br>先去80web端口看看<br><img src="https://pic1.imgdb.cn/item/68b2b2f858cb8da5c8641ab4.png"><br>这里是一个挂号界面，但是显示只是一个样式而已</p>
+<p>然后去21端口看看，21端口是ftp服务，可以在资源管理器中用ftp协议用匿名用户登录尝试<br><img src="https://pic1.imgdb.cn/item/68b2b3dc58cb8da5c86422ef.png"><br>发现有一个config.php 打开里面是数据库的配置文件 包括账号密码<br><img src="https://pic1.imgdb.cn/item/68b2b42b58cb8da5c86424fd.png"><br>用navicat连接数据库 可以找到第一个flag<br><img src="https://pic1.imgdb.cn/item/68b2b49058cb8da5c86427d1.png"></p>
+<h3 id="flag2"><a href="#flag2" class="headerlink" title="flag2"></a>flag2</h3><p>flag2在根目录下<br>要访问到根目录拿到flag，那就要有webshell ， 现在获得的是数据库中的内容<br>继续在数据库中找有用的内容 发现有一个user表 里面有管理员的账号密码<br><img src="https://pic1.imgdb.cn/item/68b2b4f358cb8da5c86427ed.png"><br>这个密码是用md5加密的，可以用工具爆破密码 最后得到登录凭证 zhangsan:123456<br>但是现在没有可以登录的界面，所以用下后台扫描工具扫描一下目录<br>有个index.php 是一个后台登录界面 用凭证进入改平台<br><img src="https://pic1.imgdb.cn/item/68b2b5c858cb8da5c8642844.png"><br>进来之后有一个档案上传，我们用一个自带的免杀码上传尝试，最后发现只能上传pdf类型的文件<br>现在又遇到一个新的问题，就是上传之后没有回显，也找不到上传之后的路径<br>刚才目录扫描也没有扫描到什么upload路径   但是还有一个6721端口没有尝试<br><img src="https://pic1.imgdb.cn/item/68b2b97f58cb8da5c86429b6.png"><br>这里有一个查询功能，猜测可能存在文件包含，用&#x2F;etc&#x2F;passwd尝试发现可以读取，说明确实存在<br>但是直接用php伪协议读取index.php无法访问到，说明他们没有在同一个目录下，现在需要通过其他方式获取的index.php所在的路径<br>现在卡住了，既然数据库没有别的内容，刚刚扫描没有其他东西，现在用用另外几个扫描工具扫扫看有没有其他新的目录和文件<br><img src="https://pic1.imgdb.cn/item/68b2bbd958cb8da5c864381a.png"><br>结果发现真的有一个phpinfo.php<br>在里面成功找到网站所在的系统路径<br><img src="https://pic1.imgdb.cn/item/68b2bc1858cb8da5c8643874.png"><br>然后继续用文件包含去读取index.php的内容<br><img src="https://pic1.imgdb.cn/item/68b2bce758cb8da5c86438f1.png"><br>这里通过源码知道上传之后的路径和刚才上传档案的url的两个参数有关<br><code>192.168.5.100/index.php?m=order&amp;o=upload</code> 所以上传之后的路径是&#x2F;model&#x2F;order_upload.php<br><img src="https://pic1.imgdb.cn/item/68b2be0458cb8da5c8643942.png"><br>这里告诉我们上传之后的路径是CISP-PTE-1413&#x2F;<br><img src="https://pic1.imgdb.cn/item/68b2bea358cb8da5c8643987.png"><br>用文件包含，然后蚁剑可以成功连接  在根目录下找到第二个flag</p>
+<h3 id="flag3"><a href="#flag3" class="headerlink" title="flag3"></a>flag3</h3><p>flag在&#x2F;root&#x2F;下<br>说明获得第三个flag需要我们提权<br>没有sudo 用 <code>find / -u=s -print 2&gt;/dev/null</code>找到有suid的指令和文件 发现有find<br><img src="https://pic1.imgdb.cn/item/68b2bf5958cb8da5c86439d9.png"><br>那就可以用find提权了  方式就是用find查找一个存在的文件然后加入-exec参数执行命令<br><img src="https://pic1.imgdb.cn/item/68b2c08158cb8da5c8643a37.png"><br>成功拿到第三个flag</p>
+<h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><h3 id="flag1-1"><a href="#flag1-1" class="headerlink" title="flag1"></a>flag1</h3><p>flag1在数据库中<br>还是先用nmap扫描一下开放了什么端口<br><img src="https://pic1.imgdb.cn/item/68b2c79f58cb8da5c86469b9.png"><br>进入125 http端口，发现需要认证，然后告诉我们用户名是admin<br><img src="https://pic1.imgdb.cn/item/68b2c82758cb8da5c86469ed.png"><br>用bp抓个包爆破一下密码<br><img src="https://pic1.imgdb.cn/item/68b2c8b558cb8da5c8646a04.png"><br>这里是一个键值对的账号密码 然后用base64加密 ，用bp爆破<br><img src="https://pic1.imgdb.cn/item/68b2c92158cb8da5c8646a31.png"><br>选择custom iterator 第一个选admin 第二个: 第三个导入字典<br>然后选择base64加密<br><img src="https://pic1.imgdb.cn/item/68b2c98358cb8da5c8646a56.png"><br>成功找到密码 qwerty<br>进入进来之后还有一个登录界面 继续用这个密码登录没有反应 看页面源代码发现这是页面代码。<br>既然没有别的东西  看了下135端口，无法访问 所以思路是扫描目录，不过这个扫描不能用工具直接扫<br>因为有一个登录凭证 所以要用bp来 代入认证的字段<br><img src="https://pic1.imgdb.cn/item/68b2ca8c58cb8da5c8646aa8.png"><br><img src="https://pic1.imgdb.cn/item/68b2ccb758cb8da5c8646b75.png"><br>这里有用的就是news这个目录，进去之后是一个留言管理系统但是无法直接利用，因为顶多有xss<br>下一步 继续扫描news目录下面的其他文件  发现有phpmyadmin<br>进入数据库之后得到第一个flag<br>这里还能找到一个admin_user 有账号密码 也是用md5加密的123456 但是无法直接登录<br>这里就是经常考察的点  就是密码是两次md5加密的 所以在phpmyadmin这里修改成123456两次md5加密后的内容<br><img src="https://pic1.imgdb.cn/item/68b2ce8c58cb8da5c8646be4.png"><br>登录进来之后 有第一个有用的信息 就是当前的系统路径<br>别的也没有什么有用的信息 。 </p>
+<h3 id="flag2-1"><a href="#flag2-1" class="headerlink" title="flag2"></a>flag2</h3><p>flag2在网站目录下<br>刚才已经知道了网站目录的系统路径  但是要想拿到flag还是要getshell<br>在phpmyadmin里面可以用数据库写入一句话木马 因为系统路径已经知道了<br><code>select &#39;&lt;?php @eval($_POST[&quot;x&quot;]); ?&gt;&#39; into outfile &#39;C:/phpstudy_pro/WWW/a.php&#39;</code><br>蚁剑这里要注意添加请求头为认证凭证<br>在网站目录下拿到第二个flag</p>
+<h3 id="flag3-1"><a href="#flag3-1" class="headerlink" title="flag3"></a>flag3</h3><p>flag3 在桌面回收站中<br>在这个windows环境中要拿到回收站的东西就要开远程桌面<br>先上传攻击机里面的开启远程桌面的脚本 然后再虚拟终端中启用<br><img src="https://pic1.imgdb.cn/item/68b2d17758cb8da5c8647698.png"><br>然后还需要修改用户的密码 <code>net user Administrator Admin000</code> 必须要修改成强密码<br><img src="https://pic1.imgdb.cn/item/68b2d24358cb8da5c8647960.png"><br>拿到第三个flag</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/59614.html" title="CISP-PTE综合题做题笔记">https://guayu-kakeru.github.io/posts/59614.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/cisp-pte/" rel="tag"># cisp-pte</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/19448.html" rel="prev" title="cisp-pte基础题笔记">
+      <i class="fa fa-chevron-left"></i> cisp-pte基础题笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%A2%98"><span class="nav-text">第一题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flag1"><span class="nav-text">flag1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flag2"><span class="nav-text">flag2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flag3"><span class="nav-text">flag3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%A2%98"><span class="nav-text">第二题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flag1-1"><span class="nav-text">flag1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flag2-1"><span class="nav-text">flag2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flag3-1"><span class="nav-text">flag3</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/59614.html" title="posts&#x2F;59614.html">CISP-PTE综合题做题笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/19448.html" title="posts&#x2F;19448.html">cisp-pte基础题笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/13378.html" title="posts&#x2F;13378.html">cisp-pte客观题笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36422.html" title="posts&#x2F;36422.html">Vulnhub-Pwnlab:init</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/60109.html" title="posts&#x2F;60109.html">Vulnhub-Me and My Girlfriend</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
