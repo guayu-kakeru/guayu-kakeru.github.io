@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/6842ed1d58cb8da5c83744fe.png">
 <meta property="article:published_time" content="2025-02-23T12:20:33.000Z">
-<meta property="article:modified_time" content="2025-06-06T16:45:40.240Z">
+<meta property="article:modified_time" content="2025-09-28T02:46:58.111Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="web">
@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-06-07 00:45:40" itemprop="dateModified" datetime="2025-06-07T00:45:40+08:00">2025-06-07</time>
+                <time title="修改时间：2025-09-28 10:46:58" itemprop="dateModified" datetime="2025-09-28T10:46:58+08:00">2025-09-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,10 +267,8 @@
 <span id="more"></span>
 
 <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><ul>
-<li>在修改请求头的时候考虑加上X-Forwarded-For: 127.0.0.1<br>X-Forwarded-For（XFF）是一个HTTP请求头字段，通常用于标识客户端的真实IP地址，即使请求经过了多个代理或负载均衡服务器。<br>在流量包（网络抓包）中，<strong>Referer</strong>（有时写作 <code>Refer</code>）是 HTTP 请求头字段之一，主要用于指示当前请求是从哪个页面跳转过来的。它的作用是告诉服务器，用户是从哪个 URL 访问当前资源的。</li>
 <li>浏览器内部使用 32 位带符号的整数，来储存推迟执行的时间。这意味着 setTimeout 最多只能推迟执行 2147483647 毫秒（24.8 天）超过这个时间会发生溢出。如果溢出了之后，相当于从 0 开始，整数上溢</li>
 <li><code>#</code>的url编码是%23 <code>&#39;</code>的是%27 <code>\n</code>是%0a <code>\t</code>是%09 </li>
-<li>在 PHP 中，<code>$_REQUEST</code> 是一个超全局变量，用于获取通过多种方式（如 <code>GET</code>、<code>POST</code>、<code>COOKIE</code>）发送到脚本的数据。</li>
 <li><code>alert()</code>函数可以再控制台调用</li>
 <li>http请求头中的character就是cookie中设置 <code>Cookie: character=admin</code></li>
 <li>如果在发包的时候，输入封号会造成消息的截断，可以用url编码%3B替代</li>
@@ -287,7 +285,7 @@
 <li>md5相同但是字符串不同：<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;240610708&#x27;</span>) = <span class="number">0</span>e462097431906509019562988736854</span><br><span class="line">   <span class="built_in">md5</span>(<span class="string">&#x27;QNKCDZO&#x27;</span>) = <span class="number">0</span>e830400451993494058024219903391</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabg7XSs&#x27;</span>)</span></span> = <span class="number">0</span>e087386482136013740957780965295</span><br><span class="line"><span class="function"><span class="title">md5</span><span class="params">(<span class="string">&#x27;aabC9RqS&#x27;</span>)</span></span> = <span class="number">0</span>e260421314791580664869894734725</span><br><span class="line">   <span class="number">314282422</span>    QLTHNDT   EEIZDOI</span><br></pre></td></tr></table></figure></div></li>
 <li>双md5都是0e开头的字符串</li>
 </ul>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">CbDLytmyGm2xQyaLNhWn</span></span><br><span class="line"></span><br><span class="line">770hQgrBOjrcqftrlaZk</span><br><span class="line"></span><br><span class="line">7r4lGXCH2Ksu2JNT3BYM</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">CbDLytmyGm2xQyaLNhWn</span></span><br><span class="line">770hQgrBOjrcqftrlaZk</span><br><span class="line">7r4lGXCH2Ksu2JNT3BYM</span><br></pre></td></tr></table></figure></div>
 <ul>
 <li>md5($str, false) 这是md5的默认情况 返回32位16进制数   如果是 md5($str, true)就返回16位二进制数<br>ffifdyop 是true参数时候的漏洞  md5 (‘ffifdyop’,true)&#x3D;’or’6xxxxxx 也就是or了一个true</li>
 <li>在 PHP 中，如果 <code>md5()</code> 作用于一个<strong>数组</strong>，它不会计算哈希，而是返回 <code>NULL</code>，但<strong>不会报错</strong>（因为 <code>error_reporting(0);</code> 关闭了错误输出）。<br>  所以可以用数组来绕过md5验证  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOIT"><figure class="iseeu highlight /autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用到场景：</span><br><span class="line">$a !== $b &amp;&amp; md5($a) === md5($b)</span><br></pre></td></tr></table></figure></div>
@@ -321,8 +319,6 @@
 <h2 id="php知识"><a href="#php知识" class="headerlink" title="php知识"></a>php知识</h2><ul>
 <li><p>php函数<code>glob(&#39;*&#39;);</code>查看当前目录中的文件 配合 <code>highlight_file(&#39;$filename&#39;)</code>查看</p>
 </li>
-<li><p>php中<code>&lt;?php</code>等价于<code>&lt;?=</code> 可以减少字符数</p>
-</li>
 <li><p>在 php 中，使用 <code>Content-Type: multipart/form-data;</code> 上传文件时，会将它保存在临时文件中，在 php 的配置中 <code>upload_tmp_dir</code> 参数为保存临时文件的路经，linux 下面默认为 <code>/tmp</code>。也就是说只要 php 接收上传请求，就会生成一个临时文件。如果具有上传功能，那么会将这个文件拷走储存。无论如何在执行结束后这个文件会被删除。并且 php 每次创建的临时文件名都有固定的格式，为 phpXXXX.tmp（Windows 中）、php**.tmp（Linux 中）。我们可以发送一个上传文件的 post 包，此时 php 会将我们上传的文件保存在临时文件夹下，默认的文件名是 &#x2F;tmp&#x2F;phpxxxxxx，文件名最后 6 个字符是随机的大小写字母。如 &#x2F;tmp&#x2F;php123abc</p>
 </li>
 <li><p><code>forward_static_call_array()</code> 是 PHP 中的一个内置函数，它允许在运行时动态地调用一个静态方法。其作用类似于 <code>call_user_func_array()</code>，但专门用于静态方法调用</p>
@@ -335,7 +331,7 @@
   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PERL"><figure class="iseeu highlight /perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    static function sayHello(<span class="variable">$name</span>) &#123;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello, <span class="variable">$name</span>!&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">echo call_user_func([<span class="string">&quot;Demo&quot;</span>, <span class="string">&quot;sayHello&quot;</span>], <span class="string">&quot;Alice&quot;</span>);</span><br></pre></td></tr></table></figure></div>
 
 </li>
-<li><p><code>data://</code> 伪协议允许在 URL 直接存储数据，而不需要实际文件。</p>
+<li><p><code>data://</code> 伪协议允许在 URL 直接存储数据，而不需要实际文件。 data:&#x2F;&#x2F;text&#x2F;plain 或 data:&#x2F;&#x2F;text;base64,values(base64)</p>
 </li>
 <li><p><code>intval()</code> 是 PHP 的一个函数，它用于将变量转换为整数（integer）。它的基本用法如下：</p>
   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">intval</span>(<span class="keyword">mixed</span> <span class="variable">$value</span>, <span class="keyword">int</span> <span class="variable">$base</span> = <span class="number">10</span>): <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$value</span>（必需）：要转换的值，可以是字符串、浮点数、布尔值等。</span><br><span class="line"><span class="variable">$base</span>（可选）：进制，默认为 <span class="number">10</span>。仅当 <span class="variable">$value</span> 是字符串时有效，可用于转换不同进制的数字（如二进制、十六进制）。</span><br></pre></td></tr></table></figure></div>
@@ -360,25 +356,30 @@
 </li>
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">&#x27;/^[a-z0-9_]*$/isD&#x27;</span>,<span class="variable">$a</span>))&#123;    show_source(<span class="variable constant_">__FILE__</span>);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">else</span>&#123;    <span class="variable">$a</span>(<span class="string">&#x27;&#x27;</span>,<span class="variable">$b</span>);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LIVECODESERVER"><figure class="iseeu highlight /livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- <span class="keyword">a</span>=\create_function</span><br><span class="line">- b=&#125;<span class="keyword">system</span>(<span class="string">&#x27;你想执行的命令&#x27;</span>);<span class="comment">/*</span></span><br></pre></td></tr></table></figure></div>
+
 <ul>
-<li>命令函数：  <code>assert</code>在php5和php7中如果传入的是字符串也会被当成命令执行<code>assert($_POST[&#39;cmd&#39;]); </code><br>      <code>create_function</code>也是一个命令执行函数<br>      <code>preg_replace() 配合 /e 修饰符</code></li>
+<li>命令函数：  <code>assert</code>在php5和php7中如果传入的是字符串也会被当成命令执行<code>assert($_POST[&#39;cmd&#39;]); </code><br><code>create_function(string $args, string $code)</code>也是一个命令执行函数,会创建一个匿名函数</li>
 </ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> anonymous(<span class="variable">$args</span>) &#123;</span><br><span class="line">    <span class="regexp">//</span> <span class="variable">$code</span> 的内容会放在这里</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>preg_replace(被替换，替换的，句子) 配合 /e 修饰符</code></p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 将 <span class="string">&#x27;shell&#x27;</span> 这个词替换为 phpinfo() 执行后的结果</span><br><span class="line">preg_replace(<span class="string">&#x27;/shell/e&#x27;</span>, <span class="string">&#x27;phpinfo()&#x27;</span>, <span class="string">&#x27;shell&#x27;</span>);</span><br></pre></td></tr></table></figure></div>
-<pre><code>        `call_user_func() / call_user_func_array()` 调用一个用户自定义的函数。第一个参数是函数名，后面的参数是传给该函数的参数。
-</code></pre>
+<p><code>call_user_func() / call_user_func_array()</code> 调用一个用户自定义的函数。第一个参数是函数名，后面的参数是传给该函数的参数。</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接调用 assert</span></span><br><span class="line">call_user_func<span class="punctuation">(</span>&#x27;assert&#x27;<span class="punctuation">,</span> &#x27;phpinfo()&#x27;<span class="punctuation">)</span><span class="punctuation">;</span></span><br></pre></td></tr></table></figure>
-<pre><code>    系统执行命令函数： system exec shell_exec 反引号   exec
-    `passthru` 执行一个外部命令，并且直接显示所有输出，适合用来输出二进制数据（比如图片）。 
-</code></pre>
+<p>系统执行命令函数： system exec shell_exec 反引号   exec<br><code>passthru</code> 执行一个外部命令，并且直接显示所有输出，适合用来输出二进制数据（比如图片）。 </p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ISBL"><figure class="iseeu highlight /isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">header</span>(<span class="string">&#x27;Content-Type: text/plain&#x27;</span>); <span class="comment">// 确保浏览器按纯文本显示</span></span></span><br><span class="line"><span class="function"><span class="title">passthru</span>(<span class="string">&#x27;cat /etc/hosts&#x27;</span>);</span></span><br></pre></td></tr></table></figure></div>
-<pre><code>    popen() proc_open() : 这两个函数更强大，它们会打开一个进程“管道”，可以像读写文件一样与命令进行交互（比如向命令输入数据，或读取命令的输出）。
-</code></pre>
+<p>popen() proc_open() : 这两个函数更强大，它们会打开一个进程“管道”，可以像读写文件一样与命令进行交互（比如向命令输入数据，或读取命令的输出）。</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="MEL"><figure class="iseeu highlight /mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &#x27;r&#x27; 表示读取命令的输出</span></span><br><span class="line">$handle = <span class="keyword">popen</span>(<span class="string">&#x27;ls -la&#x27;</span>, <span class="string">&#x27;r&#x27;</span>);</span><br><span class="line">$read = <span class="keyword">fread</span>($handle, <span class="number">2096</span>);</span><br><span class="line">echo $read;</span><br><span class="line"><span class="keyword">pclose</span>($handle);</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h2><ul>
 <li>sql注入单引号被过滤的时候用双引号</li>
-<li>常见sql注入过滤  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOHOTKEY"><figure class="iseeu highlight /autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">空格过滤 → 用 `/**/`、`%<span class="number">0</span>a`、`%<span class="number">0</span>d` 代替。</span><br><span class="line">引号过滤 → 用 `Hex` 编码或字符串函数（如 `CHAR(<span class="number">97</span>)`）。</span><br><span class="line">关键词过滤  → 尝试大小写、内联注释（`SEL<span class="comment">/*!*/</span>ECT`）、冗余语法（`UNION ALL SELECT`）。</span><br><span class="line">逗号过滤  → 使用 `JOIN` 代替 `UNION SELECT <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>`。</span><br><span class="line">等号过滤  → 用 `LIKE` 或 `IN` 绕过，例如 `WHERE id LIKE <span class="number">1</span>`。</span><br></pre></td></tr></table></figure></div></li>
+<li>常见sql注入过滤</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOHOTKEY"><figure class="iseeu highlight /autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">空格过滤 → 用 `/**/`、`%<span class="number">0</span>a`、`%<span class="number">0</span>d` 代替。</span><br><span class="line">引号过滤 → 用 `Hex` 编码或字符串函数（如 `CHAR(<span class="number">97</span>)`）。</span><br><span class="line">关键词过滤  → 尝试大小写、内联注释（`SEL<span class="comment">/*!*/</span>ECT`）、冗余语法（`UNION ALL SELECT`）。</span><br><span class="line">逗号过滤  → 使用 `JOIN` 代替 `UNION SELECT <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>`。</span><br><span class="line">等号过滤  → 用 `LIKE` 或 `IN` 绕过，例如 `WHERE id LIKE <span class="number">1</span>`。</span><br></pre></td></tr></table></figure></div>
+
+<ul>
 <li>数据库查询长度超出待查询的字符串后会返回特殊字符 NULL 或者 ！等</li>
 <li>mysql中的反引号是为了区分 MYSQL 的保留字与普通字符，所以没有过滤反引号就可以用反引号来绕过 保留字比如user</li>
 <li>mysql可以用load_file()函数读取文件union select load_file(‘path_to_file’) 目录可以选&#x2F;var&#x2F;www&#x2F;html&#x2F;</li>
@@ -874,7 +875,7 @@
           <a href="/posts/59614.html" title="posts&#x2F;59614.html">CISP-PTE综合题做题笔记</a>
         </li>
         <li class="links-of-recent-posts-item">
-          <a href="/posts/0.html" title="posts&#x2F;0.html"></a>
+          <a href="/posts/19448.html" title="posts&#x2F;19448.html">cisp-pte基础题笔记</a>
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/13378.html" title="posts&#x2F;13378.html">cisp-pte客观题笔记</a>
