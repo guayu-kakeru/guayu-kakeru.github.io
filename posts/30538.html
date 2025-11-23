@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":"ture","show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Web basicfirst part is http and network like dns knowledge and i have learnt it , no notes. Web hackingwalking an application you should know the page in the website and what’s in it  view page source">
+  <meta name="description" content="记一下thm上面学习的笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tryhackme-学习笔记">
 <meta property="og:url" content="https://guayu-kakeru.github.io/posts/30538.html">
 <meta property="og:site_name" content="guayu-kakeru">
-<meta property="og:description" content="Web basicfirst part is http and network like dns knowledge and i have learnt it , no notes. Web hackingwalking an application you should know the page in the website and what’s in it  view page source">
+<meta property="og:description" content="记一下thm上面学习的笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/690efbb13203f7be00e3e317.png">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/690f20693203f7be00e419cd.png">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://assets.tryhackme.com/additional/win-fun1/win-desktop2.png">
 <meta property="og:image" content="https://assets.tryhackme.com/additional/win-fun2/compmgmt1.png">
 <meta property="article:published_time" content="2025-11-23T10:38:18.000Z">
-<meta property="article:modified_time" content="2025-11-23T10:43:35.392Z">
+<meta property="article:modified_time" content="2025-11-23T12:01:17.582Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="渗透">
 <meta property="article:tag" content="tryhackme">
@@ -225,7 +225,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-11-23 18:38:18 / 修改时间：18:43:35" itemprop="dateCreated datePublished" datetime="2025-11-23T18:38:18+08:00">2025-11-23</time>
+              <time title="创建时间：2025-11-23 18:38:18 / 修改时间：20:01:17" itemprop="dateCreated datePublished" datetime="2025-11-23T18:38:18+08:00">2025-11-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                  <a href="/categories/tryhackme/" itemprop="url" rel="index"><span itemprop="name">tryhackme</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tryhackme/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
                 </span>
             </span>
 
@@ -249,7 +253,10 @@
       
       
       
-        <h1 id="Web-basic"><a href="#Web-basic" class="headerlink" title="Web basic"></a>Web basic</h1><p>first part is http and network like dns knowledge and i have learnt it , no notes.</p>
+        <p>记一下thm上面学习的笔记</p>
+<span id="more"></span>
+
+<h1 id="Web-basic"><a href="#Web-basic" class="headerlink" title="Web basic"></a>Web basic</h1><p>first part is http and network like dns knowledge and i have learnt it , no notes.</p>
 <h2 id="Web-hacking"><a href="#Web-hacking" class="headerlink" title="Web hacking"></a>Web hacking</h2><h3 id="walking-an-application"><a href="#walking-an-application" class="headerlink" title="walking an application"></a>walking an application</h3><ul>
 <li>you should know the page in the website and what’s in it </li>
 <li>view page source code : some secrect may in the comment or some herf<br>  also can find the framework version and can find public vulnerabilities</li>
@@ -315,7 +322,7 @@
 <h3 id="Authentication-Bypass"><a href="#Authentication-Bypass" class="headerlink" title="Authentication Bypass"></a>Authentication Bypass</h3><ul>
 <li>Use error message to help us to find valid usernames<br><code>ffuf -w /usr/share/wordlists/SecLists/Usernames/Names/names.txt -X POST -d &quot;username=FUZZ&amp;email=x&amp;password=x&amp;cpassword=x&quot; -H &quot;Content-Type: application/x-www-form-urlencoded&quot; -u http://MACHINE_IP/customers/signup -mr &quot;username already exists&quot;</code><br><code>Content-Type</code> so the web server knows we are sending form data</li>
 <li>Bruteforce: use the valid username file and another wordlist<br><code>ffuf -w valid_usernames.txt:W1,/usr/share/wordlists/SecLists/Passwords/Common-Credentials/10-million-password-list-top-100.txt:W2 -X POST -d &quot;username=W1&amp;password=W2&quot; -H &quot;Content-Type: application/x-www-form-urlencoded&quot; -u http://MACHINE_IP/customers/login -fc 200</code></li>
-<li>logic flaw: in this example, we want to reset the password of <a href="mailto:&#x72;&#111;&#x62;&#101;&#114;&#116;&#64;&#97;&#x63;&#x6d;&#x65;&#105;&#x74;&#115;&#x75;&#112;&#112;&#111;&#x72;&#116;&#x2e;&#116;&#x68;&#109;">robert@acmeitsupport.thm</a>. we notice that , we can assign the username and the email(we want to change ) just in the url<br><img src="https://pic1.imgdb.cn/item/690efbb13203f7be00e3e317.png"><br>and there, add a email parameter in the post data. the website will send this request to my account , and give a ticket that contains a link to log you in as Robert</li>
+<li>logic flaw: in this example, we want to reset the password of <a href="mailto:&#114;&#111;&#x62;&#101;&#x72;&#116;&#64;&#x61;&#99;&#109;&#x65;&#x69;&#116;&#115;&#117;&#112;&#x70;&#x6f;&#114;&#x74;&#46;&#116;&#x68;&#109;">robert@acmeitsupport.thm</a>. we notice that , we can assign the username and the email(we want to change ) just in the url<br><img src="https://pic1.imgdb.cn/item/690efbb13203f7be00e3e317.png"><br>and there, add a email parameter in the post data. the website will send this request to my account , and give a ticket that contains a link to log you in as Robert</li>
 <li>Cookie Tampering:<br>The contents of some cookies can be in plain text</li>
 </ul>
 <table>
