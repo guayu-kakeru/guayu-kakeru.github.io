@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://assets.tryhackme.com/additional/win-fun1/win-desktop2.png">
 <meta property="og:image" content="https://assets.tryhackme.com/additional/win-fun2/compmgmt1.png">
 <meta property="article:published_time" content="2025-11-23T10:38:18.000Z">
-<meta property="article:modified_time" content="2025-11-23T10:39:11.140Z">
+<meta property="article:modified_time" content="2025-11-23T10:43:35.392Z">
 <meta property="article:author" content="guayu-kakeru">
 <meta property="article:tag" content="渗透">
 <meta property="article:tag" content="tryhackme">
@@ -225,7 +225,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-11-23 18:38:18 / 修改时间：18:39:11" itemprop="dateCreated datePublished" datetime="2025-11-23T18:38:18+08:00">2025-11-23</time>
+              <time title="创建时间：2025-11-23 18:38:18 / 修改时间：18:43:35" itemprop="dateCreated datePublished" datetime="2025-11-23T18:38:18+08:00">2025-11-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -315,7 +315,7 @@
 <h3 id="Authentication-Bypass"><a href="#Authentication-Bypass" class="headerlink" title="Authentication Bypass"></a>Authentication Bypass</h3><ul>
 <li>Use error message to help us to find valid usernames<br><code>ffuf -w /usr/share/wordlists/SecLists/Usernames/Names/names.txt -X POST -d &quot;username=FUZZ&amp;email=x&amp;password=x&amp;cpassword=x&quot; -H &quot;Content-Type: application/x-www-form-urlencoded&quot; -u http://MACHINE_IP/customers/signup -mr &quot;username already exists&quot;</code><br><code>Content-Type</code> so the web server knows we are sending form data</li>
 <li>Bruteforce: use the valid username file and another wordlist<br><code>ffuf -w valid_usernames.txt:W1,/usr/share/wordlists/SecLists/Passwords/Common-Credentials/10-million-password-list-top-100.txt:W2 -X POST -d &quot;username=W1&amp;password=W2&quot; -H &quot;Content-Type: application/x-www-form-urlencoded&quot; -u http://MACHINE_IP/customers/login -fc 200</code></li>
-<li>logic flaw: in this example, we want to reset the password of <a href="mailto:&#x72;&#x6f;&#x62;&#101;&#x72;&#116;&#x40;&#x61;&#99;&#x6d;&#x65;&#105;&#116;&#x73;&#x75;&#x70;&#112;&#111;&#114;&#x74;&#x2e;&#x74;&#104;&#x6d;">robert@acmeitsupport.thm</a>. we notice that , we can assign the username and the email(we want to change ) just in the url<br><img src="https://pic1.imgdb.cn/item/690efbb13203f7be00e3e317.png"><br>and there, add a email parameter in the post data. the website will send this request to my account , and give a ticket that contains a link to log you in as Robert</li>
+<li>logic flaw: in this example, we want to reset the password of <a href="mailto:&#x72;&#111;&#x62;&#101;&#114;&#116;&#64;&#97;&#x63;&#x6d;&#x65;&#105;&#x74;&#115;&#x75;&#112;&#112;&#111;&#x72;&#116;&#x2e;&#116;&#x68;&#109;">robert@acmeitsupport.thm</a>. we notice that , we can assign the username and the email(we want to change ) just in the url<br><img src="https://pic1.imgdb.cn/item/690efbb13203f7be00e3e317.png"><br>and there, add a email parameter in the post data. the website will send this request to my account , and give a ticket that contains a link to log you in as Robert</li>
 <li>Cookie Tampering:<br>The contents of some cookies can be in plain text</li>
 </ul>
 <table>
